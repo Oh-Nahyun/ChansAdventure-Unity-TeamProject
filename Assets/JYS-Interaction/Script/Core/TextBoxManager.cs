@@ -9,7 +9,7 @@ public class TextBoxManager : MonoBehaviour
     private void Awake()
     {
         talkData = new Dictionary<int, string[]>();
-
+        GenerateData();
     }
 
     void GenerateData()

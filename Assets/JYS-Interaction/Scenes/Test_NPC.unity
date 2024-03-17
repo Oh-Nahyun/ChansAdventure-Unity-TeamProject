@@ -431,8 +431,8 @@ GameObject:
   - component: {fileID: 579157544}
   - component: {fileID: 579157546}
   - component: {fileID: 579157545}
-  - component: {fileID: 579157547}
   - component: {fileID: 579157548}
+  - component: {fileID: 579157549}
   m_Layer: 5
   m_Name: TextBox
   m_TagString: Untagged
@@ -499,23 +499,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 579157543}
   m_CullTransparentMesh: 1
---- !u!114 &579157547
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 579157543}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 490191f9c46d8d747b694028bcbcd098, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  alphaChangeSpeed: 10
-  scanObject: {fileID: 1757350287}
-  talkIndex: 0
-  charPerSeconds: 0.05
-  objData: {fileID: 0}
 --- !u!225 &579157548
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -528,6 +511,24 @@ CanvasGroup:
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
+--- !u!114 &579157549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 579157543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b248e35411a8d6429d27ba08b2de0c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  alphaChangeSpeed: 5
+  scanObject: {fileID: 1757350287}
+  talkString: 
+  talkIndex: 1
+  charPerSeconds: 0.05
+  NPCdata: {fileID: 0}
 --- !u!1 &1409538023
 GameObject:
   m_ObjectHideFlags: 0
