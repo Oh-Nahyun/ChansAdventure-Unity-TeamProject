@@ -19,19 +19,26 @@ public class GameManager : Singleton<GameManager>
     public Action onTalk;
     public void StartTalk()
     {
+        //onTalk?.Invoke();
+        
         if (!isTalk)
         {
             onTalk?.Invoke();
             isTalk = true;
-            Debug.Log("대화중");
+            //Debug.Log("대화중");
         }
         else
         {
             onTalk?.Invoke();
             isTalk = false;
-            Debug.Log("대화 종료");
+            //Debug.Log("대화 종료");
         }
     }
 
+    public Action onNextTalk;
+    public void NextTalk()
+    {
+        onNextTalk?.Invoke();
+    }
 
 }

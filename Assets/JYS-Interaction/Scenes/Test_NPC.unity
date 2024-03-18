@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18043077, g: 0.22589019, b: 0.3070062, a: 1}
+  m_IndirectSpecularColor: {r: 0.18043032, g: 0.22588944, b: 0.30700523, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -527,7 +527,7 @@ MonoBehaviour:
   scanObject: {fileID: 1757350287}
   talkString: 
   talkIndex: 1
-  charPerSeconds: 0.05
+  charPerSeconds: 0.03
   NPCdata: {fileID: 0}
 --- !u!1 &1409538023
 GameObject:
@@ -562,6 +562,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 2000
+  idNext: 0
   nameNPC: "\uD050\uBE0C"
 --- !u!65 &1409538025
 BoxCollider:
@@ -936,7 +937,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   seed: -1
-  scanObject: {fileID: 0}
 --- !u!1 &1676263504
 GameObject:
   m_ObjectHideFlags: 0

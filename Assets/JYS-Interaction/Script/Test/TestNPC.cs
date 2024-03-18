@@ -6,10 +6,7 @@ using UnityEngine.InputSystem;
 public class TestNPC : TestBase
 {
 #if UNITY_EDITOR
-
-    public GameObject scanObject;
-
-
+    
     protected override void OnTest1(InputAction.CallbackContext context)
     {
         GameManager.Instance.StartTalk();
@@ -17,7 +14,7 @@ public class TestNPC : TestBase
 
     protected override void OnTest2(InputAction.CallbackContext context)
     {
-       
+        GameManager.Instance.NextTalk();
     }
 
 #endif
