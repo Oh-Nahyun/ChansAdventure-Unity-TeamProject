@@ -8,6 +8,9 @@ public class ChaseState : StateMachineBehaviour
     readonly int isChasing_Hash = Animator.StringToHash("IsChasing");
     readonly int isAttacking_Hash = Animator.StringToHash("IsAttacking");
 
+    float startAttackRange = 2.5f;
+    float endChasingRange = 15.0f;
+
     NavMeshAgent agent;
     Transform player;
 
@@ -24,12 +27,12 @@ public class ChaseState : StateMachineBehaviour
     {
         agent.SetDestination(player.position);
         float distance = Vector3.Distance(player.position, animator.transform.position); // 자신과 플레이어의 거리 구하기
-        if (distance > 15.0f) // 자신과 플레이어의 거리가 일정거리 이상이면
+        if (distance > endChasingRange) // 자신과 플레이어의 거리가 일정거리 이상이면
         {
             animator.SetBool(isChasing_Hash, false); // 달리기 애니메이션 설정
         }
 
-        if (distance < 2.5f) // 자신과 플레이어의 거리가 2.5f 이하이면
+        if (distance < startAttackRange) // 자신과 플레이어의 거리가 startAttackRange 이하이면
         {
             animator.SetBool(isAttacking_Hash, true); // 공격 애니메이션 설정
         }
@@ -40,16 +43,4 @@ public class ChaseState : StateMachineBehaviour
     {
         agent.SetDestination(animator.transform.position);
     }
-
-    // OnStateMove is called right after Animator.OnAnimatorMove()
-    //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    // Implement code that processes and affects root motion
-    //}
-
-    // OnStateIK is called right after Animator.OnAnimatorIK()
-    //override public void OnStateIK(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    // Implement code that sets up animation IK (inverse kinematics)
-    //}
 }

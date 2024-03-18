@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class AttackState : StateMachineBehaviour
 {
-    
+    float endChasingRange = 3.5f;
+
+
     readonly int isAttacking_Hash = Animator.StringToHash("IsAttacking");
+
     Transform player;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
@@ -20,7 +23,7 @@ public class AttackState : StateMachineBehaviour
         animator.transform.LookAt(player);
 
         float distance = Vector3.Distance(player.position, animator.transform.position); // 자신과 플레이어의 거리 구하기
-        if (distance > 3.5f) // 자신과 플레이어의 거리가 일정거리 이상이면
+        if (distance > endChasingRange) // 자신과 플레이어의 거리가 일정거리 이상이면
         {
             animator.SetBool(isAttacking_Hash, false); // 달리기 애니메이션 설정
         }
@@ -31,16 +34,4 @@ public class AttackState : StateMachineBehaviour
     {
 
     }
-
-    // OnStateMove is called right after Animator.OnAnimatorMove()
-    //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    // Implement code that processes and affects root motion
-    //}
-
-    // OnStateIK is called right after Animator.OnAnimatorIK()
-    //override public void OnStateIK(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    // Implement code that sets up animation IK (inverse kinematics)
-    //}
 }

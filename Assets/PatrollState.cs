@@ -10,7 +10,7 @@ public class PatrollState : StateMachineBehaviour
 
     float timer;
 
-    float chasingRange = 8.0f;
+    float startChasingRange = 8.0f;
 
     List<Transform> wayPoints = new List<Transform>();
 
@@ -50,7 +50,7 @@ public class PatrollState : StateMachineBehaviour
             animator.SetBool(isPatrolling_Hash, false); // 일정 시간 후에 걷는 애니메이션 정지
         }
         float distance = Vector3.Distance(player.position, animator.transform.position); // 자신과 플레이어 태그를 가진 오브젝트 찾기
-        if (distance < chasingRange)
+        if (distance < startChasingRange)
         {
             // // 자신과 플레이어의 거리가 일정거리 이하이면
             animator.SetBool(isChasing_Hash, true); // 달리기 애니메이션 실행

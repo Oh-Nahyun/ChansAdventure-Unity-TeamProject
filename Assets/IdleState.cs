@@ -9,7 +9,7 @@ public class IdleState : StateMachineBehaviour
 
     float timer;
 
-    float chasingRange = 8.0f;
+    float startChasingRange = 8.0f;
 
     Transform player;
 
@@ -30,7 +30,7 @@ public class IdleState : StateMachineBehaviour
         }
 
         float distance = Vector3.Distance(player.position, animator.transform.position); // 자신과 플레이어의 거리 구하기
-        if(distance < chasingRange) // 자신과 플레이어의 거리가 일정거리 이하이면
+        if(distance < startChasingRange) // 자신과 플레이어의 거리가 일정거리 이하이면
         {
             animator.SetBool(isChasing_Hash, true); // 달리기 애니메이션 실행
         }
