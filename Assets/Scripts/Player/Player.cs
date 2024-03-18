@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     /// <summary>
     /// 입력된 이동 방향
     /// </summary>
-    Vector3 inputDirection = Vector3.zero;
+    //Vector3 inputDirection = Vector3.zero;
 
     /// <summary>
     /// 이동 방향 (1 : 전진, -1 : 후진, 0 : 정지)
@@ -69,7 +69,7 @@ public class Player : MonoBehaviour
     /// <summary>
     /// 캐릭터의 목표방향으로 회전시키는 회전
     /// </summary>
-    Quaternion targetRotation = Quaternion.identity;
+    //Quaternion targetRotation = Quaternion.identity;
 
     /// <summary>
     /// 회전 속도
@@ -92,7 +92,7 @@ public class Player : MonoBehaviour
     bool IsJumpAvailable => !isJumping;
 
     // 애니메이터용 해시값
-    readonly int IsMoveBaxkHash = Animator.StringToHash("IsMoveBack");
+    readonly int IsMoveBackHash = Animator.StringToHash("IsMoveBack");
     readonly int IsJumpHash = Animator.StringToHash("IsJump");
     readonly int IsAttackHash = Animator.StringToHash("IsAttack");
     readonly int IsSlideHash = Animator.StringToHash("IsSlide");
@@ -173,23 +173,29 @@ public class Player : MonoBehaviour
         // 입력을 시작한 상황
         if (IsMove)
         {
-            // 캐릭터가 뒤로 갈 경우
-            if (Input.GetKeyDown(KeyCode.S))
-            {
-                // 기존의 currentSpeed를 저장하고 walkSpeed로 변경
-                float a = currentSpeed;
-                currentSpeed = walkSpeed;
+            //// 캐릭터가 뒤로 갈 경우
+            //if (Input.GetKeyDown(KeyCode.S))
+            //{
+            //    // 기존의 currentSpeed를 저장하고 walkSpeed로 변경
+            //    float a = currentSpeed;
+            //    currentSpeed = walkSpeed;
 
-                animator.SetTrigger(IsMoveBaxkHash);
+            //    animator.SetFloat(SpeedHash, AnimatorWalkSpeed);
+            //    animator.SetTrigger(IsMoveBackHash);
 
-                // 뒤로 가기를 끝내기 전, currentSpeed를 원래대로 돌려주기
-                currentSpeed = a;
-            }
+            //    // 뒤로 가기를 끝내기 전, currentSpeed를 원래대로 돌려주기
+            //    currentSpeed = a;
+            //}
+            //else if (Input.GetKeyUp(KeyCode.S))
+            //{
+            //    currentSpeed = 0.0f; // 정지
+            //    animator.SetFloat(SpeedHash, AnimatorStopSpeed);
+            //}
 
             // 입력 방향 회전시키기
-            Quaternion camY = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0); // 카메라의 y회전만 따로 추출
-            inputDirection = camY * inputDirection;                     // 입력 방향을 카메라의 y회전과 같은 정도로 회전시키기
-            targetRotation = Quaternion.LookRotation(inputDirection);   // 목표 회전 저장
+            //Quaternion camY = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0); // 카메라의 y회전만 따로 추출
+            //inputDirection = camY * inputDirection;                     // 입력 방향을 카메라의 y회전과 같은 정도로 회전시키기
+            //targetRotation = Quaternion.LookRotation(inputDirection);   // 목표 회전 저장
 
             // 이동 모드 변경
             MoveSpeedChange(CurrentMoveMode);
@@ -300,7 +306,7 @@ public class Player : MonoBehaviour
     IEnumerator StopInput()
     {
         inputActions.Player.Disable();          // Player 액션맵 비활성화
-        yield return new WaitForSeconds(4.5f);
+        yield return new WaitForSeconds(4.0f);
         inputActions.Player.Enable();           // Player 액션맵 활성화
     }
 }
