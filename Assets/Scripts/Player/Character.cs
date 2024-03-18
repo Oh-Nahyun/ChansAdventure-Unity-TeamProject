@@ -96,7 +96,7 @@ public class Character : MonoBehaviour
     /// <summary>
     /// 주변 시야 카메라
     /// </summary>
-    public GameObject followCam;
+    public GameObject cameraRoot;
 
     /// <summary>
     /// 주변 시야 카메라 회전 정도
@@ -194,9 +194,9 @@ public class Character : MonoBehaviour
             //}
 
             // 입력 방향 회전시키기
-            Quaternion camY = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0); // 카메라의 y회전만 따로 추출
-            inputDirection = camY * inputDirection;                     // 입력 방향을 카메라의 y회전과 같은 정도로 회전시키기
-            targetRotation = Quaternion.LookRotation(inputDirection);   // 목표 회전 저장
+            //Quaternion camY = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0); // 카메라의 y회전만 따로 추출
+            //inputDirection = camY * inputDirection;                     // 입력 방향을 카메라의 y회전과 같은 정도로 회전시키기
+            //targetRotation = Quaternion.LookRotation(inputDirection);   // 목표 회전 저장
 
             // 이동 모드 변경
             MoveSpeedChange(CurrentMoveMode);
@@ -311,13 +311,13 @@ public class Character : MonoBehaviour
         if (!isLook)
             return;
 
-        followCam.transform.localRotation *= Quaternion.AngleAxis(lookVector.x * followCamRotatePower, Vector3.up);
-        followCam.transform.localRotation *= Quaternion.AngleAxis(-lookVector.y * followCamRotatePower, Vector3.right);
+        cameraRoot.transform.localRotation *= Quaternion.AngleAxis(lookVector.x * followCamRotatePower, Vector3.up);
+        cameraRoot.transform.localRotation *= Quaternion.AngleAxis(-lookVector.y * followCamRotatePower, Vector3.right);
 
-        var angles = followCam.transform.localEulerAngles;
+        var angles = cameraRoot.transform.localEulerAngles;
         angles.z = 0;
 
-        var angle = followCam.transform.localEulerAngles.x;
+        var angle = cameraRoot.transform.localEulerAngles.x;
 
         if (angle > 180 && angle < 340)
         {
@@ -328,8 +328,23 @@ public class Character : MonoBehaviour
             angles.x = 40;
         }
 
-        followCam.transform.localEulerAngles = angles;
-        followCam.transform.localEulerAngles = new Vector3(angles.x, angles.y, 0);
+        cameraRoot.transform.localEulerAngles = angles;
+        cameraRoot.transform.localEulerAngles = new Vector3(angles.x, angles.y, 0);
+
+
+
+        //------------------------------------------------------------------------------------------------------------------------
+
+
+        //Vector2 dir = cameraRoot.transform.position - transform.position; // 터렛에서 플레이어로 가는 방향 벡터 계산
+        //dir.y = 0.0f;
+
+        //// 장애물이 없이 플레이어가 보이면 그 쪽으로 방향을 돌린다.
+        //// transform.LookAt()
+        //// barrelBody.forward = dir; // 즉시 바라보기
+        //cameraRoot.transform.rotation = Quaternion.Slerp(cameraRoot.transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * followCamRotatePower); // 정해진 속도에 맞게 목표 지점 바라보기
+
+        //float angle = Vector3.Angle(cameraRoot.transform.forward, dir); // 사잇각
     }
 
     //private void OnCollisionEnter(Collision collision)
