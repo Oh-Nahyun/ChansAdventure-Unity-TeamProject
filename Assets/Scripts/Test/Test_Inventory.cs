@@ -14,6 +14,9 @@ public class Test_Inventory : TestInputBase
     [Tooltip("½½·Ô ÀÎµ¦½º")]
     [Range(0,5)]
     public uint index;
+    [Tooltip("°³¼ö")]
+    [Range(1,10)]
+    public int count;
 
     void Start()
     {
@@ -24,7 +27,17 @@ public class Test_Inventory : TestInputBase
     {
         if(context.performed)
         {
-            inven.AddSlotItem(code,1,index);
+            inven.AddSlotItem(code,count,index);
+            inven.TestShowInventory();
+        }
+    }
+
+    protected override void OnKey2Input(InputAction.CallbackContext context)
+    {
+        if(context.performed)
+        {
+            inven.DiscardSlotItem(count, index);
+            inven.TestShowInventory();
         }
     }
 }

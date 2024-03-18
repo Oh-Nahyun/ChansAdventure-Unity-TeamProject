@@ -52,16 +52,25 @@ public class InventorySlot
     /// <param name="code">아이템 코드</param>
     /// <param name="count">추가할 개수 (Default = 1)</param>
     public void AddItem(int code, int count = 1)
-    {
-        
+    {        
         itemData = ItemDataManager.Instance.datas[code];
         currentItemCount += count;
+
+        if (currentItemCount > (int)SlotItemData.maxCount - 1)
+        {
+            currentItemCount = (int)SlotItemData.maxCount;
+        }
     }
 
     //감소
     public void DiscardItem(int discardCount)
     {
         currentItemCount -= discardCount;
+        if (currentItemCount < 1)
+        {
+            currentItemCount = 0;
+            ClearItem();
+        }
     }
 
     //clear

@@ -27,14 +27,19 @@ public class Inventory
     // 슬롯에 아이템 추가
     public void AddSlotItem(int code, int count, uint index = 0)
     {
+        if(index > maxSlot)
+        {
+            Debug.Log($"존재하지 않는 슬롯 인덱스 입니다.");
+        }
+
         if (slots[index].SlotItemData != null) // 해당 슬롯에 아이템이 존재한다 (1개이상)
         {            
             if(slots[index].CurrentItemCount == slots[index].SlotItemData.maxCount) // 슬롯이 다 찼는지 체크
             {                
                 Debug.Log($"slot[{index}] is Full");
 
-                uint vaildIndex = FindEmptySlot(index); // 다음 칸 체크
-                if (vaildIndex > maxSlot)
+                uint vaildIndex = FindSlot(code, index); // 다음 칸 체크
+                if (vaildIndex >= maxSlot)
                 {
                     Debug.Log($"비어있는 슬롯이 없습니다.");
                     return;
@@ -48,9 +53,9 @@ public class Inventory
             {
                 if (slots[index].SlotItemData.itemCode != ((ItemCode)code)) // 추가하려는 아이템이 서로 다른 아이템이다.
                 {               
-                    uint vaildIndex = FindEmptySlot(index); // 비어있는 칸 확인
+                    uint vaildIndex = FindSlot(code, index); // 비어있는 칸 확인
 
-                    if (vaildIndex > maxSlot)
+                    if (vaildIndex >= maxSlot)
                     {
                         Debug.Log($"비어있는 슬롯이 없습니다.");
                         return;
@@ -62,7 +67,7 @@ public class Inventory
 
                 }
                 else // 추가하려는 아이템이 서로 같은 아이템이다.
-                {                    
+                {
                     slots[index].AddItem(code, count);  // 아이템 추가
                 }
             }
@@ -72,17 +77,33 @@ public class Inventory
             slots[index].AddItem(code, count);  // 아이템 추가
         }
     }
+
+    public void DiscardSlotItem(int count, uint index = 0)
+    {
+        if(slots[index].SlotItemData == null)
+        {
+            Debug.Log($"슬롯이 비어있습니다.");
+            return;
+        }
+
+        slots[index].DiscardItem(count);
+    }
     
     /// <summary>
     /// 가장 빠른번호의 비어있는 슬롯을 찾아주는 함수
     /// </summary>
+    /// <param name="code">찾는 아이템 코드</param>
     /// <param name="start">시작 인덱스</param>
-    uint FindEmptySlot(uint start)
+    uint FindSlot(int code, uint start)
     {
         uint index = start;
         foreach(var slot in slots)
         {
-            if (slot.SlotItemData == null) // 데이터가 없으면 break
+            // 찾는 조건 
+            if (slot.SlotItemData == null) // 데이터가 비어있다
+                break;
+            else if (slot.SlotItemData.itemCode == (ItemCode)code && 
+                     slot.CurrentItemCount < slot.SlotItemData.maxCount)
                 break;
 
             index++;
@@ -90,4 +111,27 @@ public class Inventory
 
         return index;
     }
+
+#if UNITY_EDITOR
+    public void TestShowInventory()
+    {
+        string str = null;
+        str += $"(";
+        for(int i = 0; i < maxSlot; i++)
+        {
+            if(slots[i].SlotItemData == null)
+            {
+                str += $"빈칸";
+            }
+            else
+            {
+                str += $"[{slots[i].SlotItemData.itemName} ({slots[i].CurrentItemCount}/ {slots[i].SlotItemData.maxCount}]";
+            }
+            str += $", ";
+        }
+        str += $")";
+
+        Debug.Log($"{str}");
+    }
+#endif
 }
