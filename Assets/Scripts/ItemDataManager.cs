@@ -7,7 +7,7 @@ public class ItemDataManager : MonoBehaviour
     /// <summary>
     /// ItemDataManager Singleton
     /// </summary>
-    public static ItemDataManager itemDataManager;
+    public static ItemDataManager Instance;
 
     public ItemData[] datas;
     public ItemData this[int index] => datas[index];
@@ -15,6 +15,6 @@ public class ItemDataManager : MonoBehaviour
 
     void Awake()
     {
-        itemDataManager = this;
+        Instance = this;
     }
 }

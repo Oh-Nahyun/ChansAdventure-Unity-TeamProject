@@ -5,26 +5,26 @@ using UnityEngine.InputSystem;
 
 public class Test_Inventory : TestInputBase
 {
-    Inventory inventory;
+    Inventory inven;
 
     [Header("슬롯 정보")]
 
     [Tooltip("아이템 코드 입력")]
     public int code;
     [Tooltip("슬롯 인덱스")]
-    public int index;
+    [Range(0,5)]
+    public uint index;
 
     void Start()
     {
-        inventory = new Inventory();
+        inven = new Inventory();
     }
 
     protected override void OnKey1Input(InputAction.CallbackContext context)
     {
         if(context.performed)
         {
-            inventory.AddItem(0, 1);
-            inventory.ShowInventory();
+            inven.AddSlotItem(code,1,index);
         }
     }
 }

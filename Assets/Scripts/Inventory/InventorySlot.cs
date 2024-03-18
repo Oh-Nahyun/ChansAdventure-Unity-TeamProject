@@ -22,10 +22,10 @@ public class InventorySlot
     public uint SlotIndex => slotIndex;
 
     /// <summary>
-    /// 아이템 코드
+    /// 아이템 데이터
     /// </summary>
     ItemData itemData;
-    public ItemData SlotItem => itemData;
+    public ItemData SlotItemData => itemData;
 
     /// <summary>
     /// Current Item count
@@ -49,12 +49,13 @@ public class InventorySlot
     /// <summary>
     /// 아이템 추가 함수
     /// </summary>
-    /// <param name="data">아이템 데이터</param>
-    /// <param name="AddCount">추가할 아이템 개수</param>
-    public void AddItem(ItemData data, int AddCount)
+    /// <param name="code">아이템 코드</param>
+    /// <param name="count">추가할 개수 (Default = 1)</param>
+    public void AddItem(int code, int count = 1)
     {
-        itemData = data;
-        currentItemCount += AddCount;
+        
+        itemData = ItemDataManager.Instance.datas[code];
+        currentItemCount += count;
     }
 
     //감소
@@ -62,5 +63,11 @@ public class InventorySlot
     {
         currentItemCount -= discardCount;
     }
+
     //clear
+    public void ClearItem()
+    {
+        itemData = null;
+        currentItemCount = 0;
+    }
 }
