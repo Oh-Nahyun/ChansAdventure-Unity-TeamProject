@@ -1,5 +1,5 @@
 {
-    "name": "PlayerAC",
+    "name": "PlayerinputActions",
     "maps": [
         {
             "name": "Player",
@@ -54,6 +54,24 @@
                     "name": "Skill",
                     "type": "Button",
                     "id": "ab5893d2-dcd0-4e7d-9e79-e3a133d99ff5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "MoveModeChange",
+                    "type": "Button",
+                    "id": "da36b7ce-9bee-4692-af78-a9bb2c7c2346",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Slide",
+                    "type": "Button",
+                    "id": "eff423ee-a0c4-4842-84fe-e9f57ba4eb41",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -168,6 +186,28 @@
                     "processors": "",
                     "groups": "KM",
                     "action": "Skill",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1100b764-4b86-41e7-a2b5-6abe780dd490",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KM",
+                    "action": "MoveModeChange",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4b87fe25-5ba4-4f6e-be77-4f5abceff61d",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KM",
+                    "action": "Slide",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
