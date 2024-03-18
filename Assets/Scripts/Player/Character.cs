@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -81,6 +83,26 @@ public class Character : MonoBehaviour
     /// </summary>
     bool IsJumpAvailable => !isJumping;
 
+    /// <summary>
+    /// 주변 시야 버튼이 눌렸는지 아닌지 확인용 변수
+    /// </summary>
+    public bool isLook = false;
+
+    /// <summary>
+    /// 주변 시야 방향 벡터
+    /// </summary>
+    Vector3 lookVector = Vector3.zero;
+
+    /// <summary>
+    /// 주변 시야 카메라
+    /// </summary>
+    public GameObject followCam;
+
+    /// <summary>
+    /// 주변 시야 카메라 회전 정도
+    /// </summary>
+    public float followCamRotatePower = 5.0f;
+
     // 애니메이터용 해시값
     readonly int IsMoveBackHash = Animator.StringToHash("IsMoveBack");
     readonly int IsJumpHash = Animator.StringToHash("IsJump");
@@ -92,49 +114,54 @@ public class Character : MonoBehaviour
     const float AnimatorRunSpeed = 1.0f;
 
     // 컴포넌트들
-    PlayerinputActions inputController;
+    PlayerinputActions inputActions;
     CharacterController characterController;
     Animator animator;
 
     private void Awake()
     {
-        inputController = new PlayerinputActions();
+        inputActions = new PlayerinputActions();
         characterController = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
     }
 
     private void OnEnable()
     {
-        inputController.Player.Enable();
-        inputController.Player.Move.performed += OnMoveInput;
-        inputController.Player.Move.canceled += OnMoveInput;
-        inputController.Player.MoveModeChange.performed += OnMoveModeChangeInput;
-        inputController.Player.Jump.performed += OnJumpInput;
-        inputController.Player.Attack.performed += OnAttackInput;
-        inputController.Player.Slide.performed += OnSlideInput;
+        inputActions.Player.Enable();
+        inputActions.Player.Move.performed += OnMoveInput;
+        inputActions.Player.Move.canceled += OnMoveInput;
+        inputActions.Player.MoveModeChange.performed += OnMoveModeChangeInput;
+        inputActions.Player.Jump.performed += OnJumpInput;
+        inputActions.Player.Attack.performed += OnAttackInput;
+        inputActions.Player.Slide.performed += OnSlideInput;
 
-        //inputActions.Player.LookAround.performed += OnLookInput;
-        //inputActions.Player.LookAround.canceled += OnLookInput;
+        inputActions.Player.LookAround.performed += OnLookInput;
+        inputActions.Player.LookAround.canceled += OnLookInput;
     }
 
     private void OnDisable()
     {
-        //inputActions.Player.LookAround.canceled -= OnLookInput;
-        //inputActions.Player.LookAround.performed -= OnLookInput;
+        inputActions.Player.LookAround.canceled -= OnLookInput;
+        inputActions.Player.LookAround.performed -= OnLookInput;
 
-        inputController.Player.Slide.performed -= OnSlideInput;
-        inputController.Player.Attack.performed -= OnAttackInput;
-        inputController.Player.Jump.performed -= OnJumpInput;
-        inputController.Player.MoveModeChange.performed -= OnMoveModeChangeInput;
-        inputController.Player.Move.canceled -= OnMoveInput;
-        inputController.Player.Move.performed -= OnMoveInput;
-        inputController.Player.Disable();
+        inputActions.Player.Slide.performed -= OnSlideInput;
+        inputActions.Player.Attack.performed -= OnAttackInput;
+        inputActions.Player.Jump.performed -= OnJumpInput;
+        inputActions.Player.MoveModeChange.performed -= OnMoveModeChangeInput;
+        inputActions.Player.Move.canceled -= OnMoveInput;
+        inputActions.Player.Move.performed -= OnMoveInput;
+        inputActions.Player.Disable();
     }
 
     private void FixedUpdate()
     {
         characterController.Move(Time.fixedDeltaTime * currentSpeed * inputDirection); // 캐릭터의 움직임
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * turnSpeed);  // 목표 회전으로 변경
+    }
+
+    private void Update()
+    {
+        LookRotation();
     }
 
     void SetMoveInput(Vector2 input, bool IsPress)
@@ -266,6 +293,45 @@ public class Character : MonoBehaviour
         animator.SetTrigger(IsSlideHash);
     }
 
+    private void OnLookInput(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            isLook = true;
+            lookVector = context.ReadValue<Vector2>();
+        }
+        if (!context.performed)
+        {
+            isLook = false;
+        }
+    }
+
+    void LookRotation()
+    {
+        if (!isLook)
+            return;
+
+        followCam.transform.localRotation *= Quaternion.AngleAxis(lookVector.x * followCamRotatePower, Vector3.up);
+        followCam.transform.localRotation *= Quaternion.AngleAxis(-lookVector.y * followCamRotatePower, Vector3.right);
+
+        var angles = followCam.transform.localEulerAngles;
+        angles.z = 0;
+
+        var angle = followCam.transform.localEulerAngles.x;
+
+        if (angle > 180 && angle < 340)
+        {
+            angles.x = 340;
+        }
+        else if (angle < 180 && angle > 40)
+        {
+            angles.x = 40;
+        }
+
+        followCam.transform.localEulerAngles = angles;
+        followCam.transform.localEulerAngles = new Vector3(angles.x, angles.y, 0);
+    }
+
     //private void OnCollisionEnter(Collision collision)
     //{
     //    if (collision.gameObject.CompareTag("Ground"))
@@ -280,8 +346,8 @@ public class Character : MonoBehaviour
     /// <returns></returns>
     IEnumerator StopInput()
     {
-        inputController.Player.Disable();          // Player 액션맵 비활성화
+        inputActions.Player.Disable();          // Player 액션맵 비활성화
         yield return new WaitForSeconds(4.0f);
-        inputController.Player.Enable();           // Player 액션맵 활성화
+        inputActions.Player.Enable();           // Player 액션맵 활성화
     }
 }
