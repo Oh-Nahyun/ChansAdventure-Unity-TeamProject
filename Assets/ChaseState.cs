@@ -5,6 +5,8 @@ using UnityEngine.AI;
 
 public class ChaseState : StateMachineBehaviour
 {
+    readonly int isChasing_Hash = Animator.StringToHash("IsChasing");
+    readonly int isAttacking_Hash = Animator.StringToHash("IsAttacking");
 
     NavMeshAgent agent;
     Transform player;
@@ -21,6 +23,16 @@ public class ChaseState : StateMachineBehaviour
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         agent.SetDestination(player.position);
+        float distance = Vector3.Distance(player.position, animator.transform.position); // 자신과 플레이어의 거리 구하기
+        if (distance > 15.0f) // 자신과 플레이어의 거리가 일정거리 이상이면
+        {
+            animator.SetBool(isChasing_Hash, false); // 달리기 애니메이션 설정
+        }
+
+        if (distance < 2.5f) // 자신과 플레이어의 거리가 2.5f 이하이면
+        {
+            animator.SetBool(isAttacking_Hash, true); // 공격 애니메이션 설정
+        }
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state

@@ -10,7 +10,7 @@ public class PatrollState : StateMachineBehaviour
 
     float timer;
 
-    float chasingRange = 3.0f;
+    float chasingRange = 8.0f;
 
     List<Transform> wayPoints = new List<Transform>();
 
