@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -76,12 +75,12 @@ public class Character : MonoBehaviour
     /// <summary>
     /// 점프 중인지 아닌지 확인용 변수
     /// </summary>
-    bool isJumping = false;
+    //bool isJumping = false;
 
     /// <summary>
     /// 점프가 가능한지 확인하는 프로퍼티 (점프중이 아닐 때)
     /// </summary>
-    bool IsJumpAvailable => !isJumping;
+    //bool IsJumpAvailable => !isJumping;
 
     /// <summary>
     /// 주변 시야 버튼이 눌렸는지 아닌지 확인용 변수
@@ -104,7 +103,7 @@ public class Character : MonoBehaviour
     public float followCamRotatePower = 5.0f;
 
     // 애니메이터용 해시값
-    readonly int IsMoveBackHash = Animator.StringToHash("IsMoveBack");
+    //readonly int IsMoveBackHash = Animator.StringToHash("IsMoveBack");
     readonly int IsJumpHash = Animator.StringToHash("IsJump");
     readonly int IsAttackHash = Animator.StringToHash("IsAttack");
     readonly int IsSlideHash = Animator.StringToHash("IsSlide");
@@ -130,6 +129,7 @@ public class Character : MonoBehaviour
         inputActions.Player.Enable();
         inputActions.Player.Move.performed += OnMoveInput;
         inputActions.Player.Move.canceled += OnMoveInput;
+
         inputActions.Player.MoveModeChange.performed += OnMoveModeChangeInput;
         inputActions.Player.Jump.performed += OnJumpInput;
         inputActions.Player.Attack.performed += OnAttackInput;
@@ -148,6 +148,7 @@ public class Character : MonoBehaviour
         inputActions.Player.Attack.performed -= OnAttackInput;
         inputActions.Player.Jump.performed -= OnJumpInput;
         inputActions.Player.MoveModeChange.performed -= OnMoveModeChangeInput;
+
         inputActions.Player.Move.canceled -= OnMoveInput;
         inputActions.Player.Move.performed -= OnMoveInput;
         inputActions.Player.Disable();
@@ -193,10 +194,12 @@ public class Character : MonoBehaviour
             //    animator.SetFloat(SpeedHash, AnimatorStopSpeed);
             //}
 
-            // 입력 방향 회전시키기
+            //// 따라다니는 카메라
             //Quaternion camY = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0); // 카메라의 y회전만 따로 추출
             //inputDirection = camY * inputDirection;                     // 입력 방향을 카메라의 y회전과 같은 정도로 회전시키기
-            //targetRotation = Quaternion.LookRotation(inputDirection);   // 목표 회전 저장
+
+            // 입력 방향 (회전) 저장
+            targetRotation = Quaternion.LookRotation(inputDirection);
 
             // 이동 모드 변경
             MoveSpeedChange(CurrentMoveMode);
@@ -336,10 +339,8 @@ public class Character : MonoBehaviour
         //------------------------------------------------------------------------------------------------------------------------
 
 
-        //Vector2 dir = cameraRoot.transform.position - transform.position; // 터렛에서 플레이어로 가는 방향 벡터 계산
+        //Vector2 dir = cameraRoot.transform.position - transform.position; // 카메라에서 플레이어로 가는 방향 벡터 계산
         //dir.y = 0.0f;
-
-        //// 장애물이 없이 플레이어가 보이면 그 쪽으로 방향을 돌린다.
         //// transform.LookAt()
         //// barrelBody.forward = dir; // 즉시 바라보기
         //cameraRoot.transform.rotation = Quaternion.Slerp(cameraRoot.transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * followCamRotatePower); // 정해진 속도에 맞게 목표 지점 바라보기
