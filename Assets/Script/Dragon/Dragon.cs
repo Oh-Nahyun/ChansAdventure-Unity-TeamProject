@@ -32,4 +32,13 @@ public class Dragon : MonoBehaviour
             animator.SetTrigger(damage_Hash);
         }
     }
+
+    public void Test(float damage)
+    {
+        if(Input.GetButton("Space"))
+        {
+            TakeDamage(10.0f);
+        }
+        
+    }
 }
