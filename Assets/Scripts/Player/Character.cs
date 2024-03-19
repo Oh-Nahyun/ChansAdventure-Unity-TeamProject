@@ -194,12 +194,10 @@ public class Character : MonoBehaviour
             //    animator.SetFloat(SpeedHash, AnimatorStopSpeed);
             //}
 
-            //// 따라다니는 카메라
-            //Quaternion camY = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0); // 카메라의 y회전만 따로 추출
-            //inputDirection = camY * inputDirection;                     // 입력 방향을 카메라의 y회전과 같은 정도로 회전시키기
-
-            // 입력 방향 (회전) 저장
-            targetRotation = Quaternion.LookRotation(inputDirection);
+            // 입력 방향 회전시키기
+            Quaternion followCamY = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0);   // 카메라의 y회전만 따로 추출
+            inputDirection = followCamY * inputDirection;                                                   // 입력 방향을 카메라의 y회전과 같은 정도로 회전시키기
+            targetRotation = Quaternion.LookRotation(inputDirection);                                       // 회전 저장
 
             // 이동 모드 변경
             MoveSpeedChange(CurrentMoveMode);
@@ -291,7 +289,7 @@ public class Character : MonoBehaviour
     /// <summary>
     /// 회피 처리 함수
     /// </summary>
-    private void OnSlideInput(InputAction.CallbackContext _)
+    private void OnSlideInput(InputAction.CallbackContext context)
     {
         animator.SetTrigger(IsSlideHash);
     }
