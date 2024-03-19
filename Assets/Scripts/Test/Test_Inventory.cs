@@ -10,13 +10,13 @@ public class Test_Inventory : TestInputBase
     [Header("슬롯 정보")]
 
     [Tooltip("아이템 코드 입력")]
-    public int code;
+    public uint code;
     [Tooltip("슬롯 인덱스")]
     [Range(0,5)]
-    public uint index;
+    public uint index = 0;
     [Tooltip("개수")]
     [Range(1,10)]
-    public int count;
+    public uint count = 1;
 
     void Start()
     {

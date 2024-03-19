@@ -30,8 +30,8 @@ public class InventorySlot
     /// <summary>
     /// Current Item count
     /// </summary>
-    int currentItemCount = 0;
-    public int CurrentItemCount => currentItemCount;
+    uint currentItemCount = 0;
+    public uint CurrentItemCount => currentItemCount;
 
     //장착 여부
 
@@ -50,22 +50,27 @@ public class InventorySlot
     /// 아이템 추가 함수
     /// </summary>
     /// <param name="code">아이템 코드</param>
-    /// <param name="count">추가할 개수 (Default = 1)</param>
-    public void AddItem(int code, int count = 1)
-    {        
+    /// <param name="count">추가할 개수</param>
+    public void AddItem(uint code, uint count, out uint over)
+    {
+        uint overCount = 0;
+        // 넘친다면?
         itemData = ItemDataManager.Instance.datas[code];
-        currentItemCount += count;
+        currentItemCount += count;  // add item
 
-        if (currentItemCount > (int)SlotItemData.maxCount - 1)
+        if (currentItemCount > SlotItemData.maxCount)
         {
-            currentItemCount = (int)SlotItemData.maxCount;
+            overCount = currentItemCount - SlotItemData.maxCount;  // 개수가 초과하는 아이템
+
+            currentItemCount = SlotItemData.maxCount;
         }
+        over = overCount;
     }
 
     //감소
-    public void DiscardItem(int discardCount)
+    public void DiscardItem(uint discardCount)
     {
-        currentItemCount -= discardCount;
+        currentItemCount -= (uint)discardCount;
         if (currentItemCount < 1)
         {
             currentItemCount = 0;
