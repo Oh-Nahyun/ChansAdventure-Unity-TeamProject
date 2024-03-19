@@ -3319,10 +3319,11 @@ MonoBehaviour:
   runSpeed: 7
   currentSpeed: 0
   turnSpeed: 10
+  slidePower: 5
   jumpPower: 5
   isLook: 0
   cameraRoot: {fileID: 0}
-  followCamRotatePower: 5
+  followCamRotatePower: 1
 --- !u!1 &3352562925871242548
 GameObject:
   m_ObjectHideFlags: 0

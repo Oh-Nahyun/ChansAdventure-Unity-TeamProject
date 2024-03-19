@@ -68,19 +68,46 @@ public class Character : MonoBehaviour
     public float turnSpeed = 10.0f;
 
     /// <summary>
+    /// 중력
+    /// </summary>
+    //[Range(-1, 1)]
+    //public float gravity = 0.96f;
+
+    /// <summary>
+    /// 슬라이드 정도
+    /// </summary>
+    public float slidePower = 5.0f;
+
+    /// <summary>
+    /// 점프 시간 제한
+    /// </summary>
+    //public float jumpTimeLimit = 4.0f;
+
+    /// <summary>
+    /// 점프 시간
+    /// </summary>
+    //[SerializeField]
+    //public float jumpTime;
+
+    /// <summary>
     /// 점프 정도
     /// </summary>
     public float jumpPower = 5.0f;
 
     /// <summary>
+    /// 점프 속도값
+    /// </summary>
+    //public float jumpVelocity;
+
+    /// <summary>
     /// 점프 중인지 아닌지 확인용 변수
     /// </summary>
-    //bool isJumping = false;
+    bool isJumping = false;
 
     /// <summary>
     /// 점프가 가능한지 확인하는 프로퍼티 (점프중이 아닐 때)
     /// </summary>
-    //bool IsJumpAvailable => !isJumping;
+    bool IsJumpAvailable => !isJumping;
 
     /// <summary>
     /// 주변 시야 버튼이 눌렸는지 아닌지 확인용 변수
@@ -122,6 +149,8 @@ public class Character : MonoBehaviour
         inputActions = new PlayerinputActions();
         characterController = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
+
+        isJumping = true;
     }
 
     private void OnEnable()
@@ -163,6 +192,7 @@ public class Character : MonoBehaviour
     private void Update()
     {
         LookRotation();
+        Jump();
     }
 
     void SetMoveInput(Vector2 input, bool IsPress)
@@ -175,6 +205,9 @@ public class Character : MonoBehaviour
         // 입력을 시작한 상황
         if (IsPress)
         {
+            //// 캐릭터가 지면에 닿았는지 확인
+            // if (characterController.isGrounded)
+
             //// 캐릭터가 뒤로 갈 경우
             //if (Input.GetKeyDown(KeyCode.S))
             //{
@@ -259,19 +292,37 @@ public class Character : MonoBehaviour
     /// <summary>
     /// 점프 처리 함수
     /// </summary>
-    private void OnJumpInput(InputAction.CallbackContext _)
+    private void OnJumpInput(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            // 점프하는 중이 아닌 경우 => 점프 가능
+            isJumping = false;
+        }
+        else
+        {
+            // 점프 중인 경우 => 점프 불가능
+            isJumping = true;
+        }
+    }
+
+    void Jump()
     {
         // 점프가 가능한 경우
-        //if (IsJumpAvailable)
+        if (IsJumpAvailable)
         {
             animator.SetTrigger(IsJumpHash);
 
             // 위쪽과 앞쪽으로 jumpPower만큼 힘 더하기
             //rigid.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
 
-            // 점프했다고 표시
-            //isJumping = true;
+            //jumpTime -= Time.deltaTime * currentSpeed;
+            //jumpTime = Mathf.Clamp(jumpTime, 0.1f, jumpTimeLimit);
+            //jumpVelocity = Mathf.Lerp(transform.position.y, 10, Time.deltaTime * jumpPower);
+            //inputDirection.y += gravity + jumpVelocity * jumpTime;
         }
+
+        isJumping = true;
     }
 
     /// <summary>
@@ -301,6 +352,7 @@ public class Character : MonoBehaviour
             isLook = true;
             lookVector = context.ReadValue<Vector2>();
         }
+
         if (!context.performed)
         {
             isLook = false;
