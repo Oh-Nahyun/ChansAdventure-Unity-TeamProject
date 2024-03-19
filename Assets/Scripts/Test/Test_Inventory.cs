@@ -13,21 +13,32 @@ public class Test_Inventory : TestInputBase
     public uint code;
     [Tooltip("½½·Ô ÀÎµ¦½º")]
     [Range(0,5)]
-    public uint index = 0;
+    public uint indexA = 0;
+    [Range(0,5)]
+    public uint indexB = 0;
     [Tooltip("°³¼ö")]
     [Range(1,10)]
-    public uint count = 1;
+    public int count = 1;
+
+    public SortMode sortMode;
+    public bool isAcending = false;
 
     void Start()
     {
         inven = new Inventory();
+
+        inven.AddSlotItem(0, 3, 0);
+        inven.AddSlotItem(1, 2, 1);
+        inven.AddSlotItem(2, 1, 2);
+
+        inven.TestShowInventory();
     }
 
     protected override void OnKey1Input(InputAction.CallbackContext context)
     {
         if(context.performed)
         {
-            inven.AddSlotItem(code,count,index);
+            inven.AddSlotItem(code,count, indexA);
             inven.TestShowInventory();
         }
     }
@@ -36,7 +47,25 @@ public class Test_Inventory : TestInputBase
     {
         if(context.performed)
         {
-            inven.DiscardSlotItem(count, index);
+            inven.DiscardSlotItem(count, indexA);
+            inven.TestShowInventory();
+        }
+    }
+
+    protected override void OnKey3Input(InputAction.CallbackContext context)
+    {
+        if(context.performed)
+        {
+            inven.SwapSlot(indexA, indexB);
+            inven.TestShowInventory();
+        }
+    }
+
+    protected override void OnKey4Input(InputAction.CallbackContext context)
+    {
+        if(context.performed)
+        {
+            inven.SortSlot(sortMode, isAcending);
             inven.TestShowInventory();
         }
     }
