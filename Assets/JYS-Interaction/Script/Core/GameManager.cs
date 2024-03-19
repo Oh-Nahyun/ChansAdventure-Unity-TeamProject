@@ -15,23 +15,22 @@ public class GameManager : Singleton<GameManager>
     }
 
 
-    bool isTalk = false;
-    public Action onTalk;
+    public bool isNPC = false;
+    public Action onTalkNPC;
+    public Action onTalkObj;
     public void StartTalk()
     {
         //onTalk?.Invoke();
         
-        if (!isTalk)
+        if (!isNPC)
         {
-            onTalk?.Invoke();
-            isTalk = true;
-            //Debug.Log("대화중");
+            onTalkNPC?.Invoke();
+            Debug.Log("NPC와 대화");
         }
         else
         {
-            onTalk?.Invoke();
-            isTalk = false;
-            //Debug.Log("대화 종료");
+            onTalkObj?.Invoke();
+            Debug.Log("오브젝트와 대화");
         }
     }
 
@@ -39,6 +38,17 @@ public class GameManager : Singleton<GameManager>
     public void NextTalk()
     {
         onNextTalk?.Invoke();
+    }
+
+    public void IsNPCObj()
+    {
+        isNPC = !isNPC;
+    }
+
+    public Action openChase;
+    public void OpenChest()
+    {
+        openChase?.Invoke();
     }
 
 }
