@@ -36,14 +36,23 @@ public class Weapon : MonoBehaviour
     /// </summary>
     Transform bowWeapon;
 
+    // 애니메이터용 해시값
+    readonly int IsAttackHash = Animator.StringToHash("IsAttack");
+    readonly int IsSwordHash = Animator.StringToHash("IsSword");
+    readonly int IsBowHash = Animator.StringToHash("IsBow");
+    readonly int CriticalHitHash = Animator.StringToHash("CriticalHit");
+    readonly int UseWeaponHash = Animator.StringToHash("UseWeapon");
+
     // 컴포넌트들
     PlayerinputActions inputActions;
     Animator animator;
+    Character player;
 
     private void Awake()
     {
         inputActions = new PlayerinputActions();
         animator = GetComponent<Animator>();
+        player = GetComponent<Character>();
     }
 
     private void Start()
@@ -57,6 +66,7 @@ public class Weapon : MonoBehaviour
     private void OnEnable()
     {
         inputActions.Weapon.Enable();
+        inputActions.Player.Attack.performed += OnAttackInput;
         inputActions.Weapon.Attack.performed += OnAttackInput;
         inputActions.Weapon.Change.performed += OnChangeInput;
 
@@ -69,20 +79,44 @@ public class Weapon : MonoBehaviour
 
         inputActions.Weapon.Change.performed -= OnChangeInput;
         inputActions.Weapon.Attack.performed -= OnAttackInput;
+        inputActions.Player.Attack.performed -= OnAttackInput;
         inputActions.Weapon.Disable();
     }
 
     /// <summary>
-    /// 무기에 따른 공격 함수
+    /// 무기 모드에 따른 공격 함수
     /// </summary>
     /// <param name="context"></param>
     private void OnAttackInput(InputAction.CallbackContext context)
     {
-        // animator
+        animator.SetTrigger(IsAttackHash);
+
+        if (currentWeaponMode == WeaponMode.None)
+        {
+            animator.SetBool(UseWeaponHash, false);
+        }
+        else // 무기 모드가 Sword 또는 Bow인 경우
+        {
+            animator.SetBool(UseWeaponHash, true);
+
+            if (currentWeaponMode == WeaponMode.Sword)
+            {
+                animator.SetTrigger(IsSwordHash);
+                ////////// CriticalHit 설정하기
+            }
+            else if (currentWeaponMode == WeaponMode.Bow)
+            {
+                animator.SetTrigger(IsBowHash);
+            }
+        }
+
+        // 기본 공격할 동안 Player의 이동이 불가하도록 설정
+        StopAllCoroutines();
+        StartCoroutine(player.StopInput());
     }
 
     /// <summary>
-    /// 무기를 바꾸는 함수
+    /// 무기 모드를 바꾸는 함수
     /// </summary>
     /// <param name="context"></param>
     private void OnChangeInput(InputAction.CallbackContext context)
@@ -139,3 +173,4 @@ public class Weapon : MonoBehaviour
         bowWeapon.gameObject.SetActive(isBowShow);
     }
 }
+

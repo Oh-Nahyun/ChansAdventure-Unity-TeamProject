@@ -132,7 +132,6 @@ public class Character : MonoBehaviour
     // 애니메이터용 해시값
     //readonly int IsMoveBackHash = Animator.StringToHash("IsMoveBack");
     readonly int IsJumpHash = Animator.StringToHash("IsJump");
-    readonly int IsAttackHash = Animator.StringToHash("IsAttack");
     readonly int IsSlideHash = Animator.StringToHash("IsSlide");
     readonly int SpeedHash = Animator.StringToHash("Speed");
     const float AnimatorStopSpeed = 0.0f;
@@ -161,7 +160,7 @@ public class Character : MonoBehaviour
 
         inputActions.Player.MoveModeChange.performed += OnMoveModeChangeInput;
         inputActions.Player.Jump.performed += OnJumpInput;
-        inputActions.Player.Attack.performed += OnAttackInput;
+        /////inputActions.Player.Attack.performed += OnAttackInput;
         inputActions.Player.Slide.performed += OnSlideInput;
 
         inputActions.Player.LookAround.performed += OnLookInput;
@@ -174,7 +173,7 @@ public class Character : MonoBehaviour
         inputActions.Player.LookAround.performed -= OnLookInput;
 
         inputActions.Player.Slide.performed -= OnSlideInput;
-        inputActions.Player.Attack.performed -= OnAttackInput;
+        /////inputActions.Player.Attack.performed -= OnAttackInput;
         inputActions.Player.Jump.performed -= OnJumpInput;
         inputActions.Player.MoveModeChange.performed -= OnMoveModeChangeInput;
 
@@ -325,17 +324,17 @@ public class Character : MonoBehaviour
         isJumping = true;
     }
 
-    /// <summary>
-    /// 공격 처리 함수
-    /// </summary>
-    private void OnAttackInput(InputAction.CallbackContext _)
-    {
-        animator.SetTrigger(IsAttackHash);
+    ///// <summary>
+    ///// 공격 처리 함수
+    ///// </summary>
+    //private void OnAttackInput(InputAction.CallbackContext _)
+    //{
+    //    animator.SetTrigger(IsAttackHash);
 
-        // 기본 공격할 동안 Player의 이동이 불가하도록 설정
-        StopAllCoroutines();
-        StartCoroutine(StopInput());
-    }
+    //    // 기본 공격할 동안 Player의 이동이 불가하도록 설정
+    //    StopAllCoroutines();
+    //    StartCoroutine(StopInput());
+    //}
 
     /// <summary>
     /// 회피 처리 함수
@@ -410,7 +409,7 @@ public class Character : MonoBehaviour
     /// 입력 처리 불가 처리 코루틴
     /// </summary>
     /// <returns></returns>
-    IEnumerator StopInput()
+    public IEnumerator StopInput()
     {
         inputActions.Player.Disable();          // Player 액션맵 비활성화
         yield return new WaitForSeconds(4.0f);
