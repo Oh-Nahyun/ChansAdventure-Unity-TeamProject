@@ -11,6 +11,7 @@ public class TempSlot : InventorySlot
     /// 설정 안되있으면 설정되는 인덱스 번호
     /// </summary>
     const uint notSet = uint.MaxValue;
+
     /// <summary>
     /// 가져온 인덱스 저장 변수
     /// </summary>

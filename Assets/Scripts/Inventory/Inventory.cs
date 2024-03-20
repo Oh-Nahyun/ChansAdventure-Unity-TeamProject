@@ -13,7 +13,6 @@ public class Inventory
     /// </summary>
     const uint maxSlot = 6;
 
-
     /// <summary>
     /// 인벤토리 슬롯들
     /// </summary>
@@ -29,7 +28,7 @@ public class Inventory
     /// <summary>
     /// 아이템 정렬을 위한 리스트
     /// </summary>
-    List<InventorySlot> tempList;
+    List<InventorySlot> tempSortList;
 
     /// <summary>
     /// 임시 슬롯 클래스
@@ -47,9 +46,10 @@ public class Inventory
     public Inventory()
     {
         slots = new InventorySlot[maxSlot];
-        tempList = new List<InventorySlot>();
+        tempSortList = new List<InventorySlot>();
+        tempslot = new TempSlot(tempIndex);
 
-        for(int i = 0; i < maxSlot; i++)
+        for (int i = 0; i < maxSlot; i++)
         {
             slots[i] = new InventorySlot((uint)i);
         }
@@ -144,9 +144,7 @@ public class Inventory
     /// <param name="index">슬롯 인덱스</param>
     public void AddSlotItem(uint code, int count)
     {
-
         uint slotIndex = FindSlot(code);
-        Debug.Log($"찾은 슬롯 인덱스 : {slotIndex}");
 
         if (!IsVaildSlot(slotIndex))
         {
@@ -237,12 +235,12 @@ public class Inventory
     /// <param name="sortMode"></param>
     public void SortSlot(SortMode sortMode, bool isAcending)
     {
-        tempList = new List<InventorySlot>(slots);
+        tempSortList = new List<InventorySlot>(slots);
 
         switch(sortMode)
         {
             case SortMode.Name:
-                tempList.Sort((current, other) =>
+                tempSortList.Sort((current, other) =>
                 {
                     if(current.SlotItemData == null)
                         return 1;
@@ -259,7 +257,7 @@ public class Inventory
                 });
                 break;
             case SortMode.Price:
-                tempList.Sort((current, other) =>
+                tempSortList.Sort((current, other) =>
                 {
                     if (current.SlotItemData == null)
                         return 1;
@@ -276,7 +274,7 @@ public class Inventory
                 });
                 break;
             case SortMode.Count:
-                tempList.Sort((current, other) =>
+                tempSortList.Sort((current, other) =>
                 {
                     if (current.SlotItemData == null)
                         return 1;
@@ -295,13 +293,43 @@ public class Inventory
         }
 
         int slotIndex = 0;
-        foreach(var listIndex in tempList)
+        foreach(var listIndex in tempSortList)
         {
             slots[slotIndex] = listIndex;
             slotIndex++;
         }
 
-        tempList.Clear();
+        tempSortList.Clear();
+    }
+
+    public void SlotToTemp(uint index)
+    {
+        int a = 0;
+        tempslot = new TempSlot(index); // 임시 슬롯 추가
+
+        // 옮길 슬롯 내용
+        uint slotCode = (uint)slots[index].SlotItemData.itemCode;
+        int itemCount = slots[index].CurrentItemCount;
+
+        tempslot.AssignItem(slotCode, itemCount, out _); // temp슬롯 내용 추가
+
+        slots[index].ClearItem(); // 슬롯 내용 제거
+    }
+
+    public void TempToSlot(uint index)
+    {
+        if(tempslot.SlotItemData == null)
+        {
+            Debug.Log($"임시 슬롯이 존재하지 않습니다.");
+            return;
+        }
+
+        uint tempCode = (uint)tempslot.SlotItemData.itemCode;
+        int tempItemCount = tempslot.CurrentItemCount;
+
+        slots[index].AssignItem(tempCode, tempItemCount, out _);
+
+        tempslot.ClearItem();
     }
 
     /// <summary>
