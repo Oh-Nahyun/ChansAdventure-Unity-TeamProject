@@ -30,7 +30,7 @@ public class RandomIdleSelector : StateMachineBehaviour
             {
                 select = 2;             // 30
             }
-            else if (num < 0.45f)
+            else if (num < 0.3f)
             {
                 select = 1;             // 15
             }

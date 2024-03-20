@@ -16,7 +16,9 @@ public class AttackState : StateMachineBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player").transform; // 플레이어 태그를 가진 오브젝트 찾기
         // 사거리 잡아서 거리가 가까워지면 플레이어 바라보게 설정
-        animator.transform.LookAt(player);
+        float distance = Vector3.Distance(player.position, animator.transform.position); // 자신과 플레이어의 거리 구하기
+        
+        
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

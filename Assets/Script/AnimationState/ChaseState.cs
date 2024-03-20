@@ -8,7 +8,7 @@ public class ChaseState : StateMachineBehaviour
     readonly int isChasing_Hash = Animator.StringToHash("IsChasing");
     readonly int isAttacking_Hash = Animator.StringToHash("IsAttacking");
 
-    float startAttackRange = 2.5f;
+    float startAttackRange = 3.5f;
     float endChasingRange = 15.0f;
 
     NavMeshAgent agent;
