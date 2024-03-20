@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,15 +7,19 @@ public class Dragon : MonoBehaviour
 {
     public float HP = 100.0f;
 
+    public float damage = 20.0f;
+
+    public Action<float> onDamage;
+
     readonly int die_Hash = Animator.StringToHash("Die");
     readonly int damage_Hash = Animator.StringToHash("Damage");
 
     Animator animator;
+
     
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        
     }
 
     public void TakeDamage(float damageAmount)
@@ -39,6 +44,13 @@ public class Dragon : MonoBehaviour
         {
             TakeDamage(10.0f);
         }
-        
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("Player"))
+        {
+            onDamage?.Invoke(damage);
+        }
     }
 }
