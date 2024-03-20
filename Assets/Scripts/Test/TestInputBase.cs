@@ -46,9 +46,9 @@ public class TestInputBase : MonoBehaviour
     {
         
     }
-    protected virtual void OnKey5Input(InputAction.CallbackContext context)
+    protected void OnKey5Input(InputAction.CallbackContext _)
     {
-        
+        // 사용 안함
     }
 
 

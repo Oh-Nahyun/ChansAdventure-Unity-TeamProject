@@ -27,9 +27,9 @@ public class Test_Inventory : TestInputBase
     {
         inven = new Inventory();
 
-        inven.AddSlotItem(0, 3, 0);
-        inven.AddSlotItem(1, 2, 1);
-        inven.AddSlotItem(2, 1, 2);
+        inven.AddSlotItem(0, 3);
+        inven.AddSlotItem(1, 2);
+        inven.AddSlotItem(2, 1);
 
         inven.TestShowInventory();
     }
@@ -38,7 +38,10 @@ public class Test_Inventory : TestInputBase
     {
         if(context.performed)
         {
-            inven.AddSlotItem(code,count, indexA);
+            //inven.AddSlotItem(code,count, indexA);
+            //inven.TestShowInventory();
+
+            inven.AddSlotItem(code, count);
             inven.TestShowInventory();
         }
     }

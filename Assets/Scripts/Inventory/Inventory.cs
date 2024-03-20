@@ -13,23 +13,37 @@ public class Inventory
     /// </summary>
     const uint maxSlot = 6;
 
+
+    /// <summary>
+    /// 인벤토리 슬롯들
+    /// </summary>
+    InventorySlot[] slots;
+
+    /// <summary>
+    /// 인벤토리 슬롯 접근을 위한 인덱서
+    /// </summary>
+    /// <param name="index">슬롯 인덱스</param>
+    /// <returns></returns>
+    public InventorySlot this[uint index] => slots[index];
+
+    /// <summary>
+    /// 아이템 정렬을 위한 리스트
+    /// </summary>
+    List<InventorySlot> tempList;
+
+    /// <summary>
+    /// 임시 슬롯 클래스
+    /// </summary>
+    TempSlot tempslot;
+
     /// <summary>
     /// 임시 슬롯 인덱스
     /// </summary>
     const uint tempIndex = 999999;
 
     /// <summary>
-    /// 인벤토리 슬롯들
+    /// 인벤토리 생성자
     /// </summary>
-    public InventorySlot[] slots;
-
-    List<InventorySlot> tempList;
-
-    /// <summary>
-    /// 임시 슬롯
-    /// </summary>
-    TempSlot tempslot;
-
     public Inventory()
     {
         slots = new InventorySlot[maxSlot];
@@ -41,7 +55,8 @@ public class Inventory
         }
     }
 
-    /// <summary>
+    #region Legacy AddItem Method
+/*    /// <summary>
     /// 슬롯에 아이템 추가
     /// </summary>
     /// <param name="code">아이템 코드</param>
@@ -52,7 +67,7 @@ public class Inventory
         int overCount = 0;
         uint vaildIndex = 0;
 
-        if (index > maxSlot)
+        if (!IsVaildSlot(index))
         {
             Debug.Log($"존재하지 않는 슬롯 인덱스 입니다.");
         }
@@ -118,6 +133,37 @@ public class Inventory
                 Debug.Log($"인벤토리가 가득찼습니다.");
             }
         }
+    }*/
+    #endregion
+
+    /// <summary>
+    /// 아이템 추가 함수 , 가장 먼저있는 슬롯을 채움
+    /// </summary>
+    /// <param name="code">아이템 코드</param>
+    /// <param name="count">아이템 개수</param>
+    /// <param name="index">슬롯 인덱스</param>
+    public void AddSlotItem(uint code, int count)
+    {
+
+        uint slotIndex = FindSlot(code);
+        Debug.Log($"찾은 슬롯 인덱스 : {slotIndex}");
+
+        if (!IsVaildSlot(slotIndex))
+        {
+            Debug.Log($"{slotIndex}번 슬롯은 존재하지 않습니다.");
+            return;
+        }
+        else
+        {
+            slots[slotIndex].AssignItem(code, count, out int overCount);
+
+            if(overCount > 0) // 넘친 아이템이 존재한다면
+            {
+                // 재탐색 후 넣기
+                slotIndex = FindSlot(code);
+                slots[slotIndex].AssignItem(code, overCount, out _);
+            }
+        }
     }
 
     /// <summary>
@@ -147,8 +193,8 @@ public class Inventory
         {
             if (slot.SlotItemData == null) // 데이터가 비어있다
                 break;
-            else if (slot.SlotItemData.itemCode == (ItemCode)code &&
-                     slot.CurrentItemCount < slot.SlotItemData.maxCount)
+            else if (slot.SlotItemData.itemCode == (ItemCode)code &&        // 매개변수 아이템 코드와 동일하고 
+                     slot.CurrentItemCount < slot.SlotItemData.maxCount)    // 해당 슬롯의 아이템 개수가 최대치보다 낮다면 반환
                 break;
 
             index++;
@@ -256,6 +302,16 @@ public class Inventory
         }
 
         tempList.Clear();
+    }
+
+    /// <summary>
+    /// 해당 인덱스에 슬롯이 있는지 확인하는 함수
+    /// </summary>
+    /// <param name="index">확인할 인덱스</param>
+    /// <returns>슬롯이 존재하면 true 아니면 false</returns>
+    bool IsVaildSlot(uint index)
+    {
+        return index < maxSlot;
     }
 
 #if UNITY_EDITOR
