@@ -7,6 +7,8 @@ public class Test_Inventory : TestInputBase
 {
     Inventory inven;
 
+    public InventoryUI inventoryUI;
+
     [Header("슬롯 정보")]
 
     [Tooltip("아이템 코드 입력")]
@@ -30,8 +32,9 @@ public class Test_Inventory : TestInputBase
         inven.AddSlotItem(0, 3);
         inven.AddSlotItem(1, 2);
         inven.AddSlotItem(2, 1);
-
         inven.TestShowInventory();
+
+        inventoryUI.InitializeInventoryUI(inven);
     }
 
     protected override void OnKey1Input(InputAction.CallbackContext context)

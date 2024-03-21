@@ -23,7 +23,7 @@ public class Test_Inventory2 : TestInputBase
     public SortMode sortMode;
     public bool isAcending = false;
 
-    void Start()
+    void Awake()
     {
         inven = new Inventory();
 

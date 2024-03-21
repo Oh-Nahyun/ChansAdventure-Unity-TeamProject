@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.2257134, b: 0.30692226, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1614,6 +1614,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7b19284de4fc0148aa75a9672f2fb81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slotsUIs:
+  - {fileID: 1522793728}
+  - {fileID: 841312896}
+  - {fileID: 1277418181}
+  - {fileID: 658454331}
+  - {fileID: 825932032}
+  - {fileID: 1182204412}
 --- !u!1 &1063235936
 GameObject:
   m_ObjectHideFlags: 0
@@ -2562,6 +2569,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1003824019409004227, guid: 9093d5ada8fa5f847a16632ef9e620a7,
+        type: 3}
+      propertyPath: inventoryUI
+      value: 
+      objectReference: {fileID: 1047017069}
     - target: {fileID: 2293851091788749683, guid: 9093d5ada8fa5f847a16632ef9e620a7,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2620,7 +2632,7 @@ PrefabInstance:
     - target: {fileID: 3653342909834849643, guid: 9093d5ada8fa5f847a16632ef9e620a7,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2707,6 +2719,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Test_Inventory 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7597873436727514507, guid: 168476fbfc7333a4facccfe92c11df4d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7678140571037306345, guid: 168476fbfc7333a4facccfe92c11df4d,
         type: 3}

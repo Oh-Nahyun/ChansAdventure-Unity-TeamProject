@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,29 +20,47 @@ public class SlotUI_Base : MonoBehaviour
     /// </summary>
     TextMeshProUGUI slotItemCount;
 
-    InventorySlot slotData;
+    /// <summary>
+    /// slotUI의 슬롯데이터
+    /// </summary>
+    InventorySlot inventorySlot;
 
-    public InventorySlot SlotData
-    {
-        get => slotData;
-        set
-        {
-            if(slotData != value)
-            {
-                slotData = value;
-                // 갱신
-                //slotIcon.sprite = slotData.SlotItemData.itemIcon;
-                //slotItemCount.text = slotData.CurrentItemCount.ToString();
-            }
-        }
-    }
+    /// <summary>
+    /// slotUI 데이터 접근 프로퍼티
+    /// </summary>
+    public InventorySlot Slot => inventorySlot;
 
     void Awake()
     {
         Transform child = transform.GetChild(0);
-        slotIcon = child.GetComponent<Image>();
+        slotIcon = child.GetComponentInChildren<Image>();
 
         child = transform.GetChild(1);
-        slotItemCount = child.GetComponent<TextMeshProUGUI>();
+        slotItemCount = child.GetComponentInChildren<TextMeshProUGUI>();
+    }
+
+    public void InitializeSlotUI(InventorySlot slot)
+    {
+        inventorySlot = slot;
+        inventorySlot.onChangeSlotData = Refresh;
+        Refresh();
+    }
+
+    protected virtual void Refresh()
+    {
+        if(Slot.SlotItemData == null)
+        {
+            slotIcon.color = Color.clear;
+            slotIcon.sprite = null;
+            slotItemCount.text = string.Empty;
+        }
+        else
+        {
+            slotIcon.color = Color.white;
+            slotIcon.sprite = Slot.SlotItemData.itemIcon;
+            slotItemCount.text = Slot.CurrentItemCount.ToString();
+        }
+
+        Debug.Log($"{Slot.SlotIndex}, {Slot.CurrentItemCount}");
     }
 }

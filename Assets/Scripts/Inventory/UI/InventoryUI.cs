@@ -17,26 +17,24 @@ public class InventoryUI : MonoBehaviour
     /// <summary>
     /// UI slots
     /// </summary>
-    InventorySlotUI[] slots;
+    InventorySlotUI[] slotsUIs;
 
     /// <summary>
-    /// UI 슬롯 접근용 인덱서
+    /// 인벤토리 UI를 초기화하는 함수
     /// </summary>
-    /// <param name="index"></param>
-    /// <returns></returns>
-    public InventorySlotUI this[uint index] => slots[index];     
-
-    void Awake()
+    /// <param name="playerInventory">플레이어 인벤토리</param>
+    public void InitializeInventoryUI(Inventory playerInventory)
     {
-        inventory = new Inventory();
-        slots = new InventorySlotUI[Inventory.slotSize];
+        inventory = playerInventory;    // 초기화한 인벤토리 내용 받기
+        slotsUIs = new InventorySlotUI[Inventory.slotSize]; // 슬롯 크기 할당
+        slotsUIs = GetComponentsInChildren<InventorySlotUI>();  // 컴포넌트 받기
 
-        for(uint i = 0; i < Inventory.slotSize; i++)
+        for (uint i = 0; i < Inventory.slotSize; i++)
         {
-            slots = GetComponentsInChildren<InventorySlotUI>();
-            slots[i].SlotData = Inventory[i]; 
+            slotsUIs[i].InitializeSlotUI(Inventory[i]); // 인벤토리슬롯을 slotUI와 연결
         }
-
-        int a = 0;
     }
+
+    // UI 열기
+    // UI 닫기
 }

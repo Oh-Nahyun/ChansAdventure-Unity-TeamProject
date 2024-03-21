@@ -4,4 +4,5 @@ using UnityEngine;
 
 public class InventorySlotUI : SlotUI_Base
 {
+    
 }
