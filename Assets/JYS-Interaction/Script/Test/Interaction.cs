@@ -9,8 +9,7 @@ public class Interaction : MonoBehaviour
     public Collider[] colliders;
     public Collider short_enemy;
 
-    GameObject scanIbgect;
-    TextBox textBox;
+    public GameObject scanIbgect;
 
     void Start()
     {
@@ -27,21 +26,40 @@ public class Interaction : MonoBehaviour
             foreach (Collider col in colliders)
             {
                 float short_distance2 = Vector3.Distance(transform.position, col.transform.position);
+               
                 if (short_distance > short_distance2)
                 {
                     short_distance = short_distance2;
-                    short_enemy = col;
+                    //short_enemy = col;
+                  
                 }
+                short_enemy = col;
+                if (short_enemy != null)
+                {
+                    scanIbgect = short_enemy.gameObject;
+                    target(true);
+                }
+
             }
-
         }
-
+        else
+        {
+            target(false);
+        }
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, radius);
+    }
+
+    void target(bool t)
+    {
+        if (t)
+        {
+            Debug.Log($"{scanIbgect}°¨Áö");
+        }
     }
 
   

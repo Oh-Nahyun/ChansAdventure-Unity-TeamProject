@@ -18,7 +18,7 @@ public class TextBox : MonoBehaviour
     Image endImage;
     public GameObject scanObject;
 
-    TextSelet textSelet;
+    TextSelect textSelet;
 
     public string talkString;
     public int talkIndex = 0;
@@ -48,7 +48,7 @@ public class TextBox : MonoBehaviour
         endImage = child.GetComponent<Image>();
 
         child = transform.GetChild(3);
-        textSelet = child.GetComponent<TextSelet>();
+        textSelet = child.GetComponent<TextSelect>();
 
         talkData = new Dictionary<int, string[]>();
 
