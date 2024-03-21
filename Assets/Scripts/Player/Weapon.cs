@@ -40,7 +40,7 @@ public class Weapon : MonoBehaviour
     readonly int IsAttackHash = Animator.StringToHash("IsAttack");
     readonly int IsSwordHash = Animator.StringToHash("IsSword");
     readonly int IsBowHash = Animator.StringToHash("IsBow");
-    readonly int CriticalHitHash = Animator.StringToHash("CriticalHit");
+    //readonly int CriticalHitHash = Animator.StringToHash("CriticalHit");
     readonly int UseWeaponHash = Animator.StringToHash("UseWeapon");
 
     // 컴포넌트들
@@ -147,7 +147,7 @@ public class Weapon : MonoBehaviour
     /// 무기 모드에 따라 보여줄 무기이 변경되는 함수
     /// </summary>
     /// <param name="mode"></param>
-    void ChangeWeapon(WeaponMode mode)
+    private void ChangeWeapon(WeaponMode mode)
     {
         switch (mode)
         {
@@ -171,6 +171,34 @@ public class Weapon : MonoBehaviour
     {
         swordWeapon.gameObject.SetActive(isSwordShow);
         bowWeapon.gameObject.SetActive(isBowShow);
+    }
+
+    /// <summary>
+    /// 현재 무기 모드 확인용 함수
+    /// </summary>
+    /// <returns></returns>
+    public int CheckWeaponMode()
+    {
+        int weaponNum = -1;
+        if ((int)currentWeaponMode == 0)
+        {
+            weaponNum = 0;
+            return weaponNum;
+        }
+
+        if ((int)currentWeaponMode == 1)
+        {
+            weaponNum = 1;
+            return weaponNum;
+        }
+
+        if ((int)currentWeaponMode == 2)
+        {
+            weaponNum = 2;
+            return weaponNum;
+        }
+
+        return weaponNum;
     }
 }
 

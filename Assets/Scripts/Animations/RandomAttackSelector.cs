@@ -23,7 +23,7 @@ public class RandomAttackSelector : StateMachineBehaviour
             weapon = GameManager.Instance.Weapon;
         }
 
-        if (IsSwordHash) // 무기 모드가 칼일 때
+        if (weapon.CheckWeaponMode() == 1) // 무기 모드가 칼일 때
         {
             animator.SetInteger(AttackModeHash, RandomSelect());
         }
