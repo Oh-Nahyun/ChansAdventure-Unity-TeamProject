@@ -4,15 +4,20 @@ using UnityEngine;
 
 public class EnemyBase : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public float maxHP = 100.0f;
+
+    float currentHP = 0;
+    public float CurrentHP
     {
-        
+        get => currentHP;
+        set
+        {
+            if(currentHP != value)
+            {
+                currentHP = value;
+            }
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public float damage = 20.0f;
 }
