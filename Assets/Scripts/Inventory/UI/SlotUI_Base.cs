@@ -19,6 +19,23 @@ public class SlotUI_Base : MonoBehaviour
     /// </summary>
     TextMeshProUGUI slotItemCount;
 
+    InventorySlot slotData;
+
+    public InventorySlot SlotData
+    {
+        get => slotData;
+        set
+        {
+            if(slotData != value)
+            {
+                slotData = value;
+                // °»½Å
+                //slotIcon.sprite = slotData.SlotItemData.itemIcon;
+                //slotItemCount.text = slotData.CurrentItemCount.ToString();
+            }
+        }
+    }
+
     void Awake()
     {
         Transform child = transform.GetChild(0);

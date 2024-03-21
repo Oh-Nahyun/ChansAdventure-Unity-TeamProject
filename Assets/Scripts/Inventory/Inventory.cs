@@ -14,6 +14,11 @@ public class Inventory
     const uint maxSlot = 6;
 
     /// <summary>
+    /// 인벤토리 크기 접근용 프로퍼티
+    /// </summary>
+    public uint slotSize => maxSlot;
+
+    /// <summary>
     /// 인벤토리 슬롯들
     /// </summary>
     InventorySlot[] slots;
