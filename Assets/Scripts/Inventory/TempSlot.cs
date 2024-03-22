@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Dynamic;
 using UnityEngine;
 
 /// <summary>
@@ -16,6 +17,8 @@ public class TempSlot : InventorySlot
     /// 가져온 인덱스 저장 변수
     /// </summary>
     uint fromIndex = notSet;
+
+    uint FromIndex => fromIndex;
 
     /// <summary>
     /// 임시 슬롯 생성자
@@ -35,6 +38,11 @@ public class TempSlot : InventorySlot
     public override void AssignItem(uint code, int count, out int _)
     {
         base.AssignItem(code, count, out _);
+    }
+
+    public void SetTempSlotIndex(uint index)
+    {
+        fromIndex = index;
     }
 
     /// <summary>

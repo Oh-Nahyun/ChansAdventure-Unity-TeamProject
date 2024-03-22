@@ -23,7 +23,7 @@ public class Test_Inventory2 : TestInputBase
     public SortMode sortMode;
     public bool isAcending = false;
 
-    void Awake()
+    void Start()
     {
         inven = new Inventory();
 
@@ -32,13 +32,14 @@ public class Test_Inventory2 : TestInputBase
         inven.AddSlotItem(2, 1);
 
         inven.TestShowInventory();
+        ItemDataManager.Instance.InventoryUI.InitializeInventoryUI(inven);
     }
 
     protected override void OnKey1Input(InputAction.CallbackContext context)
     {
         if(context.performed)
         {
-            inven.SlotToTemp(indexA);
+            //inven.SlotToTemp(indexA);
             inven.TestShowInventory();
         }
     }
@@ -47,7 +48,7 @@ public class Test_Inventory2 : TestInputBase
     {
         if (context.performed)
         {
-            inven.TempToSlot(indexA);
+            //inven.TempToSlot(indexA);
             inven.TestShowInventory();
         }
     }
