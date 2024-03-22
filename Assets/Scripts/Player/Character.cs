@@ -370,7 +370,6 @@ public class Character : MonoBehaviour
         angles.z = 0;
 
         var angle = cameraRoot.transform.localEulerAngles.x;
-
         if (angle > 180 && angle < 340)
         {
             angles.x = 340;
@@ -414,5 +413,21 @@ public class Character : MonoBehaviour
         inputActions.Player.Disable();          // Player 액션맵 비활성화
         yield return new WaitForSeconds(4.0f);
         inputActions.Player.Enable();           // Player 액션맵 활성화
+    }
+
+    /// <summary>
+    /// 캐릭터의 Collider를 켜는 함수 (Animation 설정용)
+    /// </summary>
+    public void CharacterColliderEnable()
+    {
+        characterController.enabled = true;
+    }
+
+    /// <summary>
+    /// 캐릭터의 Collider를 끄는 함수 (Animation 설정용)
+    /// </summary>
+    public void CharacterColliderDisable()
+    {
+        characterController.enabled = false;
     }
 }
