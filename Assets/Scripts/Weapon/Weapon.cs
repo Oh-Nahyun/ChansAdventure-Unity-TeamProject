@@ -27,6 +27,11 @@ public class Weapon : MonoBehaviour
     //Transform rightHand;
 
     /// <summary>
+    /// 캐릭터의 오른손
+    /// </summary>
+    //Transform leftHand;
+
+    /// <summary>
     /// [무기1] 칼
     /// </summary>
     Transform swordWeapon;
@@ -60,6 +65,7 @@ public class Weapon : MonoBehaviour
     private void Start()
     {
         //rightHand = GameObject.Find("Character1_RightHand").transform;
+        //leftHand = GameObject.Find("Character1_LeftHand").transform;
         swordWeapon = GameObject.FindWithTag("Sword").transform;
         bowWeapon = GameObject.FindWithTag("Bow").transform;
         ShowWeapon(false, false);
@@ -218,5 +224,21 @@ public class Weapon : MonoBehaviour
     {
         sword.SwordColliderDisable();
     }
+
+    /// <summary>
+    /// 무기를 꺼내는 함수 (Animation 설정용)
+    /// </summary>
+    //public void WeaponOpen()
+    //{
+    //    sword.OpenSwordWeapon();
+    //}
+
+    /// <summary>
+    /// 무기를 넣는 함수 (Animation 설정용)
+    /// </summary>
+    //public void WeaponClose()
+    //{
+    //    sword.CloseSwordWeapon();
+    //}
 }
 
