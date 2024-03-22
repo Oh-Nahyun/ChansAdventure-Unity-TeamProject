@@ -5,6 +5,13 @@ using UnityEngine.InputSystem;
 
 public class Test_Arrow : TestBase
 {
+    Arrow arrow;
+
+    private void Awake()
+    {
+        arrow = GetComponent<Arrow>();
+    }
+
     protected override void OnTest1(InputAction.CallbackContext context)
     {
         
