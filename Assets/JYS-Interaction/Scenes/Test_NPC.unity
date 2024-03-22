@@ -767,7 +767,7 @@ Transform:
   m_GameObject: {fileID: 657989396}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.92, y: 0.7756893, z: -8.38}
+  m_LocalPosition: {x: 0.21, y: 0.7756893, z: 4.98}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1121,7 +1121,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC120\uD0DD\uC9C0 0\uBC88"
+  m_text: "\uC120\uD0DD\uC9C0 1\uBC88"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b5a0f46847066154199eafb22868eb50, type: 2}
   m_sharedMaterial: {fileID: 1846489586480680565, guid: b5a0f46847066154199eafb22868eb50,
@@ -1232,8 +1232,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 2000
-  idNext: 0
   nameNPC: "\uD050\uBE0C"
+  selectId: 0
+  nextTaklSelect: 0
 --- !u!65 &1409538025
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1249,7 +1250,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -1664,7 +1665,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC120\uD0DD\uC9C0 1\uBC88"
+  m_text: "\uC120\uD0DD\uC9C0 2\uBC88"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b5a0f46847066154199eafb22868eb50, type: 2}
   m_sharedMaterial: {fileID: 1846489586480680565, guid: b5a0f46847066154199eafb22868eb50,
@@ -2298,7 +2299,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC120\uD0DD\uC9C0 2\uBC88"
+  m_text: "\uC120\uD0DD\uC9C0 3\uBC88"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b5a0f46847066154199eafb22868eb50, type: 2}
   m_sharedMaterial: {fileID: 1846489586480680565, guid: b5a0f46847066154199eafb22868eb50,
@@ -9211,6 +9212,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1364975949733197056, guid: 7e5a122ab818bcb488d961049ea969bf,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1853500557469983701, guid: 7e5a122ab818bcb488d961049ea969bf,
         type: 3}

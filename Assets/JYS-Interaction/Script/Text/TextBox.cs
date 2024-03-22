@@ -19,6 +19,7 @@ public class TextBox : MonoBehaviour
     public GameObject scanObject;
 
     TextSelect textSelet;
+    Interaction interaction;
 
     public string talkString;
     public int talkIndex = 0;
@@ -50,8 +51,9 @@ public class TextBox : MonoBehaviour
         child = transform.GetChild(3);
         textSelet = child.GetComponent<TextSelect>();
 
-        talkData = new Dictionary<int, string[]>();
+        interaction = FindObjectOfType<Interaction>();
 
+        talkData = new Dictionary<int, string[]>();
         StopAllCoroutines();
         GenerateData();
     }
@@ -61,20 +63,28 @@ public class TextBox : MonoBehaviour
         canvasGroup.alpha = 0.0f;
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
-        
-        
 
-        GameManager.Instance.onTalkNPC += () =>
+        if(interaction != null) 
         {
-            //isNpc = true;
-            Action();
-        };
-
+            GameManager.Instance.onTalkNPC += () =>
+            {      
+                Action();
+            };
+        }
+        /*
         GameManager.Instance.onTalkObj += () =>
         {
             //isNpc = false;
             ObjAction();
-        };
+        };*/
+    }
+
+    private void Update()
+    {
+        if (interaction != null)
+        {
+            scanObject = interaction.scanIbgect; // scanIbgect 값을 가져옴
+        }
     }
 
     public void Action()
@@ -145,6 +155,16 @@ public class TextBox : MonoBehaviour
             nameText.text = $"{NPCdata.nameNPC}";
             talkText.text = $"{talkString}";
 
+            if (NPCdata.selectId)
+            {
+                textSelet.onSeletStart();
+            }
+            else
+            {
+                textSelet.onSeletEnd();
+            }
+
+
             StartCoroutine(TypingText(talkText.text));
 
         }
@@ -154,6 +174,15 @@ public class TextBox : MonoBehaviour
 
             nameText.text = $"{NPCdata.nameNPC}";
             talkText.text = $"{talkString}";
+
+            if (NPCdata.selectId)
+            {
+                textSelet.onSeletStart();
+            }
+            else
+            {
+                textSelet.onSeletEnd();
+            }
 
             StartCoroutine(TypingText(talkText.text));
         }
@@ -196,7 +225,7 @@ public class TextBox : MonoBehaviour
             yield return new WaitForSeconds(charPerSeconds);
             if (i + 2 > text.Length)
             {
-
+                endImage.color = new Color(endImage.color.r, endImage.color.g, endImage.color.b, 1f);
                 typingTalk = false;
             }
         }
@@ -220,34 +249,36 @@ public class TextBox : MonoBehaviour
         talkData.Add(0, new string[] { "초기값" });
         talkData.Add(100, new string[] { "아이템을 획득했다." });
         talkData.Add(110, new string[] { "이미 아이템을 획득한 상자이다." });
+
         talkData.Add(1000, new string[] { "애국가는 말 그대로 '나라를 사랑하는 노래'를 뜻한다.", "1896년 '독립신문' 창간을 계기로 여러 가지의 애국가 가사가 신문에 게재되기 시작했는데", "이 노래들을 어떤 곡조로 불렀는가는 명확하지 않다.", "다만 대한제국이 서구식 군악대를 조직해 1902년 '대한제국 애국가'라는 이름의 국가를 만들어" ," 나라의 주요 행사에 사용했다는 기록은 지금도 남아 있다." });
-        talkData.Add(1010, new string[] { "다음대사","AAAAA" });
-        talkData.Add(1011, new string[] { "선택지 1 선택완료", "AAAAA" });
-        talkData.Add(1012, new string[] { "선택지 2 선택완료", "BBBBB" });
-        talkData.Add(1013, new string[] { "선택지 3 선택완료", "CCCCC" });
+        talkData.Add(1010, new string[] { "다음대사"});
+        talkData.Add(1011, new string[] { "선택지 11 선택완료", "AAAAA" });
+        talkData.Add(1012, new string[] { "선택지 12 선택완료", "BBBBB" });
+        talkData.Add(1013, new string[] { "선택지 13 선택완료", "CCCCC" });
+
+        talkData.Add(1020, new string[] { "다다음대사" });
+        talkData.Add(1021, new string[] { "선택지 21 선택완료", "AAAAA" });
+        talkData.Add(1022, new string[] { "선택지 22 선택완료", "BBBBB" });
+        talkData.Add(1023, new string[] { "선택지 23 선택완료", "CCCCC" });
+
+        talkData.Add(1100, new string[] { "선택지 없는 다음대사" });
+        talkData.Add(1110, new string[] { "선택지 있는 다다음대사" });
+        talkData.Add(1111, new string[] { "선택지 111 선택완료", "AAAAA" });
+        talkData.Add(1112, new string[] { "선택지 112 선택완료", "BBBBB" });
+        talkData.Add(1113, new string[] { "선택지 113 선택완료", "CCCCC" });
+        talkData.Add(1200, new string[] { "선택지 없는 다다음대사" });
+
         talkData.Add(2000, new string[] { "가나다라마바사  아자차카타파하  가나다라마바사  아자차카타파하  가나다라마바사  아자차카타파하" });
     }
 
-    void OnSelet(int SeletId)
+    public void OnSelect(int selectId)
     {
-        textSelet.onSeletStart();
-
-        if (SeletId == 0)
-        {
-
-        }
-        else if(SeletId == 1)
-        {
-
-        }else if(SeletId == 2)
-        {
-
-        }else
-        {
-
-        }
-        
+        NPCdata.id += selectId;
+        talkingEnd = false;
+        Action();
+        textSelet.onSeletEnd();
     }
+
 
 
 }

@@ -25,5 +25,10 @@ public class TestNPC : TestBase
         //GameManager.Instance.IsNPCObj();
     }
 
+    protected override void OnTest5(InputAction.CallbackContext context)
+    {
+
+    }
+
 #endif
 }

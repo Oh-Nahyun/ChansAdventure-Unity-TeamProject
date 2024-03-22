@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class NPC_OldMan : NPCBase
 {
-    private void Awake()
-    {
-     
-    }
+
 
 }
