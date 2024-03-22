@@ -16,6 +16,8 @@ public class Dragon : MonoBehaviour
 
     Animator animator;
 
+    Collider[] colliders;
+
     
     private void Awake()
     {
@@ -29,7 +31,7 @@ public class Dragon : MonoBehaviour
         {
             // 죽는 애니메이션
             animator.SetTrigger(die_Hash);
-            GetComponent<Collider>().enabled = false;
+            colliders = GetComponentsInChildren<Collider>();
         }
         else
         {
