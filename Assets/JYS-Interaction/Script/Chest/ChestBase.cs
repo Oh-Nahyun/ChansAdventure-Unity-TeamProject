@@ -2,29 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChestBase : MonoBehaviour
+public class ChestBase : NPCBase
 {
     Animator animator;
 
     readonly int IsOpenHash = Animator.StringToHash("Open");
 
-    void Awake()
+    protected override void Awake()
+    {
+        isNPC = false;
+        base.Awake();
+    }
+
+    protected override void Start()
     {
         animator = GetComponent<Animator>();
+        base.Start();
     }
 
-    private void Start()
+    protected override void Update()
     {
+        OpenChest(isTalk);
+        base.Update();
+    }
 
-        GameManager.Instance.openChase += () =>
+    private void OpenChest(bool isOpen)
+    {
+        if (isOpen)
         {
-            OpenChest();
-        };
-    }
-
-    public void OpenChest()
-    {
-        animator.SetBool(IsOpenHash, true);
+            animator.SetBool(IsOpenHash, true);
+            id = 199;
+        }
     }
 
 }

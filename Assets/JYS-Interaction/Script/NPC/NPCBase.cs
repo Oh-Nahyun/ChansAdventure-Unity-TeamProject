@@ -5,17 +5,23 @@ using UnityEngine;
 
 public class NPCBase : MonoBehaviour
 {
+    public TextBoxManager textBoxManager;
+
     public int id = 0;
     public string nameNPC = "";
     public bool selectId = false;
     public bool nextTaklSelect = false;
+    public bool isTalk = false;
+    public bool isNPC;
 
-    private void Awake()
+
+    protected virtual void Awake()
     {
         name = nameNPC;
+        textBoxManager = FindObjectOfType<TextBoxManager>();
     }
 
-    private void Start()
+    protected virtual void Start()
     {
         GameManager.Instance.onNextTalk += () =>
         {
@@ -23,7 +29,7 @@ public class NPCBase : MonoBehaviour
         };
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         SelectId();
     }

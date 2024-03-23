@@ -25,7 +25,7 @@ public class GameManager : Singleton<GameManager>
         if (!isNPC)
         {
             onTalkNPC?.Invoke();
-            Debug.Log("NPC와 대화");
+            Debug.Log("상호작용 키 누름");
         }
         else
         {

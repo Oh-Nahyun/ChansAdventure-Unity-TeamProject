@@ -4,9 +4,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-
-public class TextBox : MonoBehaviour
+public class TextBox2 : MonoBehaviour
 {
+    
+    Dictionary<int, string[]> talkData;
+
     public float alphaChangeSpeed = 5.0f;
 
     TextMeshProUGUI talkText;
@@ -14,7 +16,6 @@ public class TextBox : MonoBehaviour
     CanvasGroup canvasGroup;
     Image endImage;
     public GameObject scanObject;
-    Animator endImageAnimator;
 
     TextSelect textSelet;
     Interaction interaction;
@@ -29,8 +30,10 @@ public class TextBox : MonoBehaviour
     private bool typingStop;
     public bool onScanObject;
 
+    //private bool isNpc;
+
     public NPCBase NPCdata;
-    TextBoxManager textBoxManager; // TextBoxManager에 대한 참조
+
 
     private void Awake()
     {
@@ -44,15 +47,15 @@ public class TextBox : MonoBehaviour
 
         child = transform.GetChild(3);
         endImage = child.GetComponent<Image>();
-        endImageAnimator = child.GetComponent<Animator>();
 
         child = transform.GetChild(4);
         textSelet = child.GetComponent<TextSelect>();
 
         interaction = FindObjectOfType<Interaction>();
 
-        // TextBoxManager에 대한 참조 가져오기
-        textBoxManager = FindObjectOfType<TextBoxManager>();
+        talkData = new Dictionary<int, string[]>();
+        StopAllCoroutines();
+        GenerateData();
     }
 
     private void Start()
@@ -61,16 +64,21 @@ public class TextBox : MonoBehaviour
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
 
-        endImageAnimator.speed = 0.0f;
-
-        if (scanObject != null)
+        if(scanObject != null) 
         {
             GameManager.Instance.onTalkNPC += () =>
-            {
+            {      
                 Action();
             };
         }
-    }
+
+        /*
+        GameManager.Instance.onTalkObj += () =>
+        {
+            //isNpc = false;
+            ObjAction();
+        };*/
+}
 
     private void Update()
     {
@@ -78,31 +86,23 @@ public class TextBox : MonoBehaviour
         {
             scanObject = interaction.scanIbgect; // scanIbgect 값을 가져옴
         }
+
     }
 
     public void Action()
     {
         talkText.text = "";
         nameText.text = "";
-
-        if (scanObject != null)
+        //scanObject = gameObject;
+        if (typingTalk == false)
         {
-            NPCdata = scanObject.GetComponent<NPCBase>();
-        }
-        else
-        {
-            NPCdata = null;
-        }
-
-        if (typingTalk == false && NPCdata != null)
-        {
-            endImageAnimator.speed = 0.0f;
             endImage.color = new Color(endImage.color.r, endImage.color.g, endImage.color.b, 0f);
             StartCoroutine(TalkStart());
         }
-        else if (typingTalk == true && NPCdata != null)
+        else
         {
             typingStop = true;
+            //StopCoroutine(TypingText(talkText.text));
             NPCdata = scanObject.GetComponent<NPCBase>();
             if (!talkingEnd)
             {
@@ -110,18 +110,15 @@ public class TextBox : MonoBehaviour
             }
             Talk(NPCdata.id);
             nameText.text = $"{NPCdata.nameNPC}";
-            endImageAnimator.speed = 1.0f;
+            //talkText.text = $"{talkString}";
             endImage.color = new Color(endImage.color.r, endImage.color.g, endImage.color.b, 1f);
             typingTalk = false;
-        }
-        else
-        {
-            Debug.Log("대상이 없음");
         }
     }
 
     public void ObjAction()
     {
+        
         talkText.text = "";
         nameText.text = "";
         if (typingTalk == false)
@@ -143,6 +140,7 @@ public class TextBox : MonoBehaviour
 
     IEnumerator TalkStart()
     {
+
         if (!talking && !talkingEnd)
         {
             while (canvasGroup.alpha < 1.0f)
@@ -153,6 +151,7 @@ public class TextBox : MonoBehaviour
             canvasGroup.interactable = true;
             canvasGroup.blocksRaycasts = true;
 
+            NPCdata = scanObject.GetComponent<NPCBase>();
             Talk(NPCdata.id);
 
             nameText.text = $"{NPCdata.nameNPC}";
@@ -167,10 +166,11 @@ public class TextBox : MonoBehaviour
                 textSelet.onSeletEnd();
             }
 
-            NPCdata.isTalk = true;
+
             StartCoroutine(TypingText(talkText.text));
+
         }
-        else if (talking && !talkingEnd)
+        else if (talking && !talkingEnd) 
         {
             Talk(NPCdata.id);
 
@@ -202,10 +202,15 @@ public class TextBox : MonoBehaviour
             talkIndex = 0;
             talking = false;
             talkingEnd = false;
-            NPCdata.isTalk = false;
+
         }
     }
 
+    /// <summary>
+    /// 텍스트 타이핑 효과
+    /// </summary>
+    /// <param name="text"></param>
+    /// <returns></returns>
     IEnumerator TypingText(string text)
     {
         typingStop = false;
@@ -222,7 +227,6 @@ public class TextBox : MonoBehaviour
             yield return new WaitForSeconds(charPerSeconds);
             if (i + 2 > text.Length)
             {
-                endImageAnimator.speed = 1.0f;
                 endImage.color = new Color(endImage.color.r, endImage.color.g, endImage.color.b, 1f);
                 typingTalk = false;
             }
@@ -231,15 +235,42 @@ public class TextBox : MonoBehaviour
 
     void Talk(int id)
     {
-        if ((talkIndex + 1) == textBoxManager.GetTalkData(id).Length)
+        if ((talkIndex + 1) == talkData[id].Length)
         {
-            talkString = textBoxManager.GetTalkData(id)[talkIndex];
+            talkString = talkData[id][talkIndex];
             talkingEnd = true;
             return;
         }
-        talkString = textBoxManager.GetTalkData(id)[talkIndex];
+        talkString = talkData[id][talkIndex];
         talking = true;
         talkIndex++;
+    }
+
+    void GenerateData()
+    {
+        talkData.Add(0, new string[] { "초기값" });
+        talkData.Add(100, new string[] { "아이템을 획득했다." });
+        talkData.Add(110, new string[] { "이미 아이템을 획득한 상자이다." });
+
+        talkData.Add(1000, new string[] { "애국가는 말 그대로 '나라를 사랑하는 노래'를 뜻한다.", "1896년 '독립신문' 창간을 계기로 여러 가지의 애국가 가사가 신문에 게재되기 시작했는데", "이 노래들을 어떤 곡조로 불렀는가는 명확하지 않다.", "다만 대한제국이 서구식 군악대를 조직해 1902년 '대한제국 애국가'라는 이름의 국가를 만들어" ," 나라의 주요 행사에 사용했다는 기록은 지금도 남아 있다." });
+        talkData.Add(1010, new string[] { "다음대사"});
+        talkData.Add(1011, new string[] { "선택지 11 선택완료", "AAAAA" });
+        talkData.Add(1012, new string[] { "선택지 12 선택완료", "BBBBB" });
+        talkData.Add(1013, new string[] { "선택지 13 선택완료", "CCCCC" });
+
+        talkData.Add(1020, new string[] { "다다음대사" });
+        talkData.Add(1021, new string[] { "선택지 21 선택완료", "AAAAA" });
+        talkData.Add(1022, new string[] { "선택지 22 선택완료", "BBBBB" });
+        talkData.Add(1023, new string[] { "선택지 23 선택완료", "CCCCC" });
+
+        talkData.Add(1100, new string[] { "선택지 없는 다음대사" });
+        talkData.Add(1110, new string[] { "선택지 있는 다다음대사" });
+        talkData.Add(1111, new string[] { "선택지 111 선택완료", "AAAAA" });
+        talkData.Add(1112, new string[] { "선택지 112 선택완료", "BBBBB" });
+        talkData.Add(1113, new string[] { "선택지 113 선택완료", "CCCCC" });
+        talkData.Add(1200, new string[] { "선택지 없는 다다음대사" });
+
+        talkData.Add(2000, new string[] { "가나다라마바사  아자차카타파하  가나다라마바사  아자차카타파하  가나다라마바사  아자차카타파하" });
     }
 
     public void OnSelect(int selectId)
@@ -250,7 +281,6 @@ public class TextBox : MonoBehaviour
         textSelet.onSeletEnd();
     }
 
-    // 대화가 출력될 때 호출되는 메서드 (예: 대화 시작 시 또는 대화가 업데이트될 때 호출)
- 
-}
 
+   
+} 
