@@ -62,6 +62,8 @@ public class InventoryUI : MonoBehaviour
             uint targetSlotItemCode = (uint)Inventory[index].SlotItemData.itemCode;
             int targetItemSlotCount = Inventory[index].CurrentItemCount;
 
+            tempSlotUI.OpenTempSlot();
+
             Inventory.AccessTempSlot(targetSlotIndex, targetSlotItemCode, targetItemSlotCount);
             inventory[index].ClearItem();
         }
@@ -84,18 +86,21 @@ public class InventoryUI : MonoBehaviour
             uint targetSlotItemCode = (uint)Inventory[index].SlotItemData.itemCode;
             int targetSlotItemCount = Inventory[index].CurrentItemCount;
 
+            inventory[index].ClearItem();
             Inventory.AccessTempSlot(index, tempSlotItemCode, tempSlotItemCount); // target 슬롯에 아이템 저장
             Inventory.AccessTempSlot(index, targetSlotItemCode, targetSlotItemCount); // target 슬롯에 있었던 아이템 내용 임시 슬롯에 저장
             
             tempSlotItemCode = (uint)Inventory.TempSlot.SlotItemData.itemCode;
             tempSlotItemCount = Inventory.TempSlot.CurrentItemCount;
-            
+
             Inventory.AccessTempSlot(tempFromIndex, tempSlotItemCode, tempSlotItemCount);
         }
         else
         {
             Inventory.AccessTempSlot(index, tempSlotItemCode, tempSlotItemCount);
         }
+
+        tempSlotUI.CloseTempSlot();
     }
     // UI 열기
     // UI 닫기

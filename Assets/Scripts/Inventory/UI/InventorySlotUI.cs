@@ -34,6 +34,5 @@ public class InventorySlotUI : SlotUI_Base, IBeginDragHandler, IDragHandler, IEn
         {
             Debug.Log(obj);
         }
-        //Debug.Log(eventData.pointerCurrentRaycast.gameObject);
     }
 }
