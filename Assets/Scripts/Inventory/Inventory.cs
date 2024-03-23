@@ -312,51 +312,19 @@ public class Inventory
         tempSortList.Clear();
     }
 
-    /// <summary>
-    /// 슬롯에서 임시 슬롯으로 옮기는 함수
-    /// </summary>
-    /// <param name="index">옮길 슬롯 인덱스</param>
-    /// <param name="itemCode">옮길 아이템 코드</param>
-    /// <param name="itemCount">옮길 아이템 개수</param>
-    public void SlotToTemp(uint index, uint itemCode, int itemCount)
+    public void AccessTempSlot(uint index, uint itemCode, int itemCount)
     {
-        if (tempSlot.SlotItemData != null)
+        if(TempSlot.SlotItemData == null) // 임시 슬롯이 비어있다.
         {
-            Debug.Log($"임시 슬롯을 사용중입니다.");
-            return;
+            tempSlot.SetTempSlotIndex(index);
+            tempSlot.AssignItem(itemCode, itemCount, out _); // temp슬롯 내용 추가
         }
-
-        tempSlot.SetTempSlotIndex(index);
-
-        // 옮길 슬롯 내용
-        //uint slotCode = (uint)slots[index].SlotItemData.itemCode;
-        //int itemCount = slots[index].CurrentItemCount;
-
-        tempSlot.AssignItem(itemCode, itemCount, out _); // temp슬롯 내용 추가
-
-        slots[index].ClearItem(); // 슬롯 내용 제거
-    }
-
-    /// <summary>
-    /// 임시슬롯에서 슬롯으로 옮기는 함수
-    /// </summary>
-    /// <param name="index">아이템 데이터를 넣을 슬롯 인덱스</param>
-    /// <param name="itemCode">아이템 코드</param>
-    /// <param name="itemCount">아이템 개수</param>
-    public void TempToSlot(uint index, uint itemCode, int itemCount)
-    {
-        if(tempSlot.SlotItemData == null)
+        else if(TempSlot.SlotItemData != null)  // 임시 슬롯을 사용중이다.
         {
-            Debug.Log($"임시 슬롯이 존재하지 않습니다.");
-            return;
+            slots[index].AssignItem(itemCode, itemCount, out _);
+
+            tempSlot.ClearItem();
         }
-
-        //uint tempCode = (uint)tempSlot.SlotItemData.itemCode;
-        //int tempItemCount = tempSlot.CurrentItemCount;
-
-        slots[index].AssignItem(itemCode, itemCount, out _);
-
-        tempSlot.ClearItem();
     }
 
     /// <summary>

@@ -18,7 +18,7 @@ public class TempSlot : InventorySlot
     /// </summary>
     uint fromIndex = notSet;
 
-    uint FromIndex => fromIndex;
+    public uint FromIndex => fromIndex;
 
     /// <summary>
     /// 임시 슬롯 생성자

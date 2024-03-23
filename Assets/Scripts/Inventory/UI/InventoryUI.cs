@@ -50,41 +50,53 @@ public class InventoryUI : MonoBehaviour
 
     }
 
-    // 드래그 시작
+    /// <summary>
+    /// 슬롯 드래그 시작
+    /// </summary>
+    /// <param name="index">임시 슬롯에 들어갈 인벤토리 슬롯 인덱스</param>
     private void OnSlotDragBegin(uint index)
     {
         if (Inventory[index].SlotItemData != null)
         {
-            Debug.Log(Inventory.TempSlot);
-            Inventory.SlotToTemp(Inventory[index].SlotIndex,
-                           (uint)Inventory[index].SlotItemData.itemCode,
-                                 Inventory[index].CurrentItemCount);
+            uint targetSlotIndex = index;
+            uint targetSlotItemCode = (uint)Inventory[index].SlotItemData.itemCode;
+            int targetItemSlotCount = Inventory[index].CurrentItemCount;
+
+            Inventory.AccessTempSlot(targetSlotIndex, targetSlotItemCode, targetItemSlotCount);
+            inventory[index].ClearItem();
         }
     }
 
-    // 드래그 종료
+    /// <summary>
+    /// 슬롯 드래그 종료
+    /// </summary>
+    /// <param name="index">아이템을 넣을 인벤토리 슬롯 인덱스</param>
     private void OnSlotDragEnd(uint index)
     {
-        Debug.Log(Inventory.TempSlot.SlotIndex);
-        if (Inventory[index].SlotItemData != null) // 옮기는 슬롯에 아이템이 있다
-        {
-            ItemData tempData = Inventory[index].SlotItemData;
-            uint tempIndex = Inventory[index].SlotIndex;
-            int tempItemCount = Inventory[index].CurrentItemCount;
+        uint tempFromIndex = Inventory.TempSlot.FromIndex;
 
-            Inventory.TempToSlot(Inventory.TempSlot.SlotIndex,
-                           (uint)Inventory.TempSlot.SlotItemData.itemCode,
-                                 Inventory.TempSlot.CurrentItemCount);
-            Inventory.SlotToTemp(tempIndex, (uint)tempData.itemCode, tempItemCount);
-        }
-        else // 옮기는 곳에 아이템이 없다.
+        // 임시 슬롯에 들어있는 내용
+        uint tempSlotItemCode = (uint)Inventory.TempSlot.SlotItemData.itemCode;
+        int tempSlotItemCount = Inventory.TempSlot.CurrentItemCount;
+
+        if(Inventory[index].SlotItemData != null)   // 아이템이 들어있다.
         {
-            Inventory.TempToSlot(Inventory.TempSlot.SlotIndex,
-                           (uint)Inventory.TempSlot.SlotItemData.itemCode,
-                                 Inventory.TempSlot.CurrentItemCount);
+            uint targetSlotItemCode = (uint)Inventory[index].SlotItemData.itemCode;
+            int targetSlotItemCount = Inventory[index].CurrentItemCount;
+
+            Inventory.AccessTempSlot(index, tempSlotItemCode, tempSlotItemCount); // target 슬롯에 아이템 저장
+            Inventory.AccessTempSlot(index, targetSlotItemCode, targetSlotItemCount); // target 슬롯에 있었던 아이템 내용 임시 슬롯에 저장
+            
+            tempSlotItemCode = (uint)Inventory.TempSlot.SlotItemData.itemCode;
+            tempSlotItemCount = Inventory.TempSlot.CurrentItemCount;
+            
+            Inventory.AccessTempSlot(tempFromIndex, tempSlotItemCode, tempSlotItemCount);
+        }
+        else
+        {
+            Inventory.AccessTempSlot(index, tempSlotItemCode, tempSlotItemCount);
         }
     }
-
     // UI 열기
     // UI 닫기
 }
