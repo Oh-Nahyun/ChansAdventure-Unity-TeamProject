@@ -15,6 +15,7 @@ public class TextBox : MonoBehaviour
     Image endImage;
     public GameObject scanObject;
     Animator endImageAnimator;
+    WarpBase warpBase;
 
     TextSelect textSelet;
     Interaction interaction;
@@ -27,7 +28,6 @@ public class TextBox : MonoBehaviour
     private bool talking;
     private bool typingTalk;
     private bool typingStop;
-    public bool onScanObject;
 
     public NPCBase NPCdata;
     TextBoxManager textBoxManager; // TextBoxManager에 대한 참조
@@ -51,8 +51,8 @@ public class TextBox : MonoBehaviour
 
         interaction = FindObjectOfType<Interaction>();
 
-        // TextBoxManager에 대한 참조 가져오기
         textBoxManager = FindObjectOfType<TextBoxManager>();
+        warpBase = FindObjectOfType<WarpBase>();
     }
 
     private void Start()
@@ -62,7 +62,7 @@ public class TextBox : MonoBehaviour
         canvasGroup.blocksRaycasts = false;
 
         endImageAnimator.speed = 0.0f;
-
+        
         if (scanObject != null)
         {
             GameManager.Instance.onTalkNPC += () =>
@@ -93,14 +93,15 @@ public class TextBox : MonoBehaviour
         {
             NPCdata = null;
         }
+        
 
-        if (typingTalk == false && NPCdata != null)
+        if (typingTalk == false && NPCdata != null && !NPCdata.isItemChest && !NPCdata.isWarp)
         {
             endImageAnimator.speed = 0.0f;
             endImage.color = new Color(endImage.color.r, endImage.color.g, endImage.color.b, 0f);
             StartCoroutine(TalkStart());
         }
-        else if (typingTalk == true && NPCdata != null)
+        else if (typingTalk == true && NPCdata != null && !NPCdata.isItemChest && !NPCdata.isWarp)
         {
             typingStop = true;
             NPCdata = scanObject.GetComponent<NPCBase>();
@@ -109,84 +110,56 @@ public class TextBox : MonoBehaviour
                 talkIndex--;
             }
             Talk(NPCdata.id);
-            nameText.text = $"{NPCdata.nameNPC}";
+            if (NPCdata.isNPC)
+            {
+                nameText.text = $"{NPCdata.nameNPC}";
+            }
             endImageAnimator.speed = 1.0f;
             endImage.color = new Color(endImage.color.r, endImage.color.g, endImage.color.b, 1f);
             typingTalk = false;
+        }
+        else if (NPCdata != null && NPCdata.isWarp)
+        {
+            warpBase = scanObject.GetComponent<WarpBase>();
+            warpBase.WarpToWarpPoint();
         }
         else
         {
             Debug.Log("대상이 없음");
         }
-    }
 
-    public void ObjAction()
-    {
-        talkText.text = "";
-        nameText.text = "";
-        if (typingTalk == false)
-        {
-            StartCoroutine(TalkStart());
-        }
-        else
-        {
-            typingStop = true;
-            NPCdata = scanObject.GetComponent<NPCBase>();
-            if (!talkingEnd)
-            {
-                talkIndex--;
-            }
-            Talk(NPCdata.id);
-            typingTalk = false;
-        }
+
+
+
+
     }
 
     IEnumerator TalkStart()
     {
         if (!talking && !talkingEnd)
         {
-            while (canvasGroup.alpha < 1.0f)
-            {
-                canvasGroup.alpha += Time.deltaTime * alphaChangeSpeed;
-                yield return null;
-            }
+            
             canvasGroup.interactable = true;
             canvasGroup.blocksRaycasts = true;
 
             Talk(NPCdata.id);
 
-            nameText.text = $"{NPCdata.nameNPC}";
-            talkText.text = $"{talkString}";
-
-            if (NPCdata.selectId)
-            {
-                textSelet.onSeletStart();
-            }
-            else
-            {
-                textSelet.onSeletEnd();
-            }
+            SetTalkText();
 
             NPCdata.isTalk = true;
-            StartCoroutine(TypingText(talkText.text));
+
+            while (canvasGroup.alpha < 1.0f)
+            {
+                canvasGroup.alpha += Time.deltaTime * alphaChangeSpeed;
+                yield return null;
+            }
         }
         else if (talking && !talkingEnd)
         {
             Talk(NPCdata.id);
 
-            nameText.text = $"{NPCdata.nameNPC}";
-            talkText.text = $"{talkString}";
+            SetTalkText();
 
-            if (NPCdata.selectId)
-            {
-                textSelet.onSeletStart();
-            }
-            else
-            {
-                textSelet.onSeletEnd();
-            }
-
-            StartCoroutine(TypingText(talkText.text));
         }
         else
         {
@@ -229,6 +202,30 @@ public class TextBox : MonoBehaviour
         }
     }
 
+    void SetTalkText()
+    {
+        talkText.text = $"{talkString}";
+        if (NPCdata.isNPC)
+        {
+            nameText.text = $"{NPCdata.nameNPC}";
+            StartCoroutine(TypingText(talkText.text));
+        }
+        else
+        {
+            endImageAnimator.speed = 1.0f;
+            endImage.color = new Color(endImage.color.r, endImage.color.g, endImage.color.b, 1f);
+        }
+
+        if (NPCdata.selectId)
+        {
+            textSelet.onSeletStart();
+        }
+        else
+        {
+            textSelet.onSeletEnd();
+        }
+    }
+
     void Talk(int id)
     {
         if ((talkIndex + 1) == textBoxManager.GetTalkData(id).Length)
@@ -250,7 +247,5 @@ public class TextBox : MonoBehaviour
         textSelet.onSeletEnd();
     }
 
-    // 대화가 출력될 때 호출되는 메서드 (예: 대화 시작 시 또는 대화가 업데이트될 때 호출)
- 
 }
 

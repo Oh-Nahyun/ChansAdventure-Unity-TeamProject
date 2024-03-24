@@ -13,7 +13,8 @@ public class NPCBase : MonoBehaviour
     public bool nextTaklSelect = false;
     public bool isTalk = false;
     public bool isNPC;
-
+    public bool isItemChest;
+    public bool isWarp;
 
     protected virtual void Awake()
     {

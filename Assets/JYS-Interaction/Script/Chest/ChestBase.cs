@@ -10,20 +10,20 @@ public class ChestBase : NPCBase
 
     protected override void Awake()
     {
+        animator = GetComponent<Animator>();
+        isItemChest = true;
         isNPC = false;
         base.Awake();
     }
 
     protected override void Start()
     {
-        animator = GetComponent<Animator>();
         base.Start();
     }
 
     protected override void Update()
     {
         OpenChest(isTalk);
-        base.Update();
     }
 
     private void OpenChest(bool isOpen)
