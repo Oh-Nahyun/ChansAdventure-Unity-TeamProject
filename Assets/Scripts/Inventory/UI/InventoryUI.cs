@@ -25,8 +25,22 @@ public class InventoryUI : MonoBehaviour
     /// </summary>
     TempSlotUI tempSlotUI;
 
+    /// <summary>
+    /// 아이템 정보 UI
+    /// </summary>
+    InventoryDetailUI detailUI;
+
+    /// <summary>
+    /// 나누는 창
+    /// </summary>
+    DividUI dividUI;
+
     public Action<uint> onSlotDragBegin;
     public Action<uint> onSlotDragEnd;
+    public Action onSlotDragEndFail;
+    public Action<uint> onShowDetail;
+    public Action onCloseDetail;
+    public Action<uint> onDivdItem;
 
     /// <summary>
     /// 인벤토리 UI를 초기화하는 함수
@@ -38,6 +52,8 @@ public class InventoryUI : MonoBehaviour
         slotsUIs = new InventorySlotUI[Inventory.slotSize]; // 슬롯 크기 할당
         slotsUIs = GetComponentsInChildren<InventorySlotUI>();  // 일반 슬롯
         tempSlotUI = GetComponentInChildren<TempSlotUI>(); // 임시 슬롯
+        detailUI = GetComponentInChildren<InventoryDetailUI>(); // 아이템 정보 패널
+        dividUI = GetComponentInChildren<DividUI>(); // 아이템 나누기 패널
 
         for (uint i = 0; i < Inventory.slotSize; i++)
         {
@@ -47,7 +63,11 @@ public class InventoryUI : MonoBehaviour
 
         onSlotDragBegin += OnSlotDragBegin;
         onSlotDragEnd += OnSlotDragEnd;
-
+        onShowDetail += OnShowDetail;
+        onCloseDetail += OnCloseDetail;
+        onSlotDragEndFail += OnSlotDragFail;
+        onDivdItem += OnDividItem;
+        dividUI.onDivid += DividItem;
     }
 
     /// <summary>
@@ -83,17 +103,31 @@ public class InventoryUI : MonoBehaviour
 
         if(Inventory[index].SlotItemData != null)   // 아이템이 들어있다.
         {
-            uint targetSlotItemCode = (uint)Inventory[index].SlotItemData.itemCode;
-            int targetSlotItemCount = Inventory[index].CurrentItemCount;
+            if(Inventory[index].SlotItemData.itemCode == Inventory.TempSlot.SlotItemData.itemCode)
+            {
+                Inventory[index].AssignItem(tempSlotItemCode, tempSlotItemCount, out int overCount);
 
-            inventory[index].ClearItem();
-            Inventory.AccessTempSlot(index, tempSlotItemCode, tempSlotItemCount); // target 슬롯에 아이템 저장
-            Inventory.AccessTempSlot(index, targetSlotItemCode, targetSlotItemCount); // target 슬롯에 있었던 아이템 내용 임시 슬롯에 저장
+                if(overCount > 0) // 슬롯에 넣었는데 넘쳤으면
+                {
+                    OnSlotDragFail();
+                }
+
+                Inventory.TempSlot.ClearItem();
+            }
+            else
+            {
+                uint targetSlotItemCode = (uint)Inventory[index].SlotItemData.itemCode;
+                int targetSlotItemCount = Inventory[index].CurrentItemCount;
+
+                inventory[index].ClearItem();
+                Inventory.AccessTempSlot(index, tempSlotItemCode, tempSlotItemCount); // target 슬롯에 아이템 저장
+                Inventory.AccessTempSlot(index, targetSlotItemCode, targetSlotItemCount); // target 슬롯에 있었던 아이템 내용 임시 슬롯에 저장
             
-            tempSlotItemCode = (uint)Inventory.TempSlot.SlotItemData.itemCode;
-            tempSlotItemCount = Inventory.TempSlot.CurrentItemCount;
+                tempSlotItemCode = (uint)Inventory.TempSlot.SlotItemData.itemCode;
+                tempSlotItemCount = Inventory.TempSlot.CurrentItemCount;
 
-            Inventory.AccessTempSlot(tempFromIndex, tempSlotItemCode, tempSlotItemCount);
+                Inventory.AccessTempSlot(tempFromIndex, tempSlotItemCode, tempSlotItemCount);
+            }
         }
         else
         {
@@ -101,6 +135,71 @@ public class InventoryUI : MonoBehaviour
         }
 
         tempSlotUI.CloseTempSlot();
+    }
+
+    private void OnSlotDragFail()
+    {
+        uint fromIndex = Inventory.TempSlot.FromIndex;
+        uint tempSlotItemCode = (uint)Inventory.TempSlot.SlotItemData.itemCode;
+        int tempSlotItemCount = Inventory.TempSlot.CurrentItemCount;
+
+        Inventory.AccessTempSlot(fromIndex, tempSlotItemCode, tempSlotItemCount);
+        tempSlotUI.CloseTempSlot();
+    }
+
+    private void OnShowDetail(uint index)
+    {
+        detailUI.OpenTempSlot();
+        if (Inventory[index].SlotItemData != null)
+        {
+            string name = Inventory[index].SlotItemData.itemName;
+            string desc = Inventory[index].SlotItemData.desc;
+            uint price = Inventory[index].SlotItemData.price;
+
+            detailUI.SetDetailText(name, desc, price);
+        }
+    }
+
+    /// <summary>
+    /// 아이템 나눌 때 실행되는 함수
+    /// </summary>
+    /// <param name="index">나눌 아이템 슬롯 인덱스</param>
+    private void OnDividItem(uint index)
+    {
+        dividUI.InitializeValue(Inventory[index], 1, (int)Inventory[index].CurrentItemCount - 1);
+        dividUI.DividUIOpen();
+    }
+
+    /// <summary>
+    /// 아이템을 나눌 때 델리게이트에 신호를 보내는 함수
+    /// </summary>
+    /// <param name="InventorySlot">나눌 아이템 슬롯</param>
+    /// <param name="count">나눌 아이템양</param>
+    private void DividItem(InventorySlot slot, int count)
+    {
+        uint slotItemCode = (uint)slot.SlotItemData.itemCode;
+        uint nextIndex = slot.SlotIndex;
+
+        if(Inventory.IsVaildSlot(nextIndex)) // 다음 슬롯만 찾아서 없으면 실행 X
+        {
+            Debug.Log("슬롯이 존재하지 않습니다.");
+            return;
+        }
+        else
+        {
+            while(!Inventory.IsVaildSlot(nextIndex))
+            {
+                nextIndex++;
+            }
+
+            Inventory.DividItem(slot.SlotIndex, nextIndex, count);
+        }
+    }
+
+    private void OnCloseDetail()
+    {
+        detailUI.ClearText();
+        detailUI.CloseTempSlot();
     }
     // UI 열기
     // UI 닫기

@@ -152,24 +152,51 @@ public class Inventory
     /// <param name="code">아이템 코드</param>
     /// <param name="count">아이템 개수</param>
     /// <param name="index">슬롯 인덱스</param>
-    public void AddSlotItem(uint code, int count)
+    public void AddSlotItem(uint code, int count, uint index = 0)
     {
-        uint slotIndex = FindSlot(code);
-
-        if (!IsVaildSlot(slotIndex))
+        if (index >= maxSlot) // 슬롯 우뮤 확인
         {
-            Debug.Log($"{slotIndex}번 슬롯은 존재하지 않습니다.");
+            Debug.Log($"{index}번 슬롯은 존재하지 않습니다.");
             return;
         }
-        else
-        {
-            slots[slotIndex].AssignItem(code, count, out int overCount);
 
-            if(overCount > 0) // 넘친 아이템이 존재한다면
+        if (index == 0) // index값이 default값이면 자동 추가
+        {
+            uint slotIndex = FindSlot(code);
+
+            if(slotIndex >= maxSlot)
+            {
+                Debug.Log("인벤토리가 가득 차있습니다");
+                return;
+            }
+
+             slots[slotIndex].AssignItem(code, count, out int overCount);
+
+            if (overCount > 0) // 넘친 아이템이 존재한다면
             {
                 // 재탐색 후 넣기
                 slotIndex = FindSlot(code);
                 slots[slotIndex].AssignItem(code, overCount, out _);
+            }
+        }
+        else // 특정 인덱스에 추가
+        {
+            slots[index].AssignItem(code, count, out int overCount);
+
+            if (overCount > 0) // 넘친 아이템이 존재한다면
+            {
+                // 재탐색 후 넣기
+                uint slotIndex = FindSlot(code);
+
+                if (slotIndex >= maxSlot)
+                {
+                    Debug.Log("인벤토리가 가득 차있습니다");
+                    return;
+                }
+                else
+                {
+                    slots[slotIndex].AssignItem(code, overCount, out _);
+                }
             }
         }
     }
@@ -207,6 +234,7 @@ public class Inventory
 
             index++;
         }
+
 
         return index;
     }
@@ -328,13 +356,43 @@ public class Inventory
     }
 
     /// <summary>
-    /// 해당 인덱스에 슬롯이 있는지 확인하는 함수
+    /// 아이템 나누는 함수
+    /// </summary>
+    /// <param name="indexA">나눌 슬롯</param>
+    /// <param name="indexB">나눈 아이템 넣을 슬롯</param>
+    /// <param name="count">아이템 개수</param>
+    public void DividItem(uint indexA, uint indexB, int count = 1)
+    {
+        if(indexA == indexB) // 동일 인덱스 확인
+        {
+            Debug.Log($"인덱스가 동일합니다. 나눌 수 없습니다.");
+            return;
+        }
+
+        if(slots[indexA].CurrentItemCount < 2) // 아이템 개수 확인 ( 1이하면 실행 X )
+        {
+            Debug.Log($"[{slots[indexA]}]의 아이템 개수가 [{slots[indexA].CurrentItemCount}] 입니다. 나눌 수 없습니다.");
+            return;
+        }
+
+        if(count > slots[indexA].CurrentItemCount)
+        {
+            count = slots[indexA].CurrentItemCount;
+        }
+
+        uint itemCode = (uint)slots[indexA].SlotItemData.itemCode;
+        slots[indexA].DiscardItem(count);
+        slots[indexB].AssignItem(itemCode, count, out _);
+    }
+
+    /// <summary>
+    /// 해당 인덱스에 슬롯에 아이템이 들어갈 수 있는 지 확인하는 함수
     /// </summary>
     /// <param name="index">확인할 인덱스</param>
     /// <returns>슬롯이 존재하면 true 아니면 false</returns>
-    bool IsVaildSlot(uint index)
+    public bool IsVaildSlot(uint index)
     {
-        return index < maxSlot;
+        return slots[index].SlotItemData == null;
     }
 
 #if UNITY_EDITOR

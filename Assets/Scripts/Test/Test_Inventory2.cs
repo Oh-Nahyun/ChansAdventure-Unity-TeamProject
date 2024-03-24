@@ -30,6 +30,7 @@ public class Test_Inventory2 : TestInputBase
         inven.AddSlotItem(0, 3);
         inven.AddSlotItem(1, 2);
         inven.AddSlotItem(2, 1);
+        inven.AddSlotItem(1, 3);
 
         inven.TestShowInventory();
         ItemDataManager.Instance.InventoryUI.InitializeInventoryUI(inven);
@@ -37,9 +38,9 @@ public class Test_Inventory2 : TestInputBase
 
     protected override void OnKey1Input(InputAction.CallbackContext context)
     {
-        if(context.performed)
+        if (context.performed)
         {
-            //inven.SlotToTemp(indexA);
+            inven.AddSlotItem(code, count);
             inven.TestShowInventory();
         }
     }
@@ -48,14 +49,18 @@ public class Test_Inventory2 : TestInputBase
     {
         if (context.performed)
         {
-            //inven.TempToSlot(indexA);
+            inven.AddSlotItem(code, count, indexA);
             inven.TestShowInventory();
         }
     }
 
     protected override void OnKey3Input(InputAction.CallbackContext context)
     {
-
+        if(context.performed)
+        {
+            inven.DividItem(indexA, indexB, count);
+            inven.TestShowInventory();
+        }
     }
 
     protected override void OnKey4Input(InputAction.CallbackContext context)
