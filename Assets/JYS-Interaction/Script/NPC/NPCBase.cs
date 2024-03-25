@@ -6,17 +6,19 @@ using UnityEngine;
 
 public class NPCBase : MonoBehaviour
 {
-    public TextBoxManager textBoxManager;
+    protected TextBoxManager textBoxManager;
     TextMeshPro textViweName;
+    protected readonly int Talk_Hash = Animator.StringToHash("IsTalk");
 
     public int id = 0;
     public string nameNPC = "";
     public bool selectId = false;
-    public bool nextTaklSelect = false;
+    protected bool nextTaklSelect = false;
     public bool isTalk = false;
     public bool isNPC;
     public bool isItemChest;
     public bool isWarp;
+    protected Animator animator;
 
     protected virtual void Awake()
     {
@@ -30,17 +32,27 @@ public class NPCBase : MonoBehaviour
         if (isNPC)
         {
             textViweName.gameObject.SetActive(false);
+            StartCoroutine(ViewName());
         }
         GameManager.Instance.onNextTalk += () =>
         {
             TalkNext();
         };
+        animator = GetComponent<Animator>();
     }
 
     protected virtual void Update()
     {
         SelectId();
-        ViewName();
+        if (isNPC)
+        {
+            SetAnimation();
+        }
+    }
+
+    void SetAnimation()
+    {
+        animator.SetBool(Talk_Hash, isTalk);
     }
 
     public void TalkNext()
@@ -83,25 +95,26 @@ public class NPCBase : MonoBehaviour
         }
     }
 
-    public void ViewName()
+    IEnumerator ViewName()
     {
         if (isNPC)
         {
             if (name != null)
             {
                 textViweName.text = name;
-            }
 
-            Vector3 cameraToNpc = transform.position - Camera.main.transform.position;
+                Vector3 cameraToNpc = transform.position - Camera.main.transform.position;
 
-            float angle = Vector3.Angle(transform.forward, cameraToNpc);
-            if (angle > 90.0f)
-            {
-                textViweName.transform.rotation = transform.rotation * Quaternion.Euler(0, 180, 0);
-            }
-            else
-            {
-                textViweName.transform.rotation = transform.rotation;
+                float angle = Vector3.Angle(transform.forward, cameraToNpc);
+                if (angle > 90.0f)
+                {
+                    textViweName.transform.rotation = transform.rotation * Quaternion.Euler(0, 180, 0);
+                }
+                else
+                {
+                    textViweName.transform.rotation = transform.rotation;
+                }
+                yield return null;
             }
         }
     }
@@ -118,7 +131,9 @@ public class NPCBase : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+ 
             textViweName.gameObject.SetActive(false);
+
         }
     }
 }

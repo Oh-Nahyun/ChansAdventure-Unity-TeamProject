@@ -242,7 +242,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59490834a8347544a8c5a66dc0840c10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textBoxManager: {fileID: 0}
+  textBoxManager: {fileID: 893038546303004813, guid: c6ef9b98bf2faf94f902622edc03b570,
+    type: 3}
   id: 100
   nameNPC: "\uB8E8\uD53C"
   selectId: 0
@@ -250,6 +251,7 @@ MonoBehaviour:
   isTalk: 0
   isNPC: 0
   isItemChest: 1
+  isWarp: 0
 --- !u!54 &4093464220098218740
 Rigidbody:
   m_ObjectHideFlags: 0

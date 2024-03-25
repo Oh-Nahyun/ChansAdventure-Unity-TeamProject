@@ -154,7 +154,6 @@ public class TextBox : MonoBehaviour
             Talk(NPCdata.id);
 
             SetTalkText();
-
         }
         else
         {

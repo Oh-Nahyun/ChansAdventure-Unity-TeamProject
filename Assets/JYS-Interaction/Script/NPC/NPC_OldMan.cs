@@ -7,8 +7,8 @@ public class NPC_OldMan : NPCBase
     private bool isStanding = false;
     private bool isGesture = false;
 
-    Animator animator;
-    readonly int Talk_Hash = Animator.StringToHash("IsTalk");
+
+    //readonly int Talk_Hash = Animator.StringToHash("IsTalk");
     readonly int Standing_Hash = Animator.StringToHash("IsStanding");
     readonly int Gesture_Hash = Animator.StringToHash("IsGesture");
 
@@ -20,7 +20,6 @@ public class NPC_OldMan : NPCBase
 
     protected override void Start()
     {
-        animator = GetComponent<Animator>();
         base.Start();
     }
 

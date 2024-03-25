@@ -20,7 +20,7 @@ public class Interaction : MonoBehaviour
     {
         colliders = Physics.OverlapSphere(transform.position, radius, layer);
 
-        if (colliders.Length > 0)
+        if (colliders != null && colliders.Length > 0)
         {
             float shortestDistance = Vector3.Distance(transform.position, colliders[0].transform.position);
             short_enemy = colliders[0]; // 일단 첫 번째 요소를 가장 가까운 것으로 설정
@@ -35,13 +35,14 @@ public class Interaction : MonoBehaviour
                     short_enemy = col; // 더 가까운 것을 찾으면 short_enemy 업데이트
                 }
             }
+
+            target(true); // colliders 배열이 비어있지 않은 경우 target 메서드 호출
         }
         else
         {
             short_enemy = null; // colliders가 없을 때 short_enemy 초기화
+            target(false); // colliders 배열이 비어있는 경우 target 메서드 호출
         }
-
-        target(short_enemy != null); // short_enemy가 null이 아닐 때만 실행
     }
 
     private void OnDrawGizmos()
