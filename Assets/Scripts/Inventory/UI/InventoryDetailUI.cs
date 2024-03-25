@@ -30,6 +30,8 @@ public class InventoryDetailUI : MonoBehaviour
         itemName.text = $"아이템 명";
         itemDesc.text = $"아이템 설명";
         itemPrice.text = $"999999999";
+
+        CloseTempSlot();
     }
 
     void Update()

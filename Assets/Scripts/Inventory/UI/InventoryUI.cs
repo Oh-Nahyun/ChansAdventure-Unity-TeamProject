@@ -149,7 +149,6 @@ public class InventoryUI : MonoBehaviour
 
     private void OnShowDetail(uint index)
     {
-        detailUI.OpenTempSlot();
         if (Inventory[index].SlotItemData != null)
         {
             string name = Inventory[index].SlotItemData.itemName;
@@ -157,6 +156,7 @@ public class InventoryUI : MonoBehaviour
             uint price = Inventory[index].SlotItemData.price;
 
             detailUI.SetDetailText(name, desc, price);
+            detailUI.OpenTempSlot();
         }
     }
 
@@ -180,16 +180,21 @@ public class InventoryUI : MonoBehaviour
         uint slotItemCode = (uint)slot.SlotItemData.itemCode;
         uint nextIndex = slot.SlotIndex;
 
-        if(Inventory.IsVaildSlot(nextIndex)) // 다음 슬롯만 찾아서 없으면 실행 X
+        if(!Inventory.IsVaildSlot(nextIndex)) // 다음 슬롯만 찾아서 없으면 실행 X
         {
             Debug.Log("슬롯이 존재하지 않습니다.");
             return;
         }
         else
         {
-            while(!Inventory.IsVaildSlot(nextIndex))
+            while(Inventory.IsVaildSlot(nextIndex))
             {
                 nextIndex++;
+                if(nextIndex >= Inventory.slotSize)
+                {
+                    Debug.LogError($"해당 인벤토리에 공간이 부족합니다.");
+                    return;
+                }
             }
 
             Inventory.DividItem(slot.SlotIndex, nextIndex, count);

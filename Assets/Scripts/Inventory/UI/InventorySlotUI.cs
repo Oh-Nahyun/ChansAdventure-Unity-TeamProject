@@ -10,7 +10,7 @@ public class InventorySlotUI : SlotUI_Base, IBeginDragHandler, IDragHandler, IEn
 {
     InventoryUI invenUI;
 
-    void Awake()
+    void Start()
     {
         invenUI = ItemDataManager.Instance.InventoryUI;
     }
@@ -43,10 +43,18 @@ public class InventorySlotUI : SlotUI_Base, IBeginDragHandler, IDragHandler, IEn
     public void OnPointerClick(PointerEventData eventData)
     {
         GameObject obj = eventData.pointerCurrentRaycast.gameObject;
-        // 클릭하면 장비인지 확인
-        // 장비면 착용
-        // 다른 아이템 무시
-        // 오른쪽 클릭하면 메뉴?
+
+        if(InventorySlotData.SlotItemData == null)
+        {
+            Debug.Log($"슬롯에 아이템이 없습니다.");
+            return;
+        }
+
+        if (InventorySlotData.CurrentItemCount <= 1)
+        {
+            Debug.Log($"[{InventorySlotData.SlotItemData.itemName}]은 아이템이 [{InventorySlotData.CurrentItemCount}]개 있습니다.");
+            return; 
+        }
 
         if (obj != null)
         {
@@ -55,12 +63,11 @@ public class InventorySlotUI : SlotUI_Base, IBeginDragHandler, IDragHandler, IEn
             if(isPressedQ) // dividUI 열기
             {
                 invenUI.onDivdItem(InventorySlotData.SlotIndex);
-                Debug.Log($"나누기");
             }
         }
         else
         {
-            Debug.Log(obj);
+            Debug.Log($"오브젝트가 없습니다.");
         }
     }
 

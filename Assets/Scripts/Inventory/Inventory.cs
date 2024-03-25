@@ -392,7 +392,7 @@ public class Inventory
     /// <returns>슬롯이 존재하면 true 아니면 false</returns>
     public bool IsVaildSlot(uint index)
     {
-        return slots[index].SlotItemData == null;
+        return slots[index].SlotItemData != null;
     }
 
 #if UNITY_EDITOR

@@ -19,6 +19,15 @@ public class DividUI : MonoBehaviour
 
     InventorySlot targetSlot = null;
     int dividCount = 1;
+    int DividCount
+    {
+        get => dividCount;
+        set
+        {
+            dividCount = value;
+            dividCount = Mathf.Clamp(value, 1, (int)slider.maxValue);
+        }
+    }
 
     public Action<InventorySlot, int> onDivid;
 
@@ -34,31 +43,31 @@ public class DividUI : MonoBehaviour
         slider = child.GetComponent<Slider>();
         slider.onValueChanged.AddListener((float count) =>
         {
-            dividCount = (int)count;
-            UpdateValue(dividCount);
+            DividCount = (int)count;
+            UpdateValue(DividCount);
         });
 
         child = transform.GetChild(3);
         decreaseBtn = child.GetComponent<Button>();
         decreaseBtn.onClick.AddListener(() =>
         {
-            dividCount--;
-            UpdateValue(dividCount);
+            DividCount--;
+            UpdateValue(DividCount);
         });
 
         child = transform.GetChild(4);
         increaseBtn = child.GetComponent<Button>();
         increaseBtn.onClick.AddListener(() =>
         {
-            dividCount++;
-            UpdateValue(dividCount);
+            DividCount++;
+            UpdateValue(DividCount);
         });
 
         child = transform.GetChild(5);
         okBtn = child.GetComponent<Button>();
         okBtn.onClick.AddListener(() =>
         {
-            onDivid?.Invoke(targetSlot, dividCount);
+            onDivid?.Invoke(targetSlot, DividCount);
             DividUIClose();
         });
 
@@ -81,8 +90,9 @@ public class DividUI : MonoBehaviour
 
         slider.minValue = minCount;
         slider.maxValue = maxCount;
+        slider.value = DividCount;
 
-        dividCount = Mathf.Clamp(dividCount, minCount, maxCount);
+        //DividCount = Mathf.Clamp(DividCount, minCount, maxCount);
         targetSlot = slot;
     }
 
