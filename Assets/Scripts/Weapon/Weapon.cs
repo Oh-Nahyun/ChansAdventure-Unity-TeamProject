@@ -37,9 +37,14 @@ public class Weapon : MonoBehaviour
     Transform swordWeapon;
 
     /// <summary>
-    /// [무기2] 활
+    /// [무기2-1] 활
     /// </summary>
     Transform bowWeapon;
+
+    /// <summary>
+    /// [무기2-2] 화살
+    /// </summary>
+    Transform arrowWeapon;
 
     // 애니메이터용 해시값
     readonly int IsAttackHash = Animator.StringToHash("IsAttack");
@@ -53,6 +58,7 @@ public class Weapon : MonoBehaviour
     Animator animator;
     Character player;
     Sword sword;
+    Arrow arrow;
 
     private void Awake()
     {
@@ -60,6 +66,7 @@ public class Weapon : MonoBehaviour
         animator = GetComponent<Animator>();
         player = GetComponent<Character>();
         sword = GetComponentInChildren<Sword>();
+        arrow = GetComponentInChildren<Arrow>();
     }
 
     private void Start()
@@ -68,7 +75,9 @@ public class Weapon : MonoBehaviour
         //leftHand = GameObject.Find("Character1_LeftHand").transform;
         swordWeapon = GameObject.FindWithTag("Sword").transform;
         bowWeapon = GameObject.FindWithTag("Bow").transform;
+        arrowWeapon = GameObject.FindWithTag("Arrow").transform;
         ShowWeapon(false, false);
+        arrow.CloseArrow();
     }
 
     private void OnEnable()

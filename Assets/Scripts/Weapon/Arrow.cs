@@ -43,4 +43,20 @@ public class Arrow : MonoBehaviour
             // 적에게 화살을 맞췄을 경우
         }
     }
+
+    /// <summary>
+    /// 화살을 꺼내는 함수 (Animation 설정용)
+    /// </summary>
+    public void OpenArrow()
+    {
+        gameObject.SetActive(true);
+    }
+
+    /// <summary>
+    /// 화살을 넣는 함수 (Animation 설정용)
+    /// </summary>
+    public void CloseArrow()
+    {
+        gameObject.SetActive(false);
+    }
 }

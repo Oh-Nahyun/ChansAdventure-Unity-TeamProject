@@ -411,7 +411,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1051806280
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -425,6 +425,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   seed: -1
+  arrowSpeed: 7
 --- !u!4 &1051806281
 Transform:
   m_ObjectHideFlags: 0
@@ -734,17 +735,17 @@ PrefabInstance:
     - target: {fileID: 2986671060760103729, guid: 43a2fd51ec07d49f88733efbf29e1374,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3244460117168799998, guid: 43a2fd51ec07d49f88733efbf29e1374,
         type: 3}
       propertyPath: m_Name
       value: Character
       objectReference: {fileID: 0}
-    - target: {fileID: 4151905525897391342, guid: 43a2fd51ec07d49f88733efbf29e1374,
+    - target: {fileID: 4407896292618656510, guid: 43a2fd51ec07d49f88733efbf29e1374,
         type: 3}
-      propertyPath: m_WarningMessage
-      value: 
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4458046311431306130, guid: 43a2fd51ec07d49f88733efbf29e1374,
         type: 3}
@@ -794,6 +795,11 @@ PrefabInstance:
     - target: {fileID: 4458046311431306130, guid: 43a2fd51ec07d49f88733efbf29e1374,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7964227083471875668, guid: 43a2fd51ec07d49f88733efbf29e1374,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

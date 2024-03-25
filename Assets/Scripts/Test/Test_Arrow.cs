@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 public class Test_Arrow : TestBase
 {
+    public float arrowSpeed = 7.0f;
+
     Arrow arrow;
 
     private void Awake()
@@ -14,6 +16,6 @@ public class Test_Arrow : TestBase
 
     protected override void OnTest1(InputAction.CallbackContext context)
     {
-        
+        transform.Translate(Time.deltaTime * arrowSpeed * Vector3.up); // 화살 발사
     }
 }

@@ -41,16 +41,16 @@ public class Sword : MonoBehaviour
     /// <summary>
     /// 칼을 꺼내는 함수 (Animation 설정용)
     /// </summary>
-    //public void OpenSwordWeapon()
-    //{
-    //    gameObject.SetActive(true);
-    //}
+    public void OpenSwordWeapon()
+    {
+        gameObject.SetActive(true);
+    }
 
     /// <summary>
     /// 칼을 넣는 함수 (Animation 설정용)
     /// </summary>
-    //public void CloseSwordWeapon()
-    //{
-    //    gameObject.SetActive(false);
-    //}
+    public void CloseSwordWeapon()
+    {
+        gameObject.SetActive(false);
+    }
 }
