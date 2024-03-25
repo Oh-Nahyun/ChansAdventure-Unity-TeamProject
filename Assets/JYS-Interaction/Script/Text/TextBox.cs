@@ -127,11 +127,6 @@ public class TextBox : MonoBehaviour
         {
             Debug.Log("대상이 없음");
         }
-
-
-
-
-
     }
 
     IEnumerator TalkStart()

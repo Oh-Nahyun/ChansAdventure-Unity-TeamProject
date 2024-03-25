@@ -10,10 +10,10 @@ public class ChestBase : NPCBase
 
     protected override void Awake()
     {
+        base.Awake();
         animator = GetComponent<Animator>();
         isItemChest = true;
         isNPC = false;
-        base.Awake();
     }
 
     protected override void Start()

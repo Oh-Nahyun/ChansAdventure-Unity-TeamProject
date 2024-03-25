@@ -14,8 +14,8 @@ public class NPC_OldMan : NPCBase
 
     protected override void Awake()
     {
-        isNPC = true;
         base.Awake();
+        isNPC = true;
     }
 
     protected override void Start()
