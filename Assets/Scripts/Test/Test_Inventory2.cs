@@ -65,5 +65,9 @@ public class Test_Inventory2 : TestInputBase
 
     protected override void OnKey4Input(InputAction.CallbackContext context)
     {
+        if(context.performed)
+        {
+            inven.SortSlot((SortMode)2, false);
+        }
     }
 }

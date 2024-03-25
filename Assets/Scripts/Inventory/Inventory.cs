@@ -56,7 +56,6 @@ public class Inventory
     public Inventory()
     {
         slots = new InventorySlot[maxSlot];
-        tempSortList = new List<InventorySlot>();
         tempSlot = new TempSlot(tempIndex);
 
         for (int i = 0; i < maxSlot; i++)
@@ -273,9 +272,9 @@ public class Inventory
     /// <param name="sortMode"></param>
     public void SortSlot(SortMode sortMode, bool isAcending)
     {
-        tempSortList = new List<InventorySlot>(slots);
+        List<InventorySlot>tempSortList = new List<InventorySlot>(slots); // 리스트 얕은 복사
 
-        switch(sortMode)
+        switch (sortMode)
         {
             case SortMode.Name:
                 tempSortList.Sort((current, other) =>
@@ -330,14 +329,23 @@ public class Inventory
                 break;
         }
 
-        int slotIndex = 0;
-        foreach(var listIndex in tempSortList)
+
+        List<(ItemData, uint/*, bool*/)> sortedData = new List<(ItemData, uint/*, bool*/)>((int)slotSize);  // 튜플 사용
+        foreach (var slot in tempSortList)
         {
-            slots[slotIndex] = listIndex;
-            slotIndex++;
+            sortedData.Add((slot.SlotItemData, (uint)slot.CurrentItemCount));   // 필요 데이터만 복사해서 가지기
         }
 
-        tempSortList.Clear();
+        int index = 0;
+        foreach (var data in sortedData)
+        {
+            if (slots[index].SlotItemData == null) break;
+            slots[index].ClearItem();
+            slots[index].AssignItem((uint)data.Item1.itemCode, (int)data.Item2, out _);    // 복사한 내용을 슬롯에 설정
+            index++;
+        }
+
+        //tempSortList.Clear();
     }
 
     public void AccessTempSlot(uint index, uint itemCode, int itemCount)

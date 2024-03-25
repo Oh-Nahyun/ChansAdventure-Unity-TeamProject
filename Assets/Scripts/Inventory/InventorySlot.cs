@@ -29,12 +29,11 @@ public class InventorySlot
     public ItemData SlotItemData
     {
         get => itemData;
-        private set
+        set
         {
             if (itemData != value)
             {
                 itemData = value;
-
                 onChangeSlotData?.Invoke();
             }
         }

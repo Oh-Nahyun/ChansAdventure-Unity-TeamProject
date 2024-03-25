@@ -31,9 +31,14 @@ public class InventoryUI : MonoBehaviour
     InventoryDetailUI detailUI;
 
     /// <summary>
-    /// 나누는 창
+    /// 아이템 나누기 패널
     /// </summary>
     DividUI dividUI;
+
+    /// <summary>
+    /// 아이템 정렬 UI
+    /// </summary>
+    SortUI sortUI;
 
     public Action<uint> onSlotDragBegin;
     public Action<uint> onSlotDragEnd;
@@ -54,6 +59,7 @@ public class InventoryUI : MonoBehaviour
         tempSlotUI = GetComponentInChildren<TempSlotUI>(); // 임시 슬롯
         detailUI = GetComponentInChildren<InventoryDetailUI>(); // 아이템 정보 패널
         dividUI = GetComponentInChildren<DividUI>(); // 아이템 나누기 패널
+        sortUI = GetComponentInChildren<SortUI>(); // 아이템 정렬 UI
 
         for (uint i = 0; i < Inventory.slotSize; i++)
         {
@@ -68,6 +74,12 @@ public class InventoryUI : MonoBehaviour
         onSlotDragEndFail += OnSlotDragFail;
         onDivdItem += OnDividItem;
         dividUI.onDivid += DividItem;
+        sortUI.onSortItem += OnSortItem;
+    }
+
+    private void OnSortItem(uint sortMode, bool isAcending)
+    {
+        Inventory.SortSlot((SortMode)sortMode, isAcending);        
     }
 
     /// <summary>
@@ -177,7 +189,6 @@ public class InventoryUI : MonoBehaviour
     /// <param name="count">나눌 아이템양</param>
     private void DividItem(InventorySlot slot, int count)
     {
-        uint slotItemCode = (uint)slot.SlotItemData.itemCode;
         uint nextIndex = slot.SlotIndex;
 
         if(!Inventory.IsVaildSlot(nextIndex)) // 다음 슬롯만 찾아서 없으면 실행 X
