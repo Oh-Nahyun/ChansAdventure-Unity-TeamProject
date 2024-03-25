@@ -3,12 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Dragon : MonoBehaviour
+public class SwordSkeleton : EnemyBase
 {
-    public float HP = 100.0f;
-
-    public float damage = 20.0f;
-
     public Action<float> onDamage;
 
     readonly int die_Hash = Animator.StringToHash("Die");
@@ -16,9 +12,7 @@ public class Dragon : MonoBehaviour
 
     Animator animator;
 
-    Collider[] colliders;
 
-    
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -27,11 +21,11 @@ public class Dragon : MonoBehaviour
     public void TakeDamage(float damageAmount)
     {
         HP -= damageAmount;
-        if(HP <= 0)
+        if (HP <= 0)
         {
             // 죽는 애니메이션
             animator.SetTrigger(die_Hash);
-            colliders = GetComponentsInChildren<Collider>();
+            GetComponent<Collider>().enabled = false;
         }
         else
         {
@@ -40,17 +34,9 @@ public class Dragon : MonoBehaviour
         }
     }
 
-    public void Test(float damage)
-    {
-        if(Input.GetButton("Space"))
-        {
-            TakeDamage(10.0f);
-        }
-    }
-
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
             onDamage?.Invoke(damage);
         }
