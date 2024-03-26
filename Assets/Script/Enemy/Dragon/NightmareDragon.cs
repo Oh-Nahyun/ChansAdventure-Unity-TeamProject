@@ -23,8 +23,8 @@ public class NightmareDragon : EnemyBase
 
     public void TakeDamage(float damageAmount)
     {
-        HP -= damageAmount;
-        if(HP <= 0)
+        CurrentHealth -= damageAmount;
+        if(CurrentHealth <= 0)
         {
             // 죽는 애니메이션
             animator.SetTrigger(die_Hash);

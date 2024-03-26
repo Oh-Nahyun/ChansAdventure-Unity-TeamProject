@@ -6,86 +6,58 @@ using UnityEngine;
 public class EnemyBase : RecycleObject
 {
     [Header("적 기본 데이터")]
-    /// <summary>
-    /// 이동 속도
-    /// </summary>
-    public float moveSpeed = 1.0f;
+    // 최대 체력
+    public float maxHealth;
 
-    public float damage = 20.0f;
-
-    /// <summary>
-    /// 적의 HP
-    /// </summary>
-    float hp = 1;
-
-    public float HP
+    // 현재 체력 프로퍼티
+    private float _currentHealth;
+    public float CurrentHealth
     {
-        get => hp;
+        get { return _currentHealth; }
         set
         {
-            hp = value;
-            if (hp <= 0) // HP가 0 이하가 되면 죽는다.
+            // 현재 체력이 최대 체력을 넘지 않도록 보정
+            _currentHealth = Mathf.Clamp(value, 0f, maxHealth);
+
+            // 체력이 0 이하로 떨어졌을 때 죽음 처리
+            if (_currentHealth <= 0f)
             {
-                hp = 0;
-                OnDie();
+                Die();
             }
         }
     }
 
-    /// <summary>
-    /// 최대 HP
-    /// </summary>
-    public float maxHP = 100.0f;
+    // 데미지
+    public float damage;
 
-    /// <summary>
-    /// 적이 죽을 때 실행될 델리게이트
-    /// </summary>
-    Action onDie;
+    // 배회 상태일 때 이동 속도
+    public float patrollingSpeed;
 
-    /// <summary>
-    /// 점수를 줄 플레이어
-    /// </summary>
-    Player player;
+    // 추격 상태일 때 이동 속도
+    public float chasingSpeed;
 
+    // 공격 가능 쿨타임
+    public float attackCooldown;
 
-    protected override void OnEnable()
+    // 추격 사거리
+    public float chaseRange;
+
+    // 공격 사거리
+    public float attackRange;
+
+    // 죽었음을 알리는 델리게이트
+    public Action onDeath;
+
+    private void Awake()
     {
-        base.OnEnable();
-        OnInitialize();     // 적 초기화 작업
+        _currentHealth = maxHealth;
     }
 
-    protected override void OnDisable()
+    // 죽음 처리 메서드
+    private void Die()
     {
-        if (player != null)
-        {
-            onDie = null;               // 확실하게 정리한다고 표시
-            player = null;
-        }
-
-        base.OnDisable();
+        // 죽었음을 알리는 델리게이트 호출
+        onDeath?.Invoke();
+        // 적 캐릭터 게임 오브젝트 비활성화 또는 제거 등의 적절한 처리
     }
-
-    /// <summary>
-    /// EnemyWave 계열의 초기화 함수
-    /// </summary>
-    protected virtual void OnInitialize()
-    {
-        if (player == null)
-        {
-            player = GameManager.Instance.Player;   // 플레이어 찾기
-        }
-
-        HP = maxHP; // HP 최대로 설정
-    }
-
-    /// <summary>
-    /// 사망 처리용 함수
-    /// </summary>
-    protected virtual void OnDie()
-    {
-        onDie?.Invoke();                // 죽었다는 신호보내기
-
-        gameObject.SetActive(false);    // 자기 자신 비활성화
-    }
-
 }
