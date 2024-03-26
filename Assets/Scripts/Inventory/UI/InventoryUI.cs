@@ -33,12 +33,12 @@ public class InventoryUI : MonoBehaviour
     /// <summary>
     /// 아이템 나누기 패널
     /// </summary>
-    DividUI dividUI;
+    InventoryDividUI dividUI;
 
     /// <summary>
     /// 아이템 정렬 UI
     /// </summary>
-    SortUI sortUI;
+    InventorySortUI sortUI;
 
     public Action<uint> onSlotDragBegin;
     public Action<uint> onSlotDragEnd;
@@ -54,14 +54,14 @@ public class InventoryUI : MonoBehaviour
     public void InitializeInventoryUI(Inventory playerInventory)
     {
         inventory = playerInventory;    // 초기화한 인벤토리 내용 받기
-        slotsUIs = new InventorySlotUI[Inventory.slotSize]; // 슬롯 크기 할당
+        slotsUIs = new InventorySlotUI[Inventory.SlotSize]; // 슬롯 크기 할당
         slotsUIs = GetComponentsInChildren<InventorySlotUI>();  // 일반 슬롯
         tempSlotUI = GetComponentInChildren<TempSlotUI>(); // 임시 슬롯
         detailUI = GetComponentInChildren<InventoryDetailUI>(); // 아이템 정보 패널
-        dividUI = GetComponentInChildren<DividUI>(); // 아이템 나누기 패널
-        sortUI = GetComponentInChildren<SortUI>(); // 아이템 정렬 UI
+        dividUI = GetComponentInChildren<InventoryDividUI>(); // 아이템 나누기 패널
+        sortUI = GetComponentInChildren<InventorySortUI>(); // 아이템 정렬 UI
 
-        for (uint i = 0; i < Inventory.slotSize; i++)
+        for (uint i = 0; i < Inventory.SlotSize; i++)
         {
             slotsUIs[i].InitializeSlotUI(Inventory[i]); // 인벤토리슬롯을 slotUI와 연결
         }
@@ -79,6 +79,8 @@ public class InventoryUI : MonoBehaviour
 
     private void OnSortItem(uint sortMode, bool isAcending)
     {
+        // 아이템이 연속적으로 없으면 아이템을 땡기고 정렬하기
+
         Inventory.SortSlot((SortMode)sortMode, isAcending);        
     }
 
@@ -201,7 +203,7 @@ public class InventoryUI : MonoBehaviour
             while(Inventory.IsVaildSlot(nextIndex))
             {
                 nextIndex++;
-                if(nextIndex >= Inventory.slotSize)
+                if(nextIndex >= Inventory.SlotSize)
                 {
                     Debug.LogError($"해당 인벤토리에 공간이 부족합니다.");
                     return;

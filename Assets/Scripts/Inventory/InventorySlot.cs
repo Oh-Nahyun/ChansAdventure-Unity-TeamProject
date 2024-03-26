@@ -99,7 +99,10 @@ public class InventorySlot
         over = overCount;
     }
 
-    //감소
+    /// <summary>
+    /// 아이템 개수가 감소하는 함수
+    /// </summary>
+    /// <param name="discardCount">감소할 아이템 개수</param>
     public void DiscardItem(int discardCount)
     {
         CurrentItemCount -= discardCount;
@@ -110,7 +113,9 @@ public class InventorySlot
         }
     }
 
-    //clear
+    /// <summary>
+    /// 아이템 데이터와 개수를 Clear하는 함수
+    /// </summary>
     public virtual void ClearItem()
     {
         SlotItemData = null;

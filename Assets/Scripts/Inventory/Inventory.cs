@@ -11,12 +11,12 @@ public class Inventory
     /// <summary>
     /// 최대 슬롯개수
     /// </summary>
-    const uint maxSlot = 6;
+    const uint maxSlot_size = 6;
 
     /// <summary>
     /// 인벤토리 크기 접근용 프로퍼티
     /// </summary>
-    public uint slotSize => maxSlot;
+    public uint SlotSize => maxSlot_size;
 
     /// <summary>
     /// 인벤토리 슬롯들
@@ -29,11 +29,6 @@ public class Inventory
     /// <param name="index">슬롯 인덱스</param>
     /// <returns></returns>
     public InventorySlot this[uint index] => slots[index];
-
-    /// <summary>
-    /// 아이템 정렬을 위한 리스트
-    /// </summary>
-    List<InventorySlot> tempSortList;
 
     /// <summary>
     /// 임시 슬롯 클래스
@@ -55,10 +50,10 @@ public class Inventory
     /// </summary>
     public Inventory()
     {
-        slots = new InventorySlot[maxSlot];
+        slots = new InventorySlot[maxSlot_size];
         tempSlot = new TempSlot(tempIndex);
 
-        for (int i = 0; i < maxSlot; i++)
+        for (int i = 0; i < maxSlot_size; i++)
         {
             slots[i] = new InventorySlot((uint)i);
         }
@@ -153,7 +148,7 @@ public class Inventory
     /// <param name="index">슬롯 인덱스</param>
     public void AddSlotItem(uint code, int count, uint index = 0)
     {
-        if (index >= maxSlot) // 슬롯 우뮤 확인
+        if (index >= maxSlot_size) // 슬롯 우뮤 확인
         {
             Debug.Log($"{index}번 슬롯은 존재하지 않습니다.");
             return;
@@ -163,7 +158,7 @@ public class Inventory
         {
             uint slotIndex = FindSlot(code);
 
-            if(slotIndex >= maxSlot)
+            if(slotIndex >= maxSlot_size)
             {
                 Debug.Log("인벤토리가 가득 차있습니다");
                 return;
@@ -187,7 +182,7 @@ public class Inventory
                 // 재탐색 후 넣기
                 uint slotIndex = FindSlot(code);
 
-                if (slotIndex >= maxSlot)
+                if (slotIndex >= maxSlot_size)
                 {
                     Debug.Log("인벤토리가 가득 차있습니다");
                     return;
@@ -269,7 +264,8 @@ public class Inventory
     /// <summary>
     /// 정렬하는 함수
     /// </summary>
-    /// <param name="sortMode"></param>
+    /// <param name="sortMode">정렬방식</param>
+    /// <param name="isAcending">오름차순 여부 (treu : 오름차순, false : 내림차순)</param>
     public void SortSlot(SortMode sortMode, bool isAcending)
     {
         List<InventorySlot>tempSortList = new List<InventorySlot>(slots); // 리스트 얕은 복사
@@ -329,23 +325,30 @@ public class Inventory
                 break;
         }
 
-
-        List<(ItemData, uint/*, bool*/)> sortedData = new List<(ItemData, uint/*, bool*/)>((int)slotSize);  // 튜플 사용
+        List<(ItemData, int)> sortedData = new List<(ItemData, int)>((int)SlotSize); // 정렬한 내용 복사
         foreach (var slot in tempSortList)
         {
-            sortedData.Add((slot.SlotItemData, (uint)slot.CurrentItemCount));   // 필요 데이터만 복사해서 가지기
+            sortedData.Add((slot.SlotItemData, slot.CurrentItemCount));       // 정렬 내용 복사
         }
 
         int index = 0;
-        foreach (var data in sortedData)
+        foreach (var slot in sortedData)
         {
-            if (slots[index].SlotItemData == null) break;
-            slots[index].ClearItem();
-            slots[index].AssignItem((uint)data.Item1.itemCode, (int)data.Item2, out _);    // 복사한 내용을 슬롯에 설정
+            // 슬롯에 내용 추가 -> 아이템을 첫 슬롯부터 재배치
+            if (slot.Item1 == null) break;  // 정렬된 내용을 다 옮겼으면 break;
+            slots[index].ClearItem();       // 슬롯 내용 정리 후
+            slots[index].AssignItem((uint)slot.Item1.itemCode, (int)slot.Item2, out _);    // 복사한 내용을 슬롯에 설정 ( item1 : ItemDatam , item2 : CurrentItemCount )
+            
             index++;
         }
 
-        //tempSortList.Clear();
+        tempSortList.Clear();   // 임시 리스트 제거
+
+        // 재배치후 불필요한 슬롯 데이터 제거
+        for(int i = index; i < SlotSize; i++)
+        {
+            slots[i].ClearItem(); 
+        }
     }
 
     public void AccessTempSlot(uint index, uint itemCode, int itemCount)
@@ -408,7 +411,7 @@ public class Inventory
     {
         string str = null;
         str += $"(";
-        for(int i = 0; i < maxSlot; i++)
+        for(int i = 0; i < maxSlot_size; i++)
         {
             if(slots[i].SlotItemData == null)
             {
