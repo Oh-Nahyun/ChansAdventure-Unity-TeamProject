@@ -60,7 +60,23 @@ public class InventorySlot
         }
     }
 
-    //장착 여부
+    /// <summary>
+    /// 아이템을 장착 여부
+    /// </summary>
+    bool isEquip = false;
+
+    public bool IsEquip
+    {
+        get => isEquip;
+        set
+        {
+            if (isEquip != value)
+            {
+                isEquip = value;
+                onChangeSlotData?.Invoke();
+            }
+        }
+    }
 
     /// <summary>
     /// 아이템 데이터 변경을 알리는 델리게이트

@@ -117,7 +117,7 @@ public class InventoryUI : MonoBehaviour
 
         if(Inventory[index].SlotItemData != null)   // 아이템이 들어있다.
         {
-            if(Inventory[index].SlotItemData.itemCode == Inventory.TempSlot.SlotItemData.itemCode)
+            if(Inventory[index].SlotItemData.itemCode == Inventory.TempSlot.SlotItemData.itemCode) // 교환하려는 아이템이 같으면
             {
                 Inventory[index].AssignItem(tempSlotItemCode, tempSlotItemCount, out int overCount);
 
@@ -128,7 +128,7 @@ public class InventoryUI : MonoBehaviour
 
                 Inventory.TempSlot.ClearItem();
             }
-            else
+            else // 교환하려는 아이템이 다르면
             {
                 uint targetSlotItemCode = (uint)Inventory[index].SlotItemData.itemCode;
                 int targetSlotItemCount = Inventory[index].CurrentItemCount;
@@ -158,6 +158,7 @@ public class InventoryUI : MonoBehaviour
         int tempSlotItemCount = Inventory.TempSlot.CurrentItemCount;
 
         Inventory.AccessTempSlot(fromIndex, tempSlotItemCode, tempSlotItemCount);
+        
         tempSlotUI.CloseTempSlot();
     }
 
@@ -212,6 +213,11 @@ public class InventoryUI : MonoBehaviour
 
             Inventory.DividItem(slot.SlotIndex, nextIndex, count);
         }
+    }
+
+    private void EquipItem(uint index)
+    {
+
     }
 
     private void OnCloseDetail()

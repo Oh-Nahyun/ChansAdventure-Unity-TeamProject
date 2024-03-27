@@ -13,12 +13,17 @@ public class SlotUI_Base : MonoBehaviour
     /// <summary>
     /// 슬롯 아이콘
     /// </summary>
-    Image slotIcon;
+    public Image slotIcon;
 
     /// <summary>
     /// 아이템 개수
     /// </summary>
-    TextMeshProUGUI slotItemCount;
+    public TextMeshProUGUI slotItemCount;
+
+    /// <summary>
+    /// 아이템 장착
+    /// </summary>
+    public TextMeshProUGUI slotEquip;
 
     /// <summary>
     /// slotUI의 슬롯데이터
@@ -42,8 +47,11 @@ public class SlotUI_Base : MonoBehaviour
         child = transform.GetChild(1);
         slotItemCount = child.GetComponent<TextMeshProUGUI>();
 
+        child = transform.GetChild(2);
+        slotEquip = child.GetComponent<TextMeshProUGUI>();
+
         inventorySlot = slot;
-        inventorySlot.onChangeSlotData = Refresh;   // inventorySlot의 델리게이트에 UI를 갱신할 함수 등록
+        InventorySlotData.onChangeSlotData = Refresh;   // inventorySlot의 델리게이트에 UI를 갱신할 함수 등록
         Refresh();
     }
     
@@ -58,12 +66,16 @@ public class SlotUI_Base : MonoBehaviour
             slotIcon.color = Color.clear;
             slotIcon.sprite = null;
             slotItemCount.text = string.Empty;
+
+            slotEquip.color = Color.clear;
         }
         else
         {   // 슬롯에 아이템 데이터가 있으면 갱신
             slotIcon.color = Color.white;
             slotIcon.sprite = InventorySlotData.SlotItemData.itemIcon;
             slotItemCount.text = InventorySlotData.CurrentItemCount.ToString();
+
+            slotEquip.color = InventorySlotData.IsEquip ? Color.white : Color.clear; // 장착 여부 
         }
     }
 }

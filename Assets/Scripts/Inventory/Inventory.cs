@@ -252,13 +252,13 @@ public class Inventory
 
         slots[indexA].ClearItem();
         slots[indexA].AssignItem((uint)slots[indexB].SlotItemData.itemCode,
-                              slots[indexB].CurrentItemCount,
-                              out _);
+                                       slots[indexB].CurrentItemCount,
+                                       out _);
 
         slots[indexB].ClearItem();
         slots[indexB].AssignItem((uint)tempItemdata.itemCode,
-                              tempItemCount,
-                              out _);
+                                       tempItemCount,
+                                       out _);
     }
 
     /// <summary>

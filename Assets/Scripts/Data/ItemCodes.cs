@@ -10,7 +10,8 @@ public enum ItemCode
 {
     potion = 0,
     apple,
-    cheese
+    cheese,
+    Weapon
 }
 
 /// <summary>
