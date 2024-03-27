@@ -27,6 +27,18 @@ public class SwordSkeleton : EnemyBase
     private readonly int isAttacking_Hash = Animator.StringToHash("IsAttacking");
     private readonly int isDamaged_Hash = Animator.StringToHash("IsDamaged");
 
+    // SwordPoint 오브젝트
+    private GameObject swordPoint;
+
+    // SwordPoint 오브젝트의 콜라이더
+    private Collider swordCollider;
+
+    // onWeaponBladeEnabe 델리게이트 변수
+    public Action<bool> onWeaponBladeEnabe;
+
+    // Waypoints를 저장할 리스트
+    private List<Transform> waypointsList = new List<Transform>();
+
     // 추격 사거리 내인지 체크하는 메서드
     private bool IsPlayerInRange()
     {
@@ -56,6 +68,9 @@ public class SwordSkeleton : EnemyBase
         {
             // 공격 애니메이션 실행
             animator.SetBool(isAttacking_Hash, true);
+
+            // 무기 블레이드 활성화
+            WeaponBladeEnable();
 
             // 공격 쿨다운 적용
             canAttack = false;
@@ -89,8 +104,8 @@ public class SwordSkeleton : EnemyBase
         }
     }
 
-    // Start 메서드를 사용하여 초기화
-    void Start()
+    // Awake 메서드를 사용하여 초기화
+    void Awake()
     {
         // NavMeshAgent 컴포넌트 가져오기
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -103,6 +118,18 @@ public class SwordSkeleton : EnemyBase
 
         // 추적 대상 설정
         target = GameObject.FindGameObjectWithTag("Player").transform;
+
+        // SwordPoint 오브젝트 찾기
+        swordPoint = transform.Find("SwordPoint").gameObject;
+        // SwordPoint 오브젝트의 콜라이더 찾기
+        swordCollider = swordPoint.GetComponent<Collider>();
+
+        // Waypoints를 찾아 리스트에 저장
+        Transform waypointsParent = transform.GetChild(3); // 3번째 자식
+        foreach (Transform waypoint in waypointsParent)
+        {
+            waypointsList.Add(waypoint);
+        }
 
         // Idle 상태 지속 후 Walk 애니메이션으로 변경
         Invoke("StartPatrolling", idleDuration);
@@ -162,5 +189,29 @@ public class SwordSkeleton : EnemyBase
         animator.SetBool(isChasing_Hash, false);
         animator.SetTrigger("Die");
         // TODO: Die 애니메이션 실행 후 오브젝트 비활성화
+    }
+
+    // 무기 블레이드 활성화 메서드
+    private void WeaponBladeEnable()
+    {
+        if (swordCollider != null)
+        {
+            swordCollider.enabled = true;
+        }
+
+        // onWeaponBladeEnabe 델리게이트 호출
+        onWeaponBladeEnabe?.Invoke(true);
+    }
+
+    // 무기 블레이드 비활성화 메서드
+    private void WeaponBladeDisable()
+    {
+        if (swordCollider != null)
+        {
+            swordCollider.enabled = false;
+        }
+
+        // onWeaponBladeEnabe 델리게이트 호출
+        onWeaponBladeEnabe?.Invoke(false);
     }
 }
