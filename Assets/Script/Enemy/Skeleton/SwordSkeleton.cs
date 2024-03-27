@@ -141,7 +141,13 @@ public class SwordSkeleton : EnemyBase
         // Walk 애니메이션 실행
         animator.SetBool(isPatrolling_Hash, true);
         navMeshAgent.speed = patrollingSpeed;
-        // TODO: Waypoints를 순회하며 이동
+
+        // Waypoints 위치로 이동
+        if (waypointsList.Count > 0)
+        {
+            Transform randomWaypoint = waypointsList[UnityEngine.Random.Range(0, waypointsList.Count)];
+            navMeshAgent.SetDestination(randomWaypoint.position);
+        }
     }
 
     // Update 메서드를 사용하여 프레임마다 실행
@@ -159,7 +165,16 @@ public class SwordSkeleton : EnemyBase
             animator.SetBool(isChasing_Hash, false);
             animator.SetBool(isPatrolling_Hash, true);
             navMeshAgent.speed = patrollingSpeed;
-            // TODO: Waypoints를 순회하며 이동
+
+            // Waypoints 위치로 이동
+            if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance < 0.5f)
+            {
+                if (waypointsList.Count > 0)
+                {
+                    Transform randomWaypoint = waypointsList[UnityEngine.Random.Range(0, waypointsList.Count)];
+                    navMeshAgent.SetDestination(randomWaypoint.position);
+                }
+            }
         }
     }
 
