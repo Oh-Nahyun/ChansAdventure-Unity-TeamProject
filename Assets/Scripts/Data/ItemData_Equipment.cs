@@ -8,4 +8,14 @@ public class ItemData_Equipment : ItemData, IEquipable
     /// 장착할 아이템 프리팹
     /// </summary>
     public GameObject EqiupPrefab;
+
+    public void EquipItem()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void UnEquipItem()
+    {
+        throw new System.NotImplementedException();
+    }
 }

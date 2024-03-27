@@ -7,11 +7,11 @@ using TMPro;
 
 public class InventorySortUI : MonoBehaviour
 {
-    public TMP_Dropdown dropDown;
-    public Button checkBtn;
+    TMP_Dropdown dropDown;
+    Button checkBtn;
     //Button AsceningBtn;
 
-    public uint sortValue = 0;
+    uint sortValue = 0;
     bool isAcending = false;
 
     public Action<uint, bool> onSortItem;

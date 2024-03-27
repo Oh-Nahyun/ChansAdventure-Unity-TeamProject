@@ -13,17 +13,17 @@ public class SlotUI_Base : MonoBehaviour
     /// <summary>
     /// 슬롯 아이콘
     /// </summary>
-    public Image slotIcon;
+    Image slotIcon;
 
     /// <summary>
     /// 아이템 개수
     /// </summary>
-    public TextMeshProUGUI slotItemCount;
+    TextMeshProUGUI slotItemCount;
 
     /// <summary>
     /// 아이템 장착
     /// </summary>
-    public TextMeshProUGUI slotEquip;
+    TextMeshProUGUI slotEquip;
 
     /// <summary>
     /// slotUI의 슬롯데이터
@@ -58,24 +58,31 @@ public class SlotUI_Base : MonoBehaviour
     /// <summary>
     /// 인벤토리 슬롯 새로고침하는 함수
     /// </summary>
-    protected virtual void Refresh()
+    private void Refresh()
     {
         if(InventorySlotData.SlotItemData == null)
         {
             // 슬롯에 아이템이 없으면
             slotIcon.color = Color.clear;
             slotIcon.sprite = null;
-            slotItemCount.text = string.Empty;
-
-            slotEquip.color = Color.clear;
+            slotItemCount.text = string.Empty;            
         }
         else
         {   // 슬롯에 아이템 데이터가 있으면 갱신
             slotIcon.color = Color.white;
             slotIcon.sprite = InventorySlotData.SlotItemData.itemIcon;
-            slotItemCount.text = InventorySlotData.CurrentItemCount.ToString();
-
-            slotEquip.color = InventorySlotData.IsEquip ? Color.white : Color.clear; // 장착 여부 
+            slotItemCount.text = InventorySlotData.CurrentItemCount.ToString();            
         }
+
+        SlotUIRefresh();
+    }
+
+    /// <summary>
+    /// 추가적으로 새로고침할 내용을 가진 함수
+    /// </summary>
+    protected virtual void SlotUIRefresh()
+    {
+        slotEquip.color = Color.clear; 
+        slotEquip.color = InventorySlotData.IsEquip ? Color.white : Color.clear; // 장착 여부 
     }
 }

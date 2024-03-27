@@ -65,6 +65,9 @@ public class InventorySlot
     /// </summary>
     bool isEquip = false;
 
+    /// <summary>
+    /// 아이템 장착 여부를 접근 및 설정을 하기위한 프로퍼티
+    /// </summary>
     public bool IsEquip
     {
         get => isEquip;

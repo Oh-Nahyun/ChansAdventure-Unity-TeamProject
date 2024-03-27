@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class InventoryUI : MonoBehaviour
 {
@@ -41,11 +42,12 @@ public class InventoryUI : MonoBehaviour
     InventorySortUI sortUI;
 
     public Action<uint> onSlotDragBegin;
-    public Action<uint> onSlotDragEnd;
+    public Action<GameObject> onSlotDragEnd;
     public Action onSlotDragEndFail;
     public Action<uint> onShowDetail;
     public Action onCloseDetail;
     public Action<uint> onDivdItem;
+    public Action<GameObject> onEquipClick;
 
     /// <summary>
     /// 인벤토리 UI를 초기화하는 함수
@@ -72,11 +74,23 @@ public class InventoryUI : MonoBehaviour
         onShowDetail += OnShowDetail;
         onCloseDetail += OnCloseDetail;
         onSlotDragEndFail += OnSlotDragFail;
-        onDivdItem += OnDividItem;
+        onDivdItem += OnClickItem;
         dividUI.onDivid += DividItem;
         sortUI.onSortItem += OnSortItem;
+
+        onEquipClick += OnEquipItemClick;
     }
 
+    private void OnEquipItemClick(GameObject obj)
+    {
+        
+    }
+
+    /// <summary>
+    /// 아이템을 정렬하는 함수
+    /// </summary>
+    /// <param name="sortMode">아이템 정렬 모드</param>
+    /// <param name="isAcending">true면 오름차순, false면 내림차순</param>
     private void OnSortItem(uint sortMode, bool isAcending)
     {
         // 아이템이 연속적으로 없으면 아이템을 땡기고 정렬하기
@@ -107,52 +121,78 @@ public class InventoryUI : MonoBehaviour
     /// 슬롯 드래그 종료
     /// </summary>
     /// <param name="index">아이템을 넣을 인벤토리 슬롯 인덱스</param>
-    private void OnSlotDragEnd(uint index)
+    private void OnSlotDragEnd(GameObject slotObj)
     {
-        uint tempFromIndex = Inventory.TempSlot.FromIndex;
-
-        // 임시 슬롯에 들어있는 내용
-        uint tempSlotItemCode = (uint)Inventory.TempSlot.SlotItemData.itemCode;
-        int tempSlotItemCount = Inventory.TempSlot.CurrentItemCount;
-
-        if(Inventory[index].SlotItemData != null)   // 아이템이 들어있다.
+        if(slotObj == null) // 드래그 종료 시점에 감지되는 슬롯이 없다.
         {
-            if(Inventory[index].SlotItemData.itemCode == Inventory.TempSlot.SlotItemData.itemCode) // 교환하려는 아이템이 같으면
-            {
-                Inventory[index].AssignItem(tempSlotItemCode, tempSlotItemCount, out int overCount);
-
-                if(overCount > 0) // 슬롯에 넣었는데 넘쳤으면
-                {
-                    OnSlotDragFail();
-                }
-
-                Inventory.TempSlot.ClearItem();
-            }
-            else // 교환하려는 아이템이 다르면
-            {
-                uint targetSlotItemCode = (uint)Inventory[index].SlotItemData.itemCode;
-                int targetSlotItemCount = Inventory[index].CurrentItemCount;
-
-                inventory[index].ClearItem();
-                Inventory.AccessTempSlot(index, tempSlotItemCode, tempSlotItemCount); // target 슬롯에 아이템 저장
-                Inventory.AccessTempSlot(index, targetSlotItemCode, targetSlotItemCount); // target 슬롯에 있었던 아이템 내용 임시 슬롯에 저장
-            
-                tempSlotItemCode = (uint)Inventory.TempSlot.SlotItemData.itemCode;
-                tempSlotItemCount = Inventory.TempSlot.CurrentItemCount;
-
-                Inventory.AccessTempSlot(tempFromIndex, tempSlotItemCode, tempSlotItemCount);
-            }
+            OnSlotDragFail();
+            Debug.Log("존재하지 않는 오브젝트입니다");
+            return;
         }
         else
         {
-            Inventory.AccessTempSlot(index, tempSlotItemCode, tempSlotItemCount);
-        }
+            SlotUI_Base slotUI = slotObj.GetComponent<SlotUI_Base>();
+            bool isSlot = slotUI is SlotUI_Base;
 
-        tempSlotUI.CloseTempSlot();
+            if(!isSlot) // 드래그 끝나는 지점이 슬롯이 아니다.
+            {
+                OnSlotDragFail();
+                Debug.Log("슬롯이 아닙니다");
+                return;
+            }
+
+            uint index = slotUI.InventorySlotData.SlotIndex;
+            uint tempFromIndex = Inventory.TempSlot.FromIndex;
+
+            // 임시 슬롯에 들어있는 내용
+            uint tempSlotItemCode = (uint)Inventory.TempSlot.SlotItemData.itemCode;
+            int tempSlotItemCount = Inventory.TempSlot.CurrentItemCount;
+
+            if (Inventory[index].SlotItemData != null)   // 아이템이 들어있다.
+            {
+                if (Inventory[index].SlotItemData.itemCode == Inventory.TempSlot.SlotItemData.itemCode) // 교환하려는 아이템이 같으면
+                {
+                    Inventory[index].AssignItem(tempSlotItemCode, tempSlotItemCount, out int overCount);
+
+                    if (overCount > 0) // 슬롯에 넣었는데 넘쳤으면
+                    {
+                        OnSlotDragFail();
+                    }
+
+                    Inventory.TempSlot.ClearItem();
+                }
+                else // 아이템이 들어있고 목표 슬롯이 존재한다.
+                {
+                    uint targetSlotItemCode = (uint)Inventory[index].SlotItemData.itemCode;
+                    int targetSlotItemCount = Inventory[index].CurrentItemCount;
+
+                    inventory[index].ClearItem();
+                    Inventory.AccessTempSlot(index, tempSlotItemCode, tempSlotItemCount); // target 슬롯에 아이템 저장
+                    Inventory.AccessTempSlot(index, targetSlotItemCode, targetSlotItemCount); // target 슬롯에 있었던 아이템 내용 임시 슬롯에 저장
+
+                    tempSlotItemCode = (uint)Inventory.TempSlot.SlotItemData.itemCode;
+                    tempSlotItemCount = Inventory.TempSlot.CurrentItemCount;
+
+                    Inventory.AccessTempSlot(tempFromIndex, tempSlotItemCode, tempSlotItemCount);
+                }
+            }
+            else
+            {
+                Inventory.AccessTempSlot(index, tempSlotItemCode, tempSlotItemCount);
+            }
+
+            tempSlotUI.CloseTempSlot();
+        }
     }
 
+    /// <summary>
+    /// 아이템 드래그를 성공적으로 실행하지 못했을 때 실행하는 함수 ( 다시 원래 슬롯으로 되돌린다. )
+    /// </summary>
     private void OnSlotDragFail()
     {
+        if (Inventory.TempSlot.SlotItemData == null)
+            return;
+
         uint fromIndex = Inventory.TempSlot.FromIndex;
         uint tempSlotItemCode = (uint)Inventory.TempSlot.SlotItemData.itemCode;
         int tempSlotItemCount = Inventory.TempSlot.CurrentItemCount;
@@ -162,6 +202,10 @@ public class InventoryUI : MonoBehaviour
         tempSlotUI.CloseTempSlot();
     }
 
+    /// <summary>
+    /// 아이템 상세정보 패널을 보여주는 함수
+    /// </summary>
+    /// <param name="index">보여줄려는 아이템 슬롯 인덱스</param>
     private void OnShowDetail(uint index)
     {
         if (Inventory[index].SlotItemData != null)
@@ -179,10 +223,29 @@ public class InventoryUI : MonoBehaviour
     /// 아이템 나눌 때 실행되는 함수
     /// </summary>
     /// <param name="index">나눌 아이템 슬롯 인덱스</param>
-    private void OnDividItem(uint index)
+    private void OnClickItem(uint index)
     {
-        dividUI.InitializeValue(Inventory[index], 1, (int)Inventory[index].CurrentItemCount - 1);
-        dividUI.DividUIOpen();
+        // Key Q
+        bool isPressedQ = Keyboard.current.qKey.ReadValue() > 0;
+      
+        if(isPressedQ) // dividUI 열기
+        {
+            if (Inventory[index].CurrentItemCount <= 1)
+            {
+                Debug.Log($"[{Inventory[index].SlotItemData.itemName}]은 아이템이 [{Inventory[index].CurrentItemCount}]개 있습니다.");
+                return;
+            }
+            dividUI.InitializeValue(Inventory[index], 1, (int)Inventory[index].CurrentItemCount - 1);
+            dividUI.DividUIOpen();
+        }
+        else // 클릭하면
+        {
+            bool isEquip = Inventory[index].SlotItemData is IEquipable;
+            if (isEquip)
+            {
+                EquipItem(index);
+            }
+        }
     }
 
     /// <summary>
@@ -217,9 +280,12 @@ public class InventoryUI : MonoBehaviour
 
     private void EquipItem(uint index)
     {
-
+        Inventory[index].IsEquip = !Inventory[index].IsEquip;
     }
 
+    /// <summary>
+    /// 아이템 상세정보 패널을 닫는 함수
+    /// </summary>
     private void OnCloseDetail()
     {
         detailUI.ClearText();
