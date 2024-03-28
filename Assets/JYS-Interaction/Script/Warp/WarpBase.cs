@@ -21,9 +21,12 @@ public class WarpBase : NPCBase
     {
         if (warpPoint != null)
         {
-            player.position = warpPoint.position;
+            Vector3 warpPosition = warpPoint.position;
+            warpPosition.y += player.transform.parent.position.y;
+            player.transform.parent.position = warpPosition;
         }
     }
+
 
 
 }
