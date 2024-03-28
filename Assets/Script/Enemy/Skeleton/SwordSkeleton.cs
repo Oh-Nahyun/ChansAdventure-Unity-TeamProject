@@ -55,7 +55,7 @@ public class SwordSkeleton : EnemyBase
     // 공격 가능한지 체크하는 메서드
     private bool CanAttack()
     {
-        if (target != null)
+        if (target != null && target.CompareTag("Player"))
         {
             float distance = Vector3.Distance(transform.position, target.position);
             return distance <= attackRange;
