@@ -22,10 +22,12 @@ public class SwordSkeleton : EnemyBase
     public float idleDuration = 5f;
 
     // 애니메이션 상태 해시코드
-    private readonly int isPatrolling_Hash = Animator.StringToHash("IsPatrolling");
-    private readonly int isChasing_Hash = Animator.StringToHash("IsChasing");
-    private readonly int isAttacking_Hash = Animator.StringToHash("IsAttacking");
-    private readonly int isDamaged_Hash = Animator.StringToHash("IsDamaged");
+    private readonly int Idle_Hash = Animator.StringToHash("Idle");
+    private readonly int Patrol_Hash = Animator.StringToHash("Patrol");
+    private readonly int Chase_Hash = Animator.StringToHash("Chase");
+    private readonly int Attack_Hash = Animator.StringToHash("Attack");
+    private readonly int Gethit_Hash = Animator.StringToHash("Gethit");
+    private readonly int Die_Hash = Animator.StringToHash("Die");
 
     // SwordPoint 오브젝트
     private GameObject swordPoint;
@@ -67,7 +69,7 @@ public class SwordSkeleton : EnemyBase
         if (canAttack && CanAttack())
         {
             // 공격 애니메이션 실행
-            animator.SetBool(isAttacking_Hash, true);
+            animator.SetTrigger(Attack_Hash);
 
             // 무기 블레이드 활성화
             WeaponBladeEnable();
@@ -96,7 +98,7 @@ public class SwordSkeleton : EnemyBase
             if (IsPlayerInRange())
             {
                 // 추적 상태로 변경
-                animator.SetBool(isChasing_Hash, true);
+                animator.SetTrigger(Chase_Hash);
 
                 // 추적 상태에서 공격 가능한 경우 공격 실행
                 Attack();
@@ -120,7 +122,7 @@ public class SwordSkeleton : EnemyBase
         target = GameObject.FindGameObjectWithTag("Player").transform;
 
         // SwordPoint 오브젝트 찾기
-        swordPoint = transform.Find("SwordPoint").gameObject;
+        swordPoint = GameObject.Find("SwordPoint").gameObject;
         // SwordPoint 오브젝트의 콜라이더 찾기
         swordCollider = swordPoint.GetComponent<Collider>();
 
@@ -139,7 +141,7 @@ public class SwordSkeleton : EnemyBase
     private void StartPatrolling()
     {
         // Walk 애니메이션 실행
-        animator.SetBool(isPatrolling_Hash, true);
+        animator.SetTrigger(Patrol_Hash);
         navMeshAgent.speed = patrollingSpeed;
 
         // Waypoints 위치로 이동
@@ -162,8 +164,7 @@ public class SwordSkeleton : EnemyBase
         else
         {
             // 추격 사거리를 벗어나면 Walk 애니메이션으로 변경하여 배회 시작
-            animator.SetBool(isChasing_Hash, false);
-            animator.SetBool(isPatrolling_Hash, true);
+            animator.SetTrigger(Idle_Hash);
             navMeshAgent.speed = patrollingSpeed;
 
             // Waypoints 위치로 이동
@@ -191,7 +192,7 @@ public class SwordSkeleton : EnemyBase
         else
         {
             // Damage 애니메이션 실행
-            animator.SetTrigger(isDamaged_Hash);
+            animator.SetTrigger(Gethit_Hash);
             // TODO: Damage 애니메이션 실행
         }
     }
@@ -200,8 +201,6 @@ public class SwordSkeleton : EnemyBase
     private void Die()
     {
         // Die 애니메이션 실행 후 오브젝트 비활성화
-        animator.SetBool(isPatrolling_Hash, false);
-        animator.SetBool(isChasing_Hash, false);
         animator.SetTrigger("Die");
         // TODO: Die 애니메이션 실행 후 오브젝트 비활성화
     }
