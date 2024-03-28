@@ -46,10 +46,21 @@ public class Inventory
     const uint tempIndex = 999999;
 
     /// <summary>
+    /// 해당 인벤토리를 가진 오브젝트
+    /// </summary>
+    GameObject owner;
+
+    /// <summary>
+    /// 인벤토리를 가진 오브젝트에게 접근하는 프로퍼티
+    /// </summary>
+    public GameObject Owner => owner;
+
+    /// <summary>
     /// 인벤토리 생성자
     /// </summary>
-    public Inventory()
+    public Inventory(GameObject invenOwner)
     {
+        owner = invenOwner;
         slots = new InventorySlot[maxSlot_size];
         tempSlot = new TempSlot(tempIndex);
 

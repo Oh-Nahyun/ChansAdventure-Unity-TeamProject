@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 public class Test_Inventory : TestInputBase
 {
+    public GameObject Test_Player;
+     
     Inventory inven;
 
     public InventoryUI inventoryUI;
@@ -27,7 +29,7 @@ public class Test_Inventory : TestInputBase
 
     void Start()
     {
-        inven = new Inventory();
+        inven = new Inventory(Test_Player);
 
         inven.AddSlotItem(0, 3);
         inven.AddSlotItem(1, 2);

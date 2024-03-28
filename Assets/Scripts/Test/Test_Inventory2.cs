@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 public class Test_Inventory2 : TestInputBase
 {
+    public GameObject Test_Player;
+
     Inventory inven;
 
     [Header("½½·Ô Á¤º¸")]
@@ -25,7 +27,7 @@ public class Test_Inventory2 : TestInputBase
 
     void Start()
     {
-        inven = new Inventory();
+        inven = new Inventory(Test_Player);
 
         inven.AddSlotItem(0, 3);
         inven.AddSlotItem(1, 2);

@@ -12,15 +12,20 @@ public class ItemData_Equipment : ItemData, IEquipable
     /// <summary>
     /// 아이템 착용할 때 실행하는 함수
     /// </summary>
-    public void EquipItem()
+    public void EquipItem(GameObject owner, InventorySlot slot)
     {
-        throw new System.NotImplementedException();
+        IEquipTarget equipTarget = owner.GetComponent<IEquipTarget>();
+
+        if(equipTarget != null)
+        {            
+            equipTarget.CharacterEquipItem(EqiupPrefab);
+        }
     }
 
     /// <summary>
     /// 아이템 착용 해제할 때 실행하는 함수
     /// </summary>
-    public void UnEquipItem()
+    public void UnEquipItem(InventorySlot slot)
     {
         throw new System.NotImplementedException();
     }

@@ -292,9 +292,20 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 아이템 장착을 하면 실행하는 함수
+    /// </summary>
+    /// <param name="index">슬롯 인덱스</param>
     private void EquipItem(uint index)
     {
         Inventory[index].IsEquip = !Inventory[index].IsEquip;
+
+        IEquipable equipable = Inventory[index].SlotItemData as IEquipable;
+
+        if(equipable != null)
+        {
+            equipable.EquipItem(Inventory.Owner, Inventory[index]);
+        }
     }
 
     /// <summary>
