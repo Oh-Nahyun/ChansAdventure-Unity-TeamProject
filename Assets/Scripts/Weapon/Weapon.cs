@@ -58,6 +58,7 @@ public class Weapon : MonoBehaviour
     Animator animator;
     Character player;
     Sword sword;
+    Bow bow;
     Arrow arrow;
 
     private void Awake()
@@ -66,6 +67,7 @@ public class Weapon : MonoBehaviour
         animator = GetComponent<Animator>();
         player = GetComponent<Character>();
         sword = GetComponentInChildren<Sword>();
+        bow = GetComponentInChildren<Bow>();
         arrow = GetComponentInChildren<Arrow>();
     }
 
@@ -219,35 +221,99 @@ public class Weapon : MonoBehaviour
     }
 
     /// <summary>
-    /// 무기의 Collider를 켜는 함수 (Animation 설정용)
+    /// 무기 [검]의 Collider를 켜는 함수 (Animation 설정용)
     /// </summary>
-    public void WeaponColliderEnable()
+    public void SwordWeaponColliderEnable()
     {
         sword.SwordColliderEnable();
     }
 
     /// <summary>
-    /// 무기의 Collider를 끄는 함수 (Animation 설정용)
+    /// 무기 [검]의 Collider를 끄는 함수 (Animation 설정용)
     /// </summary>
-    public void WeaponColliderDisable()
+    public void SwordWeaponColliderDisable()
     {
         sword.SwordColliderDisable();
     }
 
     /// <summary>
-    /// 무기를 꺼내는 함수 (Animation 설정용)
+    /// 무기 [활]의 Collider를 켜는 함수 (Animation 설정용)
     /// </summary>
-    //public void WeaponOpen()
-    //{
-    //    sword.OpenSwordWeapon();
-    //}
+    public void BowWeaponColliderEnable()
+    {
+        bow.BowColliderEnable();
+    }
 
     /// <summary>
-    /// 무기를 넣는 함수 (Animation 설정용)
+    /// 무기 [활]의 Collider를 끄는 함수 (Animation 설정용)
     /// </summary>
-    //public void WeaponClose()
-    //{
-    //    sword.CloseSwordWeapon();
-    //}
+    public void BowWeaponColliderDisable()
+    {
+        bow.BowColliderDisable();
+    }
+
+    /// <summary>
+    /// 무기 [화살]의 Collider를 켜는 함수 (Animation 설정용)
+    /// </summary>
+    public void ArrowWeaponColliderEnable()
+    {
+        arrow.ArrowColliderEnable();
+    }
+
+    /// <summary>
+    /// 무기 [화살]의 Collider를 끄는 함수 (Animation 설정용)
+    /// </summary>
+    public void ArrowWeaponColliderDisable()
+    {
+        arrow.ArrowColliderDisable();
+    }
+
+    /// <summary>
+    /// 무기 [검]을 꺼내는 함수 (Animation 설정용)
+    /// </summary>
+    public void SwordWeaponOpen()
+    {
+        sword.OpenSwordWeapon();
+    }
+
+    /// <summary>
+    /// 무기 [검]을 넣는 함수 (Animation 설정용)
+    /// </summary>
+    public void SwordWeaponClose()
+    {
+        sword.CloseSwordWeapon();
+    }
+
+    /// <summary>
+    /// 무기 [활]을 꺼내는 함수 (Animation 설정용)
+    /// </summary>
+    public void BowWeaponOpen()
+    {
+        bow.OpenBowWeapon();
+    }
+
+    /// <summary>
+    /// 무기 [활]을 넣는 함수 (Animation 설정용)
+    /// </summary>
+    public void BowWeaponClose()
+    {
+        bow.CloseBowWeapon();
+    }
+
+    /// <summary>
+    /// 무기 [화살]을 꺼내는 함수 (Animation 설정용)
+    /// </summary>
+    public void ArrowWeaponOpen()
+    {
+        arrow.OpenArrow();
+    }
+
+    /// <summary>
+    /// 무기 [화살]을 넣는 함수 (Animation 설정용)
+    /// </summary>
+    public void ArrowWeaponClose()
+    {
+        arrow.CloseArrow();
+    }
 }
 

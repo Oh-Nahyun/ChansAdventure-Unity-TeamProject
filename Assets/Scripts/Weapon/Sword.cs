@@ -5,7 +5,7 @@ using UnityEngine;
 public class Sword : MonoBehaviour
 {
     /// <summary>
-    /// 칼의 Collider
+    /// 검의 Collider
     /// </summary>
     Collider swordCollider;
 
@@ -14,16 +14,16 @@ public class Sword : MonoBehaviour
         swordCollider = GetComponent<Collider>();
     }
 
-    //void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.CompareTag("Enemy"))
-    //    {
-
-    //    }
-    //}
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Enemy"))
+        {
+            // 적에게 검을 맞췄을 경우
+        }
+    }
 
     /// <summary>
-    /// 칼의 Collider를 켜는 함수 (Animation 설정용)
+    /// 검의 Collider를 켜는 함수 (Animation 설정용)
     /// </summary>
     public void SwordColliderEnable()
     {
@@ -31,7 +31,7 @@ public class Sword : MonoBehaviour
     }
 
     /// <summary>
-    /// 칼의 Collider를 끄는 함수 (Animation 설정용)
+    /// 검의 Collider를 끄는 함수 (Animation 설정용)
     /// </summary>
     public void SwordColliderDisable()
     {
@@ -39,7 +39,7 @@ public class Sword : MonoBehaviour
     }
 
     /// <summary>
-    /// 칼을 꺼내는 함수 (Animation 설정용)
+    /// 검을 꺼내는 함수 (Animation 설정용)
     /// </summary>
     public void OpenSwordWeapon()
     {
@@ -47,7 +47,7 @@ public class Sword : MonoBehaviour
     }
 
     /// <summary>
-    /// 칼을 넣는 함수 (Animation 설정용)
+    /// 검을 넣는 함수 (Animation 설정용)
     /// </summary>
     public void CloseSwordWeapon()
     {

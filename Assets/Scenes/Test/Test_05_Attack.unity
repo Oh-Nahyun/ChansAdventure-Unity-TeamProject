@@ -732,6 +732,21 @@ PrefabInstance:
       propertyPath: cameraRoot
       value: 
       objectReference: {fileID: 9123607082167490382}
+    - target: {fileID: 1516556305498391099, guid: 43a2fd51ec07d49f88733efbf29e1374,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1516556305498391099, guid: 43a2fd51ec07d49f88733efbf29e1374,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1516556305498391099, guid: 43a2fd51ec07d49f88733efbf29e1374,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2986671060760103729, guid: 43a2fd51ec07d49f88733efbf29e1374,
         type: 3}
       propertyPath: m_IsActive
@@ -745,7 +760,7 @@ PrefabInstance:
     - target: {fileID: 4407896292618656510, guid: 43a2fd51ec07d49f88733efbf29e1374,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4458046311431306130, guid: 43a2fd51ec07d49f88733efbf29e1374,
         type: 3}
@@ -800,7 +815,32 @@ PrefabInstance:
     - target: {fileID: 7964227083471875668, guid: 43a2fd51ec07d49f88733efbf29e1374,
         type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7985210636603285172, guid: 43a2fd51ec07d49f88733efbf29e1374,
+        type: 3}
+      propertyPath: m_UseGravity
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7985210636603285172, guid: 43a2fd51ec07d49f88733efbf29e1374,
+        type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8715029467671567394, guid: 43a2fd51ec07d49f88733efbf29e1374,
+        type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8715029467671567394, guid: 43a2fd51ec07d49f88733efbf29e1374,
+        type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9038979990117713595, guid: 43a2fd51ec07d49f88733efbf29e1374,
+        type: 3}
+      propertyPath: m_Name
+      value: LeftPoint
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1107,8 +1147,8 @@ SceneRoots:
   - {fileID: 1099649289}
   - {fileID: 3897626019995045108}
   - {fileID: 9123607082167490381}
-  - {fileID: 3894796908873760180}
   - {fileID: 2093092457}
   - {fileID: 1204170494}
   - {fileID: 957966972}
   - {fileID: 1051806281}
+  - {fileID: 3894796908873760180}
