@@ -11,15 +11,19 @@ public class InventoryDetailUI : MonoBehaviour
     TextMeshProUGUI itemDesc;
     TextMeshProUGUI itemPrice;
 
-    RectTransform rectTransform;
+    CanvasGroup canvasGroup;
 
     /// <summary>
     /// 임시 슬롯 UI창이 열렸는지 확인하는 프로퍼티 ( true : 열려있음 , false : 닫혀있음 )
     /// </summary>
     bool IsOpen => transform.localScale == Vector3.one;
 
+    float fadeInSpeed = 3f;
+
     void Start()
     {
+        canvasGroup = GetComponent<CanvasGroup>();
+
         Transform child = transform.GetChild(0);
         itemName = child.GetComponent<TextMeshProUGUI>();
         child = transform.GetChild(1);
@@ -31,7 +35,7 @@ public class InventoryDetailUI : MonoBehaviour
         itemDesc.text = $"아이템 설명";
         itemPrice.text = $"999999999";
 
-        CloseTempSlot();
+        CloseItemDetail();
     }
 
     void Update()
@@ -86,16 +90,30 @@ public class InventoryDetailUI : MonoBehaviour
     /// <summary>
     /// 임시 슬롯을 여는 함수
     /// </summary>
-    public void OpenTempSlot()
+    public void ShowItemDetail()
     {
-        transform.localScale = Vector3.one;
+        //canvasGroup.alpha = 1;
+        StartCoroutine(FadeInDetail());
     }
 
     /// <summary>
     /// 임시 슬롯을 닫는 함수
     /// </summary>
-    public void CloseTempSlot()
+    public void CloseItemDetail()
     {
-        transform.localScale = Vector3.zero;
+        StopAllCoroutines();
+        canvasGroup.alpha = 0;
+    }
+
+    IEnumerator FadeInDetail()
+    {
+        float timeElpased = 0;
+
+        while (timeElpased < 1f)
+        {
+            timeElpased += Time.deltaTime;
+            canvasGroup.alpha = timeElpased * fadeInSpeed;
+            yield return null;
+        }
     }
 }

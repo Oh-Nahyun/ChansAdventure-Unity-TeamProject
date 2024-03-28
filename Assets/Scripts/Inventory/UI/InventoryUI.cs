@@ -109,10 +109,13 @@ public class InventoryUI : MonoBehaviour
             uint targetSlotIndex = index;
             uint targetSlotItemCode = (uint)Inventory[index].SlotItemData.itemCode;
             int targetItemSlotCount = Inventory[index].CurrentItemCount;
+            bool targetIsEquip = Inventory[index].IsEquip;
+
 
             tempSlotUI.OpenTempSlot();
 
             Inventory.AccessTempSlot(targetSlotIndex, targetSlotItemCode, targetItemSlotCount);
+            Inventory.TempSlot.IsEquip = targetIsEquip;
             inventory[index].ClearItem();
         }
     }
@@ -141,12 +144,14 @@ public class InventoryUI : MonoBehaviour
                 return;
             }
 
+            // 슬롯 인덱스
             uint index = slotUI.InventorySlotData.SlotIndex;
             uint tempFromIndex = Inventory.TempSlot.FromIndex;
 
             // 임시 슬롯에 들어있는 내용
             uint tempSlotItemCode = (uint)Inventory.TempSlot.SlotItemData.itemCode;
             int tempSlotItemCount = Inventory.TempSlot.CurrentItemCount;
+            bool tempSlotIsEqiup = Inventory.TempSlot.IsEquip;
 
             if (Inventory[index].SlotItemData != null)   // 아이템이 들어있다.
             {
@@ -165,15 +170,22 @@ public class InventoryUI : MonoBehaviour
                 {
                     uint targetSlotItemCode = (uint)Inventory[index].SlotItemData.itemCode;
                     int targetSlotItemCount = Inventory[index].CurrentItemCount;
+                    bool targetSlotIsEquip = Inventory[index].IsEquip;
 
                     inventory[index].ClearItem();
                     Inventory.AccessTempSlot(index, tempSlotItemCode, tempSlotItemCount); // target 슬롯에 아이템 저장
+                    Inventory[index].IsEquip = tempSlotIsEqiup;
+
                     Inventory.AccessTempSlot(index, targetSlotItemCode, targetSlotItemCount); // target 슬롯에 있었던 아이템 내용 임시 슬롯에 저장
+                    Inventory.TempSlot.IsEquip = targetSlotIsEquip;
+
 
                     tempSlotItemCode = (uint)Inventory.TempSlot.SlotItemData.itemCode;
                     tempSlotItemCount = Inventory.TempSlot.CurrentItemCount;
+                    tempSlotIsEqiup = Inventory.TempSlot.IsEquip;
 
                     Inventory.AccessTempSlot(tempFromIndex, tempSlotItemCode, tempSlotItemCount);
+                    Inventory[tempFromIndex].IsEquip = tempSlotIsEqiup;
                 }
             }
             else
@@ -196,8 +208,10 @@ public class InventoryUI : MonoBehaviour
         uint fromIndex = Inventory.TempSlot.FromIndex;
         uint tempSlotItemCode = (uint)Inventory.TempSlot.SlotItemData.itemCode;
         int tempSlotItemCount = Inventory.TempSlot.CurrentItemCount;
+        bool tempSlotIsEquip = Inventory.TempSlot.IsEquip;
 
         Inventory.AccessTempSlot(fromIndex, tempSlotItemCode, tempSlotItemCount);
+        Inventory[fromIndex].IsEquip = tempSlotIsEquip;
         
         tempSlotUI.CloseTempSlot();
     }
@@ -215,7 +229,7 @@ public class InventoryUI : MonoBehaviour
             uint price = Inventory[index].SlotItemData.price;
 
             detailUI.SetDetailText(name, desc, price);
-            detailUI.OpenTempSlot();
+            detailUI.ShowItemDetail();
         }
     }
 
@@ -289,7 +303,7 @@ public class InventoryUI : MonoBehaviour
     private void OnCloseDetail()
     {
         detailUI.ClearText();
-        detailUI.CloseTempSlot();
+        detailUI.CloseItemDetail();
     }
     // UI 열기
     // UI 닫기

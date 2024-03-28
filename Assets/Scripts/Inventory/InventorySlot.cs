@@ -139,5 +139,6 @@ public class InventorySlot
     {
         SlotItemData = null;
         CurrentItemCount = 0;
+        IsEquip = false;
     }
 }

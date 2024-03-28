@@ -9,11 +9,17 @@ public class ItemData_Equipment : ItemData, IEquipable
     /// </summary>
     public GameObject EqiupPrefab;
 
+    /// <summary>
+    /// 아이템 착용할 때 실행하는 함수
+    /// </summary>
     public void EquipItem()
     {
         throw new System.NotImplementedException();
     }
 
+    /// <summary>
+    /// 아이템 착용 해제할 때 실행하는 함수
+    /// </summary>
     public void UnEquipItem()
     {
         throw new System.NotImplementedException();

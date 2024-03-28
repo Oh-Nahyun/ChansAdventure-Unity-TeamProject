@@ -11,7 +11,10 @@ public enum ItemCode
     potion = 0,
     apple,
     cheese,
-    Weapon
+    Hammer,
+    Sword,
+    Shield,
+    Postion
 }
 
 /// <summary>

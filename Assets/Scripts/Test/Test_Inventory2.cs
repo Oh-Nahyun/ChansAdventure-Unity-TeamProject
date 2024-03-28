@@ -32,6 +32,7 @@ public class Test_Inventory2 : TestInputBase
         inven.AddSlotItem(2, 1);
         inven.AddSlotItem(1, 3);
         inven.AddSlotItem(3, 1);
+        inven.AddSlotItem(4, 1);
 
         inven.TestShowInventory();
         ItemDataManager.Instance.InventoryUI.InitializeInventoryUI(inven);
