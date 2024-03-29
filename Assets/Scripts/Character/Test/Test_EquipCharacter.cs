@@ -5,6 +5,7 @@ using UnityEngine;
 public class Test_EquipCharacter : MonoBehaviour, IEquipTarget
 {
     public Transform equipmentPostion_R;
+    GameObject Equip_R;
 
     InventorySlot[] equipPart;
 
@@ -20,11 +21,11 @@ public class Test_EquipCharacter : MonoBehaviour, IEquipTarget
 
     public void CharacterEquipItem(GameObject equipment)
     {
-        Instantiate(equipment, equipmentPostion_R);
+        Equip_R = Instantiate(equipment, equipmentPostion_R);
     }
 
     public void CharacterUnequipItem()
     {
-        throw new System.NotImplementedException();
+        Destroy(Equip_R);        
     }
 }

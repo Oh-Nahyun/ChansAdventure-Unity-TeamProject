@@ -15,5 +15,5 @@ interface IEquipable
     /// <summary>
     /// 아이템 장착해제 하는 함수
     /// </summary>
-    public void UnEquipItem(InventorySlot slot);
+    public void UnEquipItem(GameObject owner);
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.UI.GridLayoutGroup;
 
 public class ItemData_Equipment : ItemData, IEquipable
 {
@@ -25,8 +26,13 @@ public class ItemData_Equipment : ItemData, IEquipable
     /// <summary>
     /// 아이템 착용 해제할 때 실행하는 함수
     /// </summary>
-    public void UnEquipItem(InventorySlot slot)
+    public void UnEquipItem(GameObject owner)
     {
-        throw new System.NotImplementedException();
+        IEquipTarget equipTarget = owner.GetComponent<IEquipTarget>();
+
+        if (equipTarget != null)
+        {
+            equipTarget.CharacterUnequipItem();
+        }
     }
 }

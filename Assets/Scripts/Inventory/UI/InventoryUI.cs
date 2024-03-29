@@ -300,11 +300,16 @@ public class InventoryUI : MonoBehaviour
     {
         Inventory[index].IsEquip = !Inventory[index].IsEquip;
 
+        bool isEqiup = Inventory[index].IsEquip;
+
         IEquipable equipable = Inventory[index].SlotItemData as IEquipable;
 
         if(equipable != null)
         {
-            equipable.EquipItem(Inventory.Owner, Inventory[index]);
+            if(isEqiup)
+                equipable.EquipItem(Inventory.Owner, Inventory[index]);
+            else if (!isEqiup)
+                equipable.UnEquipItem(Inventory.Owner/*Inventory[index]*/);
         }
     }
 
