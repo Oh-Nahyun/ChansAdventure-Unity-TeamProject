@@ -103,6 +103,16 @@ public class Weapon : MonoBehaviour
         inputActions.Weapon.Disable();
     }
 
+    private void Update()
+    {
+        //// 캐릭터가 마우스 왼쪽 버튼을 누르고 있는 경우
+        //if (Input.GetMouseButton(0))
+        //{
+        //    Camera.main.fieldOfView += 100.0f * Time.deltaTime;
+        //    //Debug.Log("Camera Zoom-In");
+        //}
+    }
+
     /// <summary>
     /// 무기 모드에 따른 공격 함수
     /// </summary>
