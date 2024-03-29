@@ -44,7 +44,7 @@ public class Weapon : MonoBehaviour
     /// <summary>
     /// [무기2-2] 화살
     /// </summary>
-    Transform arrowWeapon;
+    //Transform arrowWeapon;
 
     // 애니메이터용 해시값
     readonly int IsAttackHash = Animator.StringToHash("IsAttack");
@@ -77,9 +77,10 @@ public class Weapon : MonoBehaviour
         //leftHand = GameObject.Find("Character1_LeftHand").transform;
         swordWeapon = GameObject.FindWithTag("Sword").transform;
         bowWeapon = GameObject.FindWithTag("Bow").transform;
-        arrowWeapon = GameObject.FindWithTag("Arrow").transform;
+        //arrowWeapon = GameObject.FindWithTag("Arrow").transform;
         ShowWeapon(false, false);
-        arrow.CloseArrow();
+        //arrowWeapon.gameObject.SetActive(false);
+        //arrow.CloseArrow();
     }
 
     private void OnEnable()
@@ -268,52 +269,52 @@ public class Weapon : MonoBehaviour
         arrow.ArrowColliderDisable();
     }
 
-    /// <summary>
-    /// 무기 [검]을 꺼내는 함수 (Animation 설정용)
-    /// </summary>
-    public void SwordWeaponOpen()
-    {
-        sword.OpenSwordWeapon();
-    }
+    ///// <summary>
+    ///// 무기 [검]을 꺼내는 함수 (Animation 설정용)
+    ///// </summary>
+    //public void SwordWeaponOpen()
+    //{
+    //    sword.OpenSwordWeapon();
+    //}
 
-    /// <summary>
-    /// 무기 [검]을 넣는 함수 (Animation 설정용)
-    /// </summary>
-    public void SwordWeaponClose()
-    {
-        sword.CloseSwordWeapon();
-    }
+    ///// <summary>
+    ///// 무기 [검]을 넣는 함수 (Animation 설정용)
+    ///// </summary>
+    //public void SwordWeaponClose()
+    //{
+    //    sword.CloseSwordWeapon();
+    //}
 
-    /// <summary>
-    /// 무기 [활]을 꺼내는 함수 (Animation 설정용)
-    /// </summary>
-    public void BowWeaponOpen()
-    {
-        bow.OpenBowWeapon();
-    }
+    ///// <summary>
+    ///// 무기 [활]을 꺼내는 함수 (Animation 설정용)
+    ///// </summary>
+    //public void BowWeaponOpen()
+    //{
+    //    bow.OpenBowWeapon();
+    //}
 
-    /// <summary>
-    /// 무기 [활]을 넣는 함수 (Animation 설정용)
-    /// </summary>
-    public void BowWeaponClose()
-    {
-        bow.CloseBowWeapon();
-    }
+    ///// <summary>
+    ///// 무기 [활]을 넣는 함수 (Animation 설정용)
+    ///// </summary>
+    //public void BowWeaponClose()
+    //{
+    //    bow.CloseBowWeapon();
+    //}
 
-    /// <summary>
-    /// 무기 [화살]을 꺼내는 함수 (Animation 설정용)
-    /// </summary>
-    public void ArrowWeaponOpen()
-    {
-        arrow.OpenArrow();
-    }
+    ///// <summary>
+    ///// 무기 [화살]을 꺼내는 함수 (Animation 설정용)
+    ///// </summary>
+    //public void ArrowWeaponOpen()
+    //{
+    //    arrow.OpenArrow();
+    //}
 
-    /// <summary>
-    /// 무기 [화살]을 넣는 함수 (Animation 설정용)
-    /// </summary>
-    public void ArrowWeaponClose()
-    {
-        arrow.CloseArrow();
-    }
+    ///// <summary>
+    ///// 무기 [화살]을 넣는 함수 (Animation 설정용)
+    ///// </summary>
+    //public void ArrowWeaponClose()
+    //{
+    //    arrow.CloseArrow();
+    //}
 }
 

@@ -42,13 +42,13 @@ public class Arrow : MonoBehaviour
         transform.Translate(Time.deltaTime * arrowSpeed * Vector3.up); // 화살 발사
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Enemy"))
-        {
-            // 적에게 화살을 맞췄을 경우
-        }
-    }
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.CompareTag("Enemy"))
+    //    {
+    //        // 적에게 화살을 맞췄을 경우
+    //    }
+    //}
 
     /// <summary>
     /// 화살의 Collider를 켜는 함수 (Animation 설정용)

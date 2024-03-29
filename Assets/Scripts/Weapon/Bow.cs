@@ -14,13 +14,13 @@ public class Bow : MonoBehaviour
         bowCollider = GetComponent<Collider>();
     }
 
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Enemy"))
-        {
-            // 적에게 활을 맞췄을 경우
-        }
-    }
+    //void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.CompareTag("Enemy"))
+    //    {
+    //        // 적에게 활을 맞췄을 경우
+    //    }
+    //}
 
     /// <summary>
     /// 활의 Collider를 켜는 함수 (Animation 설정용)
