@@ -970,7 +970,6 @@ Transform:
   - {fileID: 5379298790295255007}
   - {fileID: 8876197881718552855}
   - {fileID: 3766378710816995429}
-  - {fileID: 2645758451387280521}
   - {fileID: 3956531013186301391}
   - {fileID: 7807475497913070951}
   m_Father: {fileID: 0}
@@ -986,9 +985,9 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: ae2d0144783343f47bb989b3950388bb, type: 3}
   m_Controller: {fileID: 9100000, guid: e7ac597cb39e9cc4594f32500e7f5304, type: 2}
-  m_CullingMode: 1
+  m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
@@ -1039,7 +1038,7 @@ MonoBehaviour:
   nameNPC: "\uC218\uC218\uAED8\uB07C\uC758 \uB178\uC778"
   selectId: 0
   isTalk: 0
-  isNPC: 0
+  isNPC: 1
   isItemChest: 0
   isWarp: 0
 --- !u!1 &1868850268983353406
@@ -1388,13 +1387,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2046359843638226561}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.0000002682209, y: 1.9852335e-23, z: 1.1102251e-16, w: 1}
+  m_LocalRotation: {x: -0.70710677, y: 6.617445e-24, z: 1.9049501e-23, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9104440053018985947}
-  m_Father: {fileID: 575523881188322701}
+  m_Father: {fileID: 8361873375513481517}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2056677942934951969
 GameObject:
@@ -1907,7 +1906,8 @@ Transform:
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2645758451387280521}
   m_Father: {fileID: 575523881188322701}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2775167379777394240
@@ -3726,7 +3726,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 3.0000005}
+  m_AnchoredPosition: {x: 0, y: 3}
   m_SizeDelta: {x: 4, y: 0.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &6902630549224158122
@@ -4915,7 +4915,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3766378710816995429
 Transform:
   m_ObjectHideFlags: 0
