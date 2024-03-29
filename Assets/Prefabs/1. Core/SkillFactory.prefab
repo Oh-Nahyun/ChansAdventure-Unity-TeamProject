@@ -31,6 +31,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3152849694487623338}
+  - {fileID: 4554718913155129236}
   - {fileID: 4552940423234775943}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -189,6 +190,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7552353559269650491, guid: 93561a7ccc3211144a13022052cf7e37,
+        type: 3}
+      propertyPath: poolSize
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8039446728825051599, guid: 93561a7ccc3211144a13022052cf7e37,
         type: 3}
       propertyPath: m_Name
@@ -204,4 +210,78 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1021797718733779695, guid: 93561a7ccc3211144a13022052cf7e37,
     type: 3}
   m_PrefabInstance: {fileID: 3531223076526266728}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5583089945060453738
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2782178162671566551}
+    m_Modifications:
+    - target: {fileID: 2972984018678823587, guid: 5c26d8979cccdec4dba2d4de758a526c,
+        type: 3}
+      propertyPath: m_Name
+      value: 'RemoteBombCubePool '
+      objectReference: {fileID: 0}
+    - target: {fileID: 8236663710559466238, guid: 5c26d8979cccdec4dba2d4de758a526c,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8236663710559466238, guid: 5c26d8979cccdec4dba2d4de758a526c,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8236663710559466238, guid: 5c26d8979cccdec4dba2d4de758a526c,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8236663710559466238, guid: 5c26d8979cccdec4dba2d4de758a526c,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8236663710559466238, guid: 5c26d8979cccdec4dba2d4de758a526c,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8236663710559466238, guid: 5c26d8979cccdec4dba2d4de758a526c,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8236663710559466238, guid: 5c26d8979cccdec4dba2d4de758a526c,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8236663710559466238, guid: 5c26d8979cccdec4dba2d4de758a526c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8236663710559466238, guid: 5c26d8979cccdec4dba2d4de758a526c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8236663710559466238, guid: 5c26d8979cccdec4dba2d4de758a526c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5c26d8979cccdec4dba2d4de758a526c, type: 3}
+--- !u!4 &4554718913155129236 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8236663710559466238, guid: 5c26d8979cccdec4dba2d4de758a526c,
+    type: 3}
+  m_PrefabInstance: {fileID: 5583089945060453738}
   m_PrefabAsset: {fileID: 0}

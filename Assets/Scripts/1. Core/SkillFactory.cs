@@ -6,12 +6,14 @@ using UnityEngine;
 public enum SkillType
 {
     RemoteBombPool = 0,
+    RemoteBombCubePool,
     MagnetCatchPool,
 }
 
 public class SkillFactory : Singleton<SkillFactory>
 {
     RemoteBombPool remoteBombPool;
+    RemoteBombCubePool remoteBombCubePool;
     MagnetCatchPool magnetCatchPool;
 
     protected override void OnInitialize()
@@ -20,6 +22,8 @@ public class SkillFactory : Singleton<SkillFactory>
 
         remoteBombPool = GetComponentInChildren<RemoteBombPool>();
         if (remoteBombPool != null) remoteBombPool.Initialize();
+        remoteBombCubePool = GetComponentInChildren<RemoteBombCubePool>();
+        if (remoteBombCubePool != null) remoteBombCubePool.Initialize();
         magnetCatchPool = GetComponentInChildren<MagnetCatchPool>();
         if (magnetCatchPool != null) magnetCatchPool.Initialize();
     }
@@ -39,6 +43,9 @@ public class SkillFactory : Singleton<SkillFactory>
             case SkillType.RemoteBombPool:
                 result = remoteBombPool.GetObject(position, euler).gameObject;
                 break;
+            case SkillType.RemoteBombCubePool:
+                result = remoteBombCubePool.GetObject(position, euler).gameObject;
+                break;
             case SkillType.MagnetCatchPool:
                 result = magnetCatchPool.GetObject(position, euler).gameObject;
                 break;
@@ -54,6 +61,10 @@ public class SkillFactory : Singleton<SkillFactory>
     public RemoteBomb GetRemoteBomb(Vector3? position = null, float angle = 0.0f)
     {
         return remoteBombPool.GetObject(position, angle * Vector3.forward);
+    }
+    public RemoteBombCube GetRemoteBombCube(Vector3? position = null, float angle = 0.0f)
+    {
+        return remoteBombCubePool.GetObject(position, angle * Vector3.forward);
     }
     public MagnetCatch GetMagnetCatch(Vector3? position = null, float angle = 0.0f)
     {

@@ -125,6 +125,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ScrollY"",
+                    ""type"": ""Value"",
+                    ""id"": ""bb4d2fb3-752c-4b75-bda2-e05a994cd933"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -292,6 +301,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Cancel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9e541c2a-acd6-41d6-96af-5a56f03ebc26"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KM"",
+                    ""action"": ""ScrollY"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -328,6 +348,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_OnSkill = m_Player.FindAction("OnSkill", throwIfNotFound: true);
         m_Player_Throw = m_Player.FindAction("Throw", throwIfNotFound: true);
         m_Player_Cancel = m_Player.FindAction("Cancel", throwIfNotFound: true);
+        m_Player_ScrollY = m_Player.FindAction("ScrollY", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -400,6 +421,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_OnSkill;
     private readonly InputAction m_Player_Throw;
     private readonly InputAction m_Player_Cancel;
+    private readonly InputAction m_Player_ScrollY;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -415,6 +437,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @OnSkill => m_Wrapper.m_Player_OnSkill;
         public InputAction @Throw => m_Wrapper.m_Player_Throw;
         public InputAction @Cancel => m_Wrapper.m_Player_Cancel;
+        public InputAction @ScrollY => m_Wrapper.m_Player_ScrollY;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -457,6 +480,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Cancel.started += instance.OnCancel;
             @Cancel.performed += instance.OnCancel;
             @Cancel.canceled += instance.OnCancel;
+            @ScrollY.started += instance.OnScrollY;
+            @ScrollY.performed += instance.OnScrollY;
+            @ScrollY.canceled += instance.OnScrollY;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -494,6 +520,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Cancel.started -= instance.OnCancel;
             @Cancel.performed -= instance.OnCancel;
             @Cancel.canceled -= instance.OnCancel;
+            @ScrollY.started -= instance.OnScrollY;
+            @ScrollY.performed -= instance.OnScrollY;
+            @ScrollY.canceled -= instance.OnScrollY;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -533,5 +562,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnOnSkill(InputAction.CallbackContext context);
         void OnThrow(InputAction.CallbackContext context);
         void OnCancel(InputAction.CallbackContext context);
+        void OnScrollY(InputAction.CallbackContext context);
     }
 }

@@ -15,36 +15,20 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    PlayerVCam playerCam;
-    public PlayerVCam PlayerCam
+    CameraManager cameraManager;
+    public CameraManager Cam
     {
         get
         {
-            if (playerCam == null)
-            {
-                playerCam = GameObject.Find("PlayerVCam").GetComponent<PlayerVCam>();
-            }
-            return playerCam;
-        }
-    }
-
-    SkillVCam skillCam;
-    public SkillVCam SkillCam
-    {
-        get
-        {
-            if(skillCam == null)
-            {
-                skillCam = GameObject.Find("SkillVCam").GetComponent<SkillVCam>();
-            }
-            return skillCam;
+            if(cameraManager == null)
+                cameraManager = GetComponent<CameraManager>();
+            return cameraManager;
         }
     }
 
     protected override void OnInitialize()
     {
         player = FindAnyObjectByType<Player>();
-        skillCam = GameObject.Find("SkillVCam").GetComponent<SkillVCam>();
-        playerCam = GameObject.Find("PlayerVCam").GetComponent<PlayerVCam>();
+        cameraManager = GetComponent<CameraManager>();
     }
 }

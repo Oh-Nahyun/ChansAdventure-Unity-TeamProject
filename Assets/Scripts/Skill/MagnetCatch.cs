@@ -1,5 +1,13 @@
 using System.Collections;
 using UnityEngine;
+using Unity.VisualScripting;
+using System;
+using UnityEngine.InputSystem;
+using System.Security.Cryptography;
+
+
+
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -7,104 +15,166 @@ using UnityEditor;
 
 public class MagnetCatch : Skill
 {
-    public float magnetDistance;
-    public float playerRotateSpeed = 2.0f;
-    public float moveXSpeed = 5.0f;
-    public float moveYSpeed = 2.0f;
-    public float moveZSpeed = 1.0f;
+    [Header("마그넷캐치 데이터")]
+    public float magnetDistance = 5.0f;
+    public float targetMoveSpeed = 5.0f;
+    public float verticalSpeed = 2.0f;
+    public float horizontalDistanceAtOnce = 0.2f;
 
-    bool IsMagnetic => target != null;
-    bool activatedSkill = false;
+    bool isMagnetic = false;
 
-    Vector3 cameraDir = Vector3.zero;
+    float preYDir = 0;
 
-    Transform destinationX;
+    Vector2 curMousePos = Vector2.zero;
+    Vector2 preMousePos = Vector2.zero;
 
-    ObjectEditor target;
-    Transform targetTransform;
-    Transform targetOriginParent;
-    Rigidbody targetRigid;
+    Transform targetDestination;
+
+    Transform target;
+    ReactionObject reactionTarget;
     Vector3 hitPoint;
-    PlayerVCam vcam;
+    MagnetVCam magnetVcam;
     Cinemachine.CinemachineTargetGroup targetGroup;
 
+    Vector3 targetOriginRotate;
 
     readonly Vector3 Center = new Vector3(0.5f, 0.5f, 0.0f);
-    readonly Vector3 Top = new Vector3(0f, 1.0f, 0f);
 
+    Action magnetCamOn;
+    Action magnetCamOff;
 
-    private void Awake()
+    protected override void Awake()
     {
-        destinationX = transform.GetChild(0);
+        base.Awake();
+        targetDestination = transform.GetChild(1);
         targetGroup = GetComponentInChildren<Cinemachine.CinemachineTargetGroup>();
         
     }
-    /*protected override void Start()
+
+    
+    protected override void Start()
     {
         base.Start();
-        if (vcam == null)
+
+        if(owner != null)
         {
-            vcam = GameManager.Instance.PlayerCam;
+            owner.onScroll += SetDestinationScroll;
         }
-        vcam.onMouseMove += CameraMove;
-    }*/
+        
+    }
 
     protected override void OnEnable()
     {
         base.OnEnable();
-        if(vcam == null)
+        if(magnetVcam == null)
         {
-            vcam = GameManager.Instance.PlayerCam;
+            magnetVcam = GameManager.Instance.Cam.MagnetCam;
         }
 
+
+        isActivate = false;
+        isMagnetic = false;
+
+        magnetCamOn = magnetVcam.OnSkillCamera;
+        magnetCamOn += () => magnetVcam.SetLookAtTransform(targetGroup.transform);
+        magnetCamOff = magnetVcam.OffSkillCamera;
+
+        targetGroup.m_Targets[1].target = owner.transform;
+
+        StartCoroutine(TargetCheck());
+    }
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+        StopAllCoroutines();
+        reactionTarget = null;
+        target = null;
     }
 
     private void FixedUpdate()
     {
-        if(activatedSkill)
+        if(isActivate)
         {
-            MoveTarget();
+            // 플레이어의 방향 설정
+            Vector3 euler = owner.transform.rotation.eulerAngles;
+            owner.LookForwardPlayer(Camera.main.transform.forward);
+            euler = owner.transform.rotation.eulerAngles - euler;
+
+            DestinationMover();
+            reactionTarget.AttachRotate(euler);
+        }
+    }
+    void DestinationMover()
+    {
+
+        preMousePos = curMousePos;
+        curMousePos = Mouse.current.position.value;
+        Vector2 mouseDir = (curMousePos - preMousePos).normalized;
+        if(mouseDir.y * preYDir >= 0f)
+        {
+            targetDestination.position += new Vector3(0, mouseDir.y * Time.fixedDeltaTime * verticalSpeed, 0);
+        }
+        else
+        {
+            Vector3 pos = targetDestination.position;
+            pos.y = target.position.y;
+            targetDestination.position = pos;
+        }
+
+        preYDir = mouseDir.y > 0 ? 1 : -1;
+    }
+
+    protected override void OnSKillAction()
+    {
+        base.OnSKillAction();
+        
+    }
+    protected override void UseSkillAction()
+    {
+        if (isMagnetic)
+        {
+            StopAllCoroutines();
+            base.UseSkillAction();
+            magnetCamOn?.Invoke();
+
+            targetDestination.position = hitPoint;
+            targetDestination.parent = owner.transform;      // 목적지의 부모를 플레이어로 설정해서 타켓을 플레이어의 정면에 위치하게하기
+
+            targetGroup.m_Targets[0].target = target;
+
+            targetOriginRotate = target.rotation.eulerAngles;
+
+            curMousePos = Mouse.current.position.value;
+
+            reactionTarget.AttachMagnet(targetDestination, targetMoveSpeed);
         }
     }
 
-    public override void OnSkillAction()
+    protected override void OffSKillAction()
     {
-        base.OnSkillAction();
-        Debug.Log("마그넷");
-        StartCoroutine(TargetCheck());
-    }
-    public override void UseSkillAction()
-    {
-        base.UseSkillAction();
-        StopAllCoroutines();
-        if (IsMagnetic && !activatedSkill)
+        magnetCamOff?.Invoke();
+        if (reactionTarget != null)
         {
-            //vcam.
-            destinationX.position = hitPoint;
-            destinationX.parent = owner.transform.GetChild(1);
-
-            targetGroup.m_Targets[0].target = targetTransform;
-            //targetOriginParent = targetTransform.parent;
-            //targetTransform.parent = destinationX;
-            targetRigid = targetTransform.GetComponent<Rigidbody>();
-            //target.OnSkillAffect(skillName);
-
-            activatedSkill = true;
+            reactionTarget.DettachMagnet();
         }
+
+
+        reactionTarget = null;
+        target = null;
+        isActivate = false;
+
+        targetDestination.parent = transform;
+
+        base.OffSKillAction();
     }
 
-    public override void OffSkillAction()
+    void SetDestinationScroll(float scrollY)
     {
-        base.OffSkillAction();
-        if (activatedSkill)
-        {
-            //target.FinishSkillAffect(skillName);
-            target = null;
-            activatedSkill = false;
-            //targetTransform.parent = targetOriginParent;
-
-            destinationX.parent = transform;
-        }
+        Vector3 pos = targetDestination.localPosition;
+        float y = scrollY > 0 ? 1 : -1;
+        pos.z += y * horizontalDistanceAtOnce;
+        targetDestination.localPosition = pos;
     }
 
     IEnumerator TargetCheck()
@@ -112,12 +182,15 @@ public class MagnetCatch : Skill
         while (true) {
         Ray ray = Camera.main.ViewportPointToRay(Center);
             Physics.Raycast(ray, out RaycastHit hit, magnetDistance);
-            targetTransform = hit.transform;
-            if (targetTransform != null)
+            target = hit.transform;
+            if (target != null)
             {
-                target = targetTransform.GetComponent<ObjectEditor>();
-                if (IsMagnetic)
+                reactionTarget = target.GetComponent<ReactionObject>();
+                
+                isMagnetic = (reactionTarget != null) && (reactionTarget.IsMagnetic);
+                if (isMagnetic)
                 {
+                    //hitPoint = hit.collider.bounds.center;
                     hitPoint = hit.point;
                 }
             }
@@ -126,22 +199,7 @@ public class MagnetCatch : Skill
         }
     }
 
-    void MoveTarget()
-    {
 
-        float dirX = Camera.main.ViewportToWorldPoint(Center).x - targetTransform.position.x * moveXSpeed;
-        float dirY = cameraDir.y * moveYSpeed;
-        float dirZ = 0f;
-
-        Vector3 dir = new Vector3(dirX, dirY, dirZ);
-
-        targetRigid.MovePosition(targetRigid.position + dir * Time.fixedDeltaTime);
-    }
-
-    void CameraMove(Vector3 pos)
-    {
-        cameraDir = pos;
-    }
 
 #if UNITY_EDITOR
     private void OnDrawGizmos()
@@ -160,15 +218,15 @@ public class MagnetCatch : Skill
 
     public void TestStartSkill()
     {
-        OnSkillAction();
+        OnSkill();
     }
     public void TestUseSkill()
     {
-        UseSkillAction();
+        UseSkill();
     }
     public void TestFinishSkill()
     {
-        OffSkillAction();
+        OffSkill();
     }
 #endif
 }

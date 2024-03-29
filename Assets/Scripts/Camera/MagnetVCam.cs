@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class MagnetVCam : SkillVCam
 {
-    protected override void StartSkillCamera()
-    { 
+    public override void OffSkillCamera()
+    {
+        base.OffSkillCamera();
+        //VCam.LookAt = null;
     }
 
-    protected override void UsingSkillCamera()
+    public void SetLookAtTransform(Transform lookAt)
     {
-        VCam.Priority = 20;
+        VCam.LookAt = lookAt;
     }
 }
