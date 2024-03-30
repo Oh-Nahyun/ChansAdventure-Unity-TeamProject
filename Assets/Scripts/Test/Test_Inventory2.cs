@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Test_Inventory2 : TestInputBase
+public class Test_Inventory2 : TestBase
 {
     public GameObject Test_Player;
 
@@ -40,7 +40,7 @@ public class Test_Inventory2 : TestInputBase
         ItemDataManager.Instance.InventoryUI.InitializeInventoryUI(inven);
     }
 
-    protected override void OnKey1Input(InputAction.CallbackContext context)
+    protected override void OnTest1(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
@@ -49,7 +49,7 @@ public class Test_Inventory2 : TestInputBase
         }
     }
 
-    protected override void OnKey2Input(InputAction.CallbackContext context)
+    protected override void OnTest2(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
@@ -58,7 +58,7 @@ public class Test_Inventory2 : TestInputBase
         }
     }
 
-    protected override void OnKey3Input(InputAction.CallbackContext context)
+    protected override void OnTest3(InputAction.CallbackContext context)
     {
         if(context.performed)
         {
@@ -67,7 +67,7 @@ public class Test_Inventory2 : TestInputBase
         }
     }
 
-    protected override void OnKey4Input(InputAction.CallbackContext context)
+    protected override void OnTest4(InputAction.CallbackContext context)
     {
         if(context.performed)
         {
