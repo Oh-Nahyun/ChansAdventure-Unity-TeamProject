@@ -4,15 +4,27 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
-    Character player;
-    public Character Player => player;
+    Player player;
+    public Player Player => player;
 
     Weapon weapon;
     public Weapon Weapon => weapon;
 
+    CameraManager cameraManager;
+    public CameraManager Cam
+    {
+        get
+        {
+            if (cameraManager == null)
+                cameraManager = GetComponent<CameraManager>();
+            return cameraManager;
+        }
+    }
+
     protected override void OnInitialize()
     {
-        player = FindAnyObjectByType<Character>();
+        player = FindAnyObjectByType<Player>();
         weapon = FindAnyObjectByType<Weapon>();
+        cameraManager = GetComponent<CameraManager>();
     }
 }

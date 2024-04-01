@@ -31,9 +31,9 @@ public class Factory : Singleton<Factory>
         GameObject result = null;
         switch (type)
         {
-            case PoolObjectType.Slime:
+            /*case PoolObjectType.Slime:
                 //result = slimePool.GetObject(position, euler).gameObject;
-                break;
+                break;*/
         }
 
         return result;

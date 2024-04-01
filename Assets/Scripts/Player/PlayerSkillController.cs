@@ -10,7 +10,7 @@ public class PlayerSkillController : MonoBehaviour
 {
     Transform handRootTracker;
     public Transform HandRoot => handRootTracker;
-    Skill_Player player;
+    Player player;
 
     public Action onSKillAction;
     public Action useSkillAction;
@@ -39,7 +39,6 @@ public class PlayerSkillController : MonoBehaviour
         }
         else
         {
-
             player.onSkillSelect += ConnectSkill;
 
             player.onSkill += () => onSKillAction?.Invoke();
@@ -48,7 +47,6 @@ public class PlayerSkillController : MonoBehaviour
             player.onCancel += CancelSkill;
 
             //onSKillAction += OnSkill;
-
         }
     }
 

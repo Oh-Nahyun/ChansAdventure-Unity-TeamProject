@@ -56,7 +56,7 @@ public class Weapon : MonoBehaviour
     // 컴포넌트들
     PlayerinputActions inputActions;
     Animator animator;
-    Character player;
+    Player player;
     Sword sword;
     Bow bow;
     Arrow arrow;
@@ -65,7 +65,7 @@ public class Weapon : MonoBehaviour
     {
         inputActions = new PlayerinputActions();
         animator = GetComponent<Animator>();
-        player = GetComponent<Character>();
+        player = GetComponent<Player>();
         sword = GetComponentInChildren<Sword>();
         bow = GetComponentInChildren<Bow>();
         arrow = GetComponentInChildren<Arrow>();

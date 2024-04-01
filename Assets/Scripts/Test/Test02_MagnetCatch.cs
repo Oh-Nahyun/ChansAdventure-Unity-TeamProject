@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Test02_MagnetCatch : Skill_TestBase
+public class Test02_MagnetCatch : TestBase
 {
     public MagnetCatch magnet;
-    Skill_Player player;
+    Player player;
 
     private void Start()
     {

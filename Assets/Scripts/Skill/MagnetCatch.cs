@@ -48,8 +48,7 @@ public class MagnetCatch : Skill
     {
         base.Awake();
         targetDestination = transform.GetChild(1);
-        targetGroup = GetComponentInChildren<Cinemachine.CinemachineTargetGroup>();
-        
+        targetGroup = GetComponentInChildren<Cinemachine.CinemachineTargetGroup>();        
     }
 
     
@@ -60,8 +59,7 @@ public class MagnetCatch : Skill
         if(owner != null)
         {
             owner.onScroll += SetDestinationScroll;
-        }
-        
+        }        
     }
 
     protected override void OnEnable()

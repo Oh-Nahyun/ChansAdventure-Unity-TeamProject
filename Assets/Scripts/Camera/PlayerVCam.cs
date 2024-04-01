@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Skill_PlayerVCam : MonoBehaviour
+public class PlayerVCam : MonoBehaviour
 {
 
     protected CinemachineVirtualCamera vCam;
@@ -14,7 +14,7 @@ public class Skill_PlayerVCam : MonoBehaviour
     protected Cinemachine3rdPersonFollow personFollow;
     public Vector3 Offset => personFollow.ShoulderOffset;
 
-    protected Skill_Player player;
+    protected Player player;
 
     readonly protected Vector3 Center = new Vector3(0.5f, 0.5f, 0.0f);
 

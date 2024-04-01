@@ -3346,18 +3346,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 3244460117168799998}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a529f798a32d7494fb6ed9999d949b07, type: 3}
+  m_Script: {fileID: 11500000, guid: f0b88998dee0c48c789769aa7d1889d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   walkSpeed: 3
   runSpeed: 7
   currentSpeed: 0
-  turnSpeed: 10
-  slidePower: 5
+  rotateSpeed: 180
   jumpPower: 5
-  isLook: 0
-  cameraRoot: {fileID: 0}
-  followCamRotatePower: 1
+  throwPower: 5
+  liftRadius: 0.5
+  pickUpHeightRange: 0.5
 --- !u!114 &2856233022852273620
 MonoBehaviour:
   m_ObjectHideFlags: 0

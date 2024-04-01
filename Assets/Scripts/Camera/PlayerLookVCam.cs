@@ -7,7 +7,7 @@ public class PlayerLookVCam : MonoBehaviour
     /// <summary>
     /// 플레이어
     /// </summary>
-    Character player;
+    Player player;
 
     /// <summary>
     /// 플레이어와 카메라간의 거리
@@ -16,7 +16,7 @@ public class PlayerLookVCam : MonoBehaviour
 
     void Awake()
     {
-        player = FindAnyObjectByType<Character>();
+        player = FindAnyObjectByType<Player>();
     }
 
     void Update()

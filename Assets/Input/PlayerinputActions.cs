@@ -322,6 +322,214 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Skill"",
+            ""id"": ""e54fc67d-a6ad-4783-847d-7e97276f3e1c"",
+            ""actions"": [
+                {
+                    ""name"": ""LeftClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""f4794312-4302-42a4-b52a-b82a3c240ed5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RightClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""30e7c0a1-24db-4cc1-981e-5f66af95b89d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Skill1"",
+                    ""type"": ""Button"",
+                    ""id"": ""21b36eef-e7db-4809-8979-1c87349829a4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Skill2"",
+                    ""type"": ""Button"",
+                    ""id"": ""42c8a9a8-d984-4e74-a6e4-383e19d21016"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Skill3"",
+                    ""type"": ""Button"",
+                    ""id"": ""c350479b-dd6b-4903-bc14-b63cc34eac9a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Skill4"",
+                    ""type"": ""Button"",
+                    ""id"": ""6d638291-8f1c-4629-8f7d-b4f6196e8baa"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Skill5"",
+                    ""type"": ""Button"",
+                    ""id"": ""67223df8-1be3-42bf-babf-c3ee5cb48441"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OnSkill"",
+                    ""type"": ""Button"",
+                    ""id"": ""60905c9a-992f-4f3b-9071-9d76f0bc536b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Throw"",
+                    ""type"": ""Button"",
+                    ""id"": ""08642136-06f5-4526-8952-f3e9aaa600b1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Cancel"",
+                    ""type"": ""Button"",
+                    ""id"": ""671513dc-7c0c-4bb5-a430-9896a8b19779"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""6320138e-cdc3-4519-beb6-8d32b8aef00e"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KM"",
+                    ""action"": ""LeftClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4c71cf94-8682-4921-ac9f-68cf2577396f"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KM"",
+                    ""action"": ""RightClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""347c7bd1-c4c6-4f6b-9354-31d50c913752"",
+                    ""path"": ""<Keyboard>/f1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KM"",
+                    ""action"": ""Skill1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f46d9ffb-11bb-4b12-92ec-effeb9bdf7e0"",
+                    ""path"": ""<Keyboard>/f2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KM"",
+                    ""action"": ""Skill2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""34bdc270-7b56-4d98-811c-92495900017b"",
+                    ""path"": ""<Keyboard>/f3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KM"",
+                    ""action"": ""Skill3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""52c43765-ec52-4656-9a89-4bfde80f2afb"",
+                    ""path"": ""<Keyboard>/f4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KM"",
+                    ""action"": ""Skill4"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ffa5c981-273b-4b28-a2c5-f6ccc757740d"",
+                    ""path"": ""<Keyboard>/f5"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KM"",
+                    ""action"": ""Skill5"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bc678cd6-6a90-41d1-a3bf-e064a02d07d6"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KM"",
+                    ""action"": ""OnSkill"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b1d2cfa1-3ff7-43a8-9b47-ed17c2968405"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Throw"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""495774ce-268f-485c-bf5e-7c59b7a89a23"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KM"",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -359,6 +567,18 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         m_Weapon_Attack = m_Weapon.FindAction("Attack", throwIfNotFound: true);
         m_Weapon_Change = m_Weapon.FindAction("Change", throwIfNotFound: true);
         m_Weapon_Load = m_Weapon.FindAction("Load", throwIfNotFound: true);
+        // Skill
+        m_Skill = asset.FindActionMap("Skill", throwIfNotFound: true);
+        m_Skill_LeftClick = m_Skill.FindAction("LeftClick", throwIfNotFound: true);
+        m_Skill_RightClick = m_Skill.FindAction("RightClick", throwIfNotFound: true);
+        m_Skill_Skill1 = m_Skill.FindAction("Skill1", throwIfNotFound: true);
+        m_Skill_Skill2 = m_Skill.FindAction("Skill2", throwIfNotFound: true);
+        m_Skill_Skill3 = m_Skill.FindAction("Skill3", throwIfNotFound: true);
+        m_Skill_Skill4 = m_Skill.FindAction("Skill4", throwIfNotFound: true);
+        m_Skill_Skill5 = m_Skill.FindAction("Skill5", throwIfNotFound: true);
+        m_Skill_OnSkill = m_Skill.FindAction("OnSkill", throwIfNotFound: true);
+        m_Skill_Throw = m_Skill.FindAction("Throw", throwIfNotFound: true);
+        m_Skill_Cancel = m_Skill.FindAction("Cancel", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -588,6 +808,124 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         }
     }
     public WeaponActions @Weapon => new WeaponActions(this);
+
+    // Skill
+    private readonly InputActionMap m_Skill;
+    private List<ISkillActions> m_SkillActionsCallbackInterfaces = new List<ISkillActions>();
+    private readonly InputAction m_Skill_LeftClick;
+    private readonly InputAction m_Skill_RightClick;
+    private readonly InputAction m_Skill_Skill1;
+    private readonly InputAction m_Skill_Skill2;
+    private readonly InputAction m_Skill_Skill3;
+    private readonly InputAction m_Skill_Skill4;
+    private readonly InputAction m_Skill_Skill5;
+    private readonly InputAction m_Skill_OnSkill;
+    private readonly InputAction m_Skill_Throw;
+    private readonly InputAction m_Skill_Cancel;
+    public struct SkillActions
+    {
+        private @PlayerinputActions m_Wrapper;
+        public SkillActions(@PlayerinputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @LeftClick => m_Wrapper.m_Skill_LeftClick;
+        public InputAction @RightClick => m_Wrapper.m_Skill_RightClick;
+        public InputAction @Skill1 => m_Wrapper.m_Skill_Skill1;
+        public InputAction @Skill2 => m_Wrapper.m_Skill_Skill2;
+        public InputAction @Skill3 => m_Wrapper.m_Skill_Skill3;
+        public InputAction @Skill4 => m_Wrapper.m_Skill_Skill4;
+        public InputAction @Skill5 => m_Wrapper.m_Skill_Skill5;
+        public InputAction @OnSkill => m_Wrapper.m_Skill_OnSkill;
+        public InputAction @Throw => m_Wrapper.m_Skill_Throw;
+        public InputAction @Cancel => m_Wrapper.m_Skill_Cancel;
+        public InputActionMap Get() { return m_Wrapper.m_Skill; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(SkillActions set) { return set.Get(); }
+        public void AddCallbacks(ISkillActions instance)
+        {
+            if (instance == null || m_Wrapper.m_SkillActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_SkillActionsCallbackInterfaces.Add(instance);
+            @LeftClick.started += instance.OnLeftClick;
+            @LeftClick.performed += instance.OnLeftClick;
+            @LeftClick.canceled += instance.OnLeftClick;
+            @RightClick.started += instance.OnRightClick;
+            @RightClick.performed += instance.OnRightClick;
+            @RightClick.canceled += instance.OnRightClick;
+            @Skill1.started += instance.OnSkill1;
+            @Skill1.performed += instance.OnSkill1;
+            @Skill1.canceled += instance.OnSkill1;
+            @Skill2.started += instance.OnSkill2;
+            @Skill2.performed += instance.OnSkill2;
+            @Skill2.canceled += instance.OnSkill2;
+            @Skill3.started += instance.OnSkill3;
+            @Skill3.performed += instance.OnSkill3;
+            @Skill3.canceled += instance.OnSkill3;
+            @Skill4.started += instance.OnSkill4;
+            @Skill4.performed += instance.OnSkill4;
+            @Skill4.canceled += instance.OnSkill4;
+            @Skill5.started += instance.OnSkill5;
+            @Skill5.performed += instance.OnSkill5;
+            @Skill5.canceled += instance.OnSkill5;
+            @OnSkill.started += instance.OnOnSkill;
+            @OnSkill.performed += instance.OnOnSkill;
+            @OnSkill.canceled += instance.OnOnSkill;
+            @Throw.started += instance.OnThrow;
+            @Throw.performed += instance.OnThrow;
+            @Throw.canceled += instance.OnThrow;
+            @Cancel.started += instance.OnCancel;
+            @Cancel.performed += instance.OnCancel;
+            @Cancel.canceled += instance.OnCancel;
+        }
+
+        private void UnregisterCallbacks(ISkillActions instance)
+        {
+            @LeftClick.started -= instance.OnLeftClick;
+            @LeftClick.performed -= instance.OnLeftClick;
+            @LeftClick.canceled -= instance.OnLeftClick;
+            @RightClick.started -= instance.OnRightClick;
+            @RightClick.performed -= instance.OnRightClick;
+            @RightClick.canceled -= instance.OnRightClick;
+            @Skill1.started -= instance.OnSkill1;
+            @Skill1.performed -= instance.OnSkill1;
+            @Skill1.canceled -= instance.OnSkill1;
+            @Skill2.started -= instance.OnSkill2;
+            @Skill2.performed -= instance.OnSkill2;
+            @Skill2.canceled -= instance.OnSkill2;
+            @Skill3.started -= instance.OnSkill3;
+            @Skill3.performed -= instance.OnSkill3;
+            @Skill3.canceled -= instance.OnSkill3;
+            @Skill4.started -= instance.OnSkill4;
+            @Skill4.performed -= instance.OnSkill4;
+            @Skill4.canceled -= instance.OnSkill4;
+            @Skill5.started -= instance.OnSkill5;
+            @Skill5.performed -= instance.OnSkill5;
+            @Skill5.canceled -= instance.OnSkill5;
+            @OnSkill.started -= instance.OnOnSkill;
+            @OnSkill.performed -= instance.OnOnSkill;
+            @OnSkill.canceled -= instance.OnOnSkill;
+            @Throw.started -= instance.OnThrow;
+            @Throw.performed -= instance.OnThrow;
+            @Throw.canceled -= instance.OnThrow;
+            @Cancel.started -= instance.OnCancel;
+            @Cancel.performed -= instance.OnCancel;
+            @Cancel.canceled -= instance.OnCancel;
+        }
+
+        public void RemoveCallbacks(ISkillActions instance)
+        {
+            if (m_Wrapper.m_SkillActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(ISkillActions instance)
+        {
+            foreach (var item in m_Wrapper.m_SkillActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_SkillActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public SkillActions @Skill => new SkillActions(this);
     private int m_KMSchemeIndex = -1;
     public InputControlScheme KMScheme
     {
@@ -614,5 +952,18 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         void OnAttack(InputAction.CallbackContext context);
         void OnChange(InputAction.CallbackContext context);
         void OnLoad(InputAction.CallbackContext context);
+    }
+    public interface ISkillActions
+    {
+        void OnLeftClick(InputAction.CallbackContext context);
+        void OnRightClick(InputAction.CallbackContext context);
+        void OnSkill1(InputAction.CallbackContext context);
+        void OnSkill2(InputAction.CallbackContext context);
+        void OnSkill3(InputAction.CallbackContext context);
+        void OnSkill4(InputAction.CallbackContext context);
+        void OnSkill5(InputAction.CallbackContext context);
+        void OnOnSkill(InputAction.CallbackContext context);
+        void OnThrow(InputAction.CallbackContext context);
+        void OnCancel(InputAction.CallbackContext context);
     }
 }
