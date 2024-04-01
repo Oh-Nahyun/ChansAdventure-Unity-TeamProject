@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class CameraRootMover : MonoBehaviour
+public class Skill_CameraRootMover : MonoBehaviour
 {
     /// <summary>
     /// 회전 속도

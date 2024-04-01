@@ -10,7 +10,7 @@ public class PlayerSkillController : MonoBehaviour
 {
     Transform handRootTracker;
     public Transform HandRoot => handRootTracker;
-    Player player;
+    Skill_Player player;
 
     public Action onSKillAction;
     public Action useSkillAction;

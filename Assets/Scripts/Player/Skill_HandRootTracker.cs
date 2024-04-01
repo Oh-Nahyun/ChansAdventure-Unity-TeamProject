@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HandRootTracker : MonoBehaviour
+public class Skill_HandRootTracker : MonoBehaviour
 {
     public void OnTracking(Transform target)
     {

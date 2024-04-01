@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class Test02_MagnetCatch : TestBase
 {
     public MagnetCatch magnet;
-    Player player;
+    Skill_Player player;
 
     private void Start()
     {

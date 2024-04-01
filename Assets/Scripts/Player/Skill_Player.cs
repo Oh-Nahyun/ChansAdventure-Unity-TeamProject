@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Player : MonoBehaviour
+public class Skill_Player : MonoBehaviour
 {
     // 임시
     public float moveSpeed = 3.0f;
@@ -62,7 +62,7 @@ public class Player : MonoBehaviour
     /// <summary>
     /// 플레이어 스킬사용 및 오브젝트 관련 손의 위치 추적용 트랜스폼 (플레이어와 동일한 회전값을 가짐 = 정면이 동일)
     /// </summary>
-    HandRootTracker handRootTracker;
+    Skill_HandRootTracker handRootTracker;
 
     /// <summary>
     /// 현재 사용중인 스킬이 있는지 확인 (true: 스킬 사용중)
@@ -125,13 +125,14 @@ public class Player : MonoBehaviour
                     case SkillName.RemoteBomb_Cube:
                     case SkillName.IceMaker:
                     case SkillName.TimeLock:
-                        if (reaction != null && reaction.transform.CompareTag("Skill"))     // 리모컨폭탄류의 스킬을 들고 있는 경우
+                        if (IsSkillOn)     // 리모컨폭탄류의 스킬을 들고 있는 경우
                         {
-                            DropObject();   // 땅에 버리기
+                            CancelObject();   // 들고 있는 오브젝트가 스킬일 경우 취소
                         }
                         break;
                     case SkillName.MagnetCatch: // 마그넷캐치가 활성화 된 상태면 스킬 변경 불가능
-                        value = selectSkill;   
+                        if(IsSkillOn)
+                            value = selectSkill;
                         break;
                 }
                 selectSkill = value;            // 현재 스킬 설정
@@ -166,7 +167,7 @@ public class Player : MonoBehaviour
     ReactionObject reaction;
 
     // 컴포넌트
-    PlayerInputActions inputActions;
+    SKill_PlayerInputActions inputActions;
     Animator animator;
 
     // 애니메이션 해시
@@ -178,22 +179,22 @@ public class Player : MonoBehaviour
     {
         character = transform.GetChild(0);
 
-        inputActions = new PlayerInputActions();
+        inputActions = new SKill_PlayerInputActions();
         animator = character.GetComponent<Animator>();                          // 애니메이션은 자식 트랜스폼인 모델에서 처리
         
 
         skillController = transform.GetComponent<PlayerSkillController>();
 
-        HandRoot handRoot = transform.GetComponentInChildren<HandRoot>();       // 플레이어 손 위치를 찾기 귀찮아서 스크립트 넣어서 찾음
-        handRootTracker = transform.GetComponentInChildren<HandRootTracker>();  // 플레이어 손 위치를 추적하는 트랜스폼 => 집어든 오브젝트를 자식으로 놨을 때 정면을 플레이어의 정면으로 맞추기 위해
+        Skill_HandRoot handRoot = transform.GetComponentInChildren<Skill_HandRoot>();       // 플레이어 손 위치를 찾기 귀찮아서 스크립트 넣어서 찾음
+        handRootTracker = transform.GetComponentInChildren<Skill_HandRootTracker>();  // 플레이어 손 위치를 추적하는 트랜스폼 => 집어든 오브젝트를 자식으로 놨을 때 정면을 플레이어의 정면으로 맞추기 위해
 
         pickUpRoot = transform.GetChild(2);
 
-        cameraRoot = transform.GetComponentInChildren<CameraRootMover>().transform;
+        cameraRoot = transform.GetComponentInChildren<Skill_CameraRootMover>().transform;
 
         rightClick += PickUpObjectDetect;       // 우클릭 = 물건 들기
         onThrow += ThrowObject;                 // 던지기
-        onCancel += DropObject;                // 취소
+        onCancel += CancelObject;                // 취소
 
         onPickUp += () => handRootTracker.OnTracking(handRoot.transform);   // 물건을 들면 손위치추적기 동작
         onSkill += () => handRootTracker.OnTracking(handRoot.transform);    // 스킬 사용시 손위치추적기 동작
@@ -319,7 +320,7 @@ public class Player : MonoBehaviour
     /// <summary>
     /// 취소 행동용 메서드 (아직 확인중)
     /// </summary>
-    void DropObject()
+    void CancelObject()
     {
         // 취소키 야숨에서 확인하기
         /*if(IsPickUp && reaction != null)
@@ -331,7 +332,7 @@ public class Player : MonoBehaviour
         if (IsSkillOn && reaction != null)          // 스킬이 사용중이면 모두 취소
         {
             IsPickUp = false;
-            reaction.Drop();
+            //reaction.Drop();
             reaction = null;
         }
         

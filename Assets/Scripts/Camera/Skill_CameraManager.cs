@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraManager : MonoBehaviour
+public class Skill_CameraManager : MonoBehaviour
 {
-    PlayerVCam playerVcam;
-    public PlayerVCam PlayerCam => playerVcam;
+    Skill_PlayerVCam playerVcam;
+    public Skill_PlayerVCam PlayerCam => playerVcam;
     SkillVCam skillVcam;
     public SkillVCam SkillCam => skillVcam;
     MagnetVCam magnetVcam;
@@ -14,7 +14,7 @@ public class CameraManager : MonoBehaviour
 
     private void Awake()
     {
-        playerVcam = GetComponentInChildren<PlayerVCam>();
+        playerVcam = GetComponentInChildren<Skill_PlayerVCam>();
         skillVcam = GetComponentInChildren<SkillVCam>();
         magnetVcam = GetComponentInChildren<MagnetVCam>();
     }

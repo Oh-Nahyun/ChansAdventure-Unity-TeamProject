@@ -8,11 +8,11 @@ public class TestBase : MonoBehaviour
 {
     public int seed = -1;
     const int allRandom = -1;
-    TestInputActions inputActions;
+    Skill_TestInputActions inputActions;
 
     private void Awake()
     {
-        inputActions = new TestInputActions();
+        inputActions = new Skill_TestInputActions();
 
         if( seed != allRandom ) // -1일 때는 완전 랜덤. 그 외에 값은 시드로 설정됨
         {

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering;
 using static UnityEngine.UIElements.UxmlAttributeDescription;
 
 /// <summary>
@@ -123,7 +124,7 @@ public class ReactionObject : RecycleObject
     /// <summary>
     /// 현재 상태를 나타내는 enum
     /// </summary>
-    protected enum StateType
+    public enum StateType
     {
         None = 0,   // 아무것도 아님(원래상태)
         PickUp,     // 들려있음
@@ -139,11 +140,21 @@ public class ReactionObject : RecycleObject
 
     //bool isCarried = false;
     //bool isThrow = false;
+    public StateType State => currentState;
 
     /// <summary>
     /// 원래 부모 (들렸을 때 변경된 부모를 되돌리기 위함)
     /// </summary>
     protected Transform originParent;
+
+    /// <summary>
+    /// 원래 회전 마찰력 (마그넷캐치 시 변경내용 원래대로 되돌리기 위함)
+    /// </summary>
+    protected float originAngularDrag;
+    /// <summary>
+    /// 원래 마찰력 (마그넷캐치 시 변경내용 원래대로 되돌리기 위함)
+    /// </summary>
+    protected float originDrag;
 
     /// <summary>
     /// 자석에 붙었을 때 이동속도 (자석스킬에서 받아옴)
@@ -192,6 +203,7 @@ public class ReactionObject : RecycleObject
     }
     protected void OnCollisionEnter(Collision collision)
     {
+
         if (currentState == StateType.Throw) // 현재 오브젝트가 던져진 상태일 때
         {
             CollisionAfterThrow();
@@ -203,7 +215,7 @@ public class ReactionObject : RecycleObject
         if (IsAttachMagnet)
         {
             // 현재 자석에 붙어있다면
-            rigid.velocity = Vector3.zero;          // 물체에서 부딪친 후 밀리는 힘 제거
+            //rigid.velocity = Vector3.zero;          // 물체에서 부딪친 후 밀리는 힘 제거
             rigid.angularVelocity = Vector3.zero;   // 물체에서 부딪친 후 회전하는 힘 제거
         }
     }
@@ -216,11 +228,15 @@ public class ReactionObject : RecycleObject
         Vector3 dir = magentDestination.position - rigid.position;
         if (dir.sqrMagnitude > 0.001f * attachMoveSpeed)            // 이동속도에 따라 적당한 정지거리 지정(떨림 방지)
         {
-            rigid.MovePosition(rigid.position + Time.fixedDeltaTime * attachMoveSpeed * dir.normalized);    // 이동
+            //rigid.MovePosition(rigid.position + Time.fixedDeltaTime * attachMoveSpeed * dir.normalized);    // 이동
+            // 모서리부분, 끝부분 뚫리는 현상 방지를 위해 velocity 사용
+            rigid.velocity = attachMoveSpeed * dir.normalized;
         }
         else
         {
-            rigid.MovePosition(magentDestination.position);         // 정지거리 도달 시 정확한 목적지로 옮기기
+            //rigid.MovePosition(magentDestination.position);         // 정지거리 도달 시 정확한 목적지로 옮기기
+            // 도착하면 velocity를 없애 떨림 방지 (안하면 지나가고 되돌아오고 반복하면서 떨림)
+            rigid.velocity = Vector3.zero;
         }
     }
 
@@ -235,6 +251,8 @@ public class ReactionObject : RecycleObject
         {
             // 중력 사용 x, 자석 목적지 설정, 이동속도 설정
             rigid.useGravity = false;
+            //rigid.drag = Mathf.Infinity;
+            //rigid.angularDrag = Mathf.Infinity;
             magentDestination = destination;
             attachMoveSpeed = moveSpeed;
         }
@@ -249,6 +267,8 @@ public class ReactionObject : RecycleObject
         {
             // 중력 원래대로, 목적지 없애기
             rigid.useGravity = true;
+            rigid.drag = originDrag;
+            rigid.angularDrag = originAngularDrag;
             magentDestination = null;
         }
     }

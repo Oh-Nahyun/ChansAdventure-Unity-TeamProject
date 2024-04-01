@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class SkillVCam : PlayerVCam
+public class SkillVCam : Skill_PlayerVCam
 {
     public Vector3 skillCameraOffset = new Vector3(-0.8f, 1.2f, 0.0f);
     public float cameraSpeed = 10.0f;

@@ -4,31 +4,31 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
-    Player player;
-    public Player Player
+    Skill_Player player;
+    public Skill_Player Player
     {
         get
         {
             if(player == null)
-                player = FindAnyObjectByType<Player>();
+                player = FindAnyObjectByType<Skill_Player>();
             return player;
         }
     }
 
-    CameraManager cameraManager;
-    public CameraManager Cam
+    Skill_CameraManager cameraManager;
+    public Skill_CameraManager Cam
     {
         get
         {
             if(cameraManager == null)
-                cameraManager = GetComponent<CameraManager>();
+                cameraManager = GetComponent<Skill_CameraManager>();
             return cameraManager;
         }
     }
 
     protected override void OnInitialize()
     {
-        player = FindAnyObjectByType<Player>();
-        cameraManager = GetComponent<CameraManager>();
+        player = FindAnyObjectByType<Skill_Player>();
+        cameraManager = GetComponent<Skill_CameraManager>();
     }
 }

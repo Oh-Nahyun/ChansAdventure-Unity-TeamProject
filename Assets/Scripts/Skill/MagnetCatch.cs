@@ -19,7 +19,8 @@ public class MagnetCatch : Skill
     public float magnetDistance = 5.0f;
     public float targetMoveSpeed = 5.0f;
     public float verticalSpeed = 2.0f;
-    public float horizontalDistanceAtOnce = 0.2f;
+    public float horizontalDistanceAtOnce = 1.0f;
+    public float maxHorizontalDistance = 10.0f;
 
     bool isMagnetic = false;
 
@@ -101,11 +102,11 @@ public class MagnetCatch : Skill
             owner.LookForwardPlayer(Camera.main.transform.forward);
             euler = owner.transform.rotation.eulerAngles - euler;
 
-            DestinationMover();
+            MoveDestination();
             reactionTarget.AttachRotate(euler);
         }
     }
-    void DestinationMover()
+    void MoveDestination()
     {
 
         preMousePos = curMousePos;
@@ -113,7 +114,9 @@ public class MagnetCatch : Skill
         Vector2 mouseDir = (curMousePos - preMousePos).normalized;
         if(mouseDir.y * preYDir >= 0f)
         {
-            targetDestination.position += new Vector3(0, mouseDir.y * Time.fixedDeltaTime * verticalSpeed, 0);
+            Vector3 movePos = targetDestination.position + new Vector3(0, mouseDir.y * Time.fixedDeltaTime * verticalSpeed, 0);
+            float horizontalDistance = MathF.Abs(owner.transform.position.y - movePos.y);
+            targetDestination.position = (horizontalDistance < maxHorizontalDistance) ? movePos : transform.position;
         }
         else
         {
@@ -190,7 +193,7 @@ public class MagnetCatch : Skill
                 isMagnetic = (reactionTarget != null) && (reactionTarget.IsMagnetic);
                 if (isMagnetic)
                 {
-                    //hitPoint = hit.collider.bounds.center;
+                    hitPoint = hit.collider.bounds.center;
                     hitPoint = hit.point;
                 }
             }

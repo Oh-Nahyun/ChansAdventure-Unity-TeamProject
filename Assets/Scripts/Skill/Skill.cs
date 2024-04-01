@@ -23,7 +23,7 @@ public class Skill : ReactionObject
 
     protected bool isActivate = false;
 
-    protected Player owner;
+    protected Skill_Player owner;
     protected SkillVCam skillVcam;
 
     protected Action camOn;
