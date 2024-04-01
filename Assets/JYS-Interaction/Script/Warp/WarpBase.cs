@@ -12,7 +12,7 @@ public class WarpBase : NPCBase
 
     protected override void Awake()
     {
-        isWarp = true;
+        otherObject = true;
         interaction = FindObjectOfType<Interaction>();
         player = interaction.gameObject.transform;
     }

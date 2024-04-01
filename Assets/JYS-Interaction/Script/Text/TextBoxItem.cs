@@ -88,7 +88,7 @@ public class TextBoxItem : MonoBehaviour
             NPCdata = null;
         }
 
-        if (NPCdata != null && NPCdata.isItemChest)
+        if (NPCdata != null && NPCdata.isTextObject)
         {
             StartCoroutine(TalkStart());
         }
@@ -136,7 +136,7 @@ public class TextBoxItem : MonoBehaviour
             endImage.color = new Color(endImage.color.r, endImage.color.g, endImage.color.b, 0f);
             talking = false;
             NPCdata.isTalk = false;
-            NPCdata.isItemChest = false;
+            NPCdata.isTextObject = false;
             animator.SetBool(IsOnTextBoxItemHash, false);
         }
     }

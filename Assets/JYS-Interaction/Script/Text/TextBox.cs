@@ -95,13 +95,13 @@ public class TextBox : MonoBehaviour
         }
         
 
-        if (typingTalk == false && NPCdata != null && !NPCdata.isItemChest && !NPCdata.isWarp)
+        if (typingTalk == false && NPCdata != null && !NPCdata.isTextObject && !NPCdata.otherObject)
         {
             endImageAnimator.speed = 0.0f;
             endImage.color = new Color(endImage.color.r, endImage.color.g, endImage.color.b, 0f);
             StartCoroutine(TalkStart());
         }
-        else if (typingTalk == true && NPCdata != null && !NPCdata.isItemChest && !NPCdata.isWarp)
+        else if (typingTalk == true && NPCdata != null && !NPCdata.isTextObject && !NPCdata.otherObject)
         {
             typingStop = true;
             NPCdata = scanObject.GetComponent<NPCBase>();
@@ -118,10 +118,13 @@ public class TextBox : MonoBehaviour
             endImage.color = new Color(endImage.color.r, endImage.color.g, endImage.color.b, 1f);
             typingTalk = false;
         }
-        else if (NPCdata != null && NPCdata.isWarp)
+        else if (NPCdata != null && NPCdata.otherObject)
         {
             warpBase = scanObject.GetComponent<WarpBase>();
-            warpBase.WarpToWarpPoint();
+            if (warpBase != null)
+            {
+                warpBase.WarpToWarpPoint();
+            }
         }
         else
         {

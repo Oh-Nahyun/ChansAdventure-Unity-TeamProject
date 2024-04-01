@@ -16,8 +16,8 @@ public class NPCBase : MonoBehaviour
     protected bool nextTaklSelect = false;
     public bool isTalk = false;
     public bool isNPC;
-    public bool isItemChest;
-    public bool isWarp;
+    public bool isTextObject;
+    public bool otherObject;
     protected Animator animator;
 
     protected virtual void Awake()

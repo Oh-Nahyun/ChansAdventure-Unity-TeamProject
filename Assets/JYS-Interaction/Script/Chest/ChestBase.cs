@@ -4,15 +4,12 @@ using UnityEngine;
 
 public class ChestBase : NPCBase
 {
-    Animator animator;
-
     readonly int IsOpenHash = Animator.StringToHash("Open");
 
     protected override void Awake()
     {
         base.Awake();
-        animator = GetComponent<Animator>();
-        isItemChest = true;
+        isTextObject = true;
         isNPC = false;
     }
 
