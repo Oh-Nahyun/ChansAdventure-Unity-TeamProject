@@ -27,7 +27,7 @@ public class ObjectPool<T> : MonoBehaviour where T : RecycleObject
 
     public void Initialize()
     {
-        if( pool == null )  // 풀이 아직 만들어지지 않은 경우
+        if (pool == null)  // 풀이 아직 만들어지지 않은 경우
         {
             pool = new T[poolSize];                 // 배열의 크기만큼 new
             readyQueue = new Queue<T>(poolSize);    // 레디큐를 만들고 capacity를 poolSize로 지정
@@ -37,7 +37,7 @@ public class ObjectPool<T> : MonoBehaviour where T : RecycleObject
         else
         {
             // 풀이 이미 만들어져 있는 경우(ex:씬이 추가로 로딩 or 씬이 다시 시작)
-            foreach( T obj in pool )    // foreach : 특정 컬랙션 안에 있는 모든 요소를 한번씩 처리해야 할 일이 있을 때 사용
+            foreach (T obj in pool)    // foreach : 특정 컬랙션 안에 있는 모든 요소를 한번씩 처리해야 할 일이 있을 때 사용
             {
                 obj.gameObject.SetActive(false);
             }
@@ -86,13 +86,13 @@ public class ObjectPool<T> : MonoBehaviour where T : RecycleObject
 
         int newSize = poolSize * 2;         // 새로운 풀의 크기 지정
         T[] newPool = new T[newSize];       // 새로운 풀 생성
-        for(int i = 0; i<poolSize; i++)     // 이전 풀에 있던 내용을 새 풀에 복사
+        for (int i = 0; i < poolSize; i++)     // 이전 풀에 있던 내용을 새 풀에 복사
         {
             newPool[i] = pool[i];
         }
 
         GenerateObjects(poolSize, newSize, newPool);    // 새 풀의 남은 부분에 오브젝트 생성해서 추가
-        
+
         pool = newPool;         // 새 풀 사이즈 설정
         poolSize = newSize;     // 새 풀을 풀로 설정
     }

@@ -6,6 +6,8 @@ using UnityEngine.AI;
 
 public class SwordSkeleton : EnemyBase
 {
+    public Waypoints waypoints;
+
     // NavMeshAgent ÄÄÆ÷³ÍÆ®
     private NavMeshAgent navMeshAgent;
 
