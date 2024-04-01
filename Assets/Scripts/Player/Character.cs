@@ -192,6 +192,7 @@ public class Character : MonoBehaviour
     {
         LookRotation();
         Jump();
+
     }
 
     void SetMoveInput(Vector2 input, bool IsPress)

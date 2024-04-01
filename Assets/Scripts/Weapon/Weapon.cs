@@ -46,6 +46,11 @@ public class Weapon : MonoBehaviour
     /// </summary>
     //Transform arrowWeapon;
 
+    /// <summary>
+    /// 캐릭터가 활을 장비했는지 알기 위한 변수
+    /// </summary>
+    public bool IsBowEquip = false;
+
     // 애니메이터용 해시값
     readonly int IsAttackHash = Animator.StringToHash("IsAttack");
     readonly int IsSwordHash = Animator.StringToHash("IsSword");
@@ -103,16 +108,6 @@ public class Weapon : MonoBehaviour
         inputActions.Weapon.Disable();
     }
 
-    private void Update()
-    {
-        //// 캐릭터가 마우스 왼쪽 버튼을 누르고 있는 경우
-        //if (Input.GetMouseButton(0))
-        //{
-        //    Camera.main.fieldOfView += 100.0f * Time.deltaTime;
-        //    //Debug.Log("Camera Zoom-In");
-        //}
-    }
-
     /// <summary>
     /// 무기 모드에 따른 공격 함수
     /// </summary>
@@ -124,6 +119,7 @@ public class Weapon : MonoBehaviour
         if (currentWeaponMode == WeaponMode.None)
         {
             animator.SetBool(UseWeaponHash, false);
+            IsBowEquip = false;
         }
         else // 무기 모드가 Sword 또는 Bow인 경우
         {
@@ -132,11 +128,13 @@ public class Weapon : MonoBehaviour
             if (currentWeaponMode == WeaponMode.Sword)
             {
                 animator.SetTrigger(IsSwordHash);
+                IsBowEquip = false;
                 ////////// CriticalHit 설정하기
             }
             else if (currentWeaponMode == WeaponMode.Bow)
             {
                 animator.SetTrigger(IsBowHash);
+                IsBowEquip = true;
             }
         }
 
