@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEngine.UIElements.UxmlAttributeDescription;
 
-public class Test06_ReactionObj : TestBase
+public class Test06_ReactionObj : Skill_TestBase
 {
     public ReactionObject obj;
 

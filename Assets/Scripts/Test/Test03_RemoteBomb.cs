@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Test03_RemoteBomb : TestBase
+public class Test03_RemoteBomb : Skill_TestBase
 {
 #if UNITY_EDITOR
     //RemoteBomb bomb;

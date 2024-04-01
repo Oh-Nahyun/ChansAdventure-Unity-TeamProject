@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class TestBase : MonoBehaviour
+public class Skill_TestBase : MonoBehaviour
 {
     public int seed = -1;
     const int allRandom = -1;

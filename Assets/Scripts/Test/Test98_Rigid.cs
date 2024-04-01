@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Test98_Rigid : TestBase
+public class Test98_Rigid : Skill_TestBase
 {
 
     public GameObject obj;
