@@ -8,7 +8,6 @@ public class Interaction : MonoBehaviour
     public LayerMask layer;
     public Collider[] colliders;
     public Collider short_enemy;
-
     public GameObject scanIbgect;
 
     void Start()

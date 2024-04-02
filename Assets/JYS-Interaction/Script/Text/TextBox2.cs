@@ -66,14 +66,14 @@ public class TextBox2 : MonoBehaviour
 
         if(scanObject != null) 
         {
-            GameManager.Instance.onTalkNPC += () =>
+            GameManager_JYS.Instance.onTalkNPC += () =>
             {      
                 Action();
             };
         }
 
         /*
-        GameManager.Instance.onTalkObj += () =>
+        GameManager_JYS.Instance.onTalkObj += () =>
         {
             //isNpc = false;
             ObjAction();

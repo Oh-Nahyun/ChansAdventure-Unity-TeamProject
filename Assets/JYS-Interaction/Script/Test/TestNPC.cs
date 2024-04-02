@@ -11,18 +11,18 @@ public class TestNPC : TestBase
 
     protected override void OnTest1(InputAction.CallbackContext context)
     {
-        GameManager.Instance.StartTalk();
+        GameManager_JYS.Instance.StartTalk();
     }
 
     protected override void OnTest2(InputAction.CallbackContext context)
     {
-        GameManager.Instance.NextTalk();
+        GameManager_JYS.Instance.NextTalk();
     }
 
     protected override void OnTest3(InputAction.CallbackContext context)
     {
-        GameManager.Instance.OpenChest();
-        //GameManager.Instance.IsNPCObj();
+        GameManager_JYS.Instance.OpenChest();
+        //GameManager_JYS.Instance.IsNPCObj();
     }
 
     protected override void OnTest5(InputAction.CallbackContext context)

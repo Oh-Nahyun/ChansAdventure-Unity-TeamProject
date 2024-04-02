@@ -24,7 +24,7 @@ public class TestPlayer : MonoBehaviour
     // 입력용 인풋 액션
     PlayerInputActions inputActions;
 
-    GameManager gameManager;
+    GameManager_JYS gameManager;
 
     private void Awake()
     {

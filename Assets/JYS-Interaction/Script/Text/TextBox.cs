@@ -65,7 +65,7 @@ public class TextBox : MonoBehaviour
         
         if (scanObject != null)
         {
-            GameManager.Instance.onTalkNPC += () =>
+            GameManager_JYS.Instance.onTalkNPC += () =>
             {
                 Action();
             };
@@ -121,10 +121,16 @@ public class TextBox : MonoBehaviour
         else if (NPCdata != null && NPCdata.otherObject)
         {
             warpBase = scanObject.GetComponent<WarpBase>();
+            //DoorBase door = scanObject.GetComponent<DoorBase>();
             if (warpBase != null)
             {
                 warpBase.WarpToWarpPoint();
             }
+            /*
+            if (door != null)
+            {
+                door.OpenDoor(talking);
+            }*/
         }
         else
         {

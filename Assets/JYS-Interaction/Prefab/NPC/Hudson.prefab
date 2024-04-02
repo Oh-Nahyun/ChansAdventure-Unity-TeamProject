@@ -1233,16 +1233,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 931c934c2015a86478fb35bc5fe5b361, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textBoxManager: {fileID: 893038546303004813, guid: c6ef9b98bf2faf94f902622edc03b570,
-    type: 3}
   id: 3000
   nameNPC: "\uD5C8\uB4DC\uC2A8"
   selectId: 0
-  nextTaklSelect: 0
   isTalk: 0
   isNPC: 1
-  isItemChest: 0
-  isWarp: 0
+  isTextObject: 0
+  otherObject: 0
 --- !u!54 &1881697627937639881
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3997,7 +3994,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 2.8}
+  m_AnchoredPosition: {x: 0, y: 3.2}
   m_SizeDelta: {x: 4, y: 0.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &3839228116768012492

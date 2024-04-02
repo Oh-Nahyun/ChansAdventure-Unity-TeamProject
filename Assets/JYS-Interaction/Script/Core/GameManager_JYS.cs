@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : Singleton<GameManager>
+public class GameManager_JYS : Singleton<GameManager_JYS>
 {
 
     TestPlayer player;

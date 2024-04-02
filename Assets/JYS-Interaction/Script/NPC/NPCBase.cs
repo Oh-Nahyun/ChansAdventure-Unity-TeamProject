@@ -34,7 +34,7 @@ public class NPCBase : MonoBehaviour
             textViweName.gameObject.SetActive(false);
             StartCoroutine(ViewName());
         }
-        GameManager.Instance.onNextTalk += () =>
+        GameManager_JYS.Instance.onNextTalk += () =>
         {
             TalkNext();
         };

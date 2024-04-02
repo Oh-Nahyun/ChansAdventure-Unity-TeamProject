@@ -57,7 +57,7 @@ public class TextBoxItem : MonoBehaviour
         canvasGroup.blocksRaycasts = false;
         endImageAnimator.speed = 0.0f;
 
-        GameManager.Instance.onTalkNPC += () =>
+        GameManager_JYS.Instance.onTalkNPC += () =>
         {
             if (scanObject != null)
             {
