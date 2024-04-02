@@ -51,12 +51,18 @@ public class Weapon : MonoBehaviour
     /// </summary>
     public bool IsBowEquip = false;
 
+    /// <summary>
+    /// 캐릭터의 활에 화살이 장전되었는지 알기 위한 변수
+    /// </summary>
+    public bool IsArrowEquip = false;
+
     // 애니메이터용 해시값
     readonly int IsAttackHash = Animator.StringToHash("IsAttack");
     readonly int IsSwordHash = Animator.StringToHash("IsSword");
     readonly int IsBowHash = Animator.StringToHash("IsBow");
     //readonly int CriticalHitHash = Animator.StringToHash("CriticalHit");
     readonly int UseWeaponHash = Animator.StringToHash("UseWeapon");
+    readonly int HaveArrowHash = Animator.StringToHash("HaveArrow");
 
     // 컴포넌트들
     PlayerinputActions inputActions;
@@ -95,12 +101,12 @@ public class Weapon : MonoBehaviour
         inputActions.Weapon.Attack.performed += OnAttackInput;
         inputActions.Weapon.Change.performed += OnChangeInput;
 
-        //inputActions.Weapon.Load.performed += OnLoadInput;
+        inputActions.Weapon.Load.performed += OnLoadInput;
     }
 
     private void OnDisable()
     {
-        //inputActions.Weapon.Load.performed -= OnLoadInput;
+        inputActions.Weapon.Load.performed -= OnLoadInput;
 
         inputActions.Weapon.Change.performed -= OnChangeInput;
         inputActions.Weapon.Attack.performed -= OnAttackInput;
@@ -120,6 +126,10 @@ public class Weapon : MonoBehaviour
         {
             animator.SetBool(UseWeaponHash, false);
             IsBowEquip = false;
+
+            // 공격할 동안 Player의 이동이 불가하도록 설정
+            StopAllCoroutines();
+            StartCoroutine(player.StopInput());
         }
         else // 무기 모드가 Sword 또는 Bow인 경우
         {
@@ -129,18 +139,43 @@ public class Weapon : MonoBehaviour
             {
                 animator.SetTrigger(IsSwordHash);
                 IsBowEquip = false;
+
+                // 공격할 동안 Player의 이동이 불가하도록 설정
+                StopAllCoroutines();
+                StartCoroutine(player.StopInput());
+
                 ////////// CriticalHit 설정하기
             }
             else if (currentWeaponMode == WeaponMode.Bow)
             {
                 animator.SetTrigger(IsBowHash);
+
+                if (IsArrowEquip == false)
+                {
+                    animator.SetBool(HaveArrowHash, false);
+
+                    // 공격할 동안 Player의 이동이 불가하도록 설정
+                    StopAllCoroutines();
+                    StartCoroutine(player.StopInput());
+                }
+                else
+                {
+                    StartCoroutine(LoadArrowAfter());
+                }
+                
                 IsBowEquip = true;
             }
         }
+    }
 
-        // 기본 공격할 동안 Player의 이동이 불가하도록 설정
-        StopAllCoroutines();
-        StartCoroutine(player.StopInput());
+    /// <summary>
+    /// 화살을 장전하고 난 후 화살 관련 변수 설정을 위한 함수
+    /// </summary>
+    IEnumerator LoadArrowAfter()
+    {
+        yield return new WaitForSeconds(7.0f);
+        animator.SetBool(HaveArrowHash, false);
+        IsArrowEquip = false;
     }
 
     /// <summary>
@@ -227,6 +262,19 @@ public class Weapon : MonoBehaviour
         }
 
         return weaponNum;
+    }
+
+    /// <summary>
+    /// 화살 장전 함수
+    /// </summary>
+    private void OnLoadInput(InputAction.CallbackContext _)
+    {
+        if (IsArrowEquip == false)
+        {
+            animator.SetBool(HaveArrowHash, true);
+        }
+
+        IsArrowEquip = true;
     }
 
     /// <summary>

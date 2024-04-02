@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -192,7 +194,6 @@ public class Character : MonoBehaviour
     {
         LookRotation();
         Jump();
-
     }
 
     void SetMoveInput(Vector2 input, bool IsPress)
