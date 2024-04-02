@@ -47,7 +47,7 @@ public class PlayerFollowVCam : MonoBehaviour
                 // vcam.transform.rotation = Quaternion.LookRotation(player.transform.forward, Vector3.up); // 활시위를 당길 때, 캐릭터와 카메라가 같은 방향 바라보기
                 follow.ShoulderOffset = Vector3.Lerp(zoomIn, zoomOut, speed * Time.deltaTime);
                 weapon.IsZoomIn = true;
-                weapon.LoadArrowAfter(); // 화살이 장전된 후 작업
+                weapon.LoadArrowAfter();
                 Debug.Log("Camera Zoom-In");
             }
 
@@ -56,7 +56,7 @@ public class PlayerFollowVCam : MonoBehaviour
             {
                 follow.ShoulderOffset = Vector3.Lerp(zoomOut, zoomIn, speed * Time.deltaTime);
                 weapon.IsZoomIn = false;
-                weapon.LoadArrowAfter(); // 화살이 장전된 후 작업
+                weapon.LoadArrowAfter();
                 Debug.Log("Camera Zoom-Out");
             }
         }
