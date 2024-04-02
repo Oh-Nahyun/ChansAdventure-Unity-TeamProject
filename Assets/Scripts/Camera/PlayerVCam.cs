@@ -7,7 +7,6 @@ using UnityEngine.InputSystem;
 
 public class PlayerVCam : MonoBehaviour
 {
-
     protected CinemachineVirtualCamera vCam;
     public CinemachineVirtualCamera VCam => vCam;
     protected Transform cameraRoot;
