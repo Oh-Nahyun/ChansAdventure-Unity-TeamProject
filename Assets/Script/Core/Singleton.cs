@@ -27,16 +27,16 @@ public class Singleton<T> : MonoBehaviour where T : Component
     {
         get
         {
-            if(isShutdown)  // 종료처리에 들어갔으면
-            {   
+            if (isShutdown)  // 종료처리에 들어갔으면
+            {
                 Debug.LogWarning("싱글톤은 이미 삭제중이다.");     // 경고출력하고
                 return null;                                     // null 리턴
             }
 
-            if(instance == null)    // 객체가 없으면
+            if (instance == null)    // 객체가 없으면
             {
                 T singleton = FindAnyObjectByType<T>();         // 다른 게임 오브젝트에 해당 싱글톤이 있는지 확인
-                if(singleton == null)                           // 다른 게임 오브젝트에도 이 싱글톤이 없으면
+                if (singleton == null)                           // 다른 게임 오브젝트에도 이 싱글톤이 없으면
                 {
                     GameObject obj = new GameObject();          // 빈 게임 오브젝트 만들고
                     obj.name = "Singleton";                     // 이름 지정한 다음
@@ -51,7 +51,7 @@ public class Singleton<T> : MonoBehaviour where T : Component
 
     private void Awake()
     {
-        if(instance == null)        // 씬에 이미 배치된 다른 싱글톤이 없다.
+        if (instance == null)        // 씬에 이미 배치된 다른 싱글톤이 없다.
         {
             instance = this as T;   // 첫번째를 저장
             DontDestroyOnLoad(instance.gameObject); // 씬이 사라질 때 게임오브젝트가 삭제되지 않도록 설정
@@ -59,7 +59,7 @@ public class Singleton<T> : MonoBehaviour where T : Component
         else
         {
             // 이미 씬에 싱글톤이 있다.
-            if(instance != this)    // 그게 나자신이 아니면
+            if (instance != this)    // 그게 나자신이 아니면
             {
                 Destroy(this.gameObject);   // 나자신을 삭제
             }
@@ -69,12 +69,12 @@ public class Singleton<T> : MonoBehaviour where T : Component
     private void OnEnable()
     {
         // SceneManager.sceneLoaded는 씬이 로드되면 실행되는 델리게이트
-        SceneManager.sceneLoaded += OnSceneLoaded;  
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void OnDisable()
     {
-        SceneManager.sceneLoaded -= OnSceneLoaded;        
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     /// <summary>
@@ -84,11 +84,11 @@ public class Singleton<T> : MonoBehaviour where T : Component
     /// <param name="mode">로딩모드</param>
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if(!isInitialized)
+        if (!isInitialized)
         {
             OnPreInitialize();
         }
-        if(mode != LoadSceneMode.Additive)  // additive가 아닐때만 실행
+        if (mode != LoadSceneMode.Additive)  // additive가 아닐때만 실행
         {
             OnInitialize();
         }

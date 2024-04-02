@@ -198,6 +198,7 @@ public class Test_EnemyBase : RecycleObject, IBattler, IHealth
     /// 이 캐릭터가 죽었을 때 실행되는 델리게이트
     /// </summary>
     public Action onDie { get; set; }
+    public Action<int> onHit { get; set; }
 
     //[System.Serializable]   // 이게 있어야 구조체 내용을 인스팩터 창에서 수정할 수 있다.
     //public struct ItemDropInfo

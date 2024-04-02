@@ -25,7 +25,7 @@ public interface IHealth
     /// <summary>
     /// 생존을 확인하기 위한 프로퍼티
     /// </summary>
-    bool IsAlive { get;}
+    bool IsAlive { get; }
 
     /// <summary>
     /// 사망 처리용 함수(메서드 method)
