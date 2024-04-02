@@ -24,10 +24,10 @@ public class SwordSkeletonPool : ObjectPool<SwordSkeleton>
     /// <returns>풀에서 꺼낸 오브젝트(활성화됨)</returns>
     public SwordSkeleton GetObject(int index, Vector3? position = null, Vector3? eulerAngle = null)
     {
-        SwordSkeleton enemy = GetObject(position, eulerAngle);
-        enemy.waypoints = waypoints[index];
+        SwordSkeleton swordSkeleton = GetObject(position, eulerAngle);
+        swordSkeleton.waypoints = waypoints[index];
 
-        return enemy;
+        return swordSkeleton;
     }
 
     protected override void OnGenerateObject(SwordSkeleton comp)
