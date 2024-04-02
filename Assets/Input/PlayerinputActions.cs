@@ -305,7 +305,7 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""KM"",
                     ""action"": ""Change"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
