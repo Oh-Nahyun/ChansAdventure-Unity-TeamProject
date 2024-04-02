@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager_JYS : Singleton<GameManager_JYS>
+public class GameManager_JYS : Singleton_JYS<GameManager_JYS>
 {
-
+    /*
     TestPlayer player;
     public TestPlayer Player => player;
 
@@ -13,7 +13,7 @@ public class GameManager_JYS : Singleton<GameManager_JYS>
     {
         player = FindAnyObjectByType<TestPlayer>();
     }
-
+    */
 
     public bool isNPC = false;
     public Action onTalkNPC;

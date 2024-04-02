@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Singleton<T> : MonoBehaviour where T : Component
+public class Singleton_JYS<T> : MonoBehaviour where T : Component
 {
     /// <summary>
     /// 이 싱글톤이 초기화되었는지 확인하기 위한 변수
