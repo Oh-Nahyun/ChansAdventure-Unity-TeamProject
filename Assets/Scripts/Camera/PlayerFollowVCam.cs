@@ -8,7 +8,7 @@ public class PlayerFollowVCam : MonoBehaviour
     /// <summary>
     /// 카메라 변경 속도
     /// </summary>
-    public float speed = 0.5f;
+    public float speed = 1.0f;
 
     /// <summary>
     /// 카메라 Zoom 정도
@@ -45,16 +45,18 @@ public class PlayerFollowVCam : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 // vcam.transform.rotation = Quaternion.LookRotation(player.transform.forward, Vector3.up); // 활시위를 당길 때, 캐릭터와 카메라가 같은 방향 바라보기
-                follow.ShoulderOffset = Vector3.Lerp(zoomIn, zoomOut, speed * Time.deltaTime);
+                StopAllCoroutines();
+                StartCoroutine(Timer(true));
                 weapon.IsZoomIn = true;
                 weapon.LoadArrowAfter();
                 Debug.Log("Camera Zoom-In");
             }
 
             // 플레이어가 마우스 왼쪽 버튼에서 뗀 경우
-            else if (Input.GetMouseButtonUp(0))
+            if (Input.GetMouseButtonUp(0))
             {
-                follow.ShoulderOffset = Vector3.Lerp(zoomOut, zoomIn, speed * Time.deltaTime);
+                StopAllCoroutines();
+                StartCoroutine(Timer(false));
                 weapon.IsZoomIn = false;
                 weapon.LoadArrowAfter();
                 Debug.Log("Camera Zoom-Out");
@@ -64,6 +66,22 @@ public class PlayerFollowVCam : MonoBehaviour
         {
             follow.ShoulderOffset = zoomOut;
             weapon.IsZoomIn = false;
+        }
+    }
+
+    IEnumerator Timer(bool IsZoom)
+    {
+        float timeElapsed = 0.0f;
+        while (true)
+        {
+            timeElapsed += speed * Time.deltaTime;
+
+            if (IsZoom)
+                follow.ShoulderOffset = Vector3.Lerp(zoomOut, zoomIn, timeElapsed);
+            else
+                follow.ShoulderOffset = Vector3.Lerp(zoomIn, zoomOut, timeElapsed);
+
+            yield return null;
         }
     }
 }
