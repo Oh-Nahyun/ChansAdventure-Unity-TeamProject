@@ -11,7 +11,6 @@ public class Test_99_IdleSelector : StateMachineBehaviour
     {
         num = Random.Range(0, maxIdleCount);
         animator.SetInteger("IdleNumber", num);
-        Debug.Log(num);
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

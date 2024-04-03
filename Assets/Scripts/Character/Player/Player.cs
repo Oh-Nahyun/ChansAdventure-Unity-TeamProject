@@ -302,7 +302,7 @@ public class Player : MonoBehaviour
 
         pickUpRoot = transform.GetChild(2);
 
-        cameraRoot = transform.GetComponentInChildren<CameraRootMover>().transform;
+        //cameraRoot = transform.GetComponentInChildren<CameraRootMover>().transform;
 
         rightClick += PickUpObjectDetect;       // 우클릭 = 물건 들기
         onThrow += ThrowObject;                 // 던지기

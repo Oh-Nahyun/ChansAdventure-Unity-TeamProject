@@ -46,12 +46,29 @@ public class Weapon : MonoBehaviour
     /// </summary>
     //Transform arrowWeapon;
 
+    /// <summary>
+    /// 캐릭터가 활을 장비했는지 알기 위한 변수
+    /// </summary>
+    public bool IsBowEquip = false;
+
+    /// <summary>
+    /// 캐릭터의 활에 화살이 장전되었는지 알기 위한 변수
+    /// </summary>
+    public bool IsArrowEquip = false;
+
+    /// <summary>
+    /// 카메라 줌 설정 변수
+    /// </summary>
+    public bool IsZoomIn = false;
+
     // 애니메이터용 해시값
     readonly int IsAttackHash = Animator.StringToHash("IsAttack");
     readonly int IsSwordHash = Animator.StringToHash("IsSword");
     readonly int IsBowHash = Animator.StringToHash("IsBow");
     //readonly int CriticalHitHash = Animator.StringToHash("CriticalHit");
     readonly int UseWeaponHash = Animator.StringToHash("UseWeapon");
+    readonly int HaveArrowHash = Animator.StringToHash("HaveArrow");
+    readonly int ZoomInHash = Animator.StringToHash("ZoomIn");
 
     // 컴포넌트들
     PlayerinputActions inputActions;
@@ -60,6 +77,9 @@ public class Weapon : MonoBehaviour
     Sword sword;
     Bow bow;
     Arrow arrow;
+    PlayerFollowVCam vcam;
+
+    Test_99_PlayerController test_Contoller;
 
     private void Awake()
     {
@@ -69,6 +89,17 @@ public class Weapon : MonoBehaviour
         sword = GetComponentInChildren<Sword>();
         bow = GetComponentInChildren<Bow>();
         arrow = GetComponentInChildren<Arrow>();
+        vcam = FindAnyObjectByType<PlayerFollowVCam>();
+
+        test_Contoller = GetComponent<Test_99_PlayerController>();
+
+#if UNITY_EDITOR
+        if (player == null)
+        {
+            Test_Player = FindAnyObjectByType<Test_99_Player>();
+            Debug.Log($"테스트 플레이어 오브젝트에 접근되었습니다. 플레이어 스크립트를 찾을 수 없습니다.");
+        }
+#endif
     }
 
     private void Start()
@@ -90,27 +121,17 @@ public class Weapon : MonoBehaviour
         inputActions.Weapon.Attack.performed += OnAttackInput;
         inputActions.Weapon.Change.performed += OnChangeInput;
 
-        //inputActions.Weapon.Load.performed += OnLoadInput;
+        inputActions.Weapon.Load.performed += OnLoadInput;
     }
 
     private void OnDisable()
     {
-        //inputActions.Weapon.Load.performed -= OnLoadInput;
+        inputActions.Weapon.Load.performed -= OnLoadInput;
 
         inputActions.Weapon.Change.performed -= OnChangeInput;
         inputActions.Weapon.Attack.performed -= OnAttackInput;
         inputActions.Player.Attack.performed -= OnAttackInput;
         inputActions.Weapon.Disable();
-    }
-
-    private void Update()
-    {
-        //// 캐릭터가 마우스 왼쪽 버튼을 누르고 있는 경우
-        //if (Input.GetMouseButton(0))
-        //{
-        //    Camera.main.fieldOfView += 100.0f * Time.deltaTime;
-        //    //Debug.Log("Camera Zoom-In");
-        //}
     }
 
     /// <summary>
@@ -124,6 +145,12 @@ public class Weapon : MonoBehaviour
         if (currentWeaponMode == WeaponMode.None)
         {
             animator.SetBool(UseWeaponHash, false);
+            IsBowEquip = false;
+
+            // 공격할 동안 Player의 이동이 불가하도록 설정
+            StopAllCoroutines();
+            //StartCoroutine(player.StopInput());
+            StartCoroutine(test_Contoller.StopInput());
         }
         else // 무기 모드가 Sword 또는 Bow인 경우
         {
@@ -132,17 +159,36 @@ public class Weapon : MonoBehaviour
             if (currentWeaponMode == WeaponMode.Sword)
             {
                 animator.SetTrigger(IsSwordHash);
+                IsBowEquip = false;
+
+                // 공격할 동안 Player의 이동이 불가하도록 설정
+                StopAllCoroutines();
+                //StartCoroutine(player.StopInput());
+                StartCoroutine(test_Contoller.StopInput());
+
                 ////////// CriticalHit 설정하기
             }
             else if (currentWeaponMode == WeaponMode.Bow)
             {
                 animator.SetTrigger(IsBowHash);
+
+                if (IsArrowEquip == false)
+                {
+                    animator.SetBool(HaveArrowHash, false);
+
+                    // 공격할 동안 Player의 이동이 불가하도록 설정
+                    StopAllCoroutines();
+                    //StartCoroutine(player.StopInput());
+                    StartCoroutine(test_Contoller.StopInput());
+                }
+                //else
+                //{
+                //    LoadArrowAfter(); // 화살이 장전된 후 작업
+                //}
+                
+                IsBowEquip = true;
             }
         }
-
-        // 기본 공격할 동안 Player의 이동이 불가하도록 설정
-        StopAllCoroutines();
-        StartCoroutine(player.StopInput());
     }
 
     /// <summary>
@@ -229,6 +275,40 @@ public class Weapon : MonoBehaviour
         }
 
         return weaponNum;
+    }
+
+    /// <summary>
+    /// 화살 장전 함수
+    /// </summary>
+    private void OnLoadInput(InputAction.CallbackContext _)
+    {
+        Debug.Log($"IsArrowEquip : {IsArrowEquip}");
+        if (IsArrowEquip == false)  // 장전된 화살이 없는 경우
+        {
+            animator.SetBool(HaveArrowHash, true); // 화살 장전
+        }
+
+        IsArrowEquip = true; // 화살이 장전됐다고 변수 설정
+        Debug.Log($"IsArrowEquip : {IsArrowEquip}");
+    }
+
+    /// <summary>
+    /// 화살이 장전된 후 화살 관련 변수 설정을 위한 함수
+    /// </summary>
+    public void LoadArrowAfter()
+    {
+        if (IsArrowEquip == true) // 화살이 장전된 상태인 경우
+        {
+            animator.SetBool(ZoomInHash, IsZoomIn); // 카메라 줌 설정
+            Debug.Log($"IsZoomIn : {IsZoomIn}");
+
+            if (IsZoomIn == false) // 카메라 줌아웃인 경우 ( = 화살을 쐈다.)
+            {
+                // 장전되었던 화살 사용 표시
+                animator.SetBool(HaveArrowHash, false);
+                IsArrowEquip = false;
+            }
+        }
     }
 
     /// <summary>
@@ -326,5 +406,9 @@ public class Weapon : MonoBehaviour
     //{
     //    arrow.CloseArrow();
     //}
+
+#if UNITY_EDITOR
+    Test_99_Player Test_Player;
+#endif
 }
 
