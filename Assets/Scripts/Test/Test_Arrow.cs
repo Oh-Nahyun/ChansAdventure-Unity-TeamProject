@@ -21,7 +21,7 @@ public class Test_Arrow : TestBase
 
     protected override void OnTest1(InputAction.CallbackContext context)
     {
-        transform.Translate(Time.deltaTime * arrowSpeed * Vector3.up); // 화살 발사
+        //transform.Translate(Time.deltaTime * arrowSpeed * Vector3.up); // 화살 발사
     }
 
     protected override void OnTest2(InputAction.CallbackContext context)

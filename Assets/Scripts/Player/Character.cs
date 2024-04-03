@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Cinemachine;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -383,7 +381,6 @@ public class Character : MonoBehaviour
 
         cameraRoot.transform.localEulerAngles = angles;
         cameraRoot.transform.localEulerAngles = new Vector3(angles.x, angles.y, 0);
-
 
 
         //------------------------------------------------------------------------------------------------------------------------
