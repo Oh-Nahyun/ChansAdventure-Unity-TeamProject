@@ -74,7 +74,7 @@ public class Test_SwordSkeleton : EnemyBase
             animator.SetTrigger(Attack_Hash);
 
             // 무기 블레이드 활성화
-            WeaponBladeEnable();
+            WeaponBladeEnable_Old();
 
             // 공격 쿨다운 적용
             canAttack = false;
@@ -208,7 +208,7 @@ public class Test_SwordSkeleton : EnemyBase
     }
 
     // 무기 블레이드 활성화 메서드
-    private void WeaponBladeEnable()
+    private void WeaponBladeEnable_Old()
     {
         if (swordCollider != null)
         {
@@ -220,7 +220,7 @@ public class Test_SwordSkeleton : EnemyBase
     }
 
     // 무기 블레이드 비활성화 메서드
-    private void WeaponBladeDisable()
+    private void WeaponBladeDisable_Old()
     {
         if (swordCollider != null)
         {

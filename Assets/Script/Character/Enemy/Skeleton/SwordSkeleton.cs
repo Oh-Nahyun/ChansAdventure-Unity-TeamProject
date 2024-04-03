@@ -104,9 +104,14 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
     }
 
     /// <summary>
-    /// 이동 속도
+    /// 걷는(순찰) 속도
     /// </summary>
-    public float moveSpeed = 3.0f;
+    public float walkSpeed = 2.0f;
+
+    /// <summary>
+    /// 뛰는(추격)속도
+    /// </summary>
+    public float runSpeed = 4.0f;
 
     /// <summary>
     /// 적이 순찰할 웨이포인트(public이지만 private처럼 사용할 것)
@@ -205,6 +210,9 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
     /// </summary>
     public Action<int> onHit { get; set; }
 
+    // onWeaponBladeEnabe 델리게이트 변수
+    public Action<bool> onWeaponBladeEnabe;
+
     /// <summary>
     /// 상태별 업데이트 함수가 저장될 델리게이트(함수 저장용)
     /// </summary>
@@ -213,11 +221,13 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
     // 컴포넌트들
     Animator animator;
     NavMeshAgent agent;
-    CapsuleCollider bodyCollider; // 변경 해야됨(몸부분 머리부분 따로 분리)
-    SphereCollider headCollider;
+    // 변경 해야됨(몸부분 머리부분 따로 분리)
+    CapsuleCollider bodyCollider;   // 몸통 부분 콜라이더
+    SphereCollider headCollider;    // 머리 부분 콜라이더
+    BoxCollider swordCollider;      // 무기 부분 콜라이더
 
     Rigidbody rigid;
-    EnemyHealthBar hpBar;
+    EnemyHealthBar hpBar;           // 적의 HP바
 
     // 읽기 전용
     readonly Vector3 EffectResetPosition = new(0.0f, 0.01f, 0.0f);
@@ -226,15 +236,25 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
     {
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
-        bodyCollider = GetComponentInChildren<CapsuleCollider>();
-        headCollider = GetComponentInChildren<SphereCollider>();
         rigid = GetComponent<Rigidbody>();
+
+        GameObject bodyPoint = GameObject.Find("BodyPoint").gameObject;
+        bodyCollider = bodyPoint.GetComponent<CapsuleCollider>();
+
+        GameObject headPoint = GameObject.Find("HeadPoint").gameObject;
+        headCollider = headPoint.GetComponent<SphereCollider>();
+
+        GameObject swordPoint = GameObject.Find("SwordPoint").gameObject;
+        swordCollider = swordPoint.GetComponent<BoxCollider>();
+
 
         Transform child = transform.GetChild(3);
         hpBar = child.GetComponent<EnemyHealthBar>();
 
         child = transform.GetChild(4);
         AttackArea attackArea = child.GetComponent<AttackArea>();
+
+        
         attackArea.onPlayerIn += (target) =>
         {
             // 플레이어가 들어온 상태에서
@@ -261,7 +281,7 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
     {
         base.OnEnable();
 
-        agent.speed = moveSpeed;            // 이동 속도 지정
+        agent.speed = walkSpeed;            // 이동 속도 지정
         State = EnemyState.Wait;            // 기본 상태 지정
         animator.ResetTrigger("Idle");      // Wait 상태로 설정하면서 Stop 트리거가 쌓인 것을 제거하기 위해 필요
         rigid.isKinematic = true;           // 키네마틱을 꺼서 물리가 적용되게 만들기
@@ -484,6 +504,29 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
         gameObject.SetActive(false);    // 즉시 적 풀로 되돌리기
     }
 
+    // 무기 블레이드 활성화 메서드
+    private void WeaponBladeEnable()
+    {
+        if (swordCollider != null)
+        {
+            swordCollider.enabled = true;
+        }
+
+        // onWeaponBladeEnabe 델리게이트 호출
+        onWeaponBladeEnabe?.Invoke(true);
+    }
+
+    // 무기 블레이드 비활성화 메서드
+    private void WeaponBladeDisable()
+    {
+        if (swordCollider != null)
+        {
+            swordCollider.enabled = false;
+        }
+
+        // onWeaponBladeEnabe 델리게이트 호출
+        onWeaponBladeEnabe?.Invoke(false);
+    }
 
     public void HealthRegenerate(float totalRegen, float duration)
     {
@@ -518,9 +561,7 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
     }
 #endif
 }
-// 칼 휘두를때 에니메이션 이벤트로 칼 콜라이더 켜고 끄기
+// 플레이어 추격시 버그일어남
+// 애니메이터 트리거 설정 바꾸기(상황에 알맞게)
 // 순찰 상태와 추격 상태일때 이동속도 바꾸기
-// 애니메이터 파라메터 이름 바꾸기
-// 컴포넌트 찾을떄 위치 조정
 // 몸과 머리 부분 콜라이더 나눠서 데미지 다르게 받기
-// 현재 플레이어가 다가와도 따라오지 않음
