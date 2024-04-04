@@ -328,15 +328,6 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
             ""id"": ""e54fc67d-a6ad-4783-847d-7e97276f3e1c"",
             ""actions"": [
                 {
-                    ""name"": ""LeftClick"",
-                    ""type"": ""Button"",
-                    ""id"": ""f4794312-4302-42a4-b52a-b82a3c240ed5"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""RightClick"",
                     ""type"": ""Button"",
                     ""id"": ""30e7c0a1-24db-4cc1-981e-5f66af95b89d"",
@@ -419,17 +410,6 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
                 }
             ],
             ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""6320138e-cdc3-4519-beb6-8d32b8aef00e"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KM"",
-                    ""action"": ""LeftClick"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
                 {
                     ""name"": """",
                     ""id"": ""4c71cf94-8682-4921-ac9f-68cf2577396f"",
@@ -569,7 +549,6 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         m_Weapon_Load = m_Weapon.FindAction("Load", throwIfNotFound: true);
         // Skill
         m_Skill = asset.FindActionMap("Skill", throwIfNotFound: true);
-        m_Skill_LeftClick = m_Skill.FindAction("LeftClick", throwIfNotFound: true);
         m_Skill_RightClick = m_Skill.FindAction("RightClick", throwIfNotFound: true);
         m_Skill_Skill1 = m_Skill.FindAction("Skill1", throwIfNotFound: true);
         m_Skill_Skill2 = m_Skill.FindAction("Skill2", throwIfNotFound: true);
@@ -812,7 +791,6 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
     // Skill
     private readonly InputActionMap m_Skill;
     private List<ISkillActions> m_SkillActionsCallbackInterfaces = new List<ISkillActions>();
-    private readonly InputAction m_Skill_LeftClick;
     private readonly InputAction m_Skill_RightClick;
     private readonly InputAction m_Skill_Skill1;
     private readonly InputAction m_Skill_Skill2;
@@ -826,7 +804,6 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
     {
         private @PlayerinputActions m_Wrapper;
         public SkillActions(@PlayerinputActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @LeftClick => m_Wrapper.m_Skill_LeftClick;
         public InputAction @RightClick => m_Wrapper.m_Skill_RightClick;
         public InputAction @Skill1 => m_Wrapper.m_Skill_Skill1;
         public InputAction @Skill2 => m_Wrapper.m_Skill_Skill2;
@@ -845,9 +822,6 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_SkillActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_SkillActionsCallbackInterfaces.Add(instance);
-            @LeftClick.started += instance.OnLeftClick;
-            @LeftClick.performed += instance.OnLeftClick;
-            @LeftClick.canceled += instance.OnLeftClick;
             @RightClick.started += instance.OnRightClick;
             @RightClick.performed += instance.OnRightClick;
             @RightClick.canceled += instance.OnRightClick;
@@ -879,9 +853,6 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
 
         private void UnregisterCallbacks(ISkillActions instance)
         {
-            @LeftClick.started -= instance.OnLeftClick;
-            @LeftClick.performed -= instance.OnLeftClick;
-            @LeftClick.canceled -= instance.OnLeftClick;
             @RightClick.started -= instance.OnRightClick;
             @RightClick.performed -= instance.OnRightClick;
             @RightClick.canceled -= instance.OnRightClick;
@@ -955,7 +926,6 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
     }
     public interface ISkillActions
     {
-        void OnLeftClick(InputAction.CallbackContext context);
         void OnRightClick(InputAction.CallbackContext context);
         void OnSkill1(InputAction.CallbackContext context);
         void OnSkill2(InputAction.CallbackContext context);

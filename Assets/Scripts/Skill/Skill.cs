@@ -23,7 +23,7 @@ public class Skill : ReactionObject
 
     protected bool isActivate = false;
 
-    protected Player owner;
+    protected PlayerSkills playerSkills; // 이전 변수명 : Player onwer;
     protected SkillVCam skillVcam;
 
     protected Action camOn;
@@ -37,10 +37,7 @@ public class Skill : ReactionObject
 
     protected virtual void Start()
     {
-        if (owner == null)
-        {
-            owner = GameManager.Instance.Player;
-        }
+        playerSkills = GameManager.Instance.Player.Skills;
         if (skillVcam == null)
         {
             skillVcam = GameManager.Instance.Cam.SkillCam;
@@ -50,10 +47,10 @@ public class Skill : ReactionObject
     protected override void OnEnable()
     {
         base.OnEnable();
-        if(owner == null)
+/*        if(playerSkills == null)
         {
-            owner = GameManager.Instance.Player;
-        }
+            playerSkills = GameManager.Instance.Player.skills;
+        }*/
         if (skillVcam != null)
         {
             camOn = skillVcam.OnSkillCamera;
