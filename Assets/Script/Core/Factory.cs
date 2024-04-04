@@ -10,20 +10,12 @@ public class Factory : Singleton<Factory>
     /// </summary>
     public float noisePower = 0.5f;
 
-    //ItemPool itemPool;
-    //HitEffectPool hitEffectPool;
     SwordSkeletonPool swordSkeletonPool;
     DamageTextPool damageTextPool;
 
     protected override void OnInitialize()
     {
         base.OnInitialize();
-
-        //itemPool = GetComponentInChildren<ItemPool>();
-        //if (itemPool != null) itemPool.Initialize();
-
-        //hitEffectPool = GetComponentInChildren<HitEffectPool>();
-        //if (hitEffectPool != null) hitEffectPool.Initialize();
 
         swordSkeletonPool = GetComponentInChildren<SwordSkeletonPool>();
         if (swordSkeletonPool != null) swordSkeletonPool.Initialize();
@@ -33,7 +25,7 @@ public class Factory : Singleton<Factory>
     }
 
     /// <summary>
-    /// 슬라임 하나 가져오는 함수
+    /// 검사스켈레톤 하나 가져오는 함수
     /// </summary>
     /// <returns>배치된 슬라임 하나</returns>
     public SwordSkeleton GetEnemy()
@@ -42,7 +34,7 @@ public class Factory : Singleton<Factory>
     }
 
     /// <summary>
-    /// 슬라임 하나를 특정 위치에, 특정 각도로 배치
+    /// 검사스켈레톤 하나를 특정 위치에, 특정 각도로 배치
     /// </summary>
     /// <param name="position">배치될 위치</param>
     /// <param name="angle">배치 될 때의 각도</param>
@@ -53,7 +45,7 @@ public class Factory : Singleton<Factory>
     }
 
     /// <summary>
-    /// 슬라임 하나를 특정 웨이포인트를 사용하고, 특정 위치에, 특정 각도로 배치
+    /// 검사스켈레톤 하나를 특정 웨이포인트를 사용하고, 특정 위치에, 특정 각도로 배치
     /// </summary>
     /// <param name="index">사용할 웨이포인트의 인덱스</param>
     /// <param name="position">배치될 위치</param>

@@ -559,9 +559,10 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
 
         Handles.DrawWireDisc(transform.position, transform.up, nearSightRange);         // 근거리 범위 그리기
     }
+    // 플레이어 추격시 버그일어남
+    // 애니메이터 트리거 설정 바꾸기(상황에 알맞게)
+    // 순찰 상태와 추격 상태일때 이동속도 바꾸기
+    // 몸과 머리 부분 콜라이더 나눠서 데미지 다르게 받기
 #endif
 }
-// 플레이어 추격시 버그일어남
-// 애니메이터 트리거 설정 바꾸기(상황에 알맞게)
-// 순찰 상태와 추격 상태일때 이동속도 바꾸기
-// 몸과 머리 부분 콜라이더 나눠서 데미지 다르게 받기
+
