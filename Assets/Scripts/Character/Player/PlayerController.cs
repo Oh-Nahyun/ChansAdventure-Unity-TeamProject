@@ -9,7 +9,7 @@ using static UnityEngine.InputSystem.InputAction;
 /// <summary>
 /// 플레이어 인풋만 받는 스크립트
 /// </summary>
-public class Test_99_PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     PlayerinputActions playerInputAction;
 
@@ -30,7 +30,7 @@ public class Test_99_PlayerController : MonoBehaviour
 
     void OnEnable()
     {
-        playerInputAction.Enable();
+        playerInputAction.Player.Enable();
         // Player Movement
         playerInputAction.Player.Move.performed += OnMoveInput;
         playerInputAction.Player.Move.canceled += OnMoveInput;

@@ -13,7 +13,7 @@ public class Test03_RemoteBomb : TestBase
     //}
     //protected override void OnTest1(InputAction.CallbackContext context)
     //{
-    //    bomb = SkillFactory.Instance.GetRemoteBomb();
+    //    bomb = Factory.Instance.GetRemoteBomb();
     //    bomb.TestSkill();
     //}
 

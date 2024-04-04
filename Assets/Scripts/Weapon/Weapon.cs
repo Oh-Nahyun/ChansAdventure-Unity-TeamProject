@@ -79,7 +79,7 @@ public class Weapon : MonoBehaviour
     Arrow arrow;
     PlayerFollowVCam vcam;
 
-    Test_99_PlayerController test_Contoller;
+    PlayerController playerContoller;
 
     private void Awake()
     {
@@ -91,15 +91,7 @@ public class Weapon : MonoBehaviour
         arrow = GetComponentInChildren<Arrow>();
         vcam = FindAnyObjectByType<PlayerFollowVCam>();
 
-        test_Contoller = GetComponent<Test_99_PlayerController>();
-
-#if UNITY_EDITOR
-        if (player == null)
-        {
-            Test_Player = FindAnyObjectByType<Test_99_Player>();
-            Debug.Log($"테스트 플레이어 오브젝트에 접근되었습니다. 플레이어 스크립트를 찾을 수 없습니다.");
-        }
-#endif
+        playerContoller = GetComponent<PlayerController>();
     }
 
     private void Start()
@@ -150,7 +142,7 @@ public class Weapon : MonoBehaviour
             // 공격할 동안 Player의 이동이 불가하도록 설정
             StopAllCoroutines();
             //StartCoroutine(player.StopInput());
-            StartCoroutine(test_Contoller.StopInput());
+            StartCoroutine(playerContoller.StopInput());
         }
         else // 무기 모드가 Sword 또는 Bow인 경우
         {
@@ -164,7 +156,7 @@ public class Weapon : MonoBehaviour
                 // 공격할 동안 Player의 이동이 불가하도록 설정
                 StopAllCoroutines();
                 //StartCoroutine(player.StopInput());
-                StartCoroutine(test_Contoller.StopInput());
+                StartCoroutine(playerContoller.StopInput());
 
                 ////////// CriticalHit 설정하기
             }
@@ -179,7 +171,7 @@ public class Weapon : MonoBehaviour
                     // 공격할 동안 Player의 이동이 불가하도록 설정
                     StopAllCoroutines();
                     //StartCoroutine(player.StopInput());
-                    StartCoroutine(test_Contoller.StopInput());
+                    StartCoroutine(playerContoller.StopInput());
                 }
                 //else
                 //{
@@ -406,9 +398,5 @@ public class Weapon : MonoBehaviour
     //{
     //    arrow.CloseArrow();
     //}
-
-#if UNITY_EDITOR
-    Test_99_Player Test_Player;
-#endif
 }
 

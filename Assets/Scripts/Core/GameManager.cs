@@ -21,15 +21,11 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    public Test_99_Player testPlayer;
-
     protected override void OnInitialize()
     {
         player = FindAnyObjectByType<Player>();
         weapon = FindAnyObjectByType<Weapon>();
         cameraManager = GetComponent<CameraManager>();
-
-        testPlayer = FindAnyObjectByType<Test_99_Player>();
     }
 
 #if UNITY_EDITOR

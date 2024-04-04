@@ -10,10 +10,10 @@ using static System.Collections.Specialized.BitVector32;
 /// <summary>
 /// 플레이어의 스킬내용만 받는 스크립트
 /// </summary>
-public class Test_99_PlayerSkills : MonoBehaviour
+public class PlayerSkills : MonoBehaviour
 {
     // components
-    Test_99_PlayerSkillController skillController;
+    PlayerSkillController skillController;
     public ReactionObject CurrentOnSkill => currentOnSkill;
     ReactionObject currentOnSkill;
 
@@ -176,7 +176,7 @@ public class Test_99_PlayerSkills : MonoBehaviour
 
     void Awake()
     {
-        skillController = GetComponent<Test_99_PlayerSkillController>();
+        skillController = GetComponent<PlayerSkillController>();
         animator = GetComponent<Animator>();
 
         if (skillController == null)
@@ -371,7 +371,7 @@ public class Test_99_PlayerSkills : MonoBehaviour
                 if (remoteBomb == null)     // 리모컨폭탄이 현재 소환되어 있지 않으면
                 {
                     //Debug.Log("실행 : 리모컨 폭탄");
-                    remoteBomb = SkillFactory.Instance.GetRemoteBomb(); // 팩토리에서 리모컨폭탄 가져온 뒤 리모컨 폭탄 변수에 설정
+                    remoteBomb = Factory.Instance.GetRemoteBomb(); // 팩토리에서 리모컨폭탄 가져온 뒤 리모컨 폭탄 변수에 설정
                     currentOnSkill = remoteBomb;                        // 현재 사용중인 스킬은 리모컨폭탄
                 }
                 else
@@ -384,7 +384,7 @@ public class Test_99_PlayerSkills : MonoBehaviour
                 if (remoteBombCube == null)
                 {
                     //Debug.Log("실행 : 리모컨 폭탄 큐브");
-                    remoteBombCube = SkillFactory.Instance.GetRemoteBombCube();
+                    remoteBombCube = Factory.Instance.GetRemoteBombCube();
                     currentOnSkill = remoteBombCube;
                 }
                 else
@@ -396,7 +396,7 @@ public class Test_99_PlayerSkills : MonoBehaviour
                 if (magnetCatch == null)
                 {
                     //Debug.Log("실행 : 마그넷 캐치");
-                    magnetCatch = SkillFactory.Instance.GetMagnetCatch();
+                    magnetCatch = Factory.Instance.GetMagnetCatch();
                     currentOnSkill = magnetCatch;
                 }
                 break;

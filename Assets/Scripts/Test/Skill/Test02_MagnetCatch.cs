@@ -19,12 +19,12 @@ public class Test02_MagnetCatch : TestBase
 
     protected override void OnTest2(InputAction.CallbackContext context)
     {
-        player.SkillController.useSkillAction?.Invoke();
+        player.GetComponent<PlayerSkills>().useSkillAction?.Invoke();
     }
 
     protected override void OnTest3(InputAction.CallbackContext context)
     {
-        player.SkillController.offSkillAction?.Invoke();
+        player.GetComponent<PlayerSkills>().offSkillAction?.Invoke();
     }
 
 }
