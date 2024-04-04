@@ -469,7 +469,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd83bf7de6d7f7248998044e2013f378, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  seed: -1
 --- !u!4 &1260372192
 Transform:
   m_ObjectHideFlags: 0
@@ -777,6 +776,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2557118109478462143, guid: 01eee89cde26bf04aa9194d5dd3ca811,
+        type: 3}
+      propertyPath: cameraRoot
+      value: 
+      objectReference: {fileID: 1824261251}
+    - target: {fileID: 5895604275262749191, guid: 01eee89cde26bf04aa9194d5dd3ca811,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: b83ddd71847a64f588e8ca914d9fa278, type: 2}
     - target: {fileID: 7350111437259583936, guid: 01eee89cde26bf04aa9194d5dd3ca811,
         type: 3}
       propertyPath: cameraRoot
