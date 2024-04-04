@@ -13,12 +13,15 @@ public class Test_99_PlayerController : MonoBehaviour
 {
     PlayerinputActions playerInputAction;
 
-    //
+    // movment delegate
     public Action<Vector2, bool> onMove;
     public Action onMoveModeChagne;
     public Action<Vector2, bool> onLook;
     public Action onSlide;
     public Action<bool> onJump;
+
+    // behavior delegate
+
 
     void Awake()
     {
@@ -28,6 +31,7 @@ public class Test_99_PlayerController : MonoBehaviour
     void OnEnable()
     {
         playerInputAction.Enable();
+        // Player Movement
         playerInputAction.Player.Move.performed += OnMoveInput;
         playerInputAction.Player.Move.canceled += OnMoveInput;
         playerInputAction.Player.LookAround.performed += OnLookInput;
@@ -39,6 +43,7 @@ public class Test_99_PlayerController : MonoBehaviour
 
     void OnDisable()
     {
+        // Player Movement
         playerInputAction.Player.MoveModeChange.performed -= OnMoveModeChangeInput;
         playerInputAction.Player.Slide.performed -= OnSlideInput;
         playerInputAction.Player.Jump.performed -= OnJumpInput;
@@ -46,9 +51,10 @@ public class Test_99_PlayerController : MonoBehaviour
         playerInputAction.Player.LookAround.performed -= OnLookInput;
         playerInputAction.Player.Move.canceled -= OnMoveInput;
         playerInputAction.Player.Move.performed -= OnMoveInput;
+
         playerInputAction.Player.Disable();
     }
-
+    #region Player Movement Input
     /// <summary>
     /// 이동 처리 함수
     /// </summary>
@@ -88,6 +94,7 @@ public class Test_99_PlayerController : MonoBehaviour
     {
         onJump?.Invoke(context.performed);
     }
+    #endregion
 
     /// <summary>
     /// 입력 처리 불가 처리 코루틴

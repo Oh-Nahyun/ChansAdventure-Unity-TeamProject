@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Windows;
 
 /// <summary>
@@ -148,165 +149,6 @@ public class Test_99_Player : MonoBehaviour
     const float AnimatorWalkSpeed = 0.3f;
     const float AnimatorRunSpeed = 1.0f;
     #endregion
-
-    #region Skills
-    /// <summary>
-    /// 물체를 던지는 힘
-    /// </summary>
-    public float throwPower = 5.0f;
-    /// <summary>
-    /// 물건을 집을 수 있는 범위(반지름)
-    /// </summary>
-    public float liftRadius = 0.5f;
-    /// <summary>
-    /// 물건을 집을 수 있는 범위(높이)
-    /// </summary>
-    public float pickUpHeightRange = 0.5f;
-
-    /// <summary>
-    /// 입력이 있는지 파악용 (true: 입력이 있음)
-    /// </summary>
-    bool isMoveInput = false;
-
-    /// <summary>
-    /// 입력 관련
-    /// </summary>
-    Vector3 inputDir = Vector3.zero;
-
-    /// <summary>
-    /// 캐릭터 모델링 자식 트랜스폼
-    /// </summary>
-    Transform character;
-    /// <summary>
-    /// 오브젝트를 드는 범위용 자식 트랜스폼
-    /// </summary>
-    Transform pickUpRoot;
-
-    /// <summary>
-    /// 플레이어 스킬용
-    /// </summary>
-    PlayerSkillController skillController;
-    /// <summary>
-    /// 플레이어 스킬용 프로퍼티
-    /// </summary>
-    public PlayerSkillController SkillController => skillController;
-    /// <summary>
-    /// 플레이어 스킬사용 및 오브젝트 관련 손의 위치 추적용 트랜스폼 (플레이어와 동일한 회전값을 가짐 = 정면이 동일)
-    /// </summary>
-    HandRootTracker handRootTracker;
-
-    /// <summary>
-    /// 현재 사용중인 스킬이 있는지 확인 (true: 스킬 사용중)
-    /// </summary>
-    bool IsSkillOn => SkillController.CurrentOnSkill != null;
-
-    // 입력용 델리게이트
-    /// <summary>
-    /// 우클릭: 상호작용
-    /// </summary>
-    public Action rightClick;
-    /// <summary>
-    /// 좌클릭: 공격 (스킬에서 사용 x)
-    /// </summary>
-    public Action leftClick;
-    /// <summary>
-    /// 휠: 마그넷캐치 연결시 앞뒤이동
-    /// </summary>
-    public Action<float> onScroll;
-    /// <summary>
-    /// z: 던지기
-    /// </summary>
-    Action onThrow;
-    /// <summary>
-    /// f: 스킬 사용
-    /// </summary>
-    public Action onSkill;
-    /// <summary>
-    /// x: 취소 (야숨 행동 파악중)
-    /// </summary>
-    public Action onCancel;
-
-    /// <summary>
-    /// 선택된 스킬이 바뀌었음을 알리는 델리게이트 (F1:리모컨폭탄 F2:리모컨폭탄큐브 F3:마그넷캐치 F4:아이스메이커 F5:타임록)
-    /// </summary>
-    public Action<SkillName> onSkillSelect;
-
-    /// <summary>
-    /// 오브젝트를 들었을 경우를 알리는 델리게이트
-    /// </summary>
-    public Action onPickUp;
-
-    /// <summary>
-    /// 현재 선택된 스킬 (사용시 해당 스킬이 발동됨)
-    /// </summary>
-    SkillName selectSkill = SkillName.RemoteBomb;
-
-    /// <summary>
-    /// 현재 선택된 스킬용 프로퍼티
-    /// </summary>
-    SkillName SelectSkill
-    {
-        get => selectSkill;
-        set
-        {
-            if (selectSkill != value)
-            {
-                switch (selectSkill)
-                {
-                    case SkillName.RemoteBomb:
-                    case SkillName.RemoteBomb_Cube:
-                    case SkillName.IceMaker:
-                    case SkillName.TimeLock:
-                        if (reaction != null && reaction.transform.CompareTag("Skill"))     // 리모컨폭탄류의 스킬을 들고 있는 경우
-                        {
-                            DropObject();   // 땅에 버리기
-                        }
-                        break;
-                    case SkillName.MagnetCatch: // 마그넷캐치가 활성화 된 상태면 스킬 변경 불가능
-                        value = selectSkill;
-                        break;
-                }
-                selectSkill = value;            // 현재 스킬 설정
-                Debug.Log($"스킬 [{selectSkill}]로 설정");
-                onSkillSelect?.Invoke(selectSkill);         // 현재 선택된 스킬을 알림
-            }
-        }
-    }
-
-    /// <summary>
-    /// 오브젝트를 집었는 지 확인(true: 물건을 듦)
-    /// </summary>
-    bool isPickUp = false;
-
-    /// <summary>
-    /// 오브젝트를 집었는 지 확인용 프로퍼티
-    /// </summary>
-    bool IsPickUp
-    {
-        get => isPickUp;
-        set
-        {
-            if (isPickUp != value)  // 다른 값일 때만 가능 = 맨손일때만 들 수 있고 들고 있을 때만 내릴 수 있음
-            {
-                isPickUp = value;
-                animator.SetBool(Hash_IsPickUp, isPickUp);
-                // 추가: 마그넷 애니메이션 등 다른 애니메이션 if로 구분하기
-            }
-        }
-    }
-
-    // 애니메이션 해시
-    readonly int Hash_IsMove = Animator.StringToHash("IsMove");
-    readonly int Hash_IsPickUp = Animator.StringToHash("IsPickUp");
-    readonly int Hash_Throw = Animator.StringToHash("Throw");
-
-    /// <summary>
-    /// 현재 들고있는 오브젝트 (들고있지 않으면 null)
-    /// </summary>
-    ReactionObject reaction;
-
-    #endregion
-
 
     void Awake()
     {
@@ -474,7 +316,6 @@ public class Test_99_Player : MonoBehaviour
         isJumping = true;
     }
 
-
     /// <summary>
     /// 회피 처리 함수
     /// </summary>
@@ -498,51 +339,4 @@ public class Test_99_Player : MonoBehaviour
     {
         characterController.enabled = false;
     }
-
-    #region skill function
-    /// <summary>
-    /// 오브젝트를 드는 메서드
-    /// </summary>
-    void PickUpObject()
-    {
-        IsPickUp = true;
-        onPickUp?.Invoke();
-        reaction.PickUp(handRootTracker.transform);         // 물건 들기
-        reaction.transform.rotation = Quaternion.identity;  // 물건의 회전값 없애기 = 플레이어의 정면과 맞추기
-    }
-    /// <summary>
-    /// 오브젝트 던지는 메서드
-    /// </summary>
-    void ThrowObject()
-    {
-        if (IsPickUp && reaction != null)
-        {
-            animator.SetTrigger(Hash_Throw);
-            reaction.Throw(throwPower, transform);
-            IsPickUp = false;
-            reaction = null;
-        }
-    }
-
-    /// <summary>
-    /// 취소 행동용 메서드 (아직 확인중)
-    /// </summary>
-    void DropObject()
-    {
-        // 취소키 야숨에서 확인하기
-        /*if(IsPickUp && reaction != null)
-        {
-            IsPickUp = false;
-            reaction.Drop();
-            reaction = null;
-        }*/
-        if (IsSkillOn && reaction != null)          // 스킬이 사용중이면 모두 취소
-        {
-            IsPickUp = false;
-            reaction.Drop();
-            reaction = null;
-        }
-    }
-
-    #endregion
 }

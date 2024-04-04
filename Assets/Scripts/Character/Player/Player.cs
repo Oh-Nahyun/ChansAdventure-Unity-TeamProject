@@ -289,11 +289,10 @@ public class Player : MonoBehaviour
         rigid = GetComponent<Rigidbody>();
 
         // Player Skills
-        character = transform.GetChild(0);
+        //character = transform.GetChild(0);
 
         inputActions = new PlayerinputActions();
         animator = character.GetComponent<Animator>();                          // 애니메이션은 자식 트랜스폼인 모델에서 처리
-
 
         skillController = transform.GetComponent<PlayerSkillController>();
 
