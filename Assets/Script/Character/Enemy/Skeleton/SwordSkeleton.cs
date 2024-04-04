@@ -51,12 +51,14 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
                     case EnemyState.Patrol:
                         // Debug.Log("패트롤 상태");
                         agent.isStopped = false;        // agent 다시 켜기
+                        agent.speed = walkSpeed;
                         agent.SetDestination(waypoints.NextTarget);  // 목적지 지정(웨이포인트 지점)
                         animator.SetTrigger("Patrol");
                         onStateUpdate = Update_Patrol;
                         break;
                     case EnemyState.Chase:
                         agent.isStopped = false;
+                        agent.speed = runSpeed;
                         animator.SetTrigger("Chase");
                         onStateUpdate = Update_Chase;
                         break;
