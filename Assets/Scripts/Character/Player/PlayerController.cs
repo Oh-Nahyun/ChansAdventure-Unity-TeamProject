@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     public Action<Vector2, bool> onLook;
     public Action onSlide;
     public Action<bool> onJump;
+    public Action onSkillModeChange;
 
     // behavior delegate
 
@@ -39,11 +40,15 @@ public class PlayerController : MonoBehaviour
         playerInputAction.Player.Jump.performed += OnJumpInput;
         playerInputAction.Player.Slide.performed += OnSlideInput;
         playerInputAction.Player.MoveModeChange.performed += OnMoveModeChangeInput;
+
+        playerInputAction.Player.ActiveSkillMode.performed += OnSkillModeChange;
     }
 
     void OnDisable()
     {
         // Player Movement
+        playerInputAction.Player.ActiveSkillMode.performed -= OnSkillModeChange;
+
         playerInputAction.Player.MoveModeChange.performed -= OnMoveModeChangeInput;
         playerInputAction.Player.Slide.performed -= OnSlideInput;
         playerInputAction.Player.Jump.performed -= OnJumpInput;
@@ -54,7 +59,26 @@ public class PlayerController : MonoBehaviour
 
         playerInputAction.Player.Disable();
     }
+
     #region Player Movement Input
+
+    private void OnSkillModeChange(CallbackContext context)
+    {
+        bool isActiveSelf = playerInputAction.Skill.enabled;
+        if (!isActiveSelf)
+        {
+            playerInputAction.Skill.Enable();
+            playerInputAction.Weapon.Disable();
+        }
+        else
+        {
+            playerInputAction.Skill.Disable();
+            playerInputAction.Weapon.Enable();
+        }
+
+        Debug.Log($"스킬 모드 활성화 여부 : {playerInputAction.Skill.enabled}");
+    }
+
     /// <summary>
     /// 이동 처리 함수
     /// </summary>

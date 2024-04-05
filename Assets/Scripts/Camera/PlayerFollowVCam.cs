@@ -26,6 +26,11 @@ public class PlayerFollowVCam : MonoBehaviour
         weapon = FindAnyObjectByType<Weapon>();
         vcam = GetComponent<CinemachineVirtualCamera>();
         follow = vcam.GetCinemachineComponent<Cinemachine3rdPersonFollow>();
+
+        if(follow == null)
+        {
+            Debug.LogError("Follow 프로퍼티에 CameraRoot 오브젝트가 존재하지 않습니다.");
+        }
     }
 
     private void Update()

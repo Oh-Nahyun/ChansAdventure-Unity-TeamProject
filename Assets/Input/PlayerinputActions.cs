@@ -107,6 +107,15 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""ActiveSkillMode"",
+                    ""type"": ""Button"",
+                    ""id"": ""638aa236-2d4a-45a0-a15d-59e87f47d6b2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -250,6 +259,17 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""KM"",
                     ""action"": ""LookAround"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a260c4f6-4376-4ec3-8348-04d907d44a98"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ActiveSkillMode"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -562,6 +582,7 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         m_Player_MoveModeChange = m_Player.FindAction("MoveModeChange", throwIfNotFound: true);
         m_Player_Slide = m_Player.FindAction("Slide", throwIfNotFound: true);
         m_Player_LookAround = m_Player.FindAction("LookAround", throwIfNotFound: true);
+        m_Player_ActiveSkillMode = m_Player.FindAction("ActiveSkillMode", throwIfNotFound: true);
         // Weapon
         m_Weapon = asset.FindActionMap("Weapon", throwIfNotFound: true);
         m_Weapon_Attack = m_Weapon.FindAction("Attack", throwIfNotFound: true);
@@ -649,6 +670,7 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_MoveModeChange;
     private readonly InputAction m_Player_Slide;
     private readonly InputAction m_Player_LookAround;
+    private readonly InputAction m_Player_ActiveSkillMode;
     public struct PlayerActions
     {
         private @PlayerinputActions m_Wrapper;
@@ -662,6 +684,7 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         public InputAction @MoveModeChange => m_Wrapper.m_Player_MoveModeChange;
         public InputAction @Slide => m_Wrapper.m_Player_Slide;
         public InputAction @LookAround => m_Wrapper.m_Player_LookAround;
+        public InputAction @ActiveSkillMode => m_Wrapper.m_Player_ActiveSkillMode;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -698,6 +721,9 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
             @LookAround.started += instance.OnLookAround;
             @LookAround.performed += instance.OnLookAround;
             @LookAround.canceled += instance.OnLookAround;
+            @ActiveSkillMode.started += instance.OnActiveSkillMode;
+            @ActiveSkillMode.performed += instance.OnActiveSkillMode;
+            @ActiveSkillMode.canceled += instance.OnActiveSkillMode;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -729,6 +755,9 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
             @LookAround.started -= instance.OnLookAround;
             @LookAround.performed -= instance.OnLookAround;
             @LookAround.canceled -= instance.OnLookAround;
+            @ActiveSkillMode.started -= instance.OnActiveSkillMode;
+            @ActiveSkillMode.performed -= instance.OnActiveSkillMode;
+            @ActiveSkillMode.canceled -= instance.OnActiveSkillMode;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -946,6 +975,7 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         void OnMoveModeChange(InputAction.CallbackContext context);
         void OnSlide(InputAction.CallbackContext context);
         void OnLookAround(InputAction.CallbackContext context);
+        void OnActiveSkillMode(InputAction.CallbackContext context);
     }
     public interface IWeaponActions
     {

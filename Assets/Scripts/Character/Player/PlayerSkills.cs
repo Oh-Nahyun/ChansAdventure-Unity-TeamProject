@@ -14,8 +14,9 @@ public class PlayerSkills : MonoBehaviour
 {
     // components
     PlayerSkillController skillController;
-    public ReactionObject CurrentOnSkill => currentOnSkill;
+
     ReactionObject currentOnSkill;
+    public ReactionObject CurrentOnSkill => currentOnSkill;
 
     RemoteBomb remoteBomb;
     RemoteBombCube remoteBombCube;
@@ -187,9 +188,9 @@ public class PlayerSkills : MonoBehaviour
         {
             skillController.onSkillSelect += ConnectSkill; // onSkillSelect가 같은 스크립트 내에서 처리됨
 
-            skillController.onSkillActive += () => onSKillAction?.Invoke();
-            skillController.onSkillActive += OnSkill;
-            skillController.rightClick += () => useSkillAction?.Invoke();
+            //skillController.onSkillActive += () => onSKillAction?.Invoke(); // 
+            skillController.onSkillActive += OnSkill; // 
+            //skillController.rightClick += () => useSkillAction?.Invoke();
             skillController.onCancel += CancelSkill;
 
             //onSKillAction += OnSkill;
@@ -198,6 +199,7 @@ public class PlayerSkills : MonoBehaviour
 
             HandRoot handRoot = transform.GetComponentInChildren<HandRoot>();       // 플레이어 손 위치를 찾기 귀찮아서 스크립트 넣어서 찾음
             handRootTracker = transform.GetComponentInChildren<HandRootTracker>();  // 플레이어 손 위치를 추적하는 트랜스폼 => 집어든 오브젝트를 자식으로 놨을 때 정면을 플레이어의 정면으로 맞추기 위해
+            handRootTrackerTransform = handRoot.transform; // 24.04.05
 
             pickUpRoot = transform.GetChild(2);
 
@@ -211,12 +213,123 @@ public class PlayerSkills : MonoBehaviour
             onSkill += () => handRootTracker.OnTracking(handRoot.transform);    // 스킬 사용시 손위치추적기 동작
             onCancel += handRootTracker.OffTracking;
 
+
+
             skillController.onRemoteBomb += OnRemoteBomb;  // skill 1
             skillController.onRemoteBomb_Cube += OnRemoteBomb_Cube;// skill 2
             skillController.onMagnetCatch += OnMagnetCatch;// skill 3
             skillController.onIceMaker += OnIceMaker;// skill 4
             skillController.onTimeLock += OnTimeLock; // skill 5
+            skillController.onThrow += ThrowObject;
 }
+    }
+
+    void OnSkill()
+    {
+        // 설정된 스킬별로 동작
+        switch (currentSkill)
+        {
+            case SkillName.RemoteBomb:
+                if (remoteBomb == null)     // 리모컨폭탄이 현재 소환되어 있지 않으면
+                {
+                    //Debug.Log("실행 : 리모컨 폭탄");
+                    remoteBomb = Factory.Instance.GetRemoteBomb(); // 팩토리에서 리모컨폭탄 가져온 뒤 리모컨 폭탄 변수에 설정
+                    currentOnSkill = remoteBomb;                        // 현재 사용중인 스킬은 리모컨폭탄
+                }
+                else
+                {
+                    CancelSkill();          // 리모컨폭탄이 소환되어 있으면 터지면서 스킬 종료
+                }
+
+                break;
+            case SkillName.RemoteBomb_Cube:
+                if (remoteBombCube == null)
+                {
+                    //Debug.Log("실행 : 리모컨 폭탄 큐브");
+                    remoteBombCube = Factory.Instance.GetRemoteBombCube();
+                    currentOnSkill = remoteBombCube;
+                }
+                else
+                {
+                    CancelSkill();
+                }
+                break;
+            case SkillName.MagnetCatch:
+                if (magnetCatch == null)
+                {
+                    //Debug.Log("실행 : 마그넷 캐치");
+                    magnetCatch = Factory.Instance.GetMagnetCatch();
+                    currentOnSkill = magnetCatch;
+                }
+                break;
+            case SkillName.IceMaker:
+                break;
+            case SkillName.TimeLock:
+                break;
+        }
+
+        ConnectSkill(currentSkill);
+
+        if (currentOnSkill != null)
+        {
+            currentOnSkill.PickUp(HandRoot);
+
+            //currentOnSkill.transform.SetParent(HandRoot);
+            //currentOnSkill.transform.position = HandRoot.position;
+            //currentOnSkill.transform.forward = player.transform.forward;
+        }
+
+        onSKillAction?.Invoke();
+    }
+
+    void ConnectSkill(SkillName skiilName)
+    {
+        // 현재 스킬 종류로 설정
+        currentSkill = skiilName;
+
+        // 스킬 변경시 델리게이트 연결 해제
+        onSKillAction = null;
+        useSkillAction = null;
+        offSkillAction = null;
+
+        // 설정된 스킬이 현재 발동 중이면 스킬 관련(시작, 사용중, 종료) 델리게이트 연결
+        // 설정된 스킬로 현재사용중인 스킬 연결 (각 스킬이 없으면 null)
+        switch (currentSkill)
+        {
+            case SkillName.RemoteBomb:
+                currentOnSkill = remoteBomb;
+                if (remoteBomb != null)
+                {
+                    onSKillAction = remoteBomb.OnSkill;
+                    useSkillAction = remoteBomb.UseSkill;
+                    offSkillAction = remoteBomb.OffSkill;
+                }
+
+                break;
+            case SkillName.RemoteBomb_Cube:
+                currentOnSkill = remoteBombCube;
+                if (remoteBombCube != null)
+                {
+                    onSKillAction = remoteBombCube.OnSkill;
+                    useSkillAction = remoteBombCube.UseSkill;
+                    offSkillAction = remoteBombCube.OffSkill;
+                }
+                break;
+            case SkillName.MagnetCatch:
+                currentOnSkill = magnetCatch;
+                if (magnetCatch != null)
+                {
+                    onSKillAction = magnetCatch.OnSkill;
+                    useSkillAction = magnetCatch.UseSkill;
+                    offSkillAction = magnetCatch.OffSkill;
+                }
+                break;
+            case SkillName.IceMaker:
+                break;
+            case SkillName.TimeLock:
+                break;
+        }
+
     }
 
     /// <summary>
@@ -309,114 +422,6 @@ public class PlayerSkills : MonoBehaviour
             reaction = null;
         }
 
-    }
-
-    void ConnectSkill(SkillName skiilName)
-    {
-        // 현재 스킬 종류로 설정
-        currentSkill = skiilName;
-
-        // 스킬 변경시 델리게이트 연결 해제
-        onSKillAction = null;
-        useSkillAction = null;
-        offSkillAction = null;
-
-        // 설정된 스킬이 현재 발동 중이면 스킬 관련(시작, 사용중, 종료) 델리게이트 연결
-        // 설정된 스킬로 현재사용중인 스킬 연결 (각 스킬이 없으면 null)
-        switch (currentSkill)
-        {
-            case SkillName.RemoteBomb:
-                currentOnSkill = remoteBomb;
-                if (remoteBomb != null)
-                {
-                    onSKillAction = remoteBomb.OnSkill;
-                    useSkillAction = remoteBomb.UseSkill;
-                    offSkillAction = remoteBomb.OffSkill;
-                }
-
-                break;
-            case SkillName.RemoteBomb_Cube:
-                currentOnSkill = remoteBombCube;
-                if (remoteBombCube != null)
-                {
-                    onSKillAction = remoteBombCube.OnSkill;
-                    useSkillAction = remoteBombCube.UseSkill;
-                    offSkillAction = remoteBombCube.OffSkill;
-                }
-                break;
-            case SkillName.MagnetCatch:
-                currentOnSkill = magnetCatch;
-                if (magnetCatch != null)
-                {
-                    onSKillAction = magnetCatch.OnSkill;
-                    useSkillAction = magnetCatch.UseSkill;
-                    offSkillAction = magnetCatch.OffSkill;
-                }
-                break;
-            case SkillName.IceMaker:
-                break;
-            case SkillName.TimeLock:
-                break;
-        }
-
-    }
-
-
-    void OnSkill()
-    {
-        // 설정된 스킬별로 동작
-        switch (currentSkill)
-        {
-            case SkillName.RemoteBomb:
-                if (remoteBomb == null)     // 리모컨폭탄이 현재 소환되어 있지 않으면
-                {
-                    //Debug.Log("실행 : 리모컨 폭탄");
-                    remoteBomb = Factory.Instance.GetRemoteBomb(); // 팩토리에서 리모컨폭탄 가져온 뒤 리모컨 폭탄 변수에 설정
-                    currentOnSkill = remoteBomb;                        // 현재 사용중인 스킬은 리모컨폭탄
-                }
-                else
-                {
-                    CancelSkill();          // 리모컨폭탄이 소환되어 있으면 터지면서 스킬 종료
-                }
-
-                break;
-            case SkillName.RemoteBomb_Cube:
-                if (remoteBombCube == null)
-                {
-                    //Debug.Log("실행 : 리모컨 폭탄 큐브");
-                    remoteBombCube = Factory.Instance.GetRemoteBombCube();
-                    currentOnSkill = remoteBombCube;
-                }
-                else
-                {
-                    CancelSkill();
-                }
-                break;
-            case SkillName.MagnetCatch:
-                if (magnetCatch == null)
-                {
-                    //Debug.Log("실행 : 마그넷 캐치");
-                    magnetCatch = Factory.Instance.GetMagnetCatch();
-                    currentOnSkill = magnetCatch;
-                }
-                break;
-            case SkillName.IceMaker:
-                break;
-            case SkillName.TimeLock:
-                break;
-        }
-
-        ConnectSkill(currentSkill);
-
-        if (currentOnSkill != null)
-        {
-            currentOnSkill.PickUp(HandRoot);
-            //currentOnSkill.transform.SetParent(HandRoot);
-            //currentOnSkill.transform.position = HandRoot.position;
-            //currentOnSkill.transform.forward = player.transform.forward;
-        }
-
-        onSKillAction?.Invoke();
     }
 
     void CancelSkill()

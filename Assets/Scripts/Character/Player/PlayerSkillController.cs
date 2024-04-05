@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static System.Collections.Specialized.BitVector32;
+using static UnityEngine.InputSystem.InputAction;
 
 /// <summary>
 /// 플레이어 스킬입력
@@ -59,7 +60,7 @@ public class PlayerSkillController : MonoBehaviour
     public Action onIceMaker; // skill 4
     public Action onTimeLock; // skill 5
     public Action onThrow; 
-    public Action onCancel; 
+    public Action onCancel;
 
     /// <summary>
     /// 선택된 스킬이 바뀌었음을 알리는 델리게이트 (F1:리모컨폭탄 F2:리모컨폭탄큐브 F3:마그넷캐치 F4:아이스메이커 F5:타임록)
@@ -70,7 +71,6 @@ public class PlayerSkillController : MonoBehaviour
     /// 우클릭: 상호작용
     /// </summary>
     public Action rightClick;
-
 
     #region Player behavior
     private void OnSkill(InputAction.CallbackContext _)

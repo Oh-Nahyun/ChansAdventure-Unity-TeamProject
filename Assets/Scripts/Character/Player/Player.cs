@@ -139,20 +139,6 @@ public class Player : MonoBehaviour
     /// </summary>
     public GameObject cameraRoot;
 
-    public GameObject CameraRoot
-    {
-        get => cameraRoot;
-        set
-        {
-            cameraRoot = value;
-
-            if(cameraRoot != null)
-            {
-                Debug.LogError("CameraRoot가 비어있습니다. CameraRoot Prefab 오브젝트를 넣어주세요 ( PlayerLookVCam 스크립트 있는 오브젝트 )");
-            }
-        }
-    }
-
     /// <summary>
     /// 주변 시야 카메라 회전 정도
     /// </summary>
@@ -177,6 +163,12 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+        // exception
+        if (cameraRoot == null)
+        {
+            Debug.LogError("CameraRoot가 비어있습니다. CameraRoot Prefab 오브젝트를 넣어주세요 ( PlayerLookVCam 스크립트 있는 오브젝트 )");
+        }
+
         controller.onMove += OnMove;
         controller.onMoveModeChagne += OnMoveModeChange;
         controller.onLook += OnLookAround;
