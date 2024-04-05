@@ -77,7 +77,7 @@ public class Weapon : MonoBehaviour
     Sword sword;
     Bow bow;
     Arrow arrow;
-    PlayerFollowVCam vcam;
+    //PlayerFollowVCam vcam;
 
     private void Awake()
     {
@@ -87,7 +87,7 @@ public class Weapon : MonoBehaviour
         sword = GetComponentInChildren<Sword>();
         bow = GetComponentInChildren<Bow>();
         arrow = GetComponentInChildren<Arrow>();
-        vcam = FindAnyObjectByType<PlayerFollowVCam>();
+        //vcam = FindAnyObjectByType<PlayerFollowVCam>();
     }
 
     private void Start()
@@ -133,7 +133,6 @@ public class Weapon : MonoBehaviour
         if (currentWeaponMode == WeaponMode.None)
         {
             animator.SetBool(UseWeaponHash, false);
-            IsBowEquip = false;
 
             // 공격할 동안 Player의 이동이 불가하도록 설정
             StopAllCoroutines();
@@ -146,7 +145,6 @@ public class Weapon : MonoBehaviour
             if (currentWeaponMode == WeaponMode.Sword)
             {
                 animator.SetTrigger(IsSwordHash);
-                IsBowEquip = false;
 
                 // 공격할 동안 Player의 이동이 불가하도록 설정
                 StopAllCoroutines();
@@ -158,7 +156,7 @@ public class Weapon : MonoBehaviour
             {
                 animator.SetTrigger(IsBowHash);
 
-                if (IsArrowEquip == false)
+                if (!IsArrowEquip)
                 {
                     animator.SetBool(HaveArrowHash, false);
 
@@ -166,12 +164,6 @@ public class Weapon : MonoBehaviour
                     StopAllCoroutines();
                     StartCoroutine(player.StopInput());
                 }
-                //else
-                //{
-                //    LoadArrowAfter(); // 화살이 장전된 후 작업
-                //}
-                
-                IsBowEquip = true;
             }
         }
     }
@@ -214,12 +206,15 @@ public class Weapon : MonoBehaviour
         {
             case WeaponMode.None:
                 ShowWeapon(false, false);
+                IsBowEquip = false;
                 break;
             case WeaponMode.Sword:
                 ShowWeapon(true, false);
+                IsBowEquip = false;
                 break;
             case WeaponMode.Bow:
                 ShowWeapon(false, true);
+                IsBowEquip = true;
                 break;
         }
     }
@@ -267,31 +262,37 @@ public class Weapon : MonoBehaviour
     /// </summary>
     private void OnLoadInput(InputAction.CallbackContext _)
     {
-        Debug.Log($"IsArrowEquip : {IsArrowEquip}");
-        if (IsArrowEquip == false)  // 장전된 화살이 없는 경우
+        Debug.Log($"IsBowEquip : {IsBowEquip}");
+        if (IsBowEquip) // 활을 장비하고 있는 경우
         {
-            animator.SetBool(HaveArrowHash, true); // 화살 장전
-        }
+            Debug.Log($"IsArrowEquip : {IsArrowEquip}");
+            if (!IsArrowEquip)  // 장전된 화살이 없는 경우
+            {
+                animator.SetBool(HaveArrowHash, true); // 화살 장전
+                Debug.Log($"화살 장전 완료");
+            }
 
-        IsArrowEquip = true; // 화살이 장전됐다고 변수 설정
-        Debug.Log($"IsArrowEquip : {IsArrowEquip}");
+            IsArrowEquip = true; // 화살이 장전되어있다고 변수 설정
+            Debug.Log($"IsArrowEquip : {IsArrowEquip}");
+        }
     }
 
     /// <summary>
-    /// 화살이 장전된 후 화살 관련 변수 설정을 위한 함수
+    /// 화살이 장전된 후 작업(화살 관련 변수 설정)을 위한 함수
     /// </summary>
     public void LoadArrowAfter()
     {
-        if (IsArrowEquip == true) // 화살이 장전된 상태인 경우
+        if (IsArrowEquip) // 화살이 장전된 상태인 경우
         {
-            animator.SetBool(ZoomInHash, IsZoomIn); // 카메라 줌 설정
             Debug.Log($"IsZoomIn : {IsZoomIn}");
+            animator.SetBool(ZoomInHash, IsZoomIn); // 카메라 줌 설정
 
-            if (IsZoomIn == false) // 카메라 줌아웃인 경우 ( = 화살을 쐈다.)
+            if (!IsZoomIn) // 카메라 줌아웃인 경우 ( = 화살을 쐈다.)
             {
                 // 장전되었던 화살 사용 표시
                 animator.SetBool(HaveArrowHash, false);
                 IsArrowEquip = false;
+                Debug.Log($"IsArrowEquip : {IsArrowEquip}");
             }
         }
     }
