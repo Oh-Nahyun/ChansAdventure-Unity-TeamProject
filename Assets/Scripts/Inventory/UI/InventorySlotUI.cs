@@ -46,7 +46,7 @@ public class InventorySlotUI : SlotUI_Base, IBeginDragHandler, IDragHandler, IEn
         // OnPointerClick 이벤트 처리
         if (obj != null)
         {
-            inventoryUI.onDivdItem(InventorySlotData.SlotIndex);
+            inventoryUI.onClickItem(InventorySlotData.SlotIndex);
         }
         else
         {

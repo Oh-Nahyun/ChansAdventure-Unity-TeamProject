@@ -10,15 +10,15 @@ public interface IEquipTarget
     /// <summary>
     /// 캐릭터가 장착한 장비들을 접근하기 위한 프로퍼티
     /// </summary>
-    public InventorySlot[] EquipPart { get; }
+    public InventorySlot[] EquipPart { get; set; }
 
     /// <summary>
     /// 캐릭터가 장비를 장착할 때 실행되는 함수
     /// </summary>
-    public void CharacterEquipItem(GameObject Equipment);
+    public void CharacterEquipItem(GameObject Equipment, EquipPart partNumber, InventorySlot slot);
 
     /// <summary>
     /// 캐릭터가 장비 장착 해제 할 때 실행되는 함수
     /// </summary>
-    public void CharacterUnequipItem();
+    public void CharacterUnequipItem(EquipPart partNumber);
 }

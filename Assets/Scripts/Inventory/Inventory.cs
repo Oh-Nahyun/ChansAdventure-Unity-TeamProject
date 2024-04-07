@@ -362,6 +362,12 @@ public class Inventory
         }
     }
 
+    /// <summary>
+    /// 임시 슬롯 접근 함수
+    /// </summary>
+    /// <param name="index">임시 슬롯에 옮길 아이템 슬롯 인덱스</param>
+    /// <param name="itemCode">임시 슬롯에 옮길 아이템 코드</param>
+    /// <param name="itemCount">임시 슬롯에 옮길 아이템 량</param>
     public void AccessTempSlot(uint index, uint itemCode, int itemCount)
     {
         if(TempSlot.SlotItemData == null) // 임시 슬롯이 비어있다.
@@ -408,6 +414,20 @@ public class Inventory
     }
 
     /// <summary>
+    /// 아이템 드롭할 때 실행하는 함수
+    /// </summary>
+    /// <param name="index">드롭할 아이템 슬롯</param>
+    public void DropItem(uint index)
+    {
+        GameObject dropItem = UnityEngine.Object.Instantiate(slots[index].SlotItemData.ItemPrefab, Owner.transform);
+
+        dropItem.name = $"{slots[index].SlotItemData.itemName}";
+        dropItem.transform.SetParent(null);
+
+        slots[index].DiscardItem(1);
+    }
+
+    /// <summary>
     /// 해당 인덱스에 슬롯에 아이템이 들어갈 수 있는 지 확인하는 함수
     /// </summary>
     /// <param name="index">확인할 인덱스</param>
@@ -418,6 +438,10 @@ public class Inventory
     }
 
 #if UNITY_EDITOR
+
+    /// <summary>
+    /// 인벤토리 슬롯들의 정보를 보여주는 함수
+    /// </summary>
     public void TestShowInventory()
     {
         string str = null;

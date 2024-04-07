@@ -54,15 +54,14 @@ public class InventoryDetailUI : MonoBehaviour
 
         rect.position = mousePosition;
         // 현재 포지션 + width > maxwidth 넘으면 = maxwidth
-        int over = (int)(rect.position.x + rect.sizeDelta.x);
+        int overWidth = (int)(rect.position.x + rect.sizeDelta.x);
 
-        over = Mathf.Max(0, over);
+        overWidth = Mathf.Max(0, overWidth);
 
-        if(over > Screen.width)
+        if(overWidth > Screen.width)
         {
             rect.position = new Vector3(Screen.width - rect.sizeDelta.x, rect.position.y);
         }
-
     }
 
     /// <summary>

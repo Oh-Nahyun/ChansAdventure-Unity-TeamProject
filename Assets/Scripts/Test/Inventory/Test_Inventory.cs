@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Test_Inventory2 : TestBase
+public class Test_Inventory : TestBase
 {
     public GameObject Test_Player;
-
+     
     Inventory inven;
+
+    public InventoryUI inventoryUI;
 
     [Header("½½·Ô Á¤º¸")]
 
@@ -29,19 +31,21 @@ public class Test_Inventory2 : TestBase
     {
         inven = new Inventory(Test_Player);
 
-        inven.AddSlotItem(5, 3);
-        inven.AddSlotItem(1, 3);
-        inven.AddSlotItem(3, 1);
-        inven.AddSlotItem(4, 1);
-
+        inven.AddSlotItem(0, 3);
+        inven.AddSlotItem(1, 2);
+        inven.AddSlotItem(2, 1);
         inven.TestShowInventory();
-        ItemDataManager.Instance.InventoryUI.InitializeInventoryUI(inven);
+
+        inventoryUI.InitializeInventoryUI(inven);
     }
 
     protected override void OnTest1(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if(context.performed)
         {
+            //inven.AddSlotItem(code,count, indexA);
+            //inven.TestShowInventory();
+
             inven.AddSlotItem(code, count);
             inven.TestShowInventory();
         }
@@ -49,9 +53,9 @@ public class Test_Inventory2 : TestBase
 
     protected override void OnTest2(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if(context.performed)
         {
-            inven.AddSlotItem(code, count, indexA);
+            inven.DiscardSlotItem(count, indexA);
             inven.TestShowInventory();
         }
     }
@@ -60,7 +64,7 @@ public class Test_Inventory2 : TestBase
     {
         if(context.performed)
         {
-            inven.DividItem(indexA, indexB, count);
+            inven.SwapSlot(indexA, indexB);
             inven.TestShowInventory();
         }
     }
@@ -69,7 +73,8 @@ public class Test_Inventory2 : TestBase
     {
         if(context.performed)
         {
-            inven.SortSlot((SortMode)2, false);
+            inven.SortSlot(sortMode, isAcending);
+            inven.TestShowInventory();
         }
     }
 }

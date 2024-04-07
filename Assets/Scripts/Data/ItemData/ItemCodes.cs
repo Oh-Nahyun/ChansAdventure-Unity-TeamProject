@@ -8,13 +8,13 @@ using UnityEngine;
 /// </summary>
 public enum ItemCode
 {
-    potion = 0,
+    portion = 0,
     apple,
     cheese,
     Hammer,
     Sword,
-    Shield,
-    Postion
+    HP_portion,
+    HP_portion_Tick
 }
 
 /// <summary>
@@ -25,4 +25,13 @@ public enum SortMode
     Name = 0,
     Price,
     Count
+}
+
+/// <summary>
+/// IEquipTarget이 가지는 장비 파츠 부위
+/// </summary>
+public enum EquipPart
+{
+    Hand_R,
+    Hand_L
 }

@@ -65,24 +65,17 @@ public class SlotUI_Base : MonoBehaviour
             // 슬롯에 아이템이 없으면
             slotIcon.color = Color.clear;
             slotIcon.sprite = null;
-            slotItemCount.text = string.Empty;            
+            slotItemCount.text = string.Empty;
+
+            slotEquip.color = Color.clear;
         }
         else
         {   // 슬롯에 아이템 데이터가 있으면 갱신
             slotIcon.color = Color.white;
             slotIcon.sprite = InventorySlotData.SlotItemData.itemIcon;
             slotItemCount.text = InventorySlotData.CurrentItemCount.ToString();            
+
+            slotEquip.color = InventorySlotData.IsEquip ? Color.white : Color.clear; // 장착 여부 
         }
-
-        SlotUIRefresh();
-    }
-
-    /// <summary>
-    /// 추가적으로 새로고침할 내용을 가진 함수
-    /// </summary>
-    protected virtual void SlotUIRefresh()
-    {
-        slotEquip.color = Color.clear; 
-        slotEquip.color = InventorySlotData.IsEquip ? Color.white : Color.clear; // 장착 여부 
     }
 }

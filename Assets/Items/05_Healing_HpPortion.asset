@@ -9,18 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5bfea0f0595a8184db67d502cc336078, type: 3}
-  m_Name: 04_Sword
+  m_Script: {fileID: 11500000, guid: 67157d604498186438a10e249e419906, type: 3}
+  m_Name: 05_Healing_HpPortion
   m_EditorClassIdentifier: 
-  itemCode: 4
-  itemName: "\uCE7C"
-  itemIcon: {fileID: 21300000, guid: c0ea4b6e528e7fe4aa6cdc94d38691a1, type: 3}
-  desc: "\uCE7C\uCE7C"
-  price: 1250
-  maxCount: 1
+  itemCode: 5
+  itemName: hpPortion
+  itemIcon: {fileID: 21300000, guid: 6f17b16f02b2246499ac554b97a16d4a, type: 3}
+  desc: healing hp
+  price: 1350
+  maxCount: 5
   ItemPrefab: {fileID: 8770989743473125067, guid: b3cffa01f4903d94b99e3f868b9590ac,
     type: 3}
-  EqiupPrefab: {fileID: 6595540103153629443, guid: 3356018fa762fe840b548e1d5084310a,
-    type: 3}
-  equipPart: 0
-  Damage: 10
+  healing_Hp: 3
+  duration: 2
