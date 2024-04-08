@@ -128,6 +128,12 @@ public class InventoryUI : MonoBehaviour
             SlotUI_Base slotUI = slotObj.GetComponent<SlotUI_Base>();
             bool isSlot = slotUI is SlotUI_Base;
 
+            if (slotUI != null)
+            {
+                Debug.Log("아이템 슬롯 베이스 스크립트가 존재하지 않는 오브젝트 입니다.");
+                return;
+            }
+
             if(!isSlot) // 드래그 끝나는 지점이 슬롯이 아니다.
             {
                 OnSlotDragFail();
@@ -158,7 +164,7 @@ public class InventoryUI : MonoBehaviour
                     Inventory.TempSlot.ClearItem();
                 }
                 else // 아이템이 들어있고 목표 슬롯이 존재한다.
-                {   
+                {
                     uint targetSlotItemCode = (uint)Inventory[index].SlotItemData.itemCode;
                     int targetSlotItemCount = Inventory[index].CurrentItemCount;
                     bool targetSlotIsEquip = Inventory[index].IsEquip;
@@ -167,6 +173,14 @@ public class InventoryUI : MonoBehaviour
                     Inventory.AccessTempSlot(index, tempSlotItemCode, tempSlotItemCount); // target 슬롯에 아이템 저장
                     Inventory[index].IsEquip = tempSlotIsEqiup;
 
+                    // 장비 위치 바꾸기
+                    IEquipTarget equipTarget = Inventory.Owner.GetComponent<IEquipTarget>();    // 인벤토리를 가진 오브젝트
+                    ItemData_Equipment itemData = Inventory[index].SlotItemData as ItemData_Equipment; // 선택한 인벤토리의 아이템 데이터
+                    if (itemData != null && Inventory[index].IsEquip)    // 아이템이 장비이다
+                    {
+                        equipTarget.EquipPart[(int)itemData.equipPart] = Inventory[index];  // 장비 아이템 정보 변경 
+                    }
+
                     Inventory.AccessTempSlot(index, targetSlotItemCode, targetSlotItemCount); // target 슬롯에 있었던 아이템 내용 임시 슬롯에 저장
                     Inventory.TempSlot.IsEquip = targetSlotIsEquip;
 
@@ -174,20 +188,14 @@ public class InventoryUI : MonoBehaviour
                     tempSlotItemCount = Inventory.TempSlot.CurrentItemCount;
                     tempSlotIsEqiup = Inventory.TempSlot.IsEquip;
 
-                    Inventory.AccessTempSlot(tempFromIndex, tempSlotItemCode, tempSlotItemCount);
                     Inventory[tempFromIndex].IsEquip = tempSlotIsEqiup;
-
-                    // 장비 위치 바꾸기
-                    IEquipTarget equipTarget = Inventory.Owner.GetComponent<IEquipTarget>();    // 인벤토리를 가진 오브젝트
-                    ItemData_Equipment itemData = Inventory[index].SlotItemData as ItemData_Equipment; // 선택한 인벤토리의 아이템 데이터
-                    if(itemData != null && Inventory[index].IsEquip)    // 아이템이 장비이다
-                    {
-                        equipTarget.EquipPart[(int)itemData.equipPart] = Inventory[index];  // 장비 아이템 정보 변경         
-                    }
+                    Inventory.AccessTempSlot(tempFromIndex, tempSlotItemCode, tempSlotItemCount);
                 }
             }
             else // 아이템이 들어있지 않으면
             {
+                Inventory[tempFromIndex].IsEquip = Inventory[index].IsEquip; // 이전 칸에 장착여부는 target의 장착 여부로 변경
+
                 Inventory[index].IsEquip = tempSlotIsEqiup;
                 Inventory.AccessTempSlot(index, tempSlotItemCode, tempSlotItemCount);
 
@@ -315,32 +323,40 @@ public class InventoryUI : MonoBehaviour
     {
         IEquipable equipable = Inventory[index].SlotItemData as IEquipable;
 
-        Inventory[index].IsEquip = !Inventory[index].IsEquip;
         bool isEquip = Inventory[index].IsEquip;
         if (equipable != null)
         {
-            if (isEquip)
-            {
-                IEquipTarget equipTarget = Inventory.Owner.GetComponent<IEquipTarget>();    // 인벤토리를 가진 오브젝트의 IEquipTarget
-
-                ItemData_Equipment itemData = Inventory[index].SlotItemData as ItemData_Equipment;  // 장착하려는 아이템 데이터
-                int partInedex = (int)itemData.equipPart;   // 장착할려는 장비 위치 인덱스
-                InventorySlot equipedItem = equipTarget.EquipPart[partInedex];
-
-                if (equipTarget.EquipPart[(int)itemData.equipPart] != null)  // 장착할 해당 부위에 아이템이 있다
-                {
-                    equipedItem.IsEquip = false; // 장착했던 아이템 장착해제
-                    Debug.Log($"{equipedItem}");
-                }
-                equipable.EquipItem(Inventory.Owner, Inventory[index]);
-                Inventory[index].IsEquip = true;
-            }
-            else if (!isEquip)
+            if (isEquip) // 장착이 되어있으면 장착해제
             {
                 equipable.UnEquipItem(Inventory.Owner, Inventory[index]);
                 Inventory[index].IsEquip = false;
             }
+            else if (!isEquip) // 장착이 안되있으면 장착
+            {
+                IEquipTarget equipTarget = Inventory.Owner.GetComponent<IEquipTarget>();    // 인벤토리를 가진 오브젝트의 IEquipTarget
+                ItemData_Equipment itemData = Inventory[index].SlotItemData as ItemData_Equipment;  // 장착하려는 아이템 데이터
+
+                int partInedex = (int)itemData.equipPart;   // 장착할려는 장비 위치 인덱스
+                InventorySlot equipedItem = equipTarget.EquipPart[partInedex];
+
+                if (equipedItem != null)  // 장착할 해당 부위에 아이템이 있다
+                {
+                    for(uint i = 0; i < inventory.SlotSize; i++)    // 모든 슬롯 체크
+                    {
+                        ItemData_Equipment data = Inventory[i].SlotItemData as ItemData_Equipment;
+                        if(data != null) // 해당 장착부위가 있는 장비다
+                        {
+                            Inventory[i].IsEquip = false;
+                        }
+                    }
+                }
+
+                equipable.EquipItem(Inventory.Owner, Inventory[index]); // 아이템 장착                
+                Inventory[index].IsEquip = true;
+            }
         }
+
+        showEquip();
     }
 
     /// <summary>
@@ -369,4 +385,12 @@ public class InventoryUI : MonoBehaviour
     }
     // UI 열기
     // UI 닫기
+
+    void showEquip()
+    {
+        foreach(var items in slotsUIs)
+        {            
+            Debug.Log($"{items.InventorySlotData.SlotIndex} : {items.InventorySlotData.IsEquip}");
+        }
+    }
 }

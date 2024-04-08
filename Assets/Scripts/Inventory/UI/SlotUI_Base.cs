@@ -74,7 +74,6 @@ public class SlotUI_Base : MonoBehaviour
             slotIcon.color = Color.white;
             slotIcon.sprite = InventorySlotData.SlotItemData.itemIcon;
             slotItemCount.text = InventorySlotData.CurrentItemCount.ToString();            
-
             slotEquip.color = InventorySlotData.IsEquip ? Color.white : Color.clear; // ÀåÂø ¿©ºÎ 
         }
     }
