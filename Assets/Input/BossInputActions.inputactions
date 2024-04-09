@@ -16,8 +16,17 @@
                 },
                 {
                     "name": "Clow",
-                    "type": "Value",
+                    "type": "Button",
                     "id": "66486817-f62e-4f09-92c0-b336ef0e7d13",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Bite",
+                    "type": "Button",
+                    "id": "5d72b82c-7011-4f85-ac24-709d12d8d361",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -88,6 +97,17 @@
                     "processors": "",
                     "groups": "KW",
                     "action": "Clow",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0dce9d41-1a00-4f72-9a5a-fb7ed28eb2a1",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KW",
+                    "action": "Bite",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

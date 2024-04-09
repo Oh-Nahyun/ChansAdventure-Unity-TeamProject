@@ -9,7 +9,8 @@ public class Boss : MonoBehaviour
 {
     BossInputActions inputActions;
     Rigidbody rb;
-    ClowAttackArea clowAttackArea;
+    BossAttackArea bossAttackArea;
+    Animator animator;
 
     float moveFB = 0.0f;
     float moveLR = 0.0f;
@@ -17,9 +18,10 @@ public class Boss : MonoBehaviour
 
     private void Awake()
     {
+        animator = GetComponent<Animator>();
         inputActions = new BossInputActions();
         rb = GetComponent<Rigidbody>();
-        clowAttackArea = GetComponentInChildren<ClowAttackArea>(true);
+        bossAttackArea = GetComponentInChildren<BossAttackArea>(true);
     }
 
     private void OnEnable()
@@ -28,6 +30,7 @@ public class Boss : MonoBehaviour
         inputActions.Boss.Move.performed += OnMove;
         inputActions.Boss.Move.canceled += OnMove;
         inputActions.Boss.Clow.performed += OnClow;
+        inputActions.Boss.Bite.performed += OnBite;
     }
 
     private void OnDisable()
@@ -35,6 +38,7 @@ public class Boss : MonoBehaviour
         inputActions.Boss.Move.canceled -= OnMove;
         inputActions.Boss.Move.performed -= OnMove;
         inputActions.Boss.Clow.performed -= OnClow;
+        inputActions.Boss.Bite.performed -= OnBite;
         inputActions.Boss.Disable();
     }
 
@@ -45,9 +49,29 @@ public class Boss : MonoBehaviour
 
     private void OnClow(InputAction.CallbackContext obj)
     {
-        clowAttackArea.Activate();
+        animator.SetTrigger("Clow");
     }
 
+    private void OnBite(InputAction.CallbackContext obj)
+    {
+        animator.SetTrigger("Bite");
+    }
+
+    public void OnAttackArea()
+    {
+        if(bossAttackArea != null)
+        {
+            bossAttackArea.Activate();
+        }
+    }
+
+    public void OffAttackArea()
+    {
+        if(bossAttackArea != null)
+        {
+            bossAttackArea.Deactivate();
+        }
+    }
 
     private void SetInput(Vector2 input, bool isMove)
     {
