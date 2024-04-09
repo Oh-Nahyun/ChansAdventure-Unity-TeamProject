@@ -22,16 +22,6 @@ public class Weapon : MonoBehaviour
     WeaponMode currentWeaponMode = WeaponMode.None;
 
     /// <summary>
-    /// 캐릭터의 오른손
-    /// </summary>
-    //Transform rightHand;
-
-    /// <summary>
-    /// 캐릭터의 오른손
-    /// </summary>
-    //Transform leftHand;
-
-    /// <summary>
     /// [무기1] 칼
     /// </summary>
     Transform swordWeapon;
