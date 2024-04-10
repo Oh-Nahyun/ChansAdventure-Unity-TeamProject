@@ -41,6 +41,32 @@ public class InventoryUI : MonoBehaviour
     /// </summary>
     InventorySortUI sortUI;
 
+    /// <summary>
+    /// 아이템 골드 UI 패널
+    /// </summary>
+    InventoryGoldUI goldUI;
+
+    /// <summary>
+    /// 인벤토리의 골드
+    /// </summary>
+    int gold = 0;
+
+    /// <summary>
+    /// 인벤토리UI의 골드 접근 및 수정을 위한 프로퍼티
+    /// </summary>
+    public int Gold
+    {
+        get => gold;
+        set
+        {
+            if (gold != value)
+            {
+                gold = value;
+                goldUI.onGoldChange?.Invoke(gold);
+            }
+        }
+    }
+
     public Action<uint> onSlotDragBegin;
     public Action<GameObject> onSlotDragEnd;
     public Action onSlotDragEndFail;
@@ -61,6 +87,7 @@ public class InventoryUI : MonoBehaviour
         detailUI = GetComponentInChildren<InventoryDetailUI>(); // 아이템 정보 패널
         dividUI = GetComponentInChildren<InventoryDividUI>(); // 아이템 나누기 패널
         sortUI = GetComponentInChildren<InventorySortUI>(); // 아이템 정렬 UI
+        goldUI = GetComponentInChildren<InventoryGoldUI>(); // 아이템 골드 UI
 
         for (uint i = 0; i < Inventory.SlotSize; i++)
         {
@@ -76,6 +103,9 @@ public class InventoryUI : MonoBehaviour
         onClickItem += OnClickItem;
         dividUI.onDivid += DividItem;
         sortUI.onSortItem += OnSortItem;
+
+        // Gold 초기화
+        goldUI.onGoldChange?.Invoke(gold);
     }
 
     /// <summary>
@@ -393,4 +423,11 @@ public class InventoryUI : MonoBehaviour
             Debug.Log($"{items.InventorySlotData.SlotIndex} : {items.InventorySlotData.IsEquip}");
         }
     }
+
+#if UNITY_EDITOR
+    public void Test_GoldChange(int getGold)
+    {
+        Gold = getGold;
+    }
+#endif
 }

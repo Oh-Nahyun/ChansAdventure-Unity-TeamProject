@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.2257134, b: 0.30692226, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1463,10 +1463,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1909004125}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05085e0c10440b44dbb7e39ef3c02f68, type: 3}
+  m_Script: {fileID: 11500000, guid: 01ecdd4c76981fb40bda24c793d1f912, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  equipmentPostion_R: {fileID: 1602439727}
+  hp: 5
+  maxHP: 5
+  partPosition: []
 --- !u!1 &1937349521
 GameObject:
   m_ObjectHideFlags: 0

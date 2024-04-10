@@ -57,11 +57,16 @@ public class Test_EquipCharacter : MonoBehaviour, IEquipTarget, IHealth
         }
     }
 
+    Inventory inventory;
+
     int partCount = Enum.GetNames(typeof(EquipPart)).Length;
 
     void Awake()
     {
-        EquipPart = new InventorySlot[partCount];
+        inventory = new Inventory(this.gameObject);
+        ItemDataManager.Instance.InventoryUI.InitializeInventoryUI(inventory);
+
+        EquipPart = new InventorySlot[partCount]; // EquipPart 배열 초기화
 
         HP = MaxHP;
     }
@@ -75,7 +80,9 @@ public class Test_EquipCharacter : MonoBehaviour, IEquipTarget, IHealth
     {
         if (EquipPart[(int)part] != null) // 장착한 아이템이 있으면
         {
+            // false
             CharacterUnequipItem(part); // 장착했던 아이템 파괴
+
             Instantiate(equipment, partPosition[(int)part]); // 아이템 오브젝트 생성
             EquipPart[(int)part] = slot;    // 장착부위에 아이템 정보 저장
         }

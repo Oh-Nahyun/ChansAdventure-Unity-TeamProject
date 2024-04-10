@@ -16,6 +16,7 @@ public class Factory : Singleton<Factory>
     MagnetCatchPool magnetCatchPool;
     SwordSkeletonPool swordSkeletonPool;
     DamageTextPool damageTextPool;
+    ItemPool itemPool;
 
     protected override void OnInitialize()
     {
@@ -31,6 +32,10 @@ public class Factory : Singleton<Factory>
         if (swordSkeletonPool != null) swordSkeletonPool.Initialize();
         damageTextPool = GetComponentInChildren<DamageTextPool>();
         if (damageTextPool != null) damageTextPool.Initialize();
+
+        // Inventory Branch
+        itemPool = GetComponentInChildren<ItemPool>();
+        if (itemPool != null) itemPool.Initialize();
 
     }
 
@@ -117,5 +122,17 @@ public class Factory : Singleton<Factory>
     public GameObject GetDamageText(int damage, Vector3? position)
     {
         return damageTextPool.GetObject(damage, position);
+    }
+
+    // Inventory Branch
+    /// <summary>
+    /// Factory에서 아이템을 생성하는 함수
+    /// </summary>
+    /// <param name="slot">소환할 아이템 슬롯</param>
+    /// <param name="position">소환할 위치</param>
+    /// <returns></returns>
+    public GameObject GetItemObject(InventorySlot slot, Vector3? position = null)
+    {
+        return itemPool.GetItemObject(slot, position);
     }
 }
