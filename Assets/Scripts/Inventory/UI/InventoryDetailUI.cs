@@ -40,12 +40,12 @@ public class InventoryDetailUI : MonoBehaviour
 
     void Update()
     {
-        if(IsOpen)
-        {
-            Vector2 mousePos = Mouse.current.position.ReadValue();
-
-            MovePosition(mousePos);
-        }
+        //if(IsOpen)
+        //{
+        //    Vector2 mousePos = Mouse.current.position.ReadValue();
+        //
+        //    MovePosition(mousePos);
+        //}
     }
 
     public void MovePosition(Vector2 mousePosition)

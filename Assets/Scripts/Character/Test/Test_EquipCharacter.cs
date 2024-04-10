@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 /// <summary>
 /// 인벤토리용 테스트 캐릭터 스크립트
@@ -58,17 +59,44 @@ public class Test_EquipCharacter : MonoBehaviour, IEquipTarget, IHealth
     }
 
     Inventory inventory;
+    PlayerinputActions input;
 
     int partCount = Enum.GetNames(typeof(EquipPart)).Length;
 
     void Awake()
     {
-        inventory = new Inventory(this.gameObject);
+        input = new PlayerinputActions();        
+    }
+
+    void Start()
+    {
+        inventory = new Inventory(this.gameObject, 16);
         ItemDataManager.Instance.InventoryUI.InitializeInventoryUI(inventory);
 
         EquipPart = new InventorySlot[partCount]; // EquipPart 배열 초기화
 
         HP = MaxHP;
+
+#if UNITY_EDITOR
+        Test_AddItem();
+#endif
+    }
+
+    void OnEnable()
+    {
+        input.Player.Enable();
+        input.Player.Open_Inventory.performed += OnOpenInventory;
+    }
+
+    void OnDisable()
+    {
+        input.Player.Open_Inventory.performed -= OnOpenInventory;
+        input.Player.Disable();
+    }
+
+    private void OnOpenInventory(InputAction.CallbackContext _)
+    {
+        ItemDataManager.Instance.InventoryUI.ShowInventory();
     }
 
     /// <summary>
@@ -170,4 +198,13 @@ public class Test_EquipCharacter : MonoBehaviour, IEquipTarget, IHealth
             HP += tickRegen;
         }
     }
+
+#if UNITY_EDITOR
+    void Test_AddItem()
+    {
+        inventory.AddSlotItem((uint)ItemCode.Hammer);
+        inventory.AddSlotItem((uint)ItemCode.Sword);
+        inventory.AddSlotItem((uint)ItemCode.HP_portion,3);
+    }
+#endif
 }

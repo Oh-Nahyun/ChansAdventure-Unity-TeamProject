@@ -46,6 +46,8 @@ public class InventoryUI : MonoBehaviour
     /// </summary>
     InventoryGoldUI goldUI;
 
+    CanvasGroup canvasGroup;
+
     /// <summary>
     /// 인벤토리의 골드
     /// </summary>
@@ -88,6 +90,7 @@ public class InventoryUI : MonoBehaviour
         dividUI = GetComponentInChildren<InventoryDividUI>(); // 아이템 나누기 패널
         sortUI = GetComponentInChildren<InventorySortUI>(); // 아이템 정렬 UI
         goldUI = GetComponentInChildren<InventoryGoldUI>(); // 아이템 골드 UI
+        canvasGroup = GetComponent<CanvasGroup>();
 
         for (uint i = 0; i < Inventory.SlotSize; i++)
         {
@@ -422,6 +425,15 @@ public class InventoryUI : MonoBehaviour
         {            
             Debug.Log($"{items.InventorySlotData.SlotIndex} : {items.InventorySlotData.IsEquip}");
         }
+    }
+
+    public void ShowInventory()
+    {
+        if(canvasGroup.alpha == 1)
+            canvasGroup.alpha = 0;
+        else
+            canvasGroup.alpha = 1;
+
     }
 
 #if UNITY_EDITOR

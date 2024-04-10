@@ -9,9 +9,9 @@ using UnityEngine;
 public class Inventory
 {
     /// <summary>
-    /// 최대 슬롯개수
+    /// 최대 슬롯개수 ( 생성자에서 초기화 )
     /// </summary>
-    const uint maxSlot_size = 6;
+    uint maxSlot_size = 0;
 
     /// <summary>
     /// 인벤토리 크기 접근용 프로퍼티
@@ -58,9 +58,10 @@ public class Inventory
     /// <summary>
     /// 인벤토리 생성자
     /// </summary>
-    public Inventory(GameObject invenOwner)
+    public Inventory(GameObject invenOwner, uint slotSize = 6)
     {
         owner = invenOwner;
+        maxSlot_size = slotSize;
         slots = new InventorySlot[maxSlot_size];
         tempSlot = new TempSlot(tempIndex);
 
@@ -76,7 +77,7 @@ public class Inventory
     /// <param name="code">아이템 코드</param>
     /// <param name="count">아이템 개수</param>
     /// <param name="index">슬롯 인덱스</param>
-    public void AddSlotItem(uint code, int count, uint index = 0)
+    public void AddSlotItem(uint code, int count = 1, uint index = 0)
     {
         if (index >= maxSlot_size) // 슬롯 우뮤 확인
         {
