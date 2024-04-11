@@ -254,10 +254,8 @@ public class Weapon : MonoBehaviour
     /// </summary>
     private void OnLoadInput(InputAction.CallbackContext _)
     {
-        Debug.Log($"IsBowEquip : {IsBowEquip}");
         if (IsBowEquip) // 활을 장비하고 있는 경우
         {
-            Debug.Log($"IsArrowEquip : {IsArrowEquip}");
             if (!IsArrowEquip)  // 장전된 화살이 없는 경우
             {
                 animator.SetBool(HaveArrowHash, true); // 화살 장전
@@ -265,7 +263,6 @@ public class Weapon : MonoBehaviour
             }
 
             IsArrowEquip = true; // 화살이 장전되어있다고 변수 설정
-            Debug.Log($"IsArrowEquip : {IsArrowEquip}");
         }
     }
 
@@ -276,7 +273,7 @@ public class Weapon : MonoBehaviour
     {
         if (IsArrowEquip) // 화살이 장전된 상태인 경우
         {
-            Debug.Log($"IsZoomIn : {IsZoomIn}");
+            // Debug.Log($"IsZoomIn : {IsZoomIn}");
             animator.SetBool(ZoomInHash, IsZoomIn); // 카메라 줌 설정
 
             if (!IsZoomIn) // 카메라 줌아웃인 경우 ( = 화살을 쐈다.)
@@ -284,7 +281,7 @@ public class Weapon : MonoBehaviour
                 // 장전되었던 화살 사용 표시
                 animator.SetBool(HaveArrowHash, false);
                 IsArrowEquip = false;
-                Debug.Log($"IsArrowEquip : {IsArrowEquip}");
+                // Debug.Log($"IsArrowEquip : {IsArrowEquip}");
             }
         }
     }

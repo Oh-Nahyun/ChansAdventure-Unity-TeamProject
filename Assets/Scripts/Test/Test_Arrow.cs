@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Test_Bullet : TestBase
+public class Test_Arrow : TestBase
 {
     public PoolObjectType type;
     public float interval = 0.1f;
