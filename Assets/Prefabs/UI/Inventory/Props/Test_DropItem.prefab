@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: -4833167642266054515}
   - component: {fileID: -6558156862514337387}
   - component: {fileID: -4779303217651042230}
-  - component: {fileID: 2240371163025134440}
   m_Layer: 7
   m_Name: Test_DropItem
   m_TagString: Untagged
@@ -47,7 +46,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e618fb983a7ccf24f862cb6448b99672, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Data: {fileID: 0}
 --- !u!54 &-6558156862514337387
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -95,25 +93,4 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Radius: 0.25
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!135 &2240371163025134440
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8770989743473125067}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}

@@ -63,11 +63,14 @@ public class Test_EquipCharacter : MonoBehaviour, IEquipTarget, IHealth
     Inventory inventory;
     PlayerinputActions input;
 
+    Interaction interaction;
+
     int partCount = Enum.GetNames(typeof(EquipPart)).Length;
 
     void Awake()
     {
         input = new PlayerinputActions();   // 인풋 객체 생성
+        interaction = GetComponent<Interaction>();
     }
 
     void Start()
@@ -89,15 +92,40 @@ public class Test_EquipCharacter : MonoBehaviour, IEquipTarget, IHealth
         input.Player.Enable();
         input.Player.Open_Inventory.performed += OnOpenInventory;
         input.Player.Get_Item.performed += OnGetItem;
+        input.Player.Get_Item.canceled += OnGetItem;
     }
 
+    /// <summary>
+    /// 아이템을 획득하는 인풋 ( F Key )
+    /// </summary>
     private void OnGetItem(InputAction.CallbackContext context)
     {
-        
+        if(context.performed)
+        {
+            Debug.Log("F키 눌림");
+
+            if(interaction.short_enemy != null) // 감지한 아이템 오브젝트가 존재한다.
+            {
+                GameObject itemObject = interaction.short_enemy.gameObject;       // 가장 가까운 오브젝트 
+                if(itemObject.TryGetComponent(out ItemDataObject itemDataObject)) // 해당 오브젝트에 ItemDataObject 클래스가 존재하면 true
+                {
+                    itemDataObject.AdditemToInventory(inventory);                    
+                }
+                else
+                {
+                    Debug.Log($"오브젝트 내에 ItemDataObject 클래스가 존재하지 않습니다.");
+                }
+            }
+            else
+            {
+                Debug.Log($"감지한 아이템 오브젝트가 존재하지 않습니다.");
+            }
+        }
     }
 
     void OnDisable()
     {
+        input.Player.Get_Item.canceled -= OnGetItem;
         input.Player.Get_Item.performed -= OnGetItem;
         input.Player.Open_Inventory.performed -= OnOpenInventory;
         input.Player.Disable();
