@@ -11,7 +11,7 @@ public class ItemDataObject : RecycleObject
     // 활성화 될 때 인벤토리의 데이터 받기
     ItemData Data;          // 아이템 데이터
 
-    uint ItemCode = 0;  // 아이템 코드
+    uint currentItemCode = 0;  // 아이템 코드
 
     void Start()
     {
@@ -39,7 +39,7 @@ public class ItemDataObject : RecycleObject
     public void SetData(ItemData data)
     {
         Data = data;
-        ItemCode = (uint)Data.itemCode;
+        currentItemCode = (uint)Data.itemCode;
     }
 
     /// <summary>
@@ -48,7 +48,14 @@ public class ItemDataObject : RecycleObject
     /// <param name="ownerInventory">아이템을 넣을 인벤토리</param>
     public void AdditemToInventory(Inventory ownerInventory)
     {
-        ownerInventory.AddSlotItem(ItemCode);   // 아이템 추가
+        if(currentItemCode == (uint)ItemCode.Coin)  // 아이템이 코인이면
+        {
+            ownerInventory.AddCoin(Data.price);     // 골드 증가
+        }
+        else
+        {
+            ownerInventory.AddSlotItem(currentItemCode);   // 아이템 추가
+        }
         gameObject.SetActive(false);            // 아이템 비활성화
     }
 }

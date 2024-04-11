@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3631025777174791669}
   - component: {fileID: -4833167642266054515}
   - component: {fileID: -6558156862514337387}
-  - component: {fileID: -4779303217651042230}
+  - component: {fileID: -6621030078590168519}
   m_Layer: 7
   m_Name: Test_DropItem
   m_TagString: Untagged
@@ -73,7 +73,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!135 &-4779303217651042230
+--- !u!135 &-6621030078590168519
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -92,5 +92,5 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.25
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}

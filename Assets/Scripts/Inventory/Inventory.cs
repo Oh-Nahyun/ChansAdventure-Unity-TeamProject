@@ -56,6 +56,29 @@ public class Inventory
     public GameObject Owner => owner;
 
     /// <summary>
+    /// 인벤토리의 골드
+    /// </summary>
+    uint gold = 0;
+
+    /// <summary>
+    /// 인벤토리의 골드를 접근하기 위한 프로퍼티
+    /// </summary>
+    public uint Gold
+    {
+        get => gold;
+        private set
+        {
+            if(gold != value)
+            {
+                gold = value;
+                onInventoryGoldChange?.Invoke(Gold);
+            }
+        }
+    }
+
+    public Action<uint> onInventoryGoldChange;
+
+    /// <summary>
     /// 인벤토리 생성자
     /// </summary>
     public Inventory(GameObject invenOwner, uint slotSize = 6)
@@ -357,6 +380,15 @@ public class Inventory
     public bool IsVaildSlot(uint index)
     {
         return slots[index].SlotItemData != null;
+    }
+
+    /// <summary>
+    /// 골드를 획득할 때 실행되는 함수
+    /// </summary>
+    /// <param name="price">획득할 골드량</param>
+    public void AddCoin(uint price)
+    {
+        Gold += price;
     }
 
 #if UNITY_EDITOR

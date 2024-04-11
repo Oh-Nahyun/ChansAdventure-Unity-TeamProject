@@ -48,27 +48,6 @@ public class InventoryUI : MonoBehaviour
 
     CanvasGroup canvasGroup;
 
-    /// <summary>
-    /// 인벤토리의 골드
-    /// </summary>
-    int gold = 0;
-
-    /// <summary>
-    /// 인벤토리UI의 골드 접근 및 수정을 위한 프로퍼티
-    /// </summary>
-    public int Gold
-    {
-        get => gold;
-        set
-        {
-            if (gold != value)
-            {
-                gold = value;
-                goldUI.onGoldChange?.Invoke(gold);
-            }
-        }
-    }
-
     public Action<uint> onSlotDragBegin;
     public Action<GameObject> onSlotDragEnd;
     public Action onSlotDragEndFail;
@@ -107,8 +86,9 @@ public class InventoryUI : MonoBehaviour
         dividUI.onDivid += DividItem;
         sortUI.onSortItem += OnSortItem;
 
-        // Gold 초기화
-        goldUI.onGoldChange?.Invoke(gold);
+        Inventory.onInventoryGoldChange += goldUI.onGoldChange; // Iventory의 골드량이 수정될 때 goldUI도 수정되게 함수 추가
+
+        goldUI.onGoldChange?.Invoke(Inventory.Gold);            // 골드 초기화
     }
 
     /// <summary>
@@ -406,7 +386,10 @@ public class InventoryUI : MonoBehaviour
 
     private void DropItem(uint index)
     {
-        Inventory.DropItem(index);
+        if(!Inventory[index].IsEquip)
+        {
+            Inventory.DropItem(index);
+        }            
     }
 
     /// <summary>
@@ -448,11 +431,6 @@ public class InventoryUI : MonoBehaviour
         {
             Debug.Log($"{items.InventorySlotData.SlotIndex} : {items.InventorySlotData.IsEquip}");
         }
-    }
-
-    public void Test_GoldChange(int getGold)
-    {
-        Gold = getGold;
     }
 #endif
 }

@@ -8,7 +8,7 @@ public class InventoryGoldUI : MonoBehaviour
 {
     TextMeshProUGUI goldText;
 
-    public Action<int> onGoldChange;
+    public Action<uint> onGoldChange;
 
     void Awake()
     {
@@ -18,7 +18,7 @@ public class InventoryGoldUI : MonoBehaviour
         onGoldChange += OnGoldChange;
     }
 
-    void OnGoldChange(int gold)
+    void OnGoldChange(uint gold)
     {
         goldText.text = $"{gold:D}";
     }
