@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class BossAttackArea : MonoBehaviour
+public class ClowAttackArea : MonoBehaviour
 {
     public void Activate()
     {

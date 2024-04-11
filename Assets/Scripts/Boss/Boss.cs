@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,8 +10,10 @@ public class Boss : MonoBehaviour
 {
     BossInputActions inputActions;
     Rigidbody rb;
-    BossAttackArea bossAttackArea;
+    ClowAttackArea clowAttackArea;
+    BiteAttackArea biteAttackArea;
     Animator animator;
+    ParticleSystem breathParticle;
 
     float moveFB = 0.0f;
     float moveLR = 0.0f;
@@ -21,7 +24,9 @@ public class Boss : MonoBehaviour
         animator = GetComponent<Animator>();
         inputActions = new BossInputActions();
         rb = GetComponent<Rigidbody>();
-        bossAttackArea = GetComponentInChildren<BossAttackArea>(true);
+        clowAttackArea = GetComponentInChildren<ClowAttackArea>(true);
+        biteAttackArea = GetComponentInChildren<BiteAttackArea>(true);
+        breathParticle = GetComponentInChildren<ParticleSystem>(true);
     }
 
     private void OnEnable()
@@ -31,6 +36,7 @@ public class Boss : MonoBehaviour
         inputActions.Boss.Move.canceled += OnMove;
         inputActions.Boss.Clow.performed += OnClow;
         inputActions.Boss.Bite.performed += OnBite;
+        inputActions.Boss.Breath.performed += OnBreath;
     }
 
     private void OnDisable()
@@ -39,6 +45,7 @@ public class Boss : MonoBehaviour
         inputActions.Boss.Move.performed -= OnMove;
         inputActions.Boss.Clow.performed -= OnClow;
         inputActions.Boss.Bite.performed -= OnBite;
+        inputActions.Boss.Breath.performed -= OnBreath;
         inputActions.Boss.Disable();
     }
 
@@ -57,22 +64,52 @@ public class Boss : MonoBehaviour
         animator.SetTrigger("Bite");
     }
 
-    public void OnAttackArea()
+    private void OnBreath(InputAction.CallbackContext obj)
     {
-        if(bossAttackArea != null)
+        animator.SetTrigger("Breath");
+    }
+
+    public void OnClowArea()
+    {
+        if(clowAttackArea != null)
         {
-            bossAttackArea.Activate();
+            clowAttackArea.Activate();
         }
     }
 
-    public void OffAttackArea()
+    public void OffClowArea()
     {
-        if(bossAttackArea != null)
+        if(clowAttackArea != null)
         {
-            bossAttackArea.Deactivate();
+            clowAttackArea.Deactivate();
         }
     }
 
+    public void OnBiteArea()
+    {
+        if (biteAttackArea != null)
+        {
+            biteAttackArea.Activate();
+        }
+    }
+
+    public void OffBiteArea()
+    {
+        if(biteAttackArea != null)
+        {
+            biteAttackArea.Deactivate();
+        }
+    }
+
+    public void OnBreath()
+    {
+        breathParticle.Play();
+    }
+    
+    public void OffBreath()
+    {
+        breathParticle.Stop();
+    }
     private void SetInput(Vector2 input, bool isMove)
     {
         moveLR = input.x;

@@ -53,6 +53,15 @@ public partial class @BossInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Breath"",
+                    ""type"": ""Button"",
+                    ""id"": ""fae1d694-017a-43d1-ae47-491cf9e462d0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -132,6 +141,17 @@ public partial class @BossInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Bite"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""905e5029-b660-4fab-ab7c-0c5e8f24bcdc"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KW"",
+                    ""action"": ""Breath"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -160,6 +180,7 @@ public partial class @BossInputActions: IInputActionCollection2, IDisposable
         m_Boss_Move = m_Boss.FindAction("Move", throwIfNotFound: true);
         m_Boss_Clow = m_Boss.FindAction("Clow", throwIfNotFound: true);
         m_Boss_Bite = m_Boss.FindAction("Bite", throwIfNotFound: true);
+        m_Boss_Breath = m_Boss.FindAction("Breath", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -224,6 +245,7 @@ public partial class @BossInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Boss_Move;
     private readonly InputAction m_Boss_Clow;
     private readonly InputAction m_Boss_Bite;
+    private readonly InputAction m_Boss_Breath;
     public struct BossActions
     {
         private @BossInputActions m_Wrapper;
@@ -231,6 +253,7 @@ public partial class @BossInputActions: IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_Boss_Move;
         public InputAction @Clow => m_Wrapper.m_Boss_Clow;
         public InputAction @Bite => m_Wrapper.m_Boss_Bite;
+        public InputAction @Breath => m_Wrapper.m_Boss_Breath;
         public InputActionMap Get() { return m_Wrapper.m_Boss; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -249,6 +272,9 @@ public partial class @BossInputActions: IInputActionCollection2, IDisposable
             @Bite.started += instance.OnBite;
             @Bite.performed += instance.OnBite;
             @Bite.canceled += instance.OnBite;
+            @Breath.started += instance.OnBreath;
+            @Breath.performed += instance.OnBreath;
+            @Breath.canceled += instance.OnBreath;
         }
 
         private void UnregisterCallbacks(IBossActions instance)
@@ -262,6 +288,9 @@ public partial class @BossInputActions: IInputActionCollection2, IDisposable
             @Bite.started -= instance.OnBite;
             @Bite.performed -= instance.OnBite;
             @Bite.canceled -= instance.OnBite;
+            @Breath.started -= instance.OnBreath;
+            @Breath.performed -= instance.OnBreath;
+            @Breath.canceled -= instance.OnBreath;
         }
 
         public void RemoveCallbacks(IBossActions instance)
@@ -293,5 +322,6 @@ public partial class @BossInputActions: IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnClow(InputAction.CallbackContext context);
         void OnBite(InputAction.CallbackContext context);
+        void OnBreath(InputAction.CallbackContext context);
     }
 }
