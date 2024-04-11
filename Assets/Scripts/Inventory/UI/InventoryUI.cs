@@ -161,8 +161,9 @@ public class InventoryUI : MonoBehaviour
             SlotUI_Base slotUI = slotObj.GetComponent<SlotUI_Base>();
             bool isSlot = slotUI is SlotUI_Base;
 
-            if (slotUI != null)
+            if (slotUI == null)
             {
+                OnSlotDragFail();
                 Debug.Log("아이템 슬롯 베이스 스크립트가 존재하지 않는 오브젝트 입니다.");
                 return;
             }
@@ -389,7 +390,7 @@ public class InventoryUI : MonoBehaviour
             }
         }
 
-        showEquip();
+        //showEquip();
     }
 
     /// <summary>
@@ -419,24 +420,36 @@ public class InventoryUI : MonoBehaviour
     // UI 열기
     // UI 닫기
 
+
+    public void ShowInventory()
+    {
+        if(canvasGroup.alpha == 1) // 비활성화
+        {
+            canvasGroup.alpha = 0;
+            canvasGroup.interactable = false;
+            canvasGroup.blocksRaycasts = false;
+        }
+        else // 활성화
+        {
+            canvasGroup.alpha = 1;
+            canvasGroup.interactable = true;
+            canvasGroup.blocksRaycasts = true;
+        }
+    }
+
+#if UNITY_EDITOR
+
+    /// <summary>
+    /// 각 슬롯 장착 여부확인 함수
+    /// </summary>
     void showEquip()
     {
-        foreach(var items in slotsUIs)
-        {            
+        foreach (var items in slotsUIs)
+        {
             Debug.Log($"{items.InventorySlotData.SlotIndex} : {items.InventorySlotData.IsEquip}");
         }
     }
 
-    public void ShowInventory()
-    {
-        if(canvasGroup.alpha == 1)
-            canvasGroup.alpha = 0;
-        else
-            canvasGroup.alpha = 1;
-
-    }
-
-#if UNITY_EDITOR
     public void Test_GoldChange(int getGold)
     {
         Gold = getGold;

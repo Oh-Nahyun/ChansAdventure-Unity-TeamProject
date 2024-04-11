@@ -103,6 +103,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Get_Item",
+                    "type": "Button",
+                    "id": "a56eaf21-42ee-4ec3-b77c-f0d9e6be4669",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -268,6 +277,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Open_Inventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c5853a7f-60be-4859-a468-d1ee8b6c5bc3",
+                    "path": "<Keyboard>/g",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Get_Item",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

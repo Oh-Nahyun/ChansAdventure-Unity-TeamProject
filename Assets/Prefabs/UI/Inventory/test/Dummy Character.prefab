@@ -149,6 +149,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7157609714885346011}
   - component: {fileID: 8561407470072694490}
+  - component: {fileID: 3010441081389157585}
   m_Layer: 0
   m_Name: Dummy Character
   m_TagString: Untagged
@@ -164,7 +165,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3455721498602234983}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1.97, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -189,6 +190,25 @@ MonoBehaviour:
   partPosition:
   - {fileID: 5943716050514440831}
   - {fileID: 3153161575882720628}
+--- !u!114 &3010441081389157585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3455721498602234983}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d18b314be14a594eb740b0fcfee149b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 3
+  layer:
+    serializedVersion: 2
+    m_Bits: 128
+  colliders: []
+  short_enemy: {fileID: 0}
+  scanIbgect: {fileID: 0}
 --- !u!1 &4239430687256505364
 GameObject:
   m_ObjectHideFlags: 0

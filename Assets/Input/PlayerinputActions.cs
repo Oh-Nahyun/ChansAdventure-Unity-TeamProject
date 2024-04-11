@@ -125,6 +125,15 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Get_Item"",
+                    ""type"": ""Button"",
+                    ""id"": ""a56eaf21-42ee-4ec3-b77c-f0d9e6be4669"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -290,6 +299,17 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Open_Inventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c5853a7f-60be-4859-a468-d1ee8b6c5bc3"",
+                    ""path"": ""<Keyboard>/g"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Get_Item"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -604,6 +624,7 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         m_Player_LookAround = m_Player.FindAction("LookAround", throwIfNotFound: true);
         m_Player_ActiveSkillMode = m_Player.FindAction("ActiveSkillMode", throwIfNotFound: true);
         m_Player_Open_Inventory = m_Player.FindAction("Open_Inventory", throwIfNotFound: true);
+        m_Player_Get_Item = m_Player.FindAction("Get_Item", throwIfNotFound: true);
         // Weapon
         m_Weapon = asset.FindActionMap("Weapon", throwIfNotFound: true);
         m_Weapon_Attack = m_Weapon.FindAction("Attack", throwIfNotFound: true);
@@ -693,6 +714,7 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_LookAround;
     private readonly InputAction m_Player_ActiveSkillMode;
     private readonly InputAction m_Player_Open_Inventory;
+    private readonly InputAction m_Player_Get_Item;
     public struct PlayerActions
     {
         private @PlayerinputActions m_Wrapper;
@@ -708,6 +730,7 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         public InputAction @LookAround => m_Wrapper.m_Player_LookAround;
         public InputAction @ActiveSkillMode => m_Wrapper.m_Player_ActiveSkillMode;
         public InputAction @Open_Inventory => m_Wrapper.m_Player_Open_Inventory;
+        public InputAction @Get_Item => m_Wrapper.m_Player_Get_Item;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -750,6 +773,9 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
             @Open_Inventory.started += instance.OnOpen_Inventory;
             @Open_Inventory.performed += instance.OnOpen_Inventory;
             @Open_Inventory.canceled += instance.OnOpen_Inventory;
+            @Get_Item.started += instance.OnGet_Item;
+            @Get_Item.performed += instance.OnGet_Item;
+            @Get_Item.canceled += instance.OnGet_Item;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -787,6 +813,9 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
             @Open_Inventory.started -= instance.OnOpen_Inventory;
             @Open_Inventory.performed -= instance.OnOpen_Inventory;
             @Open_Inventory.canceled -= instance.OnOpen_Inventory;
+            @Get_Item.started -= instance.OnGet_Item;
+            @Get_Item.performed -= instance.OnGet_Item;
+            @Get_Item.canceled -= instance.OnGet_Item;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1006,6 +1035,7 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         void OnLookAround(InputAction.CallbackContext context);
         void OnActiveSkillMode(InputAction.CallbackContext context);
         void OnOpen_Inventory(InputAction.CallbackContext context);
+        void OnGet_Item(InputAction.CallbackContext context);
     }
     public interface IWeaponActions
     {

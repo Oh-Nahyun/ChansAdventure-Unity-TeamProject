@@ -9,6 +9,8 @@ using UnityEngine.InputSystem;
 /// </summary>
 public class Test_EquipCharacter : MonoBehaviour, IEquipTarget, IHealth
 {
+    
+
     public float hp;
     public float HP
     {
@@ -65,17 +67,17 @@ public class Test_EquipCharacter : MonoBehaviour, IEquipTarget, IHealth
 
     void Awake()
     {
-        input = new PlayerinputActions();        
+        input = new PlayerinputActions();   // 인풋 객체 생성
     }
 
     void Start()
     {
-        inventory = new Inventory(this.gameObject, 16);
-        ItemDataManager.Instance.InventoryUI.InitializeInventoryUI(inventory);
+        inventory = new Inventory(this.gameObject, 16); // 인벤 초기화
+        ItemDataManager.Instance.InventoryUI.InitializeInventoryUI(inventory); // 인벤 UI 초기화
 
         EquipPart = new InventorySlot[partCount]; // EquipPart 배열 초기화
 
-        HP = MaxHP;
+        HP = MaxHP; // 체력 초기화
 
 #if UNITY_EDITOR
         Test_AddItem();
@@ -86,10 +88,17 @@ public class Test_EquipCharacter : MonoBehaviour, IEquipTarget, IHealth
     {
         input.Player.Enable();
         input.Player.Open_Inventory.performed += OnOpenInventory;
+        input.Player.Get_Item.performed += OnGetItem;
+    }
+
+    private void OnGetItem(InputAction.CallbackContext context)
+    {
+        
     }
 
     void OnDisable()
     {
+        input.Player.Get_Item.performed -= OnGetItem;
         input.Player.Open_Inventory.performed -= OnOpenInventory;
         input.Player.Disable();
     }
