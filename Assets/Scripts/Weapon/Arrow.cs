@@ -2,44 +2,51 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Arrow : MonoBehaviour
+public class Arrow : RecycleObject
 {
     /// <summary>
     /// 화살 속도
     /// </summary>
-    public float arrowSpeed = 7.0f;
+    float arrowSpeed = 7.0f;
 
     /// <summary>
     /// 화살 사거리
     /// </summary>
-    public float arrowRange = 10.0f;
+    float arrowRange = 1.0f;
 
     /// <summary>
-    /// 화살의 Collider
+    /// 화살 수명
     /// </summary>
-    Collider arrowCollider;
+    float lifeTime = 10.0f;
 
     // 컴포넌트들
+    ArrowFirePoint arrowFirePoint;
+    Collider arrowCollider;
+    Rigidbody rigid;
     //ParticleSystem ps;
 
     private void Awake()
     {
-        //ps = GetComponent<ParticleSystem>();
-    }
-
-    private void Start()
-    {
+        arrowFirePoint = FindAnyObjectByType<ArrowFirePoint>();
         arrowCollider = GetComponent<Collider>();
-        transform.Rotate(90.0f, 0f, 0f); // 화살 오브젝트 회전
+        rigid = GetComponent<Rigidbody>();
+        //ps = GetComponent<ParticleSystem>();
 
-        // 이펙트 켜고 끄기
-        //ps.Play();
-        //ps.Stop();
+        arrowRange = arrowFirePoint.arrowFireRange;
     }
 
-    private void Update()
+    protected override void OnEnable()
     {
-        transform.Translate(Time.deltaTime * arrowSpeed * Vector3.up); // 화살 발사
+        base.OnEnable();
+        StartCoroutine(LifeOver(lifeTime));         // 수명 설정
+        rigid.angularVelocity = Vector3.zero;       // 이전의 회전력 제거
+        rigid.velocity = transform.up * arrowSpeed * arrowRange; // 발사 방향과 속도 설정
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        StopAllCoroutines();
+        StartCoroutine(LifeOver(5.0f)); // 충돌하고 5초 뒤에 사라짐
     }
 
     //private void OnTriggerEnter(Collider other)

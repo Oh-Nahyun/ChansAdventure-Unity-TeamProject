@@ -39,7 +39,6 @@ public class Factory : Singleton<Factory>
         damageTextPool = GetComponentInChildren<DamageTextPool>();
         if (damageTextPool != null) damageTextPool.Initialize();
 
-        // 
         arrowPool = GetComponentInChildren<ArrowPool>();
         if (arrowPool != null)
             arrowPool.Initialize();
