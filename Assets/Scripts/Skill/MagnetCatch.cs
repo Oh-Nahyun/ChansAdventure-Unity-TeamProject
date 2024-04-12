@@ -6,9 +6,6 @@ using UnityEngine.InputSystem;
 using System.Security.Cryptography;
 
 
-
-
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -28,6 +25,7 @@ public class MagnetCatch : Skill
 
     Vector2 curMousePos = Vector2.zero;
     Vector2 preMousePos = Vector2.zero;
+
 
     Transform targetDestination;
 
@@ -56,9 +54,9 @@ public class MagnetCatch : Skill
     {
         base.Start();
 
-        if(playerSkills != null)
+        if(user != null)
         {
-            playerSkills.onScroll += SetDestinationScroll;
+            //playerSkills.onScroll += SetDestinationScroll;
         }        
     }
 
@@ -74,16 +72,6 @@ public class MagnetCatch : Skill
         isActivate = false;
         isMagnetic = false;
 
-        if(isActivate)
-        {
-            magnetCamOn = magnetVcam.OnSkillCamera;
-            magnetCamOn += () => magnetVcam.SetLookAtTransform(targetGroup.transform);
-            magnetCamOff = magnetVcam.OffSkillCamera;
-
-            targetGroup.m_Targets[1].target = playerSkills.transform;
-
-            StartCoroutine(TargetCheck());
-        }
     }
 
     protected override void OnDisable()
@@ -94,29 +82,44 @@ public class MagnetCatch : Skill
         target = null;
     }
 
+    Vector3 preCameraAngle;
+
     private void FixedUpdate()
     {
         if(isActivate)
         {
+            // 타겟그룹에 플레이어 넣기
             // 플레이어의 방향 설정
-            Vector3 euler = playerSkills.transform.rotation.eulerAngles;
-            GameManager.Instance.Player.LookForwardPlayer(Camera.main.transform.forward); // original : GameManager 안받음
-            euler = playerSkills.transform.rotation.eulerAngles - euler;
+            //Vector3 euler = user.rotation.eulerAngles;
+            //GameManager.Instance.Player.LookForwardPlayer(Camera.main.transform.forward); // original : GameManager 안받음
+            //euler = user.rotation.eulerAngles - euler;
 
+            Vector3 currCameraAngle = Camera.main.transform.rotation.eulerAngles;
+            Vector3 diffCameraAngle = preCameraAngle - currCameraAngle;
+            preCameraAngle = currCameraAngle;
+
+            //Debug.Log(diffCameraAngle);
+            LookForwardUser(Camera.main.transform.forward);
             MoveDestination();
-            reactionTarget.AttachRotate(euler);
+            reactionTarget.AttachMagnetMove();
+            reactionTarget.AttachRotate(user.eulerAngles);
         }
+    }
+
+    public void LookForwardUser(Vector3 forward)
+    {
+        forward.y = 0;
+        user.forward = forward;
     }
     void MoveDestination()
     {
-
         preMousePos = curMousePos;
         curMousePos = Mouse.current.position.value;
         Vector2 mouseDir = (curMousePos - preMousePos).normalized;
         if(mouseDir.y * preYDir >= 0f)
         {
             Vector3 movePos = targetDestination.position + new Vector3(0, mouseDir.y * Time.fixedDeltaTime * verticalSpeed, 0);
-            float horizontalDistance = MathF.Abs(playerSkills.transform.position.y - movePos.y);
+            float horizontalDistance = MathF.Abs(user.position.y - movePos.y);
             targetDestination.position = (horizontalDistance < maxHorizontalDistance) ? movePos : transform.position;
         }
         else
@@ -129,10 +132,35 @@ public class MagnetCatch : Skill
         preYDir = mouseDir.y > 0 ? 1 : -1;
     }
 
+    void OnMagnetAction()
+    {
+        magnetVcam.OnSkillCamera();
+        magnetVcam.SetLookAtTransform(targetGroup.transform);
+        //Player player = user.GetComponent<Player>();
+        //if(player != null)
+        //    player.SetInputRotate(false);
+        //owner.CameraRoot.IsRotateX = false;
+    }
+
+    void OffMagnetAction()
+    {
+        magnetVcam.OffSkillCamera();
+        //Player player = user.GetComponent<Player>();
+        //if (player != null)
+        //    player.SetInputRotate(true);
+        //owner.CameraRoot.IsRotateX = true;
+    }
+
     protected override void OnSKillAction()
     {
         base.OnSKillAction();
-        
+
+        targetGroup.m_Targets[1].target = user;
+
+        magnetCamOn = OnMagnetAction;
+        magnetCamOff = OffMagnetAction;
+
+        StartCoroutine(TargetCheck());
     }
     protected override void UseSkillAction()
     {
@@ -143,7 +171,7 @@ public class MagnetCatch : Skill
             magnetCamOn?.Invoke();
 
             targetDestination.position = hitPoint;
-            targetDestination.parent = playerSkills.transform;      // 목적지의 부모를 플레이어로 설정해서 타켓을 플레이어의 정면에 위치하게하기
+            targetDestination.parent = user;      // 목적지의 부모를 플레이어로 설정해서 타켓을 플레이어의 정면에 위치하게하기
 
             targetGroup.m_Targets[0].target = target;
 
@@ -152,6 +180,8 @@ public class MagnetCatch : Skill
             curMousePos = Mouse.current.position.value;
 
             reactionTarget.AttachMagnet(targetDestination, targetMoveSpeed);
+
+            preCameraAngle = Camera.main.transform.rotation.eulerAngles;
         }
     }
 

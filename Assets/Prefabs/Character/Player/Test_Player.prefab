@@ -271,7 +271,7 @@ Transform:
   m_GameObject: {fileID: 361301199436059416}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.3754506, y: -0.236, z: 1.8180438}
+  m_LocalPosition: {x: 0, y: 0, z: 0.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8654,6 +8654,7 @@ GameObject:
   - component: {fileID: 1911849753672133655}
   - component: {fileID: 2557118109478462143}
   - component: {fileID: 6161648334508872447}
+  - component: {fileID: 5640574992080118541}
   - component: {fileID: 8635616851311567066}
   - component: {fileID: 1700713634159742636}
   - component: {fileID: 2782215250122928830}
@@ -8723,6 +8724,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d73f7b8539151946b9c0fa511e0f548, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5640574992080118541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7973622836142104029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 377db58407b597d40873382da4960055, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pickUpHeightRange: 0.5
+  throwPower: 5
+  liftRadius: 0.5
 --- !u!114 &8635616851311567066
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8747,9 +8763,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5473f5e0bb3af5948b6bf0dbc5a9bef5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickUpHeightRange: 0.5
-  throwPower: 5
-  liftRadius: 0.5
 --- !u!114 &2782215250122928830
 MonoBehaviour:
   m_ObjectHideFlags: 0

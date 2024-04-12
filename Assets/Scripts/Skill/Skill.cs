@@ -14,6 +14,8 @@ public enum SkillName
 
 public class Skill : ReactionObject
 {
+    protected Transform user;
+
     public SkillName skillName = SkillName.RemoteBomb;
     public float coolTime = 1.0f;
     public float CoolTime => coolTime;
@@ -23,11 +25,12 @@ public class Skill : ReactionObject
 
     protected bool isActivate = false;
 
-    protected PlayerSkills playerSkills; // 이전 변수명 : Player onwer;
     protected SkillVCam skillVcam;
 
     protected Action camOn;
     protected Action camOff;
+
+    public Action cancelSkill;
 
     protected override void Awake()
     {
@@ -37,7 +40,6 @@ public class Skill : ReactionObject
 
     protected virtual void Start()
     {
-        playerSkills = GameManager.Instance.Player.Skills;
         if (skillVcam == null)
         {
             skillVcam = GameManager.Instance.Cam.SkillCam;
@@ -68,6 +70,11 @@ public class Skill : ReactionObject
         isActivate = false;
     }
 
+    public virtual void OnSKillInitialize(Transform user)
+    {
+        this.user = user;
+    }
+
 
     public void OnSkill()
     {
@@ -95,7 +102,6 @@ public class Skill : ReactionObject
     {
         camOff?.Invoke();
         isActivate = true;
-
     }
 
     public void OffSkill()
@@ -109,5 +115,10 @@ public class Skill : ReactionObject
         isActivate = false;
         ReturnToPool();
 
+    }
+
+    protected override void ReturnAction()
+    {
+        cancelSkill?.Invoke();
     }
 }
