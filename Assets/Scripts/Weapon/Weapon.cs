@@ -78,6 +78,7 @@ public class Weapon : MonoBehaviour
     Bow bow;
     Arrow arrow;
     PlayerFollowVCam vcam;
+    ArrowFirePoint arrowFirePoint;
 
     PlayerController playerContoller;
 
@@ -90,6 +91,7 @@ public class Weapon : MonoBehaviour
         bow = GetComponentInChildren<Bow>();
         arrow = GetComponentInChildren<Arrow>();
         vcam = FindAnyObjectByType<PlayerFollowVCam>();
+        arrowFirePoint = GetComponentInChildren<ArrowFirePoint>();
 
         playerContoller = GetComponent<PlayerController>();
     }
@@ -301,6 +303,14 @@ public class Weapon : MonoBehaviour
                 IsArrowEquip = false;
             }
         }
+    }
+
+    /// <summary>
+    /// 장전된 화살을 발사하는 함수 (Animation 설정용)
+    /// </summary>
+    public void FireLoadedArrow()
+    {
+        arrowFirePoint.FireArrow();
     }
 
     /// <summary>
