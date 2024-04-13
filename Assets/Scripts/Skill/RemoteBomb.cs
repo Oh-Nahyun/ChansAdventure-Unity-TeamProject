@@ -8,14 +8,14 @@ public class RemoteBomb : Skill
     protected override void OnEnable()
     {
         base.OnEnable();
-        //PickUp();
     }
 
     protected override void OnSKillAction()
     {
-        if (currentState == StateType.None)
+        Debug.Log(currentState);
+        if (currentState == StateType.Throw || currentState == StateType.Drop)
         {
-            Boom();
+            TryBoom();
         }
     }
 
@@ -32,9 +32,14 @@ public class RemoteBomb : Skill
         }
     }
 
-    protected override void CollisionAfterThrow()
+    protected override void CollisionActionAfterThrow()
     {
-        currentState = StateType.None;
+        currentState = StateType.Throw;
+    }
+
+    protected override void CollisionActionAfterDrop()
+    {
+        currentState = StateType.Drop;
     }
 
 #if UNITY_EDITOR

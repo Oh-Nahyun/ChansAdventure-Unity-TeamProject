@@ -89,8 +89,9 @@ public class Weapon : MonoBehaviour
         player = GetComponent<Player>();
         sword = GetComponentInChildren<Sword>();
         bow = GetComponentInChildren<Bow>();
-        arrow = GetComponentInChildren<Arrow>();
+        arrow = GetComponentInChildren<Arrow>(); 
         vcam = FindAnyObjectByType<PlayerFollowVCam>();
+        
         arrowFirePoint = GetComponentInChildren<ArrowFirePoint>();
 
         playerContoller = GetComponent<PlayerController>();
@@ -230,6 +231,78 @@ public class Weapon : MonoBehaviour
             case WeaponMode.Bow:
                 ShowWeapon(false, true);
                 break;
+        }
+    }
+
+    /// <summary>
+    /// 무기를 보여줄지 말지 결정하는 함수
+    /// </summary>
+    /// <param name="isShow">true면 보여주고, false면 안보여준다.</param>
+    public void ShowWeapon(bool isSwordShow = false, bool isBowShow = false)
+    {
+        swordWeapon.gameObject.SetActive(isSwordShow);
+        bowWeapon.gameObject.SetActive(isBowShow);
+    }
+
+    /// <summary>
+    /// 현재 무기 모드 확인용 함수
+    /// </summary>
+    /// <returns></returns>
+    public int CheckWeaponMode()
+    {
+        int weaponNum = -1;
+        if ((int)currentWeaponMode == 0)
+        {
+            weaponNum = 0;
+            return weaponNum;
+        }
+
+        if ((int)currentWeaponMode == 1)
+        {
+            weaponNum = 1;
+            return weaponNum;
+        }
+
+        if ((int)currentWeaponMode == 2)
+        {
+            weaponNum = 2;
+            return weaponNum;
+        }
+
+        return weaponNum;
+    }
+
+    /// <summary>
+    /// 화살 장전 함수
+    /// </summary>
+    private void OnLoadInput(InputAction.CallbackContext _)
+    {
+        Debug.Log($"IsArrowEquip : {IsArrowEquip}");
+        if (IsArrowEquip == false)  // 장전된 화살이 없는 경우
+        {
+            animator.SetBool(HaveArrowHash, true); // 화살 장전
+        }
+
+        IsArrowEquip = true; // 화살이 장전됐다고 변수 설정
+        Debug.Log($"IsArrowEquip : {IsArrowEquip}");
+    }
+
+    /// <summary>
+    /// 화살이 장전된 후 화살 관련 변수 설정을 위한 함수
+    /// </summary>
+    public void LoadArrowAfter()
+    {
+        if (IsArrowEquip == true) // 화살이 장전된 상태인 경우
+        {
+            animator.SetBool(ZoomInHash, IsZoomIn); // 카메라 줌 설정
+            Debug.Log($"IsZoomIn : {IsZoomIn}");
+
+            if (IsZoomIn == false) // 카메라 줌아웃인 경우 ( = 화살을 쐈다.)
+            {
+                // 장전되었던 화살 사용 표시
+                animator.SetBool(HaveArrowHash, false);
+                IsArrowEquip = false;
+            }
         }
     }
 

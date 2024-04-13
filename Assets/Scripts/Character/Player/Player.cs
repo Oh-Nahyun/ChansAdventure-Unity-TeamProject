@@ -6,14 +6,14 @@ using UnityEngine.InputSystem;
 using UnityEngine.Windows;
 
 /// <summary>
-/// ÇÃ·¹ÀÌ¾î ½ºÅ©¸³Æ®
+/// í”Œë ˆì´ì–´ ìŠ¤í¬ë¦½íŠ¸
 /// </summary>
 public class Player : MonoBehaviour
 {
     PlayerController controller;
     
     /// <summary>
-    /// PlayerSKills¸¦ ¹Ş±âÀ§ÇÑ ÇÁ·ÎÆÛÆ¼
+    /// PlayerSKillsë¥¼ ë°›ê¸°ìœ„í•œ í”„ë¡œí¼í‹°
     /// </summary>
     public PlayerSkills Skills => gameObject.GetComponent<PlayerSkills>();
 
@@ -22,129 +22,129 @@ public class Player : MonoBehaviour
 
     #region PlayerMove
     /// <summary>
-    /// ÀÔ·ÂµÈ ÀÌµ¿ ¹æÇâ
+    /// ì…ë ¥ëœ ì´ë™ ë°©í–¥
     /// </summary>
     Vector3 inputDirection = Vector3.zero;
 
     /// <summary>
-    /// °È´Â ¼Óµµ
+    /// ê±·ëŠ” ì†ë„
     /// </summary>
     public float walkSpeed = 3.0f;
 
     /// <summary>
-    /// ´Ş¸®´Â ¼Óµµ
+    /// ë‹¬ë¦¬ëŠ” ì†ë„
     /// </summary>
     public float runSpeed = 7.0f;
 
     /// <summary>
-    /// ÇöÀç ¼Óµµ
+    /// í˜„ì¬ ì†ë„
     /// </summary>
     public float currentSpeed = 0.0f;
 
     /// <summary>
-    /// ÀÌµ¿ ¸ğµå
+    /// ì´ë™ ëª¨ë“œ
     /// </summary>
     enum MoveMode
     {
-        Walk = 0,   // °È±â
-        Run         // ´Ş¸®±â
+        Walk = 0,   // ê±·ê¸°
+        Run         // ë‹¬ë¦¬ê¸°
     }
 
     /// <summary>
-    /// ÇöÀç ÀÌµ¿ ¸ğµå
+    /// í˜„ì¬ ì´ë™ ëª¨ë“œ
     /// </summary>
     MoveMode currentMoveMode = MoveMode.Walk;
 
     /// <summary>
-    /// ÇöÀç ÀÌµ¿ ¸ğµå È®ÀÎ ¹× ¼³Á¤¿ë ÇÁ·ÎÆÛÆ¼
+    /// í˜„ì¬ ì´ë™ ëª¨ë“œ í™•ì¸ ë° ì„¤ì •ìš© í”„ë¡œí¼í‹°
     /// </summary>
     MoveMode CurrentMoveMode
     {
         get => currentMoveMode;
         set
         {
-            currentMoveMode = value;        // »óÅÂ º¯°æ
-            if (currentSpeed > 0.0f)        // ÀÌµ¿ ÁßÀÎÁö ¾Æ´ÑÁö È®ÀÎ
+            currentMoveMode = value;        // ìƒíƒœ ë³€ê²½
+            if (currentSpeed > 0.0f)        // ì´ë™ ì¤‘ì¸ì§€ ì•„ë‹Œì§€ í™•ì¸
             {
-                // ÀÌµ¿ ÁßÀÌ¸é ¸ğµå¿¡ ¸Â°Ô ¼Óµµ¿Í ¾Ö´Ï¸ŞÀÌ¼Ç º¯°æ
+                // ì´ë™ ì¤‘ì´ë©´ ëª¨ë“œì— ë§ê²Œ ì†ë„ì™€ ì• ë‹ˆë©”ì´ì…˜ ë³€ê²½
                 MoveSpeedChange(currentMoveMode);
             }
         }
     }
 
     /// <summary>
-    /// Ä³¸¯ÅÍÀÇ ¸ñÇ¥¹æÇâÀ¸·Î È¸Àü½ÃÅ°´Â È¸Àü
+    /// ìºë¦­í„°ì˜ ëª©í‘œë°©í–¥ìœ¼ë¡œ íšŒì „ì‹œí‚¤ëŠ” íšŒì „
     /// </summary>
     Quaternion targetRotation = Quaternion.identity;
 
     /// <summary>
-    /// È¸Àü ¼Óµµ
+    /// íšŒì „ ì†ë„
     /// </summary>
     public float turnSpeed = 10.0f;
 
     /// <summary>
-    /// Áß·Â
+    /// ì¤‘ë ¥
     /// </summary>
     //[Range(-1, 1)]
     //public float gravity = 0.96f;
 
     /// <summary>
-    /// ½½¶óÀÌµå Á¤µµ
+    /// ìŠ¬ë¼ì´ë“œ ì •ë„
     /// </summary>
     public float slidePower = 5.0f;
 
     /// <summary>
-    /// Á¡ÇÁ ½Ã°£ Á¦ÇÑ
+    /// ì í”„ ì‹œê°„ ì œí•œ
     /// </summary>
     //public float jumpTimeLimit = 4.0f;
 
     /// <summary>
-    /// Á¡ÇÁ ½Ã°£
+    /// ì í”„ ì‹œê°„
     /// </summary>
     //[SerializeField]
     //public float jumpTime;
 
     /// <summary>
-    /// Á¡ÇÁ Á¤µµ
+    /// ì í”„ ì •ë„
     /// </summary>
     public float jumpPower = 5.0f;
 
     /// <summary>
-    /// Á¡ÇÁ ¼Óµµ°ª
+    /// ì í”„ ì†ë„ê°’
     /// </summary>
     //public float jumpVelocity;
 
     /// <summary>
-    /// Á¡ÇÁ ÁßÀÎÁö ¾Æ´ÑÁö È®ÀÎ¿ë º¯¼ö
+    /// ì í”„ ì¤‘ì¸ì§€ ì•„ë‹Œì§€ í™•ì¸ìš© ë³€ìˆ˜
     /// </summary>
     bool isJumping = false;
 
     /// <summary>
-    /// Á¡ÇÁ°¡ °¡´ÉÇÑÁö È®ÀÎÇÏ´Â ÇÁ·ÎÆÛÆ¼ (Á¡ÇÁÁßÀÌ ¾Æ´Ò ¶§)
+    /// ì í”„ê°€ ê°€ëŠ¥í•œì§€ í™•ì¸í•˜ëŠ” í”„ë¡œí¼í‹° (ì í”„ì¤‘ì´ ì•„ë‹ ë•Œ)
     /// </summary>
     bool IsJumpAvailable => !isJumping;
 
     /// <summary>
-    /// ÁÖº¯ ½Ã¾ß ¹öÆ°ÀÌ ´­·È´ÂÁö ¾Æ´ÑÁö È®ÀÎ¿ë º¯¼ö
+    /// ì£¼ë³€ ì‹œì•¼ ë²„íŠ¼ì´ ëˆŒë ¸ëŠ”ì§€ ì•„ë‹Œì§€ í™•ì¸ìš© ë³€ìˆ˜
     /// </summary>
     public bool isLook = false;
 
     /// <summary>
-    /// ÁÖº¯ ½Ã¾ß ¹æÇâ º¤ÅÍ
+    /// ì£¼ë³€ ì‹œì•¼ ë°©í–¥ ë²¡í„°
     /// </summary>
     Vector3 lookVector = Vector3.zero;
 
     /// <summary>
-    /// ÁÖº¯ ½Ã¾ß Ä«¸Ş¶ó
+    /// ì£¼ë³€ ì‹œì•¼ ì¹´ë©”ë¼
     /// </summary>
     public GameObject cameraRoot;
 
     /// <summary>
-    /// ÁÖº¯ ½Ã¾ß Ä«¸Ş¶ó È¸Àü Á¤µµ
+    /// ì£¼ë³€ ì‹œì•¼ ì¹´ë©”ë¼ íšŒì „ ì •ë„
     /// </summary>
     public float followCamRotatePower = 5.0f;
 
-    // ¾Ö´Ï¸ŞÀÌÅÍ¿ë ÇØ½Ã°ª
+    // ì• ë‹ˆë©”ì´í„°ìš© í•´ì‹œê°’
     //readonly int IsMoveBackHash = Animator.StringToHash("IsMoveBack");
     readonly int IsJumpHash = Animator.StringToHash("IsJump");
     readonly int IsSlideHash = Animator.StringToHash("IsSlide");
@@ -166,7 +166,7 @@ public class Player : MonoBehaviour
         // exception
         if (cameraRoot == null)
         {
-            Debug.LogError("CameraRoot°¡ ºñ¾îÀÖ½À´Ï´Ù. CameraRoot Prefab ¿ÀºêÁ§Æ®¸¦ ³Ö¾îÁÖ¼¼¿ä ( PlayerLookVCam ½ºÅ©¸³Æ® ÀÖ´Â ¿ÀºêÁ§Æ® )");
+            Debug.LogError("CameraRootê°€ ë¹„ì–´ìˆìŠµë‹ˆë‹¤. CameraRoot Prefab ì˜¤ë¸Œì íŠ¸ë¥¼ ë„£ì–´ì£¼ì„¸ìš” ( PlayerLookVCam ìŠ¤í¬ë¦½íŠ¸ ìˆëŠ” ì˜¤ë¸Œì íŠ¸ )");
         }
 
         controller.onMove += OnMove;
@@ -184,8 +184,8 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-        characterController.Move(Time.fixedDeltaTime * currentSpeed * inputDirection); // Ä³¸¯ÅÍÀÇ ¿òÁ÷ÀÓ
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * turnSpeed);  // ¸ñÇ¥ È¸ÀüÀ¸·Î º¯°æ
+        characterController.Move(Time.fixedDeltaTime * currentSpeed * inputDirection); // ìºë¦­í„°ì˜ ì›€ì§ì„
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * turnSpeed);  // ëª©í‘œ íšŒì „ìœ¼ë¡œ ë³€ê²½
     }
 
     /// <summary>
@@ -195,33 +195,33 @@ public class Player : MonoBehaviour
     /// <param name="isMove">check press button ( wasd )</param>
     void OnMove(Vector2 input, bool isMove)
     {
-        // ÀÔ·Â ¹æÇâ ÀúÀå
+        // ì…ë ¥ ë°©í–¥ ì €ì¥
         inputDirection.x = input.x;
         inputDirection.y = 0;
         inputDirection.z = input.y;
 
-        // ÀÔ·ÂÀ» ½ÃÀÛÇÑ »óÈ²
+        // ì…ë ¥ì„ ì‹œì‘í•œ ìƒí™©
         if (isMove)
         {
-            // ÀÔ·Â ¹æÇâ È¸Àü½ÃÅ°±â
-            Quaternion followCamY = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0);   // Ä«¸Ş¶óÀÇ yÈ¸Àü¸¸ µû·Î ÃßÃâ
-            inputDirection = followCamY * inputDirection;                                                   // ÀÔ·Â ¹æÇâÀ» Ä«¸Ş¶óÀÇ yÈ¸Àü°ú °°Àº Á¤µµ·Î È¸Àü½ÃÅ°±â
-            targetRotation = Quaternion.LookRotation(inputDirection);                                       // È¸Àü ÀúÀå
+            // ì…ë ¥ ë°©í–¥ íšŒì „ì‹œí‚¤ê¸°
+            Quaternion followCamY = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0);   // ì¹´ë©”ë¼ì˜ yíšŒì „ë§Œ ë”°ë¡œ ì¶”ì¶œ
+            inputDirection = followCamY * inputDirection;                                                   // ì…ë ¥ ë°©í–¥ì„ ì¹´ë©”ë¼ì˜ yíšŒì „ê³¼ ê°™ì€ ì •ë„ë¡œ íšŒì „ì‹œí‚¤ê¸°
+            targetRotation = Quaternion.LookRotation(inputDirection);                                       // íšŒì „ ì €ì¥
 
-            // ÀÌµ¿ ¸ğµå º¯°æ
+            // ì´ë™ ëª¨ë“œ ë³€ê²½
             MoveSpeedChange(CurrentMoveMode);
         }
 
-        // ÀÔ·ÂÀ» ³¡³½ »óÈ²
+        // ì…ë ¥ì„ ëë‚¸ ìƒí™©
         else
         {
-            currentSpeed = 0.0f; // Á¤Áö
+            currentSpeed = 0.0f; // ì •ì§€
             animator.SetFloat(SpeedHash, AnimatorStopSpeed);
         }
     }
 
     /// <summary>
-    /// ÀÌµ¿ ¸ğµå º¯°æ ÇÔ¼ö
+    /// ì´ë™ ëª¨ë“œ ë³€ê²½ í•¨ìˆ˜
     /// </summary>
     private void OnMoveModeChange()
     {
@@ -260,7 +260,7 @@ public class Player : MonoBehaviour
     /// <param name="mode">MoveMode</param>
     void MoveSpeedChange(MoveMode mode)
     {
-        // ÀÌµ¿ ¸ğµå¿¡ µû¶ó ¼Óµµ¿Í ¾Ö´Ï¸ŞÀÌ¼Ç º¯°æ
+        // ì´ë™ ëª¨ë“œì— ë”°ë¼ ì†ë„ì™€ ì• ë‹ˆë©”ì´ì…˜ ë³€ê²½
         switch (mode)
         {
             case MoveMode.Walk:
@@ -305,19 +305,19 @@ public class Player : MonoBehaviour
     {
         if (isJump)
         {
-            // Á¡ÇÁÇÏ´Â ÁßÀÌ ¾Æ´Ñ °æ¿ì => Á¡ÇÁ °¡´É
+            // ì í”„í•˜ëŠ” ì¤‘ì´ ì•„ë‹Œ ê²½ìš° => ì í”„ ê°€ëŠ¥
             isJumping = false;
         }
         else
         {
-            // Á¡ÇÁ ÁßÀÎ °æ¿ì => Á¡ÇÁ ºÒ°¡´É
+            // ì í”„ ì¤‘ì¸ ê²½ìš° => ì í”„ ë¶ˆê°€ëŠ¥
             isJumping = true;
         }
     }
 
     void Jump()
     {
-        // Á¡ÇÁ°¡ °¡´ÉÇÑ °æ¿ì
+        // ì í”„ê°€ ê°€ëŠ¥í•œ ê²½ìš°
         if (IsJumpAvailable)
         {
             animator.SetTrigger(IsJumpHash);
@@ -327,7 +327,7 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// È¸ÇÇ Ã³¸® ÇÔ¼ö
+    /// íšŒí”¼ ì²˜ë¦¬ í•¨ìˆ˜
     /// </summary>
     private void OnSlide()
     {
@@ -335,7 +335,7 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// Ä³¸¯ÅÍÀÇ Collider¸¦ ÄÑ´Â ÇÔ¼ö (Animation ¼³Á¤¿ë)
+    /// ìºë¦­í„°ì˜ Colliderë¥¼ ì¼œëŠ” í•¨ìˆ˜ (Animation ì„¤ì •ìš©)
     /// </summary>
     public void CharacterColliderEnable()
     {
@@ -343,19 +343,10 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// Ä³¸¯ÅÍÀÇ Collider¸¦ ²ô´Â ÇÔ¼ö (Animation ¼³Á¤¿ë)
+    /// ìºë¦­í„°ì˜ Colliderë¥¼ ë„ëŠ” í•¨ìˆ˜ (Animation ì„¤ì •ìš©)
     /// </summary>
     public void CharacterColliderDisable()
     {
         characterController.enabled = false;
-    }
-
-    // 
-    public void LookForwardPlayer(Vector3 rotate)
-    {
-        //rotate.x = 0;
-        //rotate.z = 0;
-        rotate.y = 0;
-        transform.forward = rotate;
     }
 }
