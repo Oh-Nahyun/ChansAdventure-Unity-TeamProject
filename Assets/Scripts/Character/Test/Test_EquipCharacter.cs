@@ -134,6 +134,8 @@ public class Test_EquipCharacter : MonoBehaviour, IEquipTarget, IHealth
     private void OnOpenInventory(InputAction.CallbackContext _)
     {
         ItemDataManager.Instance.InventoryUI.ShowInventory();
+
+        ItemDataManager.Instance.CharaterRenderCamera.transform.eulerAngles = new Vector3(0, 180f, 0); //
     }
 
     /// <summary>
