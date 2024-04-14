@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+//using UnityEngine.InputSystem;
 
 public class InventoryUI : MonoBehaviour
 {
@@ -46,6 +47,11 @@ public class InventoryUI : MonoBehaviour
     /// </summary>
     InventoryGoldUI goldUI;
 
+    /// <summary>
+    /// 오른쪽 클릭하면 나오는 아이템 매뉴 UI
+    /// </summary>
+    InventorySelectedMenuUI selectedMenuUI;
+
     CanvasGroup canvasGroup;
 
     public Action<uint> onSlotDragBegin;
@@ -53,7 +59,8 @@ public class InventoryUI : MonoBehaviour
     public Action onSlotDragEndFail;
     public Action<uint> onShowDetail;
     public Action onCloseDetail;
-    public Action<uint> onClickItem;
+    public Action<uint> onLeftClickItem;
+    public Action<uint, Vector2> onRightClickItem;
 
     /// <summary>
     /// 인벤토리 UI를 초기화하는 함수
@@ -69,6 +76,7 @@ public class InventoryUI : MonoBehaviour
         dividUI = GetComponentInChildren<InventoryDividUI>(); // 아이템 나누기 패널
         sortUI = GetComponentInChildren<InventorySortUI>(); // 아이템 정렬 UI
         goldUI = GetComponentInChildren<InventoryGoldUI>(); // 아이템 골드 UI
+        selectedMenuUI = GetComponentInChildren<InventorySelectedMenuUI>(); // 아이템 슬롯 매뉴 UI
         canvasGroup = GetComponent<CanvasGroup>();
 
         for (uint i = 0; i < Inventory.SlotSize; i++)
@@ -82,7 +90,8 @@ public class InventoryUI : MonoBehaviour
         onShowDetail += OnShowDetail;
         onCloseDetail += OnCloseDetail;
         onSlotDragEndFail += OnSlotDragFail;
-        onClickItem += OnClickItem;
+        onLeftClickItem += OnLeftClickItem;
+        onRightClickItem += OnRightClickItem;
         dividUI.onDivid += DividItem;
         sortUI.onSortItem += OnSortItem;
 
@@ -261,16 +270,31 @@ public class InventoryUI : MonoBehaviour
     }
 
     /// <summary>
-    /// 아이템 나눌 때 실행되는 함수
+    /// 아이템 왼쪽 클릭할 때 실행하는 함수
     /// </summary>
-    /// <param name="index">나눌 아이템 슬롯 인덱스</param>
-    private void OnClickItem(uint index)
+    /// <param name="index">클릭한 슬롯 인덱스</param>
+    private void OnLeftClickItem(uint index)
     {
-        // Key Q
-        bool isPressedQ = Keyboard.current.qKey.ReadValue() > 0;
-        bool isPressedG = Keyboard.current.gKey.ReadValue() > 0;
-      
-        if(isPressedQ) // dividUI 열기 ( Q를 눌렀을 때)
+        bool isEquip = Inventory[index].SlotItemData is IEquipable; // 장비 아이템이면 true 아니면 false
+        if (isEquip)    // 클릭한 슬롯 아이템이 장비이면
+        {
+            EquipItem(index);
+        }
+        bool isConsumalbe = Inventory[index].SlotItemData is IConsumable; // 회복 아이템이면 true 아니면 false
+        if(isConsumalbe)
+        {
+            ConsumItem(index);
+        }
+    }
+
+    /// <summary>
+    /// 아이템 오른쪽 클릭할 때 실행하는 함수 (Slot Menu)
+    /// </summary>
+    /// <param name="index">클릭한 슬롯 인덱스</param>
+    private void OnRightClickItem(uint index, Vector2 position)
+    {
+        // 버튼 이벤트 부여 index번 슬롯에 대한 내용 
+        selectedMenuUI.OnDividButtonClick = () =>
         {
             if (Inventory[index].CurrentItemCount <= 1)
             {
@@ -279,24 +303,18 @@ public class InventoryUI : MonoBehaviour
             }
             dividUI.InitializeValue(Inventory[index], 1, (int)Inventory[index].CurrentItemCount - 1);
             dividUI.DividUIOpen();
-        }
-        else if (isPressedG) // 아이템 드랍 ( G를 눌렀을 때)
+
+            selectedMenuUI.HideMenu();
+        };
+
+        selectedMenuUI.OnDropButtonClick = () =>
         {
             DropItem(index);
-        }
-        else // 클릭하면
-        {
-            bool isEquip = Inventory[index].SlotItemData is IEquipable; // 장비 아이템이면 true 아니면 false
-            if (isEquip)    // 클릭한 슬롯 아이템이 장비이면
-            {
-                EquipItem(index);
-            }
-            bool isConsumalbe = Inventory[index].SlotItemData is IConsumable; // 회복 아이템이면 true 아니면 false
-            if(isConsumalbe)
-            {
-                ConsumItem(index);
-            }
-        }
+            selectedMenuUI.HideMenu();
+        };
+
+        selectedMenuUI.SetPosition(position);
+        selectedMenuUI.ShowMenu(); // 매뉴 보여주기
     }
 
     /// <summary>

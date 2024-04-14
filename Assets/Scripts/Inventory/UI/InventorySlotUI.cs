@@ -46,7 +46,17 @@ public class InventorySlotUI : SlotUI_Base, IBeginDragHandler, IDragHandler, IEn
         // OnPointerClick 이벤트 처리
         if (obj != null)
         {
-            inventoryUI.onClickItem(InventorySlotData.SlotIndex);
+            PointerEventData.InputButton buttonValue = eventData.button; // 무슨 클릭인지 확인하는 enum값
+            //Debug.Log($"value : {buttonValue}");
+
+            if(buttonValue == PointerEventData.InputButton.Left) // 왼쪽 클릭
+            {
+                inventoryUI.onLeftClickItem(InventorySlotData.SlotIndex);
+            }
+            else // 오른쪽 클릭
+            {
+                inventoryUI.onRightClickItem(InventorySlotData.SlotIndex, transform.position);
+            }
         }
         else
         {

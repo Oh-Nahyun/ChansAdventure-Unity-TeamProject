@@ -8,9 +8,7 @@ using UnityEngine.InputSystem;
 /// 인벤토리용 테스트 캐릭터 스크립트
 /// </summary>
 public class Test_EquipCharacter : MonoBehaviour, IEquipTarget, IHealth
-{
-    
-
+{   
     public float hp;
     public float HP
     {
