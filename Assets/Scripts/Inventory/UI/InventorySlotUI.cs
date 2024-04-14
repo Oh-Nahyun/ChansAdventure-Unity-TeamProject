@@ -57,10 +57,14 @@ public class InventorySlotUI : SlotUI_Base, IBeginDragHandler, IDragHandler, IEn
     public void OnPointerEnter(PointerEventData eventData)
     {
         inventoryUI.onShowDetail?.Invoke(InventorySlotData.SlotIndex);
+
+        ShowHighlightSlotBorder(); // hightlight 활성화
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         inventoryUI.onCloseDetail?.Invoke();
+
+        HideHighlightSlotBorder(); // highlight 제거
     }
 }
