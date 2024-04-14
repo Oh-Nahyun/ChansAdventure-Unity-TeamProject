@@ -82,8 +82,4 @@ public class Interaction : MonoBehaviour
         // 부모 GameObject의 부모 GameObject를 재귀적으로 검색하여 최상위 부모 GameObject를 반환
         return FindTopParentWithCollider(parentTransform.gameObject);
     }
-}
- 
-
-   
-
+} 

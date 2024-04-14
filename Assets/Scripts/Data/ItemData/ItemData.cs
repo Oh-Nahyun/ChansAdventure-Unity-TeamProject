@@ -38,4 +38,9 @@ public class ItemData : ScriptableObject
     /// 아이템 최대 소지량
     /// </summary>
     public uint maxCount;
+
+    /// <summary>
+    /// 아이템 오브젝트
+    /// </summary>
+    public GameObject ItemPrefab;
 }

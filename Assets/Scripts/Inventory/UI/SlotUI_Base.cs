@@ -31,6 +31,11 @@ public class SlotUI_Base : MonoBehaviour
     InventorySlot inventorySlot;
 
     /// <summary>
+    /// 슬롯을 강조하는 이미지
+    /// </summary>
+    Image HighlightImage;
+
+    /// <summary>
     /// slotUI 데이터 접근 프로퍼티
     /// </summary>
     public InventorySlot InventorySlotData => inventorySlot;
@@ -50,6 +55,9 @@ public class SlotUI_Base : MonoBehaviour
         child = transform.GetChild(2);
         slotEquip = child.GetComponent<TextMeshProUGUI>();
 
+        child = transform.GetChild(3);
+        HighlightImage = child.GetComponent<Image>();
+
         inventorySlot = slot;
         InventorySlotData.onChangeSlotData = Refresh;   // inventorySlot의 델리게이트에 UI를 갱신할 함수 등록
         Refresh();
@@ -65,24 +73,34 @@ public class SlotUI_Base : MonoBehaviour
             // 슬롯에 아이템이 없으면
             slotIcon.color = Color.clear;
             slotIcon.sprite = null;
-            slotItemCount.text = string.Empty;            
+            slotItemCount.text = string.Empty;
+
+            slotEquip.color = Color.clear;
         }
         else
         {   // 슬롯에 아이템 데이터가 있으면 갱신
             slotIcon.color = Color.white;
             slotIcon.sprite = InventorySlotData.SlotItemData.itemIcon;
             slotItemCount.text = InventorySlotData.CurrentItemCount.ToString();            
+            slotEquip.color = InventorySlotData.IsEquip ? Color.white : Color.clear; // 장착 여부 
         }
 
-        SlotUIRefresh();
+        HideHighlightSlotBorder();
     }
 
     /// <summary>
-    /// 추가적으로 새로고침할 내용을 가진 함수
+    /// 슬롯 강조 이미지를 보여주게하는 함수
     /// </summary>
-    protected virtual void SlotUIRefresh()
+    public void ShowHighlightSlotBorder()
     {
-        slotEquip.color = Color.clear; 
-        slotEquip.color = InventorySlotData.IsEquip ? Color.white : Color.clear; // 장착 여부 
+        HighlightImage.color = Color.green;
+    }
+
+    /// <summary>
+    /// 슬롯 강조 이미지를 숨기는 함수
+    /// </summary>
+    public void HideHighlightSlotBorder()
+    {
+        HighlightImage.color = Color.clear;
     }
 }

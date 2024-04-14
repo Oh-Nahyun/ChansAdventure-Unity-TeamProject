@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d1e73da87100ae4abe3fbecd3254214, type: 3}
+  m_Name: 06_Healing_HPPortion_Tick
+  m_EditorClassIdentifier: 
+  itemCode: 6
+  itemName: tick hp portion
+  itemIcon: {fileID: 21300000, guid: b7d19ec039fa7b141bd165aa95496c75, type: 3}
+  desc: healing hp by tick
+  price: 500
+  maxCount: 10
+  ItemPrefab: {fileID: 724589991230666413, guid: 99e32824cfb04bc4f9883732f057e8bb,
+    type: 3}
+  tickRegen: 1
+  inverval: 1.2
+  tickCount: 3

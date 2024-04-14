@@ -33,6 +33,8 @@ public class ItemDataManager : MonoBehaviour
     /// </summary>
     public InventoryUI InventoryUI => inventoryUI;
 
+    public GameObject CharaterRenderCamera;
+
     #region GameManager
     /// <summary>
     /// ItemDataManager Singleton

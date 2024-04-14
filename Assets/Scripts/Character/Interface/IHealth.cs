@@ -42,7 +42,7 @@ public interface IHealth
     /// </summary>
     /// <param name="totalRegen">전체 회복량</param>
     /// <param name="duration">전체 회복되는데 걸리는 시간</param>
-    void HealthRegenerate(float totalRegen, float duration);
+    void HealthRegenerate(float totalRegen, float durationm);
 
     /// <summary>
     /// 체력을 틱단위로 회복시켜 주는 함수. 
@@ -52,5 +52,4 @@ public interface IHealth
     /// <param name="tickInterval">틱 간의 시간 간격</param>
     /// <param name="totalTickCount">전체 틱 수</param>
     void HealthRegenerateByTick(float tickRegen, float tickInterval, uint totalTickCount);
-
 }

@@ -21,6 +21,7 @@ public class Factory : Singleton<Factory>
     MagnetCatchPool magnetCatchPool;
     SwordSkeletonPool swordSkeletonPool;
     DamageTextPool damageTextPool;
+    ItemPool itemPool;
 
     ArrowPool arrowPool; //
 
@@ -39,6 +40,10 @@ public class Factory : Singleton<Factory>
         damageTextPool = GetComponentInChildren<DamageTextPool>();
         if (damageTextPool != null) damageTextPool.Initialize();
 
+        // Inventory Branch
+        itemPool = GetComponentInChildren<ItemPool>();
+        if (itemPool != null) itemPool.Initialize();
+        
         arrowPool = GetComponentInChildren<ArrowPool>();
         if (arrowPool != null)
             arrowPool.Initialize();
@@ -130,6 +135,18 @@ public class Factory : Singleton<Factory>
         return damageTextPool.GetObject(damage, position);
     }
 
+    // Inventory Branch
+    /// <summary>
+    /// Factory에서 아이템을 생성하는 함수
+    /// </summary>
+    /// <param name="slot">소환할 아이템 슬롯</param>
+    /// <param name="position">소환할 위치</param>
+    /// <returns></returns>
+    public GameObject GetItemObject(InventorySlot slot, Vector3? position = null)
+    {
+        return itemPool.GetItemObject(slot, position);
+    }
+    
     //
     /// <summary>
     /// 풀에 있는 게임 오브젝트 하나 가져오기

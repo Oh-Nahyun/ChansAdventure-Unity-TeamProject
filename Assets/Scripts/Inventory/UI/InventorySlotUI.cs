@@ -46,7 +46,17 @@ public class InventorySlotUI : SlotUI_Base, IBeginDragHandler, IDragHandler, IEn
         // OnPointerClick 이벤트 처리
         if (obj != null)
         {
-            inventoryUI.onDivdItem(InventorySlotData.SlotIndex);
+            PointerEventData.InputButton buttonValue = eventData.button; // 무슨 클릭인지 확인하는 enum값
+            //Debug.Log($"value : {buttonValue}");
+
+            if(buttonValue == PointerEventData.InputButton.Left) // 왼쪽 클릭
+            {
+                inventoryUI.onLeftClickItem(InventorySlotData.SlotIndex);
+            }
+            else // 오른쪽 클릭
+            {
+                inventoryUI.onRightClickItem(InventorySlotData.SlotIndex, transform.position);
+            }
         }
         else
         {
@@ -57,10 +67,14 @@ public class InventorySlotUI : SlotUI_Base, IBeginDragHandler, IDragHandler, IEn
     public void OnPointerEnter(PointerEventData eventData)
     {
         inventoryUI.onShowDetail?.Invoke(InventorySlotData.SlotIndex);
+
+        ShowHighlightSlotBorder(); // hightlight 활성화
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         inventoryUI.onCloseDetail?.Invoke();
+
+        HideHighlightSlotBorder(); // highlight 제거
     }
 }

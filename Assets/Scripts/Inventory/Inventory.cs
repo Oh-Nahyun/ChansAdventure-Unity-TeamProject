@@ -9,9 +9,9 @@ using UnityEngine;
 public class Inventory
 {
     /// <summary>
-    /// 최대 슬롯개수
+    /// 최대 슬롯개수 ( 생성자에서 초기화 )
     /// </summary>
-    const uint maxSlot_size = 6;
+    uint maxSlot_size = 0;
 
     /// <summary>
     /// 인벤토리 크기 접근용 프로퍼티
@@ -56,11 +56,35 @@ public class Inventory
     public GameObject Owner => owner;
 
     /// <summary>
+    /// 인벤토리의 골드
+    /// </summary>
+    uint gold = 0;
+
+    /// <summary>
+    /// 인벤토리의 골드를 접근하기 위한 프로퍼티
+    /// </summary>
+    public uint Gold
+    {
+        get => gold;
+        private set
+        {
+            if(gold != value)
+            {
+                gold = value;
+                onInventoryGoldChange?.Invoke(Gold);
+            }
+        }
+    }
+
+    public Action<uint> onInventoryGoldChange;
+
+    /// <summary>
     /// 인벤토리 생성자
     /// </summary>
-    public Inventory(GameObject invenOwner)
+    public Inventory(GameObject invenOwner, uint slotSize = 6)
     {
         owner = invenOwner;
+        maxSlot_size = slotSize;
         slots = new InventorySlot[maxSlot_size];
         tempSlot = new TempSlot(tempIndex);
 
@@ -70,94 +94,13 @@ public class Inventory
         }
     }
 
-    #region Legacy AddItem Method
-/*    /// <summary>
-    /// 슬롯에 아이템 추가
-    /// </summary>
-    /// <param name="code">아이템 코드</param>
-    /// <param name="count">추가할 아이템 개수</param>
-    /// <param name="index">추가할 슬롯 위치 인덱스</param>
-    public void AddSlotItem(uint code, int count, uint index = 0)
-    {
-        int overCount = 0;
-        uint vaildIndex = 0;
-
-        if (!IsVaildSlot(index))
-        {
-            Debug.Log($"존재하지 않는 슬롯 인덱스 입니다.");
-        }
-
-        if (slots[index].SlotItemData != null) // 해당 슬롯에 아이템이 존재한다 (1개이상)
-        {
-            if(slots[index].CurrentItemCount == slots[index].SlotItemData.maxCount) // 슬롯이 다 찼는지 체크
-            {                
-                Debug.Log($"slot[{index}] is Full");
-
-                // 남아있는 슬롯 찾기
-                vaildIndex = FindSlot(code); // 다음 칸 체크
-                if (vaildIndex >= maxSlot) // 모든 슬롯이 전부 찼으면
-                {
-                    Debug.Log($"비어있는 슬롯이 없습니다.");
-                    return;
-                }
-                else // 모든 슬롯이 다 안찼으면
-                {
-                    slots[vaildIndex].AssignItem(code, count, out overCount);
-                }
-            }
-            else
-            {
-                if (slots[index].SlotItemData.itemCode != ((ItemCode)code)) // 추가하려는 아이템이 서로 다른 아이템이다.
-                {
-                    vaildIndex = FindSlot(code); // 비어있는 칸 확인
-
-                    if (vaildIndex >= maxSlot)
-                    {
-                        Debug.Log($"비어있는 슬롯이 없습니다.");
-                        return;
-                    }
-                    else
-                    {
-                        slots[vaildIndex].AssignItem(code, count, out overCount);
-                    }
-
-                }
-                else // 추가하려는 아이템이 서로 같은 아이템이다.
-                {
-                    slots[index].AssignItem(code, count, out overCount);  // 아이템 추가
-                }
-            }
-        }
-        else // 해당 슬롯에 아이템이 없다.
-        {
-            slots[index].AssignItem(code, count, out overCount);  // 아이템 추가
-        }
-
-
-        // 남은 거 추가
-        if (overCount == 0) return; // 넘치는게 없으면 종료
-        else
-        {
-            vaildIndex = FindSlot(code);
-            if(vaildIndex < maxSlot)
-            {
-                slots[vaildIndex].AssignItem(code, overCount, out _);
-            }
-            else
-            {
-                Debug.Log($"인벤토리가 가득찼습니다.");
-            }
-        }
-    }*/
-    #endregion
-
     /// <summary>
     /// 아이템 추가 함수 , 가장 먼저있는 슬롯을 채움
     /// </summary>
     /// <param name="code">아이템 코드</param>
     /// <param name="count">아이템 개수</param>
     /// <param name="index">슬롯 인덱스</param>
-    public void AddSlotItem(uint code, int count, uint index = 0)
+    public void AddSlotItem(uint code, int count = 1, uint index = 0)
     {
         if (index >= maxSlot_size) // 슬롯 우뮤 확인
         {
@@ -362,6 +305,12 @@ public class Inventory
         }
     }
 
+    /// <summary>
+    /// 임시 슬롯 접근 함수
+    /// </summary>
+    /// <param name="index">임시 슬롯에 옮길 아이템 슬롯 인덱스</param>
+    /// <param name="itemCode">임시 슬롯에 옮길 아이템 코드</param>
+    /// <param name="itemCount">임시 슬롯에 옮길 아이템 량</param>
     public void AccessTempSlot(uint index, uint itemCode, int itemCount)
     {
         if(TempSlot.SlotItemData == null) // 임시 슬롯이 비어있다.
@@ -408,6 +357,22 @@ public class Inventory
     }
 
     /// <summary>
+    /// 아이템 드롭할 때 실행하는 함수
+    /// </summary>
+    /// <param name="index">드롭할 아이템 슬롯</param>
+    public void DropItem(uint index)
+    {
+        //GameObject dropItem = UnityEngine.Object.Instantiate(slots[index].SlotItemData.ItemPrefab, Owner.transform);
+
+        GameObject dropItem = Factory.Instance.GetItemObject(slots[index], Owner.transform.position + Vector3.up * 0.5f); // Factory에서 아이템 소환
+
+        dropItem.name = $"{slots[index].SlotItemData.itemName}";    // 아이템 이름 변경
+        //dropItem.transform.SetParent(null);
+
+        slots[index].DiscardItem(1);
+    }
+
+    /// <summary>
     /// 해당 인덱스에 슬롯에 아이템이 들어갈 수 있는 지 확인하는 함수
     /// </summary>
     /// <param name="index">확인할 인덱스</param>
@@ -417,7 +382,20 @@ public class Inventory
         return slots[index].SlotItemData != null;
     }
 
+    /// <summary>
+    /// 골드를 획득할 때 실행되는 함수
+    /// </summary>
+    /// <param name="price">획득할 골드량</param>
+    public void AddCoin(uint price)
+    {
+        Gold += price;
+    }
+
 #if UNITY_EDITOR
+
+    /// <summary>
+    /// 인벤토리 슬롯들의 정보를 보여주는 함수
+    /// </summary>
     public void TestShowInventory()
     {
         string str = null;

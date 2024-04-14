@@ -532,7 +532,7 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
 
     public void HealthRegenerate(float totalRegen, float duration)
     {
-        
+        // 매개변수 추가됨
     }
 
     public void HealthRegenerateByTick(float tickRegen, float tickInterval, uint totalTickCount)
