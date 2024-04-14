@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 using static UnityEngine.InputSystem.InputAction;
 
 /// <summary>
-/// ÇÃ·¹ÀÌ¾î ÀÎÇ²¸¸ ¹Ş´Â ½ºÅ©¸³Æ®
+/// í”Œë ˆì´ì–´ ì¸í’‹ë§Œ ë°›ëŠ” ìŠ¤í¬ë¦½íŠ¸
 /// </summary>
 public class PlayerController : MonoBehaviour
 {
@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     public Action<Vector2, bool> onLook;
     public Action onSlide;
     public Action<bool> onJump;
+    public Action onSkillModeChange;
 
     // behavior delegate
 
@@ -39,11 +40,15 @@ public class PlayerController : MonoBehaviour
         playerInputAction.Player.Jump.performed += OnJumpInput;
         playerInputAction.Player.Slide.performed += OnSlideInput;
         playerInputAction.Player.MoveModeChange.performed += OnMoveModeChangeInput;
+
+        //playerInputAction.Player.ActiveSkillMode.performed += OnSkillModeChange;
     }
 
     void OnDisable()
     {
         // Player Movement
+        //playerInputAction.Player.ActiveSkillMode.performed -= OnSkillModeChange;
+
         playerInputAction.Player.MoveModeChange.performed -= OnMoveModeChangeInput;
         playerInputAction.Player.Slide.performed -= OnSlideInput;
         playerInputAction.Player.Jump.performed -= OnJumpInput;
@@ -54,9 +59,28 @@ public class PlayerController : MonoBehaviour
 
         playerInputAction.Player.Disable();
     }
+
     #region Player Movement Input
+
+    /*private void OnSkillModeChange(CallbackContext context)
+    {
+        bool isActiveSelf = playerInputAction.Skill.enabled;
+        if (!isActiveSelf)
+        {
+            playerInputAction.Skill.Enable();
+            playerInputAction.Weapon.Disable();
+        }
+        else
+        {
+            playerInputAction.Skill.Disable();
+            playerInputAction.Weapon.Enable();
+        }
+
+        Debug.Log($"ìŠ¤í‚¬ ëª¨ë“œ í™œì„±í™” ì—¬ë¶€ : {playerInputAction.Skill.enabled}");
+    }*/
+
     /// <summary>
-    /// ÀÌµ¿ Ã³¸® ÇÔ¼ö
+    /// ì´ë™ ì²˜ë¦¬ í•¨ìˆ˜
     /// </summary>
     private void OnMoveInput(InputAction.CallbackContext context)
     {
@@ -64,7 +88,7 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// ÀÌµ¿ ¸ğµå º¯°æ ÇÔ¼ö
+    /// ì´ë™ ëª¨ë“œ ë³€ê²½ í•¨ìˆ˜
     /// </summary>
     private void OnMoveModeChangeInput(CallbackContext _)
     {
@@ -72,7 +96,7 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// Ä«¸Ş¶ó È¸Àü ÀÔ·Â ÇÔ¼ö
+    /// ì¹´ë©”ë¼ íšŒì „ ì…ë ¥ í•¨ìˆ˜
     /// </summary>
     private void OnLookInput(InputAction.CallbackContext context)
     {
@@ -80,7 +104,7 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// È¸ÇÇ Ã³¸® ÇÔ¼ö
+    /// íšŒí”¼ ì²˜ë¦¬ í•¨ìˆ˜
     /// </summary>
     private void OnSlideInput(InputAction.CallbackContext context)
     {
@@ -88,7 +112,7 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// Á¡ÇÁ Ã³¸® ÇÔ¼ö
+    /// ì í”„ ì²˜ë¦¬ í•¨ìˆ˜
     /// </summary>
     private void OnJumpInput(InputAction.CallbackContext context)
     {
@@ -97,13 +121,13 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     /// <summary>
-    /// ÀÔ·Â Ã³¸® ºÒ°¡ Ã³¸® ÄÚ·çÆ¾
+    /// ì…ë ¥ ì²˜ë¦¬ ë¶ˆê°€ ì²˜ë¦¬ ì½”ë£¨í‹´
     /// </summary>
     /// <returns></returns>
     public IEnumerator StopInput()
     {
-        playerInputAction.Player.Disable();          // Player ¾×¼Ç¸Ê ºñÈ°¼ºÈ­
+        playerInputAction.Player.Disable();          // Player ì•¡ì…˜ë§µ ë¹„í™œì„±í™”
         yield return new WaitForSeconds(4.0f);
-        playerInputAction.Player.Enable();           // Player ¾×¼Ç¸Ê È°¼ºÈ­
+        playerInputAction.Player.Enable();           // Player ì•¡ì…˜ë§µ í™œì„±í™”
     }
 }
