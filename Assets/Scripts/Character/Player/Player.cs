@@ -8,8 +8,9 @@ using UnityEngine.Windows;
 /// <summary>
 /// 플레이어 스크립트
 /// </summary>
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IEquipTarget, IHealth
 {
+    #region additional Classes
     PlayerController controller;
     
     /// <summary>
@@ -19,8 +20,13 @@ public class Player : MonoBehaviour
 
     Animator animator;
     CharacterController characterController;
+    #endregion
 
-    #region PlayerMove
+    // 변수 ==========================================================================================================================
+
+    #region PlayerMove Values
+    [Header("# PlayerMove Values")]
+
     /// <summary>
     /// 입력된 이동 방향
     /// </summary>
@@ -154,11 +160,103 @@ public class Player : MonoBehaviour
     const float AnimatorRunSpeed = 1.0f;
     #endregion
 
+    #region Inventory Values (IHealth 포함되있음)
+
+    [Header("# Inventory Values")]
+    /// <summary>
+    /// 오브젝트가 가지고 있는 현재 체력
+    /// </summary>
+    public float hp;
+
+    /// <summary>
+    /// 체력을 접근하기 위한 프로퍼티
+    /// </summary>
+    public float HP
+    {
+        get => hp;
+        set
+        {
+            hp = Mathf.Clamp(value, 0, MaxHP);
+            onHealthChange?.Invoke(hp);
+        }
+    }
+
+    /// <summary>
+    /// 최대 HP
+    /// </summary>
+    public float maxHP = 5;
+
+    /// <summary>
+    /// 최대 HP 접근 프로퍼티
+    /// </summary>
+    public float MaxHP => maxHP;
+
+    int partCount = Enum.GetNames(typeof(EquipPart)).Length;
+
+    /// <summary>
+    /// 체력이 변경될 때 실행되는 델리게이트
+    /// </summary>
+    public Action<float> onHealthChange { get; set; }
+
+    /// <summary>
+    /// 캐릭터가 살아있는지 확인하는 프로퍼티 ( 0 초과 : true,)
+    /// </summary>
+    public bool IsAlive => HP > 0;
+
+    /// <summary>
+    /// 캐릭터가 사망하면 실행되는 델리게이트
+    /// </summary>
+    public Action onDie { get; set; }
+
+    /// <summary>
+    /// 아이템 장착할 위치 ( equipPart 순서대로 초기화 해야함)
+    /// </summary>
+    [Tooltip("Equip Part와 동일하게 배치할 것")]
+    public Transform[] partPosition;
+
+    /// <summary>
+    /// 장착한 부위의 아이템들
+    /// </summary>
+    private InventorySlot[] equipPart;
+
+    /// <summary>
+    /// 장착할 부위접근을 하기위한 프로퍼티
+    /// </summary>
+    public InventorySlot[] EquipPart
+    {
+        get => equipPart;
+        set
+        {
+            equipPart = value;
+        }
+    }
+
+    /// <summary>
+    /// 해당 오브젝트의 인벤토리
+    /// </summary>
+    Inventory inventory;
+
+    #endregion
+
+    #region PlayerInteraction Values
+
+    /// <summary>
+    /// 상호작용을 하기위한 interaction 클래스
+    /// </summary>
+    Interaction interaction;
+
+    #endregion
+
+    // 함수 ==========================================================================================================================
+
+    #region Player LifeCycle Method
     void Awake()
     {
         controller = GetComponent<PlayerController>();
-        animator = GetComponent<Animator>();
         characterController = GetComponent<CharacterController>();
+        animator = GetComponent<Animator>();
+
+        interaction = GetComponent<Interaction>();
     }
 
     void Start()
@@ -169,11 +267,21 @@ public class Player : MonoBehaviour
             Debug.LogError("CameraRoot가 비어있습니다. CameraRoot Prefab 오브젝트를 넣어주세요 ( PlayerLookVCam 스크립트 있는 오브젝트 )");
         }
 
+        // controller
         controller.onMove += OnMove;
         controller.onMoveModeChagne += OnMoveModeChange;
         controller.onLook += OnLookAround;
         controller.onSlide += OnSlide;
         controller.onJump += OnJump;
+        controller.onInteraction = OnGetItem;
+
+        // inventory
+        inventory = new Inventory(this.gameObject, 16);
+        GameManager.Instance.ItemDataManager.InventoryUI.InitializeInventoryUI(inventory); // 인벤 UI 초기화
+        EquipPart = new InventorySlot[partCount]; // EquipPart 배열 초기화
+#if UNITY_EDITOR
+        Test_AddItem();
+#endif
     }
 
     void Update()
@@ -187,7 +295,8 @@ public class Player : MonoBehaviour
         characterController.Move(Time.fixedDeltaTime * currentSpeed * inputDirection); // 캐릭터의 움직임
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * turnSpeed);  // 목표 회전으로 변경
     }
-
+    #endregion
+    #region Player Movement Method
     /// <summary>
     /// Get Player input Values
     /// </summary>
@@ -333,7 +442,136 @@ public class Player : MonoBehaviour
     {
         animator.SetTrigger(IsSlideHash);
     }
+    #endregion 
+    #region Player Inventory Method
 
+    /// <summary>
+    /// 아이템을 주울 때 실행되는 함수
+    /// </summary>
+    void OnGetItem()
+    {
+        if (interaction.short_enemy != null) // 감지한 아이템 오브젝트가 존재한다.
+        {
+            GameObject itemObject = interaction.short_enemy.gameObject;       // 가장 가까운 오브젝트 
+            if (itemObject.TryGetComponent(out ItemDataObject itemDataObject)) // 해당 오브젝트에 ItemDataObject 클래스가 존재하면 true
+            {
+                itemDataObject.AdditemToInventory(inventory);
+            }
+            else
+            {
+                Debug.Log($"오브젝트 내에 ItemDataObject 클래스가 존재하지 않습니다.");
+            }
+        }
+        else
+        {
+            Debug.Log($"감지한 아이템 오브젝트가 존재하지 않습니다.");
+        }
+    }
+
+    /// <summary>
+    /// 캐릭터 아이템 장착할 때 실행하는 함수
+    /// </summary>
+    /// <param name="equipment">장비 프리팹</param>
+    /// <param name="part">장착할 부위</param>
+    public void CharacterEquipItem(GameObject equipment, EquipPart part, InventorySlot slot)
+    {
+        if (EquipPart[(int)part] != null) // 장착한 아이템이 있으면
+        {
+            // false
+            CharacterUnequipItem(part); // 장착했던 아이템 파괴
+
+            Instantiate(equipment, partPosition[(int)part]); // 아이템 오브젝트 생성
+            EquipPart[(int)part] = slot;    // 장착부위에 아이템 정보 저장
+        }
+        else // 장착한 아이템이 없으면
+        {
+            EquipPart[(int)part] = slot;
+            Instantiate(equipment, partPosition[(int)part]); // 아이템 오브젝트 생성
+        }
+    }
+
+    /// <summary>
+    /// 캐릭터 아이템 장착해제 할 때 실행하는 함수
+    /// </summary>
+    /// <param name="part"></param>
+    public void CharacterUnequipItem(EquipPart part)
+    {
+        Destroy(partPosition[(int)part].GetChild(0).gameObject);    // 아이템 오브젝트 파괴
+    }
+
+    #endregion
+    #region Player IHealth Method
+    /// <summary>
+    /// 사망시 실행되는 함수
+    /// </summary>
+    public void Die()
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <summary>
+    /// 체력회복 할 때 실행되는 함수
+    /// </summary>
+    /// <param name="totalRegen">총 회복량</param>
+    /// <param name="duration">회복 주기 시간</param>
+    public void HealthRegenerate(float totalRegen, float duration)
+    {
+        StartCoroutine(HealthRegen_Coroutine(totalRegen, duration));
+    }
+
+    /// <summary>
+    /// 체력 회복 코루틴
+    /// </summary>
+    /// <param name="totalRegen">최종 회복할 체력량</param>
+    /// <param name="Duration">체력회복하는 시간</param>
+    /// <returns></returns>
+    IEnumerator HealthRegen_Coroutine(float totalRegen, float Duration)
+    {
+        float timeElapsed = 0f;
+        while (timeElapsed < Duration)
+        {
+            timeElapsed += Time.deltaTime;
+            HP += (totalRegen / Duration) * Time.deltaTime;
+
+            yield return null;
+        }
+    }
+
+    /// <summary>
+    /// 틱당 체력 회복할 때 실행하는 함수
+    /// </summary>
+    /// <param name="tickRegen">틱당 회복량</param>
+    /// <param name="tickInterval">회복 주기</param>
+    /// <param name="totalTickCount">최종 틱 수</param>
+    public void HealthRegenerateByTick(float tickRegen, float tickInterval, uint totalTickCount)
+    {
+        StartCoroutine(HealthRegenByTick_Coroutine(tickRegen, tickInterval, totalTickCount));
+    }
+
+    /// <summary>
+    /// 틱당 체력 회복 코루틴
+    /// </summary>
+    /// <param name="tickRegen">틱당 회복량</param>
+    /// <param name="tickInterval">회복 주기</param>
+    /// <param name="totalTickCount">최종 틱 수</param>
+    /// <returns></returns>
+    IEnumerator HealthRegenByTick_Coroutine(float tickRegen, float tickInterval, uint totalTickCount)
+    {
+        for (int i = 0; i < totalTickCount; i++)
+        {
+            float timeElapsed = 0f;
+            while (timeElapsed < tickInterval)
+            {
+                timeElapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            HP += tickRegen;
+        }
+    }
+    #endregion
+
+    #region additional Method
     /// <summary>
     /// 캐릭터의 Collider를 켜는 함수 (Animation 설정용)
     /// </summary>
@@ -349,4 +587,19 @@ public class Player : MonoBehaviour
     {
         characterController.enabled = false;
     }
+    #endregion
+
+#if UNITY_EDITOR
+
+    /// <summary>
+    /// Player 임의로 아이템 부여하는 함수 ( 빌드 할 때는 없어짐 ) 
+    /// </summary>
+    void Test_AddItem()
+    {
+        inventory.AddSlotItem((uint)ItemCode.Hammer);
+        inventory.AddSlotItem((uint)ItemCode.Sword);
+        inventory.AddSlotItem((uint)ItemCode.HP_portion, 3);
+        inventory.AddSlotItem((uint)ItemCode.Coin);
+    }
+#endif
 }

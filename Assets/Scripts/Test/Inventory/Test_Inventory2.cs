@@ -35,7 +35,7 @@ public class Test_Inventory2 : TestBase
         inven.AddSlotItem(4, 1);
 
         inven.TestShowInventory();
-        ItemDataManager.Instance.InventoryUI.InitializeInventoryUI(inven);
+        GameManager.Instance.ItemDataManager.InventoryUI.InitializeInventoryUI(inven);
     }
 
     protected override void OnTest1(InputAction.CallbackContext context)

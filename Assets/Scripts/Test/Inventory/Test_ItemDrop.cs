@@ -23,7 +23,7 @@ public class Test_ItemDrop : TestBase
         inven.AddSlotItem(4, 1);
 
         inven.TestShowInventory();
-        ItemDataManager.Instance.InventoryUI.InitializeInventoryUI(inven);
+        GameManager.Instance.ItemDataManager.InventoryUI.InitializeInventoryUI(inven);
     }
 
     protected override void OnTest1(InputAction.CallbackContext context)

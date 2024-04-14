@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 아이템 등록 및 접근을 위한 클래스 ( UI 포함 )
+/// </summary>
 public class ItemDataManager : MonoBehaviour
 {
     /// <summary>
@@ -33,20 +36,13 @@ public class ItemDataManager : MonoBehaviour
     /// </summary>
     public InventoryUI InventoryUI => inventoryUI;
 
-    public GameObject CharaterRenderCamera;
-
-    #region GameManager
     /// <summary>
-    /// ItemDataManager Singleton
+    /// Inventory RenderTexture Object Point
     /// </summary>
-    public static ItemDataManager Instance;
-
-    #endregion
+    public GameObject CharaterRenderCameraPoint;
 
     void Awake()
     {
-        Instance = this;    // singleton
-
         inventoryUI = FindAnyObjectByType<InventoryUI>(); // find inventoryUI
     }
 }

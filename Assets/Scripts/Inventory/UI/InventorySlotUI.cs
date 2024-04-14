@@ -11,7 +11,7 @@ public class InventorySlotUI : SlotUI_Base, IBeginDragHandler, IDragHandler, IEn
 
     void Start()
     {
-        inventoryUI = ItemDataManager.Instance.InventoryUI;
+        inventoryUI = GameManager.Instance.ItemDataManager.InventoryUI;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -67,7 +67,6 @@ public class InventorySlotUI : SlotUI_Base, IBeginDragHandler, IDragHandler, IEn
     public void OnPointerEnter(PointerEventData eventData)
     {
         inventoryUI.onShowDetail?.Invoke(InventorySlotData.SlotIndex);
-
         ShowHighlightSlotBorder(); // hightlight È°¼ºÈ­
     }
 

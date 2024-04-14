@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
     public Action onSkillModeChange;
 
     // behavior delegate
-
+    public Action onInteraction;
 
     void Awake()
     {
@@ -41,14 +41,22 @@ public class PlayerController : MonoBehaviour
         playerInputAction.Player.Slide.performed += OnSlideInput;
         playerInputAction.Player.MoveModeChange.performed += OnMoveModeChangeInput;
 
+        // Player Inventory
+        playerInputAction.Player.Open_Inventory.performed += OnOpenInventory;
+        playerInputAction.Player.Get_Item.performed += OnGetItem;
+
         //playerInputAction.Player.ActiveSkillMode.performed += OnSkillModeChange;
     }
 
     void OnDisable()
     {
-        // Player Movement
         //playerInputAction.Player.ActiveSkillMode.performed -= OnSkillModeChange;
 
+        // Player Inventory
+        playerInputAction.Player.Open_Inventory.performed -= OnOpenInventory;
+        playerInputAction.Player.Get_Item.performed -= OnGetItem;
+
+        // Player Movement
         playerInputAction.Player.MoveModeChange.performed -= OnMoveModeChangeInput;
         playerInputAction.Player.Slide.performed -= OnSlideInput;
         playerInputAction.Player.Jump.performed -= OnJumpInput;
@@ -117,6 +125,27 @@ public class PlayerController : MonoBehaviour
     private void OnJumpInput(InputAction.CallbackContext context)
     {
         onJump?.Invoke(context.performed);
+    }
+    #endregion
+
+    #region Player Inventory
+
+    /// <summary>
+    /// 인벤토리 열 때 실행되는 인풋 함수
+    /// </summary>
+    private void OnOpenInventory(InputAction.CallbackContext _)
+    {
+        GameManager.Instance.ItemDataManager.InventoryUI.ShowInventory();
+
+        GameManager.Instance.ItemDataManager.CharaterRenderCameraPoint.transform.eulerAngles = new Vector3(0, 180f, 0); // RenderTexture 플레이어 위치 초기화
+    }
+
+    /// <summary>
+    /// 아이템을 획득하는 인풋 ( F Key )
+    /// </summary>
+    private void OnGetItem(InputAction.CallbackContext context)
+    {
+        onInteraction?.Invoke();
     }
     #endregion
 

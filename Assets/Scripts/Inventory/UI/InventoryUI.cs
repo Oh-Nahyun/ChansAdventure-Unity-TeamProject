@@ -430,7 +430,7 @@ public class InventoryUI : MonoBehaviour
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;
         }
-        else // 활성화
+        else if(canvasGroup.alpha < 1)// 활성화
         {
             canvasGroup.alpha = 1;
             canvasGroup.interactable = true;

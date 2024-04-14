@@ -48,7 +48,7 @@ public class InventoryPlayerUI : MonoBehaviour, IBeginDragHandler, IDragHandler,
 
     void Start()
     {
-        rendererCamera = ItemDataManager.Instance.CharaterRenderCamera;
+        rendererCamera = GameManager.Instance.ItemDataManager.CharaterRenderCameraPoint;
     }
 
     public void OnBeginDrag(PointerEventData eventData)

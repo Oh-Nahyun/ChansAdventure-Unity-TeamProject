@@ -74,7 +74,7 @@ public class Test_EquipCharacter : MonoBehaviour, IEquipTarget, IHealth
     void Start()
     {
         inventory = new Inventory(this.gameObject, 16); // 인벤 초기화
-        ItemDataManager.Instance.InventoryUI.InitializeInventoryUI(inventory); // 인벤 UI 초기화
+        GameManager.Instance.ItemDataManager.InventoryUI.InitializeInventoryUI(inventory); // 인벤 UI 초기화
 
         EquipPart = new InventorySlot[partCount]; // EquipPart 배열 초기화
 
@@ -131,9 +131,9 @@ public class Test_EquipCharacter : MonoBehaviour, IEquipTarget, IHealth
 
     private void OnOpenInventory(InputAction.CallbackContext _)
     {
-        ItemDataManager.Instance.InventoryUI.ShowInventory();
+        GameManager.Instance.ItemDataManager.InventoryUI.ShowInventory();
 
-        ItemDataManager.Instance.CharaterRenderCamera.transform.eulerAngles = new Vector3(0, 180f, 0); //
+        GameManager.Instance.ItemDataManager.CharaterRenderCameraPoint.transform.eulerAngles = new Vector3(0, 180f, 0); //
     }
 
     /// <summary>

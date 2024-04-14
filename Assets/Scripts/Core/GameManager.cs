@@ -11,6 +11,15 @@ public class GameManager : Singleton<GameManager>
     public Weapon Weapon => weapon;
 
     CameraManager cameraManager;
+
+    // ItemData
+    ItemDataManager itemDataManager;
+
+    /// <summary>
+    /// 아이템 데이터 클래스 접근을 위한 프로퍼티
+    /// </summary>
+    public ItemDataManager ItemDataManager => itemDataManager;
+
     public CameraManager Cam
     {
         get
@@ -26,6 +35,7 @@ public class GameManager : Singleton<GameManager>
         player = FindAnyObjectByType<Player>();
         weapon = FindAnyObjectByType<Weapon>();
         cameraManager = GetComponent<CameraManager>();
+        itemDataManager = GetComponent<ItemDataManager>();
     }
 
 #if UNITY_EDITOR
