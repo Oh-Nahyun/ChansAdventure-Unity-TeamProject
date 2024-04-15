@@ -9,24 +9,24 @@ using UnityEditor;
 #endif
 
 /// <summary>
-/// °ø°ÝÀ» 2¹ø ¸Â´Â ¹ö±× ¼öÁ¤À» À§ÇØ ÇÊ¼ö
+/// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 2ï¿½ï¿½ ï¿½Â´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¼ï¿½
 /// </summary>
 public class AttackArea : MonoBehaviour
 {
     /// <summary>
-    /// ÇÃ·¹ÀÌ¾î°¡ µé¾î¿ÔÀ» ¶§ ½ÇÇàµÇ´Â µ¨¸®°ÔÀÌÆ®
+    /// ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ç´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
     /// </summary>
     public Action<IBattler> onPlayerIn;
 
     /// <summary>
-    /// ÇÃ·¹ÀÌ¾î°¡ ³ª°¬À» ¶§ ½ÇÇàµÇ´Â µ¨¸®°ÔÀÌÆ®
+    /// ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ç´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
     /// </summary>
     public Action<IBattler> onPlayerOut;
 
     /// <summary>
-    /// °ø°Ý ¹üÀ§¸¦ °áÁ¤ÇÏ´Â ÄÃ¶óÀÌ´õ
+    /// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½Ã¶ï¿½ï¿½Ì´ï¿½
     /// </summary>
-    public SphereCollider attackArea;   // ½ÇÇàÀü¿¡µµ ±âÁî¸ð·Î Ç¥½ÃÇÏ±â À§ÇØ publicÀ¸·Î ¼³Á¤ÇÑ ÈÄ ÀÎ½ºÆÑÅÍ Ã¢¿¡¼­ ÁöÁ¤
+    public SphereCollider attackArea;   // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ç¥ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ publicï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Î½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã¢ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
     private void Awake()
     {
@@ -35,11 +35,11 @@ public class AttackArea : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // ÇÃ·¹ÀÌ¾î°¡ µé¾î¿ÔÀ¸¸é
+        // ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         if (other.CompareTag("Player"))
         {
             IBattler target = other.GetComponent<IBattler>();
-            onPlayerIn?.Invoke(target);     // ÇÃ·¹ÀÌ¾î°¡ µé¾î¿ÔÀ½À» ¾Ë¸²
+            onPlayerIn?.Invoke(target);     // ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ë¸ï¿½
         }
     }
 
@@ -48,7 +48,7 @@ public class AttackArea : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             IBattler target = other.GetComponent<IBattler>();
-            onPlayerOut?.Invoke(target);    // ÇÃ·¹ÀÌ¾î°¡ ³ª°¬À½À» ¾Ë¸²
+            onPlayerOut?.Invoke(target);    // ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ë¸ï¿½
         }
     }
 
@@ -58,7 +58,7 @@ public class AttackArea : MonoBehaviour
         if (attackArea != null)
         {
             Handles.color = Color.red;
-            Handles.DrawWireDisc(transform.position, transform.up, attackArea.radius, 5);   // °ø°Ý ¹üÀ§ ±×¸®±â
+            Handles.DrawWireDisc(transform.position, transform.up, attackArea.radius, 5);   // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½×¸ï¿½ï¿½ï¿½
         }
     }
 #endif

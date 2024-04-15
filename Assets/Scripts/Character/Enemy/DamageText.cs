@@ -6,36 +6,36 @@ using UnityEngine;
 public class DamageText : RecycleObject
 {
     /// <summary>
-    /// ÀÌµ¿ º¯È­ ³ªÅ¸³»´Â Ä¿ºê
+    /// ï¿½Ìµï¿½ ï¿½ï¿½È­ ï¿½ï¿½Å¸ï¿½ï¿½ï¿½ï¿½ Ä¿ï¿½ï¿½
     /// </summary>
     public AnimationCurve movement;
 
     /// <summary>
-    /// Åõ¸í Á¤µµ¿Í Å©±â º¯È­¸¦ ³ªÅ¸³»´Â Ä¿ºê
+    /// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å©ï¿½ï¿½ ï¿½ï¿½È­ï¿½ï¿½ ï¿½ï¿½Å¸ï¿½ï¿½ï¿½ï¿½ Ä¿ï¿½ï¿½
     /// </summary>
     public AnimationCurve fade;
 
     /// <summary>
-    /// ÃÖ´ë·Î ¿Ã¶ó°¡´Â Á¤µµ(ÃÖ´ë³ôÀÌ = baseHeight + maxHeight)
+    /// ï¿½Ö´ï¿½ï¿½ ï¿½Ã¶ó°¡´ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½Ö´ï¿½ï¿½ï¿½ï¿½ = baseHeight + maxHeight)
     /// </summary>
     public float maxHeight = 1.5f;
 
     /// <summary>
-    /// ÀüÃ¼ Àç»ý ½Ã°£
+    /// ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½
     /// </summary>
     public float duration = 1.0f;
 
     /// <summary>
-    /// ÇöÀç ÁøÇà ½Ã°£
+    /// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½
     /// </summary>
     float elapsedTime = 0.0f;
 
     /// <summary>
-    /// ±âº» ³ôÀÌ(»ý¼º µÇ¾úÀ» ¶§ÀÇ ³ôÀÌ)
+    /// ï¿½âº» ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ ï¿½Ç¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
     /// </summary>
     float baseHeight = 0.0f;
 
-    // ÄÄÆ÷³ÍÆ®
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
     TextMeshPro damageText;
 
     private void Awake()
@@ -47,41 +47,41 @@ public class DamageText : RecycleObject
     {
         base.OnEnable();
 
-        // °¢Á¾ ÃÊ±âÈ­
-        elapsedTime = 0.0f;                 // ÁøÇà½Ã°£ ÃÊ±âÈ­
-        damageText.color = Color.white;     // »ö»ó ÃÊ±âÈ­
-        transform.localScale = Vector3.one; // ½ºÄ³ÀÏ ÃÊ±âÈ­
-        baseHeight = transform.position.y;  // ±âº» ³ôÀÌ ¼³Á¤
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­
+        elapsedTime = 0.0f;                 // ï¿½ï¿½ï¿½ï¿½Ã°ï¿½ ï¿½Ê±ï¿½È­
+        damageText.color = Color.white;     // ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­
+        transform.localScale = Vector3.one; // ï¿½ï¿½Ä³ï¿½ï¿½ ï¿½Ê±ï¿½È­
+        baseHeight = transform.position.y;  // ï¿½âº» ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     }
 
     private void Update()
     {
-        elapsedTime += Time.deltaTime;              // ½Ã°£ ´©ÀûÇÏ°í
-        float timeRatio = elapsedTime / duration;   // ½Ã°£ ÁøÇàÀ² °è»ê
+        elapsedTime += Time.deltaTime;              // ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½
+        float timeRatio = elapsedTime / duration;   // ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 
-        float curveMove = movement.Evaluate(timeRatio);             // Ä¿ºê¿¡¼­ ³ôÀÌ Á¤µµ °¡Á®¿À±â
-        float currentHeight = baseHeight + maxHeight * curveMove;   // »õ ³ôÀÌ °è»ê
-        transform.position = new Vector3(transform.position.x, currentHeight, transform.position.z);    // »õ ³ôÀÌ ÁöÁ¤
+        float curveMove = movement.Evaluate(timeRatio);             // Ä¿ï¿½ê¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        float currentHeight = baseHeight + maxHeight * curveMove;   // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+        transform.position = new Vector3(transform.position.x, currentHeight, transform.position.z);    // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-        float curveAlpha = fade.Evaluate(timeRatio);        // Ä¿ºê¿¡¼­ Åõ¸íµµ ¹× ½ºÄ³ÀÏ °ª °¡Á®¿À±â
-        damageText.color = new Color(1, 1, 1, curveAlpha);  // »ö»ó ¼³Á¤
-        transform.localScale = new(curveAlpha, curveAlpha, curveAlpha); // ½ºÄÉÀÏ ¼³Á¤
+        float curveAlpha = fade.Evaluate(timeRatio);        // Ä¿ï¿½ê¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½Ä³ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        damageText.color = new Color(1, 1, 1, curveAlpha);  // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        transform.localScale = new(curveAlpha, curveAlpha, curveAlpha); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-        if (elapsedTime > duration)        // ÁøÇà½Ã°£ÀÌ ´ÙµÇ¸é
+        if (elapsedTime > duration)        // ï¿½ï¿½ï¿½ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ÙµÇ¸ï¿½
         {
-            gameObject.SetActive(false);    // ½º½º·Î ºñÈ°¼ºÈ­
+            gameObject.SetActive(false);    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È°ï¿½ï¿½È­
         }
     }
 
     private void LateUpdate()
     {
-        transform.rotation = Camera.main.transform.rotation;    // ºôº¸µå·Î ¸¸µé±â
+        transform.rotation = Camera.main.transform.rotation;    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
     }
 
     /// <summary>
-    /// Ãâ·ÂµÉ ¼ýÀÚ ¼³Á¤
+    /// ï¿½ï¿½Âµï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     /// </summary>
-    /// <param name="damage">Ãâ·ÂµÉ µ¥¹ÌÁö</param>
+    /// <param name="damage">ï¿½ï¿½Âµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</param>
     public void SetDamage(int damage)
     {
         damageText.text = damage.ToString();
