@@ -8,19 +8,40 @@ public class Sword : MonoBehaviour
     /// 검의 Collider
     /// </summary>
     Collider swordCollider;
+    Player player;
+    private void Awake()
+    {
+        player = GameManager.Instance.Player;   // 플레이어 찾기
+    }
 
     void Start()
     {
         swordCollider = GetComponent<Collider>();
     }
 
-    //void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.CompareTag("Enemy"))
-    //    {
-    //        // 적에게 검을 맞췄을 경우
-    //    }
-    //}
+    // 플레이어가 화살로 적을 공격했을 때 ---------------------------------------------------------------------------
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("BodyPoint"))
+        {
+            // 몸에 화살을 맞췄을 경우
+            IBattler target = other.GetComponent<IBattler>();
+            if (target != null)
+            {
+                player.Attack(target, false);
+            }
+        }
+        else if (other.CompareTag("WeakPoint"))
+        {
+            // 적에게 화살을 맞췄을 경우
+            IBattler target = other.GetComponent<IBattler>();
+            if (target != null)
+            {
+                player.Attack(target, true);
+            }
+        }
+    }
+    // --------------------------------------------------------------------------------------------------------------
 
     /// <summary>
     /// 검의 Collider를 켜는 함수 (Animation 설정용)

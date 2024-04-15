@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class NightmareDragon : EnemyBase
 {
+    public Waypoints waypoints;
 
     public Action<float> onDamage;
 
@@ -26,13 +27,13 @@ public class NightmareDragon : EnemyBase
         CurrentHealth -= damageAmount;
         if(CurrentHealth <= 0)
         {
-            // Á×´Â ¾Ö´Ï¸ÞÀÌ¼Ç
+            // ï¿½×´ï¿½ ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½
             animator.SetTrigger(die_Hash);
             colliders = GetComponentsInChildren<Collider>();
         }
         else
         {
-            // ¸Â´Â ¾Ö´Ï¸ÞÀÌ¼Ç
+            // ï¿½Â´ï¿½ ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½
             animator.SetTrigger(damage_Hash);
         }
     }

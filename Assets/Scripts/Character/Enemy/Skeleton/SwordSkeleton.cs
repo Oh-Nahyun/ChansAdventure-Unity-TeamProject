@@ -106,6 +106,12 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
     }
 
     /// <summary>
+    /// 맞았을 때 무적시간
+    /// </summary>
+    public float invincibleTime = 0.2f;
+
+
+    /// <summary>
     /// 걷는(순찰) 속도
     /// </summary>
     public float walkSpeed = 2.0f;
@@ -156,6 +162,8 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
     /// </summary>
     public float defencePower = 3.0f;
     public float DefencePower => defencePower;
+
+    public float weaknessDefence = 1.2f;
 
     /// <summary>
     /// 공격 속도
@@ -225,11 +233,16 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
     NavMeshAgent agent;
     // 변경 해야됨(몸부분 머리부분 따로 분리)
     CapsuleCollider bodyCollider;   // 몸통 부분 콜라이더
-    SphereCollider headCollider;    // 머리 부분 콜라이더
+    SphereCollider weakCollider;    // 머리 부분 콜라이더
     BoxCollider swordCollider;      // 무기 부분 콜라이더
 
     Rigidbody rigid;
     EnemyHealthBar hpBar;           // 적의 HP바
+
+    // 콜라이더 있는 부분 오브젝트
+    GameObject bodyPoint;
+    GameObject weakPoint;
+    GameObject weaponPoint;
 
     // 읽기 전용
     readonly Vector3 EffectResetPosition = new(0.0f, 0.01f, 0.0f);
@@ -240,14 +253,14 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
         agent = GetComponent<NavMeshAgent>();
         rigid = GetComponent<Rigidbody>();
 
-        GameObject bodyPoint = GameObject.Find("BodyPoint").gameObject;
+        bodyPoint = GameObject.Find("BodyPoint").gameObject;
         bodyCollider = bodyPoint.GetComponent<CapsuleCollider>();
 
-        GameObject headPoint = GameObject.Find("HeadPoint").gameObject;
-        headCollider = headPoint.GetComponent<SphereCollider>();
+        weakPoint = GameObject.Find("WeakPoint").gameObject;
+        weakCollider = weakPoint.GetComponent<SphereCollider>();
 
-        GameObject swordPoint = GameObject.Find("SwordPoint").gameObject;
-        swordCollider = swordPoint.GetComponent<BoxCollider>();
+        weaponPoint = GameObject.Find("SwordPoint").gameObject;
+        swordCollider = weaponPoint.GetComponent<BoxCollider>();
 
 
         Transform child = transform.GetChild(3);
@@ -289,11 +302,27 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
         rigid.isKinematic = true;           // 키네마틱을 꺼서 물리가 적용되게 만들기
         rigid.drag = Mathf.Infinity;        // 무한대로 되어 있던 마찰력을 낮춰서 떨어질 수 있게 하기
         HP = maxHP;                         // HP 최대로
+
+        Player player = GameManager.Instance.Player;
+        if (player != null)
+        {
+            player.onDie += PlayerDie;
+        }
     }
 
     protected override void OnDisable()
     {
+        if (GameManager.Instance != null)
+        {
+            Player player = GameManager.Instance.Player;
+            if (player != null)
+            {
+                player.onDie -= PlayerDie;
+            }
+        }
+
         bodyCollider.enabled = true;        // 컬라이더 활성화
+        weakCollider.enabled = true;
         hpBar.gameObject.SetActive(true);   // HP바 다시 보이게 만들기
         agent.enabled = true;               // agent가 활성화 되어 있으면 항상 네브메시 위에 있음
 
@@ -362,7 +391,7 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
             Quaternion.LookRotation(attackTarget.transform.position - transform.position), 0.1f);
         if (attackCoolTime < 0)
         {
-            Attack(attackTarget);
+            Attack(attackTarget, false);
         }
     }
 
@@ -444,17 +473,17 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
     /// 공격처리용 함수
     /// </summary>
     /// <param name="target">공격 대상</param>
-    public void Attack(IBattler target)
+    public void Attack(IBattler target, bool isWeakPoint)
     {
         animator.SetTrigger("Attack");      // 애니메이션 정용
-        target.Defence(AttackPower);        // 공격 대살에게 데미지 절장
+        target.Defence(AttackPower);        // 공격 대살에게 데미지 저장
         attackCoolTime = attackInterval;    // 쿨타임 초기화
     }
 
     /// <summary>
-    /// 방어 처리요 ㅇ 함수
+    /// 방어 처리용 함수
     /// </summary>
-    /// <param name="damage">내가 받ㅇ느 순수 대미지</param>
+    /// <param name="damage">내가 받은 순수 대미지</param>
     public void Defence(float damage)
     {
         if (IsAlive) // 살아있을 때만 데미ㅣ를 받음
@@ -464,19 +493,20 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
             float final = Mathf.Max(0, damage - DefencePower);  // 최종 데미지 계산해서
             HP -= final;
             onHit?.Invoke(Mathf.RoundToInt(final));
-            //Debug.Log($"적이 맞았다. 남은 HP = {HP}");     
+            StartCoroutine(InvinvibleMode());
         }
     }
 
+    
     /// <summary>
     /// 사망 처리용 함수
     /// </summary>
     public void Die()
     {
-        //Debug.Log("사망");
-        State = EnemyState.Dead;        // 
+        State = EnemyState.Dead;        // 상태 변경
         StartCoroutine(DeadSquence());  // 사망 연출 시작
         onDie?.Invoke();                // 죽었다고 알림 보내기
+        onDie = null;                   // 죽으면 onDie도 초기화
     }
 
     /// <summary>
@@ -487,6 +517,7 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
     {
         // 컬라이더 비활성화
         bodyCollider.enabled = false;
+        weakCollider.enabled = false;
 
         // HP바 안보이게 만들기
         hpBar.gameObject.SetActive(false);
@@ -529,15 +560,42 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
         // onWeaponBladeEnabe 델리게이트 호출
         onWeaponBladeEnabe?.Invoke(false);
     }
+    void PlayerDie()
+    {
+        State = EnemyState.Wait;
+    }
 
     public void HealthRegenerate(float totalRegen, float duration)
     {
-        // 매개변수 추가됨
+        
     }
 
     public void HealthRegenerateByTick(float tickRegen, float tickInterval, uint totalTickCount)
     {
         
+    }
+
+    /// <summary>
+    /// 무적 모드 처리용 코루틴
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator InvinvibleMode()
+    {
+        // 플레이어 무기에 Weapon 레이어 설정해줘야지 작동가능
+        weakPoint.gameObject.layer = LayerMask.NameToLayer("Invincible"); // 레이어를 무적 레이어로 변경
+        bodyPoint.gameObject.layer = LayerMask.NameToLayer("Invincible"); // 레이어를 무적 레이어로 변경
+
+        float timeElapsed = 0.0f;
+        while (timeElapsed < invincibleTime) // Invincible초 동안 계속하기
+        {
+            timeElapsed += Time.deltaTime;
+
+            yield return null;
+        }
+
+        // 2초가 지난후
+        weakPoint.gameObject.layer = LayerMask.NameToLayer("HitPoint"); // 레이어를 다시 플레이어로 되돌리기
+        bodyPoint.gameObject.layer = LayerMask.NameToLayer("HitPoint"); // 레이어를 다시 플레이어로 되돌리기
     }
 
 #if UNITY_EDITOR
@@ -561,8 +619,9 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
 
         Handles.DrawWireDisc(transform.position, transform.up, nearSightRange);         // 근거리 범위 그리기
     }
-    // 플레이어 추격시 버그일어남
-    // 애니메이터 트리거 설정 바꾸기(상황에 알맞게)
+
+
+
     // 순찰 상태와 추격 상태일때 이동속도 바꾸기
     // 몸과 머리 부분 콜라이더 나눠서 데미지 다르게 받기
 #endif
