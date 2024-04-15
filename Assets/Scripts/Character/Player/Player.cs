@@ -276,11 +276,11 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth
         controller.onInteraction = OnGetItem;
 
         // inventory
-        inventory = new Inventory(this.gameObject, 16);
-        GameManager.Instance.ItemDataManager.InventoryUI.InitializeInventoryUI(inventory); // 인벤 UI 초기화
-        EquipPart = new InventorySlot[partCount]; // EquipPart 배열 초기화
+        //inventory = new Inventory(this.gameObject, 16);
+        //GameManager.Instance.ItemDataManager.InventoryUI.InitializeInventoryUI(inventory); // 인벤 UI 초기화
+        //EquipPart = new InventorySlot[partCount]; // EquipPart 배열 초기화
 #if UNITY_EDITOR
-        Test_AddItem();
+        //Test_AddItem();
 #endif
     }
 
