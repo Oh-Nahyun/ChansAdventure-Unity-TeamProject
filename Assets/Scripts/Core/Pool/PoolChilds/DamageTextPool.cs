@@ -6,11 +6,11 @@ using UnityEngine.UIElements;
 public class DamageTextPool : ObjectPool<DamageText>
 {
     /// <summary>
-    /// Ç®¿¡¼­ »ç¿ëÇÏÁö ¾Ê´Â ¿ÀºêÁ§Æ®¸¦ ÇÏ³ª ²¨³½ ÈÄ ¸®ÅÏ ÇÏ´Â ÇÔ¼ö
+    /// í’€ì—ì„œ ì‚¬ìš©í•˜ì§€ ì•ŠëŠ” ì˜¤ë¸Œì íŠ¸ë¥¼ í•˜ë‚˜ êº¼ë‚¸ í›„ ë¦¬í„´ í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <param name="damage">¹ŞÀº µ¥¹ÌÁö</param>
-    /// <param name="position">»ı¼ºµÉ À§Ä¡</param>
-    /// <returns>Ç®¿¡¼­ ²¨³½ ¿ÀºêÁ§Æ®(È°¼ºÈ­µÊ)</returns>
+    /// <param name="damage">ë°›ì€ ë°ë¯¸ì§€</param>
+    /// <param name="position">ìƒì„±ë  ìœ„ì¹˜</param>
+    /// <returns>í’€ì—ì„œ êº¼ë‚¸ ì˜¤ë¸Œì íŠ¸(í™œì„±í™”ë¨)</returns>
     public GameObject GetObject(int damage, Vector3? position)
     {
         DamageText damageText = GetObject(position);
