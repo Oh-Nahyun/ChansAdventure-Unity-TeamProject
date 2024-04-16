@@ -12,6 +12,7 @@ public class TextBoxItem : MonoBehaviour
     TextMeshProUGUI nameText;
     CanvasGroup canvasGroup;
     Image endImage;
+    Image itemIcon;
     public GameObject scanObject;
     Animator animator;
     Animator endImageAnimator;
@@ -26,7 +27,7 @@ public class TextBoxItem : MonoBehaviour
 
     public NPCBase NPCdata;
     ChestBase Chestdata;
-
+    Inventory inven;
     TextBoxManager textBoxManager; // TextBoxManager에 대한 참조
 
     readonly int IsOnTextBoxItemHash = Animator.StringToHash("OnTextBoxItem");
@@ -47,6 +48,9 @@ public class TextBoxItem : MonoBehaviour
         endImageAnimator = child.GetComponent<Animator>();
 
         interaction = FindObjectOfType<Interaction>();
+
+        child = transform.GetChild(6);
+        itemIcon = child.GetComponent<Image>();
 
         // TextBoxManager에 대한 참조 가져오기
         textBoxManager = FindObjectOfType<TextBoxManager>();
@@ -116,10 +120,25 @@ public class TextBoxItem : MonoBehaviour
             endImage.color = new Color(endImage.color.r, endImage.color.g, endImage.color.b, 1f);
 
             Talk(NPCdata.id);
+ 
+            if (NPCdata.isTextObject)
+            {
+                Chestdata = scanObject.GetComponent<ChestBase>();
+                Chestdata.lightParticle.Play();
+                itemIcon.sprite = Chestdata.scriptableObject.itemIcon;
+                nameText.text = $"{Chestdata.scriptableObject.itemName}";
+                talkText.text = $"{Chestdata.scriptableObject.desc}";
+                /*
+                Inventory inven = new Inventory(GameManager.Instance.Player);
+                inventory.AddSlotItem(Chestdata.scriptableObject);
+                */
 
-            nameText.text = $"{NPCdata.nameNPC}";
-            talkText.text = $"{talkString}";
-
+            }
+            else
+            {
+                nameText.text = $"{NPCdata.nameNPC}";
+                talkText.text = $"{talkString}";
+            }
             while (canvasGroup.alpha < 1.0f)
             {
                 canvasGroup.alpha += Time.deltaTime * alphaChangeSpeed;
@@ -127,11 +146,6 @@ public class TextBoxItem : MonoBehaviour
             }
 
             NPCdata.isTalk = true;
-            if (NPCdata.isTextObject)
-            {
-                Chestdata = scanObject.GetComponent<ChestBase>();
-                Chestdata.lightParticle.Play();
-            }
         }
         else
         {

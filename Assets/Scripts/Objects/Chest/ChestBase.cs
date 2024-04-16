@@ -7,6 +7,9 @@ public class ChestBase : NPCBase
     readonly int IsOpenHash = Animator.StringToHash("Open");
     public ParticleSystem lightParticle;
 
+    // Scriptable Object를 저장할 필드
+    public ItemData scriptableObject;
+
     protected override void Awake()
     {
         base.Awake();
