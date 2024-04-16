@@ -151,7 +151,7 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
     protected IBattler attackTarget = null;
 
     /// <summary>
-    /// ���ݷ�(������ �ν����Ϳ��� �����ϱ� ���� public���� ���� ����)
+    /// 공격력(변수는 인스펙터에서 수정하기 위해 public으로 만든 것임)
     /// </summary>
     public float attackPower = 10.0f;
     public float AttackPower => attackPower;
@@ -252,16 +252,16 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
     Rigidbody rigid;
 
     // 무기, 약점, 몸체 콜라이더 
-    CapsuleCollider bodyCollider;   // ���� �κ� �ݶ��̴�
-    SphereCollider weakCollider;    // �Ӹ� �κ� �ݶ��̴�
-    BoxCollider swordCollider;      // ���� �κ� �ݶ��̴�
+    CapsuleCollider bodyCollider;   // 몸체 콜라이더
+    SphereCollider weakCollider;    // 머리 콜라이더
+    BoxCollider swordCollider;      // 무기 콜라이더
 
     EnemyHealthBar hpBar;           // 적 체력바 스크립트
 
     // 무기, 약점, 몸체 컴포넌트를 찾기위한 게임 오브젝트
-    GameObject bodyPoint;
-    GameObject weakPoint;
-    GameObject weaponPoint;
+    GameObject bodyPoint;       // 몸통 포인트 게임 오브젝트
+    GameObject weakPoint;       // 약점 포인트 게임 오브젝트
+    GameObject weaponPoint;     // 무기 포인트 게임 오브젝트
 
 
     void Awake()
