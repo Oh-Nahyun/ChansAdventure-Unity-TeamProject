@@ -62,7 +62,7 @@ public class TextBox : MonoBehaviour
         canvasGroup.blocksRaycasts = false;
 
         endImageAnimator.speed = 0.0f;
-        
+
         if (scanObject != null)
         {
             GameManager.Instance.onTalkNPC += () =>
@@ -80,11 +80,13 @@ public class TextBox : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 상호작용 입력시 대상 분별 함수
+    /// </summary>
     public void Action()
     {
         talkText.text = "";
         nameText.text = "";
-
         if (scanObject != null)
         {
             NPCdata = scanObject.GetComponent<NPCBase>();
@@ -93,7 +95,7 @@ public class TextBox : MonoBehaviour
         {
             NPCdata = null;
         }
-        
+
 
         if (typingTalk == false && NPCdata != null && !NPCdata.isTextObject && !NPCdata.otherObject)
         {
@@ -120,17 +122,7 @@ public class TextBox : MonoBehaviour
         }
         else if (NPCdata != null && NPCdata.otherObject)
         {
-            warpBase = scanObject.GetComponent<WarpBase>();
-            //DoorBase door = scanObject.GetComponent<DoorBase>();
-            if (warpBase != null)
-            {
-                warpBase.WarpToWarpPoint();
-            }
-            /*
-            if (door != null)
-            {
-                door.OpenDoor(talking);
-            }*/
+            isOtherObject();
         }
         else
         {
@@ -138,11 +130,15 @@ public class TextBox : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 대화 시작, 진행, 종료 코루틴
+    /// </summary>
+    /// <returns></returns>
     IEnumerator TalkStart()
     {
         if (!talking && !talkingEnd)
         {
-            
+
             canvasGroup.interactable = true;
             canvasGroup.blocksRaycasts = true;
 
@@ -182,6 +178,11 @@ public class TextBox : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 대사 타이핑 효과 코루틴
+    /// </summary>
+    /// <param name="text">타이핑 효과를 줄 텍스트</param>
+    /// <returns></returns>
     IEnumerator TypingText(string text)
     {
         typingStop = false;
@@ -205,6 +206,9 @@ public class TextBox : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 이름 및 대사 출력 함수
+    /// </summary>
     void SetTalkText()
     {
         talkText.text = $"{talkString}";
@@ -229,6 +233,10 @@ public class TextBox : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 다음 대화 내용 불러오는 함수
+    /// </summary>
+    /// <param name="id">대화 대상의 ID</param>
     void Talk(int id)
     {
         if ((talkIndex + 1) == textBoxManager.GetTalkData(id).Length)
@@ -242,13 +250,40 @@ public class TextBox : MonoBehaviour
         talkIndex++;
     }
 
+    /// <summary>
+    /// 선택지 받아오는 함수
+    /// </summary>
+    /// <param name="selectId">받아온 선택지</param>
     public void OnSelect(int selectId)
     {
-        NPCdata.id += selectId;
+        NPCdata.id += selectId; // 받아온 선택지에 따라 Id값을 증가시켜 다음 대사로 진행
         talkingEnd = false;
         Action();
         textSelet.onSeletEnd();
     }
 
-}
+    /// <summary>
+    /// 대사창을 출력하지 않는 오브젝트 처리 함수
+    /// </summary>
+    void isOtherObject()
+    {
+        warpBase = scanObject.GetComponent<WarpBase>();
+        DoorBase door = scanObject.GetComponent<DoorBase>();
+        Lever lever = scanObject.GetComponent<Lever>();
+        if (warpBase != null)
+        {
+            warpBase.WarpToWarpPoint();
+        }
 
+        if (door != null)
+        {
+            door.OpenDoor();
+        }
+
+        if (lever != null)
+        {
+            lever.Use();
+        }
+    }
+
+}

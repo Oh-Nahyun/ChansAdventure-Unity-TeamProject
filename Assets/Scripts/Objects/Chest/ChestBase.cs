@@ -5,6 +5,7 @@ using UnityEngine;
 public class ChestBase : NPCBase
 {
     readonly int IsOpenHash = Animator.StringToHash("Open");
+    public ParticleSystem lightParticle;
 
     protected override void Awake()
     {
@@ -16,6 +17,7 @@ public class ChestBase : NPCBase
     protected override void Start()
     {
         base.Start();
+        lightParticle = GetComponentInChildren<ParticleSystem>();
     }
 
     protected override void Update()
@@ -23,6 +25,10 @@ public class ChestBase : NPCBase
         OpenChest(isTalk);
     }
 
+    /// <summary>
+    /// 상자를 열었을 때 처리하는 함수
+    /// </summary>
+    /// <param name="isOpen">상자 상태</param>
     private void OpenChest(bool isOpen)
     {
         if (isOpen)
@@ -31,5 +37,6 @@ public class ChestBase : NPCBase
             id = 199;
         }
     }
+
 
 }

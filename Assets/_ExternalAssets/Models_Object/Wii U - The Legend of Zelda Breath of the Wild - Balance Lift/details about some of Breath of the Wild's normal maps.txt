@@ -1,0 +1,7 @@
+In The Legend of Zelda: Breath of the wild, Nintendo decided to implement the specular/roughness map as the blue channel of normal maps
+This is most notably true for any texture for shrines or shrine objects
+
+To get around this, there are 2 things you can do
+
+1. separate the original blue channel from the normal, make it a black and white texture, and set the new blue channel in the normal as just solid blue
+2. if your program of choice has node-based materials or something similar, set the normal map's blue channel as the roughness and specular map and set the blue channel of the actual normal to be solid blue

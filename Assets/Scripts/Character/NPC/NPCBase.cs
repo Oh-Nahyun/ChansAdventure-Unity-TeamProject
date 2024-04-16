@@ -55,6 +55,9 @@ public class NPCBase : MonoBehaviour
         animator.SetBool(Talk_Hash, isTalk);
     }
 
+    /// <summary>
+    /// 다음 id의 대사를 가져오는 함수
+    /// </summary>
     public void TalkNext()
     {
         int ones = id % 10; // 1의 자리
@@ -81,6 +84,9 @@ public class NPCBase : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 각 선택지의 해당하는 다음 대사를 가져오는 함수
+    /// </summary>
     public void SelectId()
     {
         int tens = (id / 10) % 10; // 10의 자리
@@ -95,6 +101,10 @@ public class NPCBase : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 오브젝트 위에 이름을 표기하는 코루틴
+    /// </summary>
+    /// <returns></returns>
     IEnumerator ViewName()
     {
         if (isNPC)
@@ -131,7 +141,7 @@ public class NPCBase : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
- 
+
             textViweName.gameObject.SetActive(false);
 
         }

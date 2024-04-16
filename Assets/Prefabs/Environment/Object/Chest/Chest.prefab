@@ -207,6 +207,7 @@ Transform:
   m_Children:
   - {fileID: 8999673651999987843}
   - {fileID: 6269164763358398499}
+  - {fileID: 3190134928122544808}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &3869441451324952881
@@ -242,16 +243,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59490834a8347544a8c5a66dc0840c10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textBoxManager: {fileID: 893038546303004813, guid: c6ef9b98bf2faf94f902622edc03b570,
-    type: 3}
   id: 100
   nameNPC: "\uB8E8\uD53C"
   selectId: 0
-  nextTaklSelect: 0
   isTalk: 0
   isNPC: 0
-  isItemChest: 1
-  isWarp: 0
+  isTextObject: 0
+  otherObject: 0
+  lightParticle: {fileID: 0}
 --- !u!54 &4093464220098218740
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -406,3 +405,107 @@ Transform:
   - {fileID: 3897755983156006673}
   m_Father: {fileID: 8999673651999987843}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &3177655872995027237
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2207065869159933340}
+    m_Modifications:
+    - target: {fileID: 26159574474222477, guid: 36f57ae0bc5416146b530338c1535029,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 26159574474222477, guid: 36f57ae0bc5416146b530338c1535029,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 26159574474222477, guid: 36f57ae0bc5416146b530338c1535029,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 26159574474222477, guid: 36f57ae0bc5416146b530338c1535029,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 26159574474222477, guid: 36f57ae0bc5416146b530338c1535029,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.4664715
+      objectReference: {fileID: 0}
+    - target: {fileID: 26159574474222477, guid: 36f57ae0bc5416146b530338c1535029,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.002690792
+      objectReference: {fileID: 0}
+    - target: {fileID: 26159574474222477, guid: 36f57ae0bc5416146b530338c1535029,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 26159574474222477, guid: 36f57ae0bc5416146b530338c1535029,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 26159574474222477, guid: 36f57ae0bc5416146b530338c1535029,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 26159574474222477, guid: 36f57ae0bc5416146b530338c1535029,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 26159574474222477, guid: 36f57ae0bc5416146b530338c1535029,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 26159574474222477, guid: 36f57ae0bc5416146b530338c1535029,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 26159574474222477, guid: 36f57ae0bc5416146b530338c1535029,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 26159574474222477, guid: 36f57ae0bc5416146b530338c1535029,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3802170601502580123, guid: 36f57ae0bc5416146b530338c1535029,
+        type: 3}
+      propertyPath: stopAction
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3802170601502580123, guid: 36f57ae0bc5416146b530338c1535029,
+        type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8469649209506936569, guid: 36f57ae0bc5416146b530338c1535029,
+        type: 3}
+      propertyPath: m_Name
+      value: ChestLightParticle
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 36f57ae0bc5416146b530338c1535029, type: 3}
+--- !u!4 &3190134928122544808 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 26159574474222477, guid: 36f57ae0bc5416146b530338c1535029,
+    type: 3}
+  m_PrefabInstance: {fileID: 3177655872995027237}
+  m_PrefabAsset: {fileID: 0}

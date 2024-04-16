@@ -25,6 +25,8 @@ public class TextBoxItem : MonoBehaviour
     private bool talking;
 
     public NPCBase NPCdata;
+    ChestBase Chestdata;
+
     TextBoxManager textBoxManager; // TextBoxManager에 대한 참조
 
     readonly int IsOnTextBoxItemHash = Animator.StringToHash("OnTextBoxItem");
@@ -64,7 +66,7 @@ public class TextBoxItem : MonoBehaviour
                 Action();
             }
         };
-        
+
     }
 
     private void Update()
@@ -75,6 +77,9 @@ public class TextBoxItem : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 상호작용 입력시 대상 분별 함수
+    /// </summary>
     public void Action()
     {
         talkText.text = "";
@@ -94,12 +99,16 @@ public class TextBoxItem : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 대화 시작, 진행, 종료 코루틴
+    /// </summary>
+    /// <returns></returns>
     IEnumerator TalkStart()
     {
         if (!talking)
-        {            
+        {
             animator.SetBool(IsOnTextBoxItemHash, true);
-         
+
             canvasGroup.interactable = true;
             canvasGroup.blocksRaycasts = true;
 
@@ -118,7 +127,11 @@ public class TextBoxItem : MonoBehaviour
             }
 
             NPCdata.isTalk = true;
-
+            if (NPCdata.isTextObject)
+            {
+                Chestdata = scanObject.GetComponent<ChestBase>();
+                Chestdata.lightParticle.Play();
+            }
         }
         else
         {
@@ -126,6 +139,11 @@ public class TextBoxItem : MonoBehaviour
             {
                 canvasGroup.alpha -= Time.deltaTime * alphaChangeSpeed;
                 yield return null;
+            }
+            if (NPCdata.isTextObject)
+            {
+                Chestdata = scanObject.GetComponent<ChestBase>();
+                Chestdata.lightParticle.Stop();
             }
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;
@@ -138,9 +156,14 @@ public class TextBoxItem : MonoBehaviour
             NPCdata.isTalk = false;
             NPCdata.isTextObject = false;
             animator.SetBool(IsOnTextBoxItemHash, false);
+
         }
     }
 
+    /// <summary>
+    /// 다음 대화 내용 불러오는 함수
+    /// </summary>
+    /// <param name="id">대화 대상의 ID</param>
     void Talk(int id)
     {
         talkString = textBoxManager.GetTalkData(id)[talkIndex];

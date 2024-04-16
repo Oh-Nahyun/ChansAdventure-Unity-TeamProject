@@ -4,10 +4,26 @@ using UnityEngine;
 
 public class Interaction : MonoBehaviour
 {
+    /// <summary>
+    /// 감지 범위
+    /// </summary>
     public float radius = 0f;
+    /// <summary>
+    /// 찾을 콜라이더의 레이어
+    /// </summary>
     public LayerMask layer;
+
+    /// <summary>
+    /// 감지된 모든 콜라이더
+    /// </summary>
     public Collider[] colliders;
+    /// <summary>
+    /// 가장 가까운 콜라이더
+    /// </summary>
     public Collider short_enemy;
+    /// <summary>
+    /// 가장 가까운 오브젝트
+    /// </summary>
     public GameObject scanIbgect;
 
     void Start()
@@ -44,12 +60,6 @@ public class Interaction : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, radius);
-    }
-
     void target(bool t)
     {
         if (t)
@@ -82,4 +92,13 @@ public class Interaction : MonoBehaviour
         // 부모 GameObject의 부모 GameObject를 재귀적으로 검색하여 최상위 부모 GameObject를 반환
         return FindTopParentWithCollider(parentTransform.gameObject);
     }
-} 
+
+    /// <summary>
+    /// 탐지 범위를 보여주는 기즈모
+    /// </summary>
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, radius);
+    }
+}
