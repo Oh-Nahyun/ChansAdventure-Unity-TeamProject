@@ -269,29 +269,29 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
     GameObject rightHandPoint;  // 오른쪽 손 포인트 게임 오브젝트
 
 
-    void Awake()
+    private void Awake()
     {
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         rigid = GetComponent<Rigidbody>();
 
-        bodyPoint = GameObject.Find("BodyPoint").gameObject;
-        weakCollider = bodyPoint.GetComponent<BoxCollider>();
-
-        weakPoint = GameObject.Find("Weakpoint").gameObject;
+        bodyPoint = GameObject.Find("DragonBodyPoint").gameObject;
         bodyCollider = bodyPoint.GetComponent<BoxCollider>();
 
+        weakPoint = GameObject.Find("DragonWeakPoint").gameObject;
+        weakCollider = weakPoint.GetComponent<BoxCollider>();
+
         leftArmPoint = GameObject.Find("L_ArmPoint").gameObject;
-        leftArmCollider = bodyPoint.GetComponent<BoxCollider>();
+        leftArmCollider = leftArmPoint.GetComponent<BoxCollider>();
 
         rightArmPoint = GameObject.Find("L_HandPoint").gameObject;
-        rightArmCollider = bodyPoint.GetComponent<BoxCollider>();
+        rightArmCollider = rightArmPoint.GetComponent<BoxCollider>();
 
         leftHandPoint = GameObject.Find("R_ArmPoint").gameObject;
-        leftHandCollider = bodyPoint.GetComponent<BoxCollider>();
+        leftHandCollider = leftHandPoint.GetComponent<BoxCollider>();
 
         rightHandPoint = GameObject.Find("R_HandPoint").gameObject;
-        rightHandCollider = bodyPoint.GetComponent<BoxCollider>();
+        rightHandCollider = rightHandPoint.GetComponent<BoxCollider>();
 
 
         Transform child = transform.GetChild(2);
@@ -354,6 +354,11 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
 
         bodyCollider.enabled = true;        // 컬라이더 활성화
         weakCollider.enabled = true;
+        leftArmCollider.enabled = true;
+        rightArmCollider.enabled = true;
+        leftHandCollider.enabled = true;
+        rightHandCollider.enabled = true;
+
         hpBar.gameObject.SetActive(true);   // HP바 다시 보이게 만들기
         agent.enabled = true;               // agent가 활성화 되어 있으면 항상 네브메시 위에 있음
 
@@ -363,6 +368,9 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
     void Update()
     {
         onStateUpdate();
+        Debug.Log(SearchPlayer());
+        Debug.Log(State);
+        // 플레이어 추적중에 State가 바뀜
     }
 
     /// <summary>

@@ -1559,6 +1559,10 @@ MonoBehaviour:
   weaknessDefence: 1.2
   attackInterval: 1
   maxHP: 1000
+  dropItems:
+  - code: 7
+    dropRatio: 1
+    dropCount: 1
 --- !u!1 &8606157925966157816
 GameObject:
   m_ObjectHideFlags: 0

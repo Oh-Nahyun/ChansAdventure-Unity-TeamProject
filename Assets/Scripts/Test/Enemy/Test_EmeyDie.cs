@@ -7,6 +7,11 @@ public class Test_EmeyDie : TestBase
 {
     SwordSkeleton enemy;
 
+    private void Start()
+    {
+        enemy = FindAnyObjectByType<SwordSkeleton>();
+    }
+
     protected override void OnTest1(InputAction.CallbackContext context)
     {
         Factory.Instance.GetEnemy();
@@ -14,6 +19,11 @@ public class Test_EmeyDie : TestBase
 
     protected override void OnTest2(InputAction.CallbackContext context)
     {
-        enemy.Die();
+        enemy.Defence(100000.0f);
+    }
+
+    protected override void OnTest3(InputAction.CallbackContext context)
+    {
+        Factory.Instance.GetNightmareDragonEnemy();
     }
 }
