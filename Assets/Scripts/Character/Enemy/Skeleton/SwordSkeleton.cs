@@ -233,18 +233,18 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
     /// </summary>
     Action onStateUpdate;
 
-    //[System.Serializable]   // 이게 있어야 구조체 내용을 인스팩터 창에서 수정할 수 있다.
-    //public struct ItemDropInfo
-    //{
-    //    public ItemCode code;       // 아이템 종류
-    //    [Range(0, 1)]
-    //    public float dropRatio;     // 드랍 확율(1.0f = 100%)
-    //    public uint dropCount;      // 최대 드랍 개수
-    //}
-    ///// <summary>
-    ///// 이 적이 죽을때 드랍하는 아이테 정보
-    ///// </summary>
-    //public ItemDropInfo[] dropItems;
+    [System.Serializable]   // 이게 있어야 구조체 내용을 인스팩터 창에서 수정할 수 있다.
+    public struct ItemDropInfo
+    {
+        public ItemCode code;       // 아이템 종류
+        [Range(0, 1)]
+        public float dropRatio;     // 드랍 확율(1.0f = 100%)
+        public uint dropCount;      // 최대 드랍 개수
+    }
+    /// <summary>
+    /// 이 적이 죽을때 드랍하는 아이테 정보
+    /// </summary>
+    public ItemDropInfo[] dropItems;
 
     // 컴포넌트들
     Animator animator;
@@ -539,10 +539,10 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
         // HP바 안보이게 만들기
         hpBar.gameObject.SetActive(false);
 
-        //yield return new WaitForSeconds(0.5f);  // 아이템이 바로 떨어지면 어색해서 약간 대기
+        yield return new WaitForSeconds(0.5f);  // 아이템이 바로 떨어지면 어색해서 약간 대기
 
-        //// 아이템 드랍
-        //MakeDropItems();
+        // 아이템 드랍
+        MakeDropItems();
 
         // 사망 애니메이션 끝날때까지 대기
         yield return new WaitForSeconds(2.5f);  // 사망 애니메이션 시간(2.167초) -> 2.5초로 처리
@@ -559,21 +559,21 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
         gameObject.SetActive(false);    // 즉시 적 풀로 되돌리기
     }
 
-    ///// <summary>
-    ///// 아이템을 드랍하는 함수
-    ///// </summary>
-    //void MakeDropItems()
-    //{
-    //    // dropItems; 이 정보를 바탕으로 아이템을 드랍
-    //    foreach (var item in dropItems)
-    //    {
-    //        if (item.dropRatio > UnityEngine.Random.value) // 확률 체크하고
-    //        {
-    //            uint count = (uint)UnityEngine.Random.Range(0, item.dropCount) + 1;     // 개수 결정
-    //            Factory.Instance.MakeItems(item.code, count, transform.position, true); // 실제 생성
-    //        }
-    //    }
-    //}
+    /// <summary>
+    /// 아이템을 드랍하는 함수
+    /// </summary>
+    void MakeDropItems()
+    {
+        // dropItems; 이 정보를 바탕으로 아이템을 드랍
+        foreach (var item in dropItems)
+        {
+            if (item.dropRatio > UnityEngine.Random.value) // 확률 체크하고
+            {
+                uint count = (uint)UnityEngine.Random.Range(0, item.dropCount) + 1;     // 개수 결정
+                //Factory.Instance.MakeItems(item.code, count, transform.position, true); // 실제 생성 // 펙토리 스크립트에 아이템 생성함수 작성해야됨
+            }
+        }
+    }
 
     /// <summary>
     /// 무기 콜라이더 켜는 함수
