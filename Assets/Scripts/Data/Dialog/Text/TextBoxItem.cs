@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class TextBoxItem : MonoBehaviour
 {
     public float alphaChangeSpeed = 5.0f;
+    public GameObject Test_Player;
 
     TextMeshProUGUI talkText;
     TextMeshProUGUI nameText;
@@ -128,11 +129,9 @@ public class TextBoxItem : MonoBehaviour
                 itemIcon.sprite = Chestdata.scriptableObject.itemIcon;
                 nameText.text = $"{Chestdata.scriptableObject.itemName}";
                 talkText.text = $"{Chestdata.scriptableObject.desc}";
-                /*
-                Inventory inven = new Inventory(GameManager.Instance.Player);
-                inventory.AddSlotItem(Chestdata.scriptableObject);
-                */
-
+                
+                Inventory inven = new Inventory(Test_Player);
+                inven.AddSlotItem(Chestdata.itemCode, Chestdata.itemCount+1);
             }
             else
             {
