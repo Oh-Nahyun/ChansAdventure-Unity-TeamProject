@@ -570,7 +570,7 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
             if (item.dropRatio > UnityEngine.Random.value) // 확률 체크하고
             {
                 uint count = (uint)UnityEngine.Random.Range(0, item.dropCount) + 1;     // 개수 결정
-                //Factory.Instance.MakeItems(item.code, count, transform.position, true); // 실제 생성 // 펙토리 스크립트에 아이템 생성함수 작성해야됨
+                Factory.Instance.GetItemObject(GameManager.Instance.ItemDataManager[ItemCode.Coin], transform.position); // 실제 생성 // 펙토리 스크립트에 아이템 생성함수 작성해야됨
             }
         }
     }
@@ -663,6 +663,7 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
 
         Handles.DrawWireDisc(transform.position, transform.up, nearSightRange);         // 근거리 시야 범위 그리기
     }
+
 
     //public void Test_DropItems(int testCount)
     //{

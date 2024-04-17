@@ -96,7 +96,7 @@ public class Factory : Singleton<Factory>
     /// <summary>
     /// 검사스켈레톤 하나 가져오는 함수
     /// </summary>
-    /// <returns>배치된 슬라임 하나</returns>
+    /// <returns>배치된 검사스켈레톤 하나</returns>
     public SwordSkeleton GetEnemy()
     {
         return swordSkeletonPool.GetObject();
@@ -107,7 +107,7 @@ public class Factory : Singleton<Factory>
     /// </summary>
     /// <param name="position">배치될 위치</param>
     /// <param name="angle">배치 될 때의 각도</param>
-    /// <returns>배치된 슬라임 하나</returns>
+    /// <returns>배치된 검사스켈레톤 하나</returns>
     public SwordSkeleton GetEnemy(Vector3 position, float angle = 0.0f)
     {
         return swordSkeletonPool.GetObject(position, angle * Vector3.forward);
@@ -119,7 +119,7 @@ public class Factory : Singleton<Factory>
     /// <param name="index">사용할 웨이포인트의 인덱스</param>
     /// <param name="position">배치될 위치</param>
     /// <param name="angle">배치 될 때의 각도</param>
-    /// <returns>배치된 슬라임 하나</returns>
+    /// <returns>배치된 검사스켈레톤 하나</returns>
     public SwordSkeleton GetEnemy(int index, Vector3 position, float angle = 0.0f)
     {
         return swordSkeletonPool.GetObject(index, position, angle * Vector3.forward);
@@ -146,7 +146,13 @@ public class Factory : Singleton<Factory>
     {
         return itemPool.GetItemObject(slot, position);
     }
-    
+
+    // 나중에 빼야됨  ----------------------------------------------------------------------
+    public GameObject GetItemObject(ItemData data, Vector3? position = null)
+    {
+        return itemPool.GetItemObject(data, position);
+    }
+    // ---------------------------------------------------------------------------------------
     //
     /// <summary>
     /// 풀에 있는 게임 오브젝트 하나 가져오기
