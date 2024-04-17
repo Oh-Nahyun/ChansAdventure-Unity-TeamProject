@@ -21,7 +21,6 @@ public class PlayerLookVCam : MonoBehaviour
 
     void Update()
     {
-        //transform.localPosition = player.transform.position + offset;
         transform.localPosition = player.transform.position + offset;
     }
 }

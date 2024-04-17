@@ -5,16 +5,13 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Windows;
 
-/// <summary>
-/// 플레이어 스크립트
-/// </summary>
 public class Player : MonoBehaviour, IEquipTarget, IHealth
 {
     #region additional Classes
     PlayerController controller;
     
     /// <summary>
-    /// PlayerSKills를 받기위한 프로퍼티
+    /// PlayerSKills를 받기 위한 프로퍼티
     /// </summary>
     public PlayerSkills Skills => gameObject.GetComponent<PlayerSkills>();
 
@@ -257,6 +254,8 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth
         animator = GetComponent<Animator>();
 
         interaction = GetComponent<Interaction>();
+
+        isJumping = true;
     }
 
     void Start()

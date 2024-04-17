@@ -23,7 +23,7 @@ public class Factory : Singleton<Factory>
     DamageTextPool damageTextPool;
     ItemPool itemPool;
 
-    ArrowPool arrowPool; //
+    ArrowPool arrowPool;
 
     protected override void OnInitialize()
     {
@@ -43,7 +43,8 @@ public class Factory : Singleton<Factory>
         // Inventory Branch
         itemPool = GetComponentInChildren<ItemPool>();
         if (itemPool != null) itemPool.Initialize();
-        
+
+        // Player Weapon Arrow
         arrowPool = GetComponentInChildren<ArrowPool>();
         if (arrowPool != null)
             arrowPool.Initialize();
@@ -146,8 +147,8 @@ public class Factory : Singleton<Factory>
     {
         return itemPool.GetItemObject(slot, position);
     }
-    
-    //
+
+    // Player Weapon Arrow
     /// <summary>
     /// 풀에 있는 게임 오브젝트 하나 가져오기
     /// </summary>
