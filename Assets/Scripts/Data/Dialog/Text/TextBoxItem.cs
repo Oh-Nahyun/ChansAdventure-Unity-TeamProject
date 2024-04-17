@@ -7,8 +7,6 @@ using UnityEngine.UI;
 public class TextBoxItem : MonoBehaviour
 {
     public float alphaChangeSpeed = 5.0f;
-    public GameObject Test_Player;
-
     TextMeshProUGUI talkText;
     TextMeshProUGUI nameText;
     CanvasGroup canvasGroup;
@@ -28,13 +26,14 @@ public class TextBoxItem : MonoBehaviour
 
     public NPCBase NPCdata;
     ChestBase Chestdata;
-    Inventory inven;
+    Inventory inventory;
     TextBoxManager textBoxManager; // TextBoxManager에 대한 참조
 
     readonly int IsOnTextBoxItemHash = Animator.StringToHash("OnTextBoxItem");
 
     private void Awake()
     {
+
         canvasGroup = GetComponent<CanvasGroup>();
         animator = GetComponent<Animator>();
 
@@ -129,9 +128,7 @@ public class TextBoxItem : MonoBehaviour
                 itemIcon.sprite = Chestdata.scriptableObject.itemIcon;
                 nameText.text = $"{Chestdata.scriptableObject.itemName}";
                 talkText.text = $"{Chestdata.scriptableObject.desc}";
-                
-                Inventory inven = new Inventory(Test_Player);
-                inven.AddSlotItem(Chestdata.itemCode, Chestdata.itemCount+1);
+                inventory.AddSlotItem(Chestdata.itemCode, Chestdata.itemCount + 1);
             }
             else
             {
