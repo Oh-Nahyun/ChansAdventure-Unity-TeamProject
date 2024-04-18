@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -31,7 +32,6 @@ public class Test_Map_Player : MonoBehaviour
         inputActions.Player.Move.performed += OnMoveInput;
         inputActions.Player.Move.canceled += OnMoveInput;
     }
-
     void OnDisable()
     {
         inputActions.Player.Move.canceled -= OnMoveInput;
@@ -58,16 +58,19 @@ public class Test_Map_Player : MonoBehaviour
         rotateInput = inputVector.x * rotatePower;
     }
 
-    private void OnOpenMap(InputAction.CallbackContext obj)
+    private void OnOpenMap(InputAction.CallbackContext context)
     {
         // 임시 온오프
-        if(map_CanvasGroup.alpha == 1f)
+        if(context.performed)
         {
-            map_CanvasGroup.alpha = 0f;
-        }
-        else
-        {
-            map_CanvasGroup.alpha = 1f;
+            if(map_CanvasGroup.alpha == 1f)
+            {
+                map_CanvasGroup.alpha = 0f;
+            }
+            else
+            {
+                map_CanvasGroup.alpha = 1f;
+            }
         }
     }
 
@@ -100,8 +103,7 @@ public class Test_Map_Player : MonoBehaviour
 
         if(playerLineRenderer.positionCount == 0) // 최초 지점 ( 거리를 측정할 이전 값이 없기 때문에 )
         {
-            playerLineRenderer.positionCount++;                                         // size 증가
-            playerLineRenderer.SetPosition(playerLineRenderer.positionCount - 1, playerPos);    // Line Position 위치 설정
+            AddLine(playerPos);
             prePos = playerPos;                                                 // 이전 위치값 저장
 
             //linePrefab.positionCount++;                                         // size 증가
@@ -114,20 +116,31 @@ public class Test_Map_Player : MonoBehaviour
             {
                 if (playerLineRenderer.positionCount > 10)
                 {
-                    playerLineRenderer.positionCount++; // size 증가
-                    playerLineRenderer.SetPosition(playerLineRenderer.positionCount - 1, playerPos);    // 새로운 LineRenderer 위치 설정
-
+                    AddLine(playerPos);
                     ResetLines(playerLineRenderer.positionCount);
                 }
 
-                playerLineRenderer.positionCount++; // size 증가
-                playerLineRenderer.SetPosition(playerLineRenderer.positionCount - 1, playerPos);    // 새로운 LineRenderer 위치 설정
+                AddLine(playerPos);
                 prePos = playerPos; // 이전 위치값 저장
 
             }
         }
     }
 
+    /// <summary>
+    /// 라인을 추가 하는 함수
+    /// </summary>
+    /// <param name="linePosition">추가할 라인 위치</param>
+    void AddLine(Vector3 linePosition)
+    {
+        playerLineRenderer.positionCount++;
+        playerLineRenderer.SetPosition(playerLineRenderer.positionCount - 1, linePosition);    // 새로운 LineRenderer 위치 설정
+    }
+
+    /// <summary>
+    /// 라인 개수가 최대 개수(lineMaxCount)에 도달하면 초기화 하는 함수
+    /// </summary>
+    /// <param name="lineCount">체크할 라인 수</param>
     void ResetLines(int lineCount)
     {
         if(lineCount > lineMaxCount)
