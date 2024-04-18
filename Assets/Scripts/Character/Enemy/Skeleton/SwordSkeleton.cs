@@ -475,7 +475,7 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
     {
         bool result = false;
         Ray ray = new(transform.position + transform.up * 0.5f, toTargetDirection); // 래이 생성(눈 높이 때문에 조금 높임)
-        if (Physics.Raycast(ray, out RaycastHit hitInfo, farSightRange))
+        if (Physics.Raycast(ray, out RaycastHit hitInfo, farSightRange, LayerMask.GetMask("Player")))
         {
             if (hitInfo.collider.CompareTag("Player"))   // 처음 충돌한 것이 플레이어라면
             {
