@@ -15,42 +15,27 @@ public class MapObject : MonoBehaviour
     float position_Y => transform.position.y;
 
     /// <summary>
-    /// 지형별 색깔 배열
+    /// 맵에 표시할 오브젝트
     /// </summary>
-    public Color[] color;
+    [Tooltip("Layer가 반드시 Map Object로 되있어야 한다.")]
+    public GameObject mapObject;
 
-    /// <summary>
-    /// 색깔 개수
-    /// </summary>
-    private int colorCount = 3;
-
-    /// <summary>
-    /// 지형별 높이 차이 ( 각 차이별로 색깔이 다를 예정)
-    /// </summary>
-    public float colorGap = 5f;
+    private void Awake()
+    {
+        if(mapObject == null)
+        {
+            Debug.LogWarning($"{gameObject.name}의 mapObject가 비어있습니다.");
+        }
+        else
+        {
+            mapPointMaterial = mapObject.GetComponent<Renderer>();
+        }
+    }
 
     void Start()
     {
-        Transform child = transform.GetChild(0);
-        mapPointMaterial = child.GetChild(0).GetComponent<Renderer>();
+        Color mapColor = MapManager.Instance.SetColor(position_Y);
 
-        color = new Color[colorCount];
-        for(int i = 0; i < color.Length; i++)
-        {
-            color[i] = new Color(i*0.3f, i*0.3f, i*0.3f);
-        }
-
-        SetColor();
-    }
-
-    void SetColor()
-    {
-        for(int i = 0; i < 3; i++)
-        {
-            if(i * colorGap < position_Y && position_Y <= (i + 1) * colorGap)
-            {                
-                mapPointMaterial.material.color = color[i];
-            }
-        }
+        mapPointMaterial.material.color = mapColor;
     }
 }

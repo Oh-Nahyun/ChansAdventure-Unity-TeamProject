@@ -42,5 +42,4 @@ public class LargeMapUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     {
        //Debug.Log(eventData.position);
     }
-
 }
