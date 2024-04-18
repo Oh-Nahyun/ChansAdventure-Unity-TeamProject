@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Interaction : MonoBehaviour
 {
+    TextMeshProUGUI layerText;
     /// <summary>
     /// 감지 범위
     /// </summary>
@@ -25,6 +27,11 @@ public class Interaction : MonoBehaviour
     /// 가장 가까운 오브젝트
     /// </summary>
     public GameObject scanIbgect;
+
+    private void Awake()
+    {
+        layerText = GetComponentInChildren<TextMeshProUGUI>();
+    }
 
     void Start()
     {
@@ -50,7 +57,7 @@ public class Interaction : MonoBehaviour
                     short_enemy = col; // 더 가까운 것을 찾으면 short_enemy 업데이트
                 }
             }
-
+            setLayerText(short_enemy.gameObject.layer);
             target(true); // colliders 배열이 비어있지 않은 경우 target 메서드 호출
         }
         else
@@ -91,6 +98,36 @@ public class Interaction : MonoBehaviour
 
         // 부모 GameObject의 부모 GameObject를 재귀적으로 검색하여 최상위 부모 GameObject를 반환
         return FindTopParentWithCollider(parentTransform.gameObject);
+    }
+
+    private void setLayerText(LayerMask layer)
+    {
+        if (layerText != null)
+        {
+            for (int i = 0; i < 32; i++)
+            {
+                if (((1 << i) & layer) != 0)
+                {
+                    Debug.Log($"{LayerMask.LayerToName(i)} 레이어 감지");
+                    layerText.text = LayerMask.LayerToName(i); // 레이어 이름을 TextMeshProUGUI에 설정
+
+                    /*
+                    switch (layerText.text)
+                    {
+                        case "Item":
+                            Debug.Log("Item 레이어 감지");
+                            break;
+                        case "NPC":
+                            Debug.Log("NPC 레이어 감지");
+                            break;
+                        default:
+                            break;
+                    }*/
+                }
+            }
+        }
+        
+
     }
 
     /// <summary>
