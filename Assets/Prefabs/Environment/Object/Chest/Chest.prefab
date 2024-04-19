@@ -187,7 +187,7 @@ GameObject:
   - component: {fileID: 4093464220098218740}
   m_Layer: 24
   m_Name: Chest
-  m_TagString: Untagged
+  m_TagString: Chest
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -252,6 +252,8 @@ MonoBehaviour:
   otherObject: 0
   lightParticle: {fileID: 0}
   scriptableObject: {fileID: 11400000, guid: 4c37ee09bd22ad4499f09fdf38b45a97, type: 2}
+  itemCode: 0
+  itemCount: 1
 --- !u!54 &4093464220098218740
 Rigidbody:
   m_ObjectHideFlags: 0

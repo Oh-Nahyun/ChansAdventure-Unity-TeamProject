@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class Interaction : MonoBehaviour
 {
-    TextMeshProUGUI layerText;
     /// <summary>
     /// 감지 범위
     /// </summary>
@@ -14,7 +13,6 @@ public class Interaction : MonoBehaviour
     /// 찾을 콜라이더의 레이어
     /// </summary>
     public LayerMask layer;
-
     /// <summary>
     /// 감지된 모든 콜라이더
     /// </summary>
@@ -27,10 +25,20 @@ public class Interaction : MonoBehaviour
     /// 가장 가까운 오브젝트
     /// </summary>
     public GameObject scanIbgect;
+    /// <summary>
+    /// 상호작용 텍스트를 보여주는 오브젝트 UI
+    /// </summary>
+    Transform tagTextTransform;
+    /// <summary>
+    /// 상호작용 텍스트
+    /// </summary>
+    TextMeshPro tagText;
 
     private void Awake()
     {
-        layerText = GetComponentInChildren<TextMeshProUGUI>();
+        tagText = GetComponentInChildren<TextMeshPro>();
+        //tagTextTransform = transform.GetChild(0).transform;
+        tagTextTransform = GetComponentInChildren<Transform>();
     }
 
     void Start()
@@ -57,7 +65,6 @@ public class Interaction : MonoBehaviour
                     short_enemy = col; // 더 가까운 것을 찾으면 short_enemy 업데이트
                 }
             }
-            setLayerText(short_enemy.gameObject.layer);
             target(true); // colliders 배열이 비어있지 않은 경우 target 메서드 호출
         }
         else
@@ -73,10 +80,19 @@ public class Interaction : MonoBehaviour
         {
             // 최상위 부모 GameObject를 찾아서 scanIbgect에 할당
             scanIbgect = FindTopParentWithCollider(short_enemy.gameObject);
+            if (scanIbgect != null)
+            {
+                if (scanIbgect.tag != null)
+                {
+                    setTagText(scanIbgect);
+                    tagTextTransform.gameObject.SetActive(true);
+                }
+            }
         }
         else
         {
             scanIbgect = null;
+            tagTextTransform.gameObject.SetActive(false);
         }
     }
 
@@ -100,32 +116,31 @@ public class Interaction : MonoBehaviour
         return FindTopParentWithCollider(parentTransform.gameObject);
     }
 
-    private void setLayerText(LayerMask layer)
+    /// <summary>
+    /// 가장 가까운 오브젝트의 상호작용 텍스트를 출력하는 함수
+    /// </summary>
+    /// <param name="obj">가장 가까운 오브젝트</param>
+    private void setTagText(GameObject obj)
     {
-        if (layerText != null)
+        switch (obj.tag)
         {
-            for (int i = 0; i < 32; i++)
-            {
-                if (((1 << i) & layer) != 0)
-                {
-                    Debug.Log($"{LayerMask.LayerToName(i)} 레이어 감지");
-                    layerText.text = LayerMask.LayerToName(i); // 레이어 이름을 TextMeshProUGUI에 설정
-
-                    /*
-                    switch (layerText.text)
-                    {
-                        case "Item":
-                            Debug.Log("Item 레이어 감지");
-                            break;
-                        case "NPC":
-                            Debug.Log("NPC 레이어 감지");
-                            break;
-                        default:
-                            break;
-                    }*/
-                }
-            }
+            case "NPC" :
+                tagText.SetText("말하기");
+                break;
+            case "Item":
+                tagText.SetText("줍기");
+                break;
+            case "Chest":
+                tagText.SetText("열기");
+                break;
+            case "Warp":
+                tagText.SetText("이동");
+                break;
+            default:
+                tagText.SetText("");
+                break;
         }
+  
         
 
     }

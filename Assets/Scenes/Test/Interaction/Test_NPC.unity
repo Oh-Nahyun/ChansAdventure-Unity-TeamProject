@@ -7582,6 +7582,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: OldMan
       objectReference: {fileID: 0}
+    - target: {fileID: 1853500557469983701, guid: 7e5a122ab818bcb488d961049ea969bf,
+        type: 3}
+      propertyPath: m_TagString
+      value: NPC
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7602,7 +7607,7 @@ PrefabInstance:
     - target: {fileID: 2207065869159933340, guid: 68b0625d611f2a44c9862caf6b0c33f7,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.27
+      value: 0.04
       objectReference: {fileID: 0}
     - target: {fileID: 2207065869159933340, guid: 68b0625d611f2a44c9862caf6b0c33f7,
         type: 3}
@@ -7674,27 +7679,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 543450651711519472}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &3822258817903608348
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7039748623470364579}
-  m_Enabled: 0
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 270b992c23a3b494bbcff12e0ea291e1, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &5332809966921630221
 GameObject:
   m_ObjectHideFlags: 0
@@ -7737,7 +7721,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 6, y: 3, z: 3}
+  m_LocalScale: {x: 5.859375, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1359602786}
@@ -7782,7 +7766,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5551247797161656192}
   - component: {fileID: 8911282282226458794}
-  - component: {fileID: 3822258817903608348}
   m_Layer: 0
   m_Name: NPCInfoPngwing
   m_TagString: Untagged
@@ -8165,7 +8148,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 5.12, y: 5.12}
+  m_Size: {x: 5, y: 5.12}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
