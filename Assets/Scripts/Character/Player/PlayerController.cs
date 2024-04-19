@@ -17,8 +17,8 @@ public class PlayerController : MonoBehaviour
     public Action<Vector2, bool> onMove;
     public Action onMoveModeChagne;
     public Action<Vector2, bool> onLook;
-    public Action onSlide;
     public Action<bool> onJump;
+    public Action<bool> onSlide;
     public Action onSkillModeChange;
 
     // behavior delegate
@@ -113,19 +113,19 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// 회피 처리 함수
-    /// </summary>
-    private void OnSlideInput(InputAction.CallbackContext context)
-    {
-        onSlide?.Invoke();
-    }
-
-    /// <summary>
     /// 점프 처리 함수
     /// </summary>
     private void OnJumpInput(InputAction.CallbackContext context)
     {
         onJump?.Invoke(context.performed);
+    }
+
+    /// <summary>
+    /// 회피 처리 함수
+    /// </summary>
+    private void OnSlideInput(InputAction.CallbackContext context)
+    {
+        onSlide?.Invoke(context.performed);
     }
     #endregion
 

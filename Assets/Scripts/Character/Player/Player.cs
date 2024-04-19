@@ -76,6 +76,11 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth
     }
 
     /// <summary>
+    /// 이동 중인지 아닌지 확인용 변수
+    /// </summary>
+    bool isMoving = false;
+
+    /// <summary>
     /// 캐릭터의 목표방향으로 회전시키는 회전
     /// </summary>
     Quaternion targetRotation = Quaternion.identity;
@@ -88,24 +93,17 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth
     /// <summary>
     /// 중력
     /// </summary>
-    //[Range(-1, 1)]
-    //public float gravity = 0.96f;
-
-    /// <summary>
-    /// 슬라이드 정도
-    /// </summary>
-    public float slidePower = 5.0f;
+    const float gravity = 9.8f;
 
     /// <summary>
     /// 점프 시간 제한
     /// </summary>
-    //public float jumpTimeLimit = 4.0f;
+    const float jumpTimeLimit = 1.0f;
 
     /// <summary>
     /// 점프 시간
     /// </summary>
-    //[SerializeField]
-    //public float jumpTime;
+    float jumpTime = 0.0f;
 
     /// <summary>
     /// 점프 정도
@@ -113,9 +111,14 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth
     public float jumpPower = 5.0f;
 
     /// <summary>
-    /// 점프 속도값
+    /// 점프 속도
     /// </summary>
-    //public float jumpVelocity;
+    float jumpVelocity;
+
+    /// <summary>
+    /// 플레이어 점프 벡터
+    /// </summary>
+    Vector3 playerJump;
 
     /// <summary>
     /// 점프 중인지 아닌지 확인용 변수
@@ -126,6 +129,36 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth
     /// 점프가 가능한지 확인하는 프로퍼티 (점프중이 아닐 때)
     /// </summary>
     bool IsJumpAvailable => !isJumping;
+
+    /// <summary>
+    /// 슬라이드 시간 제한
+    /// </summary>
+    const float slideTimeLimit = 1.0f;
+
+    /// <summary>
+    /// 슬라이드 시간
+    /// </summary>
+    float slideTime = 0.0f;
+
+    /// <summary>
+    /// 슬라이드 정도
+    /// </summary>
+    public float slidePower = 10.0f;
+
+    /// <summary>
+    /// 플레이어 슬라이드 벡터
+    /// </summary>
+    Vector3 playerSlide;
+
+    /// <summary>
+    /// 슬라이드 중인지 아닌지 확인용 변수
+    /// </summary>
+    bool isSliding = false;
+
+    /// <summary>
+    /// 슬라이드가 가능한지 확인하는 프로퍼티 (슬라이드중이 아닐 때)
+    /// </summary>
+    bool IsSlideAvailable => !isSliding;
 
     /// <summary>
     /// 주변 시야 버튼이 눌렸는지 아닌지 확인용 변수
@@ -266,6 +299,10 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth
             Debug.LogError("CameraRoot가 비어있습니다. CameraRoot Prefab 오브젝트를 넣어주세요 ( PlayerLookVCam 스크립트 있는 오브젝트 )");
         }
 
+        isMoving = false;
+        isJumping = true;
+        isSliding = true;
+
         // controller
         controller.onMove += OnMove;
         controller.onMoveModeChagne += OnMoveModeChange;
@@ -287,12 +324,13 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth
     {        
         LookRotation();
         Jump();
+        Slide();
     }
 
     void FixedUpdate()
     {
         characterController.Move(Time.fixedDeltaTime * currentSpeed * inputDirection); // 캐릭터의 움직임
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * turnSpeed);  // 목표 회전으로 변경
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * turnSpeed); // 목표 회전으로 변경
     }
     #endregion
     #region Player Movement Method
@@ -311,6 +349,8 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth
         // 입력을 시작한 상황
         if (isMove)
         {
+            isMoving = true;
+
             // 입력 방향 회전시키기
             Quaternion followCamY = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0);   // 카메라의 y회전만 따로 추출
             inputDirection = followCamY * inputDirection;                                                   // 입력 방향을 카메라의 y회전과 같은 정도로 회전시키기
@@ -323,6 +363,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth
         // 입력을 끝낸 상황
         else
         {
+            isMoving = false;
             currentSpeed = 0.0f; // 정지
             animator.SetFloat(SpeedHash, AnimatorStopSpeed);
         }
@@ -372,10 +413,12 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth
         switch (mode)
         {
             case MoveMode.Walk:
+                jumpPower = 1.0f;
                 currentSpeed = walkSpeed;
                 animator.SetFloat(SpeedHash, AnimatorWalkSpeed);
                 break;
             case MoveMode.Run:
+                jumpPower = 1.25f;
                 currentSpeed = runSpeed;
                 animator.SetFloat(SpeedHash, AnimatorRunSpeed);
                 break;
@@ -409,6 +452,10 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth
         cameraRoot.transform.localEulerAngles = angles;
         cameraRoot.transform.localEulerAngles = new Vector3(angles.x, angles.y, 0);
     }
+
+    /// <summary>
+    /// 점프 입력 함수
+    /// </summary>
     private void OnJump(bool isJump)
     {
         if (isJump)
@@ -423,24 +470,117 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth
         }
     }
 
+    /// <summary>
+    /// 점프 처리 함수
+    /// </summary>
     void Jump()
     {
-        // 점프가 가능한 경우
         if (IsJumpAvailable)
         {
-            animator.SetTrigger(IsJumpHash);
+            // 점프가 가능한 경우
+            StopAllCoroutines();
+            StartCoroutine(JumpProcess());   // 실제 점프 과정 처리
+            animator.SetTrigger(IsJumpHash); // 점프 애니메이션 재생
+        }
+        else
+        {
+            // 점프가 불가능한 경우
+            jumpVelocity = 0.0f;             // 점프 속도 초기화
+            playerJump.y = jumpVelocity;
         }
 
         isJumping = true;
+        characterController.Move(playerJump * Time.fixedDeltaTime); // 점프 실행
+    }
+
+    /// <summary>
+    /// 실제 점프 과정 처리 코루틴
+    /// </summary>
+    IEnumerator JumpProcess()
+    {
+        jumpTime = 0.0f;                                            // 변수 초기화
+        yield return new WaitForSeconds(0.1f);                      // 0.1초 딜레이
+
+        while (jumpTime < jumpTimeLimit)
+        {
+            jumpTime += Time.deltaTime;                             // 점프 시간 갱신
+            playerJump.y = jumpTime * jumpPower * gravity;          // 플레이어의 y값
+            characterController.Move(playerJump * Time.deltaTime);  // 점프 실행
+
+            yield return null;
+        }
+    }
+
+    /// <summary>
+    /// 회피 입력 함수
+    /// </summary>
+    private void OnSlide(bool isSlide)
+    {
+        if (isSlide)
+        {
+            if (CurrentMoveMode == MoveMode.Run)    // 달리기 모드인 경우
+            {
+                if (isMoving)                       // 이동 중인 경우
+                {
+                    isSliding = false;              // 슬라이드 가능
+                }
+                else                                // 이동 중이 아닌 경우
+                {
+                    isSliding = true;               // 슬라이드 불가능
+                }
+            }
+            else
+            {
+                isSliding = true;                   // 달리기 모드가 아닌 경우 => 슬라이드 불가능
+            }
+        }
+        else
+        {
+            isSliding = true;                       // 슬라이드 중인 경우 => 슬라이드 불가능
+        }
     }
 
     /// <summary>
     /// 회피 처리 함수
     /// </summary>
-    private void OnSlide()
+    void Slide()
     {
-        animator.SetTrigger(IsSlideHash);
+        if (IsSlideAvailable)
+        {
+            // 슬라이드가 가능한 경우
+            StopAllCoroutines();
+            StartCoroutine(SlideProcess());   // 실제 슬라이드 과정 처리
+            animator.SetTrigger(IsSlideHash); // 슬라이드 애니메이션 처리
+        }
+        else
+        {
+            // 슬라이드가 불가능한 경우
+            playerSlide = Vector3.zero;
+        }
+
+        isSliding = true;
+        characterController.Move(playerSlide * Time.fixedDeltaTime); // 슬라이드 실행
     }
+
+    /// <summary>
+    /// 실제 슬라이드 과정 처리 코루틴
+    /// </summary>
+    IEnumerator SlideProcess()
+    {
+        slideTime = 0.0f;                                                           // 변수 초기화
+        yield return new WaitForSeconds(0.1f);                                      // 0.1초 딜레이
+
+        while (slideTime < slideTimeLimit)
+        {
+            slideTime += Time.deltaTime;                                            // 슬라이드 시간 갱신
+            Vector3 localForward = transform.TransformDirection(Vector3.forward);   // 로컬 기준 Forward
+            playerSlide = slideTime * slidePower * localForward;                    // 플레이어 슬라이드
+            characterController.Move(playerSlide * Time.deltaTime);                 // 슬라이드 실행
+
+            yield return null;
+        }
+    }
+
     #endregion 
     #region Player Inventory Method
 
