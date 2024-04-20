@@ -5,7 +5,11 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-public class LargeMapUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerMoveHandler, IPointerExitHandler
+/// <summary>
+/// MapUI의 이벤트 관리 클래스
+/// </summary>
+public class LargeMapUI : MonoBehaviour, 
+    IPointerClickHandler, IPointerEnterHandler, IPointerMoveHandler, IPointerExitHandler
 {
     Vector2 mousePos;
 
@@ -14,11 +18,8 @@ public class LargeMapUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     float screenWidth => Screen.width;
 
     public Action<Vector2> onClick;
-
-    private void Awake()
-    {
-        //Debug.Log();
-    }
+    public Action<Vector2> onPointerInMark;
+    public Action<Vector2> onPointerExitMark;
 
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -26,20 +27,21 @@ public class LargeMapUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
         {
             mousePos = eventData.position;
             onClick?.Invoke(mousePos);
-            Debug.Log($"LargeMapUI Mouse Position : {mousePos}");        
         }
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
         //Debug.Log(eventData.position);
+        
     }
+
     public void OnPointerMove(PointerEventData eventData)
     {
-        //Debug.Log(eventData.position);
+        mousePos = eventData.position;
+        onPointerInMark?.Invoke(mousePos);
     }
     public void OnPointerExit(PointerEventData eventData)
     {
-       //Debug.Log(eventData.position);
     }
 }

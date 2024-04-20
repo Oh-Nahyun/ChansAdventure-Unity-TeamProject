@@ -13,6 +13,13 @@ public class MapManager : MonoBehaviour
     /// </summary>
     public static MapManager Instance;
 
+    [Header("Currnet Map Size")]
+    public float mapSizeX = 300f;
+    public float mapSizeY = 300f;
+    public float panelSize = 10f;
+    public GameObject panelPrefab;
+
+    [Header("Map Object Info")]
     /// <summary>
     /// 맵의 등고선 색 ( Color Gap마다 다른 색으로 표시 )
     /// </summary>
@@ -28,16 +35,80 @@ public class MapManager : MonoBehaviour
     /// </summary>
     public float colorGap = 5f;
 
+    /// <summary>
+    /// 맵 패널 UI
+    /// </summary>
+    MapPanelUI mapPanelUI;
+
+    /// <summary>
+    /// 맵 패널 UI를 접근하기 위한 프로퍼티
+    /// </summary>
+    public MapPanelUI MapPanelUI => mapPanelUI;
+
+    /// <summary>
+    /// Map상에 플레이어 이동흔적을 표시할 Linerenderer
+    /// </summary>
+    LineRenderer playerLineRenderer;
+
+    /// <summary>
+    /// playerLineRenderer을 접근하기 위한 프로퍼티
+    /// </summary>
+    public LineRenderer PlayerLineRendere => playerLineRenderer;
+
+    /// <summary>
+    /// Map UI용 카메라
+    /// </summary>
+    Camera mapCamera;
+
+    /// <summary>
+    /// mapCamera를 접근하기 위한 프로퍼티
+    /// </summary>
+    public Camera MapCamera => mapCamera;
+
     private void Awake()
     {
         Instance = this;
 
-        InitializeMapColor();
+        InitalizeMapFunctions();
     }
 
     private void Start()
     {
+        GenerateWorldMapUI(mapSizeX, mapSizeY);
+    }
 
+    /// <summary>
+    /// Map에 관련된 초기화 함수를 모아둔 함수
+    /// </summary>
+    private void InitalizeMapFunctions()
+    {
+        InitalizeMapUI();
+        InitializeMapColor();
+    }
+
+    private void InitalizeMapUI()
+    {
+        mapPanelUI = FindObjectOfType<MapPanelUI>();
+
+        if(mapPanelUI == null)
+        {
+            Debug.LogWarning("[MapManager] : MapPanelUI가 존재하지 않습니다.");
+        }
+
+        playerLineRenderer = GameObject.Find("PlayerFollowLine")?.GetComponent<LineRenderer>();
+
+        if(playerLineRenderer == null)
+        {
+            Debug.LogWarning("[MapManager] : playerlineRenderer가 존재 하지않습니다. " +
+                "/ 오브젝트 이름을 확인해주세요 (PlayerFollowLine)");            
+        }
+
+        mapCamera = GameObject.Find("MapCamera")?.GetComponent<Camera>();
+        if (playerLineRenderer == null)
+        {
+            Debug.LogWarning("[MapManager] : mapCamera 존재 하지않습니다. " +
+                "/ 오브젝트 이름을 확인해주세요 (MapCamera)");
+        }
     }
 
     private void InitializeMapColor()
@@ -49,6 +120,35 @@ public class MapManager : MonoBehaviour
             float ratio = 1 / (float)ColorCount;    // 색깔개수 별로 색 비율 결정
             color[i] = Color.white * ratio * (i + 1);         // 색상 정하기
             color[i].a = 1f;                        // alpha값은 1로 다시 변경
+        }
+    }
+    
+    /// <summary>
+    /// Map Object Panel을 생성하는 함수
+    /// </summary>
+    /// <param name="mapSizeX">최대 맵 사이즈 x</param>
+    /// <param name="mapSizeY">최대 맵 사이즈 y</param>
+    void GenerateWorldMapUI(float mapSizeX, float mapSizeY)
+    {
+        int panelCountX = Mathf.FloorToInt(mapSizeX / panelSize); // x좌표값의 패널 개수
+        int panelCountY = Mathf.FloorToInt(mapSizeY / panelSize); // y좌표값의 패널 개수
+
+        GameObject MapObj = new GameObject("MapObject");
+        MapObj.transform.parent = transform;
+        MapObj.transform.localPosition = new Vector3(0, 20f, 0);
+
+        // panel 생성
+        for(int y = 0; y < panelCountY; y++)
+        {
+            for (int x = 0; x < panelCountX; x++)
+            {
+                Vector3 objVector = new Vector3(x * panelSize, 0f, y * panelSize);
+                GameObject panelobj = Instantiate(panelPrefab, Vector3.zero, Quaternion.Euler(90f,0f,0f), MapObj.transform);
+                panelobj.transform.localPosition = objVector;
+                panelobj.AddComponent<MapObject>().mapObject = panelobj;
+                //panelobj.name = $"NO.{y * panelCountX + x} Panel";
+                panelobj.name = $"[{x}]_[{y}] Panel";
+            }
         }
     }
 

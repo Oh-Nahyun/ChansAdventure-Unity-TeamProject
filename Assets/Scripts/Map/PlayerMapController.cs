@@ -1,27 +1,50 @@
-using System;
+using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Test_Map_Player : MonoBehaviour
+public class PlayerMapController : MonoBehaviour
 {
     PlayerinputActions inputActions;
-    public CanvasGroup map_CanvasGroup;
-    public LineRenderer playerLineRenderer;
-    public Camera mapCamera;
 
-    public float speed = 5f;
-    public float rotatePower = 90f;
+    CanvasGroup map_CanvasGroup;
+    LineRenderer playerLineRenderer;
+    Camera mapCamera;
 
-    float moveInput = 0f;
-    float rotateInput = 0f;
-
+    /// <summary>
+    /// Linerenderer의 최대 정점 개수
+    /// </summary>
     public int lineMaxCount = 10;
+
+    /// <summary>
+    /// LineRenderer의 Y좌표 값
+    /// </summary>
+    public float lineY = 50f;
+
+    /// <summary>
+    /// LineRenderere의 넓이 
+    /// </summary>
+    public float LineWidth = 5f;
+
+    /// <summary>
+    /// LineRenderer을 위치설정을 하기위한 플레이어 위치 벡터
+    /// </summary>
+    public Vector3 playerPos;
+
+    /// <summary>
+    /// LineRenderer의 이전 위치 값
+    /// </summary>
+    public Vector3 prePos;
 
     void Awake()
     {
         inputActions = new PlayerinputActions();
+    }
 
-        InitLine();
+    private void Start()
+    {
+        Initialize();
     }
 
     void OnEnable()
@@ -29,33 +52,30 @@ public class Test_Map_Player : MonoBehaviour
         inputActions.Player.Enable();
         inputActions.Player.Open_Map.performed += OnOpenMap;
         inputActions.Player.Open_Map.canceled += OnOpenMap;
-        inputActions.Player.Move.performed += OnMoveInput;
-        inputActions.Player.Move.canceled += OnMoveInput;
     }
+
     void OnDisable()
     {
-        inputActions.Player.Move.canceled -= OnMoveInput;
-        inputActions.Player.Move.performed -= OnMoveInput;
         inputActions.Player.Open_Map.canceled -= OnOpenMap;
         inputActions.Player.Open_Map.performed -= OnOpenMap;
         inputActions.Player.Disable();
-        
     }
 
-    void Update()
+    private void Update()
     {
-        transform.position += transform.forward * moveInput * Time.deltaTime;
-        transform.Rotate(Vector3.up * rotateInput * Time.deltaTime);
-
         DrawLine();
     }
 
-    private void OnMoveInput(InputAction.CallbackContext context)
+    /// <summary>
+    /// PlayerMapController 변수 초기화 함수
+    /// </summary>
+    void Initialize()
     {
-        Vector2 inputVector = context.ReadValue<Vector2>();
+        map_CanvasGroup = MapManager.Instance.MapPanelUI.GetComponent<CanvasGroup>();
+        playerLineRenderer = MapManager.Instance.PlayerLineRendere;
+        mapCamera = MapManager.Instance.MapCamera;
 
-        moveInput = inputVector.y * speed;
-        rotateInput = inputVector.x * rotatePower;
+        InitLine();
     }
 
     /// <summary>
@@ -64,10 +84,12 @@ public class Test_Map_Player : MonoBehaviour
     /// <param name="context"></param>
     private void OnOpenMap(InputAction.CallbackContext context)
     {
+        mapCamera.transform.position = new Vector3(transform.position.x, 100f, transform.position.z);
+
         // 임시 온오프
-        if(context.performed)
+        if (context.performed)
         {
-            if(map_CanvasGroup.alpha == 1f)
+            if (map_CanvasGroup.alpha == 1f)
             {
                 map_CanvasGroup.alpha = 0f;
             }
@@ -81,34 +103,24 @@ public class Test_Map_Player : MonoBehaviour
     /// <summary>
     /// LineRenderer 초기화
     /// </summary>
-    void InitLine()
+    private void InitLine()
     {
         // 사이즈 초기화
         playerLineRenderer.positionCount = 0;
 
         // LineRenderer 넓이 설정
-        playerLineRenderer.startWidth = 5f;
-        playerLineRenderer.endWidth = 5f;
+        playerLineRenderer.startWidth = LineWidth;
+        playerLineRenderer.endWidth = LineWidth;
     }
-
-    /// <summary>
-    /// LineRenderer을 위치설정을 하기위한 플레이어 위치 벡터
-    /// </summary>
-    public Vector3 playerPos;
-
-    /// <summary>
-    /// LineRenderer의 이전 위치 값
-    /// </summary>
-    public Vector3 prePos;
 
     /// <summary>
     /// Linerenderer을 그리는 함수
     /// </summary>
     void DrawLine()
     {
-        playerPos = new Vector3(Mathf.FloorToInt(transform.position.x), 10f, Mathf.FloorToInt(transform.position.z));   // Line Position 위치
+        playerPos = new Vector3(Mathf.FloorToInt(transform.position.x), lineY, Mathf.FloorToInt(transform.position.z));   // Line Position 위치
 
-        if(playerLineRenderer.positionCount == 0) // 최초 지점 ( 거리를 측정할 이전 값이 없기 때문에 )
+        if (playerLineRenderer.positionCount == 0) // 최초 지점 ( 거리를 측정할 이전 값이 없기 때문에 )
         {
             AddLine(playerPos);
             prePos = playerPos;                                                 // 이전 위치값 저장
@@ -119,7 +131,7 @@ public class Test_Map_Player : MonoBehaviour
         {
             float betweenVertex = (playerPos - prePos).sqrMagnitude;    // 거리
             float maxLength = 5f;                                       // 각 Vertex의 최대 거리
-            if(betweenVertex >= maxLength * maxLength)                  // betweenVertex보다 거리가 크다
+            if (betweenVertex >= maxLength * maxLength)                  // betweenVertex보다 거리가 크다
             {
                 if (playerLineRenderer.positionCount > 10)
                 {
@@ -150,7 +162,7 @@ public class Test_Map_Player : MonoBehaviour
     /// <param name="lineCount">체크할 라인 수</param>
     void ResetLines(int lineCount)
     {
-        if(lineCount > lineMaxCount)
+        if (lineCount > lineMaxCount)
         {
 
             playerLineRenderer.positionCount = 2;
