@@ -7,4 +7,8 @@ using UnityEngine;
 /// </summary>
 public class MapPointMark : MonoBehaviour
 {
+    public void ShowMarkInfo()
+    {
+        Debug.Log($"GameObject Name : {transform.position}");
+    }
 }

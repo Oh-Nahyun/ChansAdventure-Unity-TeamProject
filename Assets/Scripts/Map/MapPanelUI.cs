@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using static UnityEngine.EventSystems.PointerEventData;
 
 /// <summary>
 /// Map 패널 UI를 관리하는 클래스
@@ -58,12 +60,25 @@ public class MapPanelUI : MonoBehaviour
     /// 맵에 클릭했을 때 실행되는 함수
     /// </summary>
     /// <param name="vector"></param>
-    private void OnClickInput(Vector2 vector)
+    private void OnClickInput(InputButton button, Vector2 vector)
     {
         RaycastHit hit = GetObjectScreenToWorld(vector);
         Vector3 instantiateVector = hit.point;
         instantiateVector.y = 0;
-        Instantiate(mapPingPrefab, instantiateVector, Quaternion.identity);  // PointObject
+
+        if(button == InputButton.Left)
+        {
+            Instantiate(mapPingPrefab, instantiateVector, Quaternion.identity);  // PointObject
+        }
+        else if(button == InputButton.Right)
+        {
+            MapPointMark mark = hit.transform.gameObject?.GetComponent<MapPointMark>(); // 닿은 오브젝트가 Mark 오브젝트인지 확인
+
+            if (mark != null)
+            {
+                mark.ShowMarkInfo();
+            }
+        }
     }
 
     /// <summary>

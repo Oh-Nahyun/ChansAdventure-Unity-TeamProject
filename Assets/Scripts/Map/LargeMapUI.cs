@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 /// <summary>
 /// MapUI의 이벤트 관리 클래스
@@ -17,7 +18,7 @@ public class LargeMapUI : MonoBehaviour,
 
     float screenWidth => Screen.width;
 
-    public Action<Vector2> onClick;
+    public Action<PointerEventData.InputButton, Vector2> onClick;
     public Action<Vector2> onPointerInMark;
     public Action<Vector2> onPointerExitMark;
 
@@ -26,7 +27,7 @@ public class LargeMapUI : MonoBehaviour,
         if(eventData.pointerClick)
         {
             mousePos = eventData.position;
-            onClick?.Invoke(mousePos);
+            onClick?.Invoke(eventData.button, mousePos);
         }
     }
 
