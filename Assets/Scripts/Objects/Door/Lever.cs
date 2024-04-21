@@ -63,7 +63,7 @@ public class Lever : NPCBase
                     break;
                 case State.On:
                     // 스위치를 끄려는 상황
-                    targetDoor.OpenDoor();                     // 문 닫고
+                    targetDoor.OpenDoor();                  // 문 닫고
                     animator.SetBool(SwitchOnHash, false);  // 스위치 애니메이션 재생
                     state = State.Off;                      // 상태 변경
                     break;

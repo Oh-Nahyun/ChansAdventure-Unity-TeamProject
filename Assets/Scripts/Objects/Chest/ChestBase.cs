@@ -52,6 +52,7 @@ public class ChestBase : NPCBase
         {
             animator.SetBool(IsOpenHash, true);
             id = 199;
+            gameObject.tag = "Object";
         }
     }
 

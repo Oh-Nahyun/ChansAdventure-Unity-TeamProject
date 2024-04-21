@@ -17,12 +17,12 @@ public class TextBoxItem : MonoBehaviour
     Animator endImageAnimator;
 
     Interaction interaction;
-
     public string talkString;
     public int talkIndex = 0;
     public float charPerSeconds = 0.05f;
 
     private bool talking;
+    public bool Talking => talking;
 
     public NPCBase NPCdata;
     ChestBase Chestdata;
@@ -33,7 +33,6 @@ public class TextBoxItem : MonoBehaviour
 
     private void Awake()
     {
-
         canvasGroup = GetComponent<CanvasGroup>();
         animator = GetComponent<Animator>();
 
@@ -128,7 +127,7 @@ public class TextBoxItem : MonoBehaviour
                 itemIcon.sprite = Chestdata.scriptableObject.itemIcon;
                 nameText.text = $"{Chestdata.scriptableObject.itemName}";
                 talkText.text = $"{Chestdata.scriptableObject.desc}";
-                inventory.AddSlotItem(Chestdata.itemCode, Chestdata.itemCount + 1);
+                //inventory.AddSlotItem(Chestdata.itemCode, Chestdata.itemCount + 1);
             }
             else
             {

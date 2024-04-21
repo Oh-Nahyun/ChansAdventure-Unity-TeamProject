@@ -26,19 +26,13 @@ public class Interaction : MonoBehaviour
     /// </summary>
     public GameObject scanIbgect;
     /// <summary>
-    /// 상호작용 텍스트를 보여주는 오브젝트 UI
+    /// 상호작용 텍스트를 나타내는 UI
     /// </summary>
-    Transform tagTextTransform;
-    /// <summary>
-    /// 상호작용 텍스트
-    /// </summary>
-    TextMeshPro tagText;
+    TextInteraction textInteraction;
 
     private void Awake()
     {
-        tagText = GetComponentInChildren<TextMeshPro>();
-        //tagTextTransform = transform.GetChild(0).transform;
-        tagTextTransform = GetComponentInChildren<Transform>();
+        textInteraction = FindAnyObjectByType<TextInteraction>();
     }
 
     void Start()
@@ -84,15 +78,15 @@ public class Interaction : MonoBehaviour
             {
                 if (scanIbgect.tag != null)
                 {
-                    setTagText(scanIbgect);
-                    tagTextTransform.gameObject.SetActive(true);
+                    textInteraction.SetTagText(scanIbgect);
+                    textInteraction.TextActive(t);
                 }
             }
         }
         else
         {
             scanIbgect = null;
-            tagTextTransform.gameObject.SetActive(false);
+            textInteraction.TextActive(t);
         }
     }
 
@@ -114,35 +108,6 @@ public class Interaction : MonoBehaviour
 
         // 부모 GameObject의 부모 GameObject를 재귀적으로 검색하여 최상위 부모 GameObject를 반환
         return FindTopParentWithCollider(parentTransform.gameObject);
-    }
-
-    /// <summary>
-    /// 가장 가까운 오브젝트의 상호작용 텍스트를 출력하는 함수
-    /// </summary>
-    /// <param name="obj">가장 가까운 오브젝트</param>
-    private void setTagText(GameObject obj)
-    {
-        switch (obj.tag)
-        {
-            case "NPC" :
-                tagText.SetText("말하기");
-                break;
-            case "Item":
-                tagText.SetText("줍기");
-                break;
-            case "Chest":
-                tagText.SetText("열기");
-                break;
-            case "Warp":
-                tagText.SetText("이동");
-                break;
-            default:
-                tagText.SetText("");
-                break;
-        }
-  
-        
-
     }
 
     /// <summary>

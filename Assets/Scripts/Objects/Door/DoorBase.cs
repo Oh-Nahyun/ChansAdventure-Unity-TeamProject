@@ -37,11 +37,21 @@ public class DoorBase : NPCBase
         {
             open = !open;
             animator.SetBool(IsOpenHash, open);
+
+            if (open)
+            {
+                gameObject.tag = "DoorOpen";
+            }
+            else
+            {
+                gameObject.tag = "DoorClose";
+            }
         }
     }
 
     protected override void Update()
     {
+
         if (isLock)
         {
             otherObject = false;

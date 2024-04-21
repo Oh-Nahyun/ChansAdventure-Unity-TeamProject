@@ -26,6 +26,8 @@ public class TextBox : MonoBehaviour
 
     private bool talkingEnd;
     private bool talking;
+    public bool Talking => talking;
+
     private bool typingTalk;
     private bool typingStop;
 
