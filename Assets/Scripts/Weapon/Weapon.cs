@@ -76,7 +76,6 @@ public class Weapon : MonoBehaviour
     Bow bow;
     Arrow arrow;
     ArrowFirePoint arrowFirePoint;
-    RandomAttackSelector randomAttackSelector;
     //PlayerFollowVCam vcam;
 
     private void Awake()
@@ -89,7 +88,6 @@ public class Weapon : MonoBehaviour
         bow = GetComponentInChildren<Bow>();
         arrow = GetComponentInChildren<Arrow>();
         arrowFirePoint = GetComponentInChildren<ArrowFirePoint>();
-        randomAttackSelector = GetComponent<RandomAttackSelector>();
         //vcam = FindAnyObjectByType<PlayerFollowVCam>();
     }
 
@@ -149,18 +147,9 @@ public class Weapon : MonoBehaviour
             {
                 animator.SetTrigger(IsSwordHash);
 
-                if (randomAttackSelector.AttackModeHash == 0) // 일반 공격
-                {
-                    // 공격할 동안 Player의 이동이 불가하도록 설정
-                    StopAllCoroutines();
-                    StartCoroutine(playerController.StopInput(clipPath_Sword1));
-                }
-                else if (randomAttackSelector.AttackModeHash == 1) // Critical 공격
-                {
-                    // 공격할 동안 Player의 이동이 불가하도록 설정
-                    StopAllCoroutines();
-                    StartCoroutine(playerController.StopInput(clipPath_Sword2));
-                }
+                // 공격할 동안 Player의 이동이 불가하도록 설정
+                StopAllCoroutines();
+                StartCoroutine(playerController.StopInput(clipPath_SwordSheath2));
             }
             else if (currentWeaponMode == WeaponMode.Bow)
             {

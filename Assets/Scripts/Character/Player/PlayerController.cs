@@ -166,10 +166,22 @@ public class PlayerController : MonoBehaviour
         {
             waitingTime *= 0.5f;
         }
-
-        if (clipPath == weapon.clipPath_Sword1 || clipPath == weapon.clipPath_Sword2)
+        else if (clipPath == weapon.clipPath_SwordSheath2)
         {
-            waitingTime = waitingTime + GetAnimationLegth(weapon.clipPath_SwordSheath2); // 검 꺼내는 시간 고려
+            // 검 공격 시간 고려
+            waitingTime += GetAnimationLegth(weapon.clipPath_Sword1);
+
+            //Debug.Log(GetAnimationLegth(weapon.clipPath_Sword1)); // 1.5초
+            //Debug.Log(GetAnimationLegth(weapon.clipPath_Sword2)); // 2.43초
+
+            //if (randomAttackSelector.AttackModeHash == 0) // 일반 공격
+            //{
+            //    waitingTime += GetAnimationLegth(weapon.clipPath_Sword1);
+            //}
+            //else if (randomAttackSelector.AttackModeHash == 1) // Critical 공격
+            //{
+            //    waitingTime += GetAnimationLegth(weapon.clipPath_Sword2);
+            //}
         }
 
         playerInputAction.Player.Disable();                 // Player 액션맵 비활성화
