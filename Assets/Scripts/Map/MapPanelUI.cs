@@ -18,24 +18,61 @@ public class MapPanelUI : MonoBehaviour
 
     LargeMapUI mapUI;
 
+    /// <summary>
+    /// 맵 핑 프리팹
+    /// </summary>
     public GameObject mapPingPrefab;
+
+    /// <summary>
+    /// Mark 오브젝트를 강조해줄 UI 오브젝트 프리팹
+    /// </summary>
     public GameObject highlightPingPrefab;
 
+    /// <summary>
+    /// Mark 오브젝트를 강조해줄 UI 오브젝트
+    /// </summary>
     GameObject highlightObject;
+
+    Vector3 startDragVector = Vector3.zero;
+    Vector3 onDragingVector = Vector3.zero;
 
 
     private void Awake()
     {
+        // Map UI 초기화
         mapUI = GetComponentInChildren<LargeMapUI>();
 
         mapUI.onClick += OnClickInput;
 
-        //
         highlightObject = Instantiate(highlightPingPrefab, transform);
         highlightObject.SetActive(false);
 
-        mapUI.onPointerInMark += CheckMark;
-        mapUI.onPointerExitMark += ExitMark;
+        mapUI.onPointerInMark += OnCheckMark;
+        mapUI.onPointerDragBegin += OnDragEnter;
+        mapUI.onPointerDraging += OnDraging;
+        mapUI.onPointerDragEnd += OnDragEnd;
+    }
+
+    private void OnDragEnd(Vector2 vector)
+    {
+        onDragingVector = new Vector3(vector.x, 0, vector.y);
+        Vector3 result = startDragVector - onDragingVector;
+
+        // 지속적으로 이동함 
+        //MapManager.Instance.MapCamera.transform.position += result;
+    }
+
+    private void OnDraging(Vector2 vector)
+    {
+        onDragingVector = new Vector3(vector.x, 0, vector.y);
+        Vector3 result = startDragVector - onDragingVector;
+
+        MapManager.Instance.MapCamera.transform.position += result * Time.deltaTime;
+    }
+
+    private void OnDragEnter(Vector2 vector)
+    {
+        startDragVector = new Vector3(vector.x, 0, vector.y);
     }
 
     /// <summary>
@@ -85,7 +122,7 @@ public class MapPanelUI : MonoBehaviour
     /// 맵 안에서 Mark에 포인터가 닿으면 실행되는 함수
     /// </summary>
     /// <param name="pointObject">닿은 오브젝트</param>
-    private void CheckMark(Vector2 pointVector)
+    private void OnCheckMark(Vector2 pointVector)
     {
         RaycastHit hit = GetObjectScreenToWorld(pointVector);
 
@@ -102,10 +139,5 @@ public class MapPanelUI : MonoBehaviour
         {
             highlightObject.SetActive(false);
         }
-    }
-
-    private void ExitMark(Vector2 pointVector)
-    {
-
     }
 }

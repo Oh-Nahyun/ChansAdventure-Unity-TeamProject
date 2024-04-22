@@ -84,11 +84,10 @@ public class PlayerMapController : MonoBehaviour
     /// <param name="context"></param>
     private void OnOpenMap(InputAction.CallbackContext context)
     {
-        mapCamera.transform.position = new Vector3(transform.position.x, 100f, transform.position.z);
-
         // 임시 온오프
         if (context.performed)
         {
+            mapCamera.transform.position = new Vector3(transform.position.x, 100f, transform.position.z); // 플레이어 위치 동기화
             if (map_CanvasGroup.alpha == 1f)
             {
                 map_CanvasGroup.alpha = 0f;
