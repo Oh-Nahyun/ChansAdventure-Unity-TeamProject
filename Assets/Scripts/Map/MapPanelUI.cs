@@ -67,6 +67,15 @@ public class MapPanelUI : MonoBehaviour
         mapUI.onPointerDragBegin += OnDragEnter;
         mapUI.onPointerDraging += OnDraging;
         mapUI.onPointerDragEnd += OnDragEnd;
+        mapUI.onScroll += OnScroll;
+    }
+
+    private void OnScroll(Vector2 scrollDelta)
+    {
+        float scroll = -scrollDelta.y;
+
+        mapCamera.orthographicSize += scroll;
+        mapCamera.orthographicSize = Mathf.Clamp(mapCamera.orthographicSize, 50, 100);
     }
 
     private void Start()

@@ -11,7 +11,7 @@ using UnityEngine.InputSystem;
 /// </summary>
 public class LargeMapUI : MonoBehaviour, 
     IPointerClickHandler, IPointerMoveHandler, IDragHandler, 
-    IBeginDragHandler, IEndDragHandler
+    IBeginDragHandler, IEndDragHandler, IScrollHandler
 {
     Vector2 mousePos;
 
@@ -34,6 +34,7 @@ public class LargeMapUI : MonoBehaviour,
     public Action<Vector2> onPointerDragBegin;
     public Action<Vector2> onPointerDraging;
     public Action<Vector2> onPointerDragEnd;
+    public Action<Vector2> onScroll;
 
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -64,5 +65,10 @@ public class LargeMapUI : MonoBehaviour,
     public void OnEndDrag(PointerEventData eventData)
     {
         onPointerDragEnd?.Invoke(eventData.position);
+    }
+
+    public void OnScroll(PointerEventData eventData)
+    {
+        onScroll?.Invoke(eventData.scrollDelta);
     }
 }
