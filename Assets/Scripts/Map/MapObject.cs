@@ -37,10 +37,6 @@ public class MapObject : MonoBehaviour
         }
     }
 
-    void Start()
-    {
-    }
-
     private void Update()
     {
         Scan();

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 /// <summary>
-/// Map UI의 각종 값을 다루는 Manager 클래스
+/// Map UI의 각종 값을 다루는 Manager 클래스 ( 위치값 맵의 왼쪽 밑에 고정 )
 /// </summary>
 public class MapManager : MonoBehaviour
 {
@@ -65,6 +65,11 @@ public class MapManager : MonoBehaviour
     /// </summary>
     public Camera MapCamera => mapCamera;
 
+    /// <summary>
+    /// 맵 카메라의 y 고정 좌표값
+    /// </summary>
+    const float mapCameraY = 100f;
+
     private void Awake()
     {
         Instance = this;
@@ -110,6 +115,8 @@ public class MapManager : MonoBehaviour
                 "/ 오브젝트 이름을 확인해주세요 (MapCamera)");
         }
     }
+
+    #region MapPanelMethods
 
     private void InitializeMapColor()
     {
@@ -161,10 +168,37 @@ public class MapManager : MonoBehaviour
     {
         Color resultColor = Color.white;
 
-        int colorIndex = Mathf.FloorToInt(yPosition / (float)ColorCount); // color 인덱스 값 설정
+        int colorIndex = Mathf.FloorToInt(yPosition / (float)colorGap); // color 인덱스 값 설정
+        if (colorIndex > ColorCount - 1) colorIndex = (int)ColorCount - 1;
 
         resultColor = color[colorIndex];
 
         return resultColor;
     }
+    #endregion
+
+    #region MapCameraSetting
+
+    /// <summary>
+    /// 카메라 위치를 조절하는 함수
+    /// </summary>
+    /// <param name="position"> 추가할 카메라 위치값 ( y좌표값은 100으로 고정 ) </param>
+    public void SetCaemraPosition(Vector3 position)
+    {
+        Transform child = transform.GetChild(0); // MapObject
+
+        float minX = transform.position.x; // MapManager는 맵의 좌측 하단에 있다.
+        float minY = transform.position.z;
+        float maxX = child.GetChild(child.childCount - 1).position.x; // 우측 상단의 Panel 좌표값
+        float maxY = child.GetChild(child.childCount - 1).position.z;
+
+        mapCamera.transform.position += position; // 카메라 위치 설정
+
+        // 카메라 위치값 범위 설정
+        mapCamera.transform.position = new Vector3
+                (Mathf.Clamp(position.x, minX, maxX),
+                mapCameraY,
+                Mathf.Clamp(position.z, minY, maxY));
+    }
+    #endregion
 }

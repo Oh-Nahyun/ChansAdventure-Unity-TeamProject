@@ -39,25 +39,26 @@ public class LargeMapUI : MonoBehaviour,
     {
         if(eventData.pointerClick)
         {
-            mousePos = eventData.position;
-            onClick?.Invoke(eventData.button, mousePos);
+            onClick?.Invoke(eventData.button, eventData.position);
         }
     }
 
     public void OnPointerMove(PointerEventData eventData)
     {
-        mousePos = eventData.position;
-        onPointerInMark?.Invoke(mousePos);
-    }
-
-    public void OnDrag(PointerEventData eventData)
-    {
-        onPointerDraging?.Invoke(eventData.position);
+        if(eventData.IsPointerMoving())
+        {
+            onPointerInMark?.Invoke(eventData.position);
+        }
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
         onPointerDragBegin?.Invoke(eventData.position);
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        onPointerDraging?.Invoke(eventData.position);
     }
 
     public void OnEndDrag(PointerEventData eventData)
