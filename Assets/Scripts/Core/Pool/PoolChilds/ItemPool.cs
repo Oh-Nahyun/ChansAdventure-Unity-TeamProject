@@ -10,14 +10,17 @@ public class ItemPool : ObjectPool<ItemDataObject>
     /// <param name="slot">생성할 아이템의 슬롯</param>
     /// <param name="position">생성할 위치</param>
     /// <returns></returns>
-    public GameObject GetItemObject(InventorySlot slot, Vector3? position = null)
+    public GameObject GetItemObject(ItemData itemData, uint count = 1, Vector3? position = null)
     {
-        GameObject itemObj = slot.SlotItemData.ItemPrefab;                      // 프리팹 아이템 생성
+        GameObject itemObj = itemData.ItemPrefab;                      // 프리팹 아이템 생성
 
         ItemDataObject parentObj = GetObject(position);                         // 풀에서 아이템 꺼내기
-        parentObj.GetComponent<ItemDataObject>().SetData(slot.SlotItemData);    // 꺼낸 아이템의 아이템 데이터 설정
+        parentObj.GetComponent<ItemDataObject>().SetData(itemData);    // 꺼낸 아이템의 아이템 데이터 설정
         
-        Instantiate(itemObj, parentObj.transform);                              // 설정된 아이템 프리팹 생성
+        for(int i = 0; i < count; i++)
+        {
+            Instantiate(itemObj, parentObj.transform);                              // 설정된 아이템 프리팹 생성
+        }
 
         return parentObj.gameObject;                                            // Factory의 오브젝트 반환 ( 프리팹은 자식 0번째 )
     }
