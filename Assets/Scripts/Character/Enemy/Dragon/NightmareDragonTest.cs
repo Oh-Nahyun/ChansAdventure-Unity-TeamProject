@@ -565,6 +565,11 @@ public class NightmareDragonTest : RecycleObject, IBattler, IHealth
         StartCoroutine(Think());
     }
 
+    public void attackTest()
+    {
+
+    }
+
     // 공격 패턴 설정 ------------------------------------------------------------------------------------------------------------------------------------------------
 
     /// <summary>
