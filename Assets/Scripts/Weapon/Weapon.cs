@@ -51,6 +51,13 @@ public class Weapon : MonoBehaviour
     /// </summary>
     public bool IsZoomIn = false;
 
+    // 애니메이션 클립의 리소스 경로
+    public string clipPath_None = "PlayerAnimations/N_Attack";
+    public string clipPath_Sword1 = "PlayerAnimations/S_Attack1";
+    public string clipPath_Sword2 = "PlayerAnimations/S_Attack2";
+    public string clipPath_SwordSheath2 = "PlayerAnimations/S_Sheath2";
+    readonly string clipPath_Bow = "PlayerAnimations/B_Attack";
+
     // 애니메이터용 해시값
     readonly int IsAttackHash = Animator.StringToHash("IsAttack");
     readonly int IsSwordHash = Animator.StringToHash("IsSword");
@@ -64,11 +71,12 @@ public class Weapon : MonoBehaviour
     PlayerController playerController;
     PlayerinputActions inputActions;
     Animator animator;
-    Player player;
+    //Player player;
     Sword sword;
     Bow bow;
     Arrow arrow;
     ArrowFirePoint arrowFirePoint;
+    RandomAttackSelector randomAttackSelector;
     //PlayerFollowVCam vcam;
 
     private void Awake()
@@ -76,11 +84,12 @@ public class Weapon : MonoBehaviour
         playerController = GetComponent<PlayerController>();
         inputActions = new PlayerinputActions();
         animator = GetComponent<Animator>();
-        player = GetComponent<Player>();
+        //player = GetComponent<Player>();
         sword = GetComponentInChildren<Sword>();
         bow = GetComponentInChildren<Bow>();
         arrow = GetComponentInChildren<Arrow>();
         arrowFirePoint = GetComponentInChildren<ArrowFirePoint>();
+        randomAttackSelector = GetComponent<RandomAttackSelector>();
         //vcam = FindAnyObjectByType<PlayerFollowVCam>();
     }
 
@@ -130,7 +139,7 @@ public class Weapon : MonoBehaviour
 
             // 공격할 동안 Player의 이동이 불가하도록 설정
             StopAllCoroutines();
-            StartCoroutine(playerController.StopInput());
+            StartCoroutine(playerController.StopInput(clipPath_None));
         }
         else // 무기 모드가 Sword 또는 Bow인 경우
         {
@@ -140,11 +149,18 @@ public class Weapon : MonoBehaviour
             {
                 animator.SetTrigger(IsSwordHash);
 
-                // 공격할 동안 Player의 이동이 불가하도록 설정
-                StopAllCoroutines();
-                StartCoroutine(playerController.StopInput());
-
-                ////////// CriticalHit 설정하기
+                if (randomAttackSelector.AttackModeHash == 0) // 일반 공격
+                {
+                    // 공격할 동안 Player의 이동이 불가하도록 설정
+                    StopAllCoroutines();
+                    StartCoroutine(playerController.StopInput(clipPath_Sword1));
+                }
+                else if (randomAttackSelector.AttackModeHash == 1) // Critical 공격
+                {
+                    // 공격할 동안 Player의 이동이 불가하도록 설정
+                    StopAllCoroutines();
+                    StartCoroutine(playerController.StopInput(clipPath_Sword2));
+                }
             }
             else if (currentWeaponMode == WeaponMode.Bow)
             {
@@ -156,7 +172,7 @@ public class Weapon : MonoBehaviour
 
                     // 공격할 동안 Player의 이동이 불가하도록 설정
                     StopAllCoroutines();
-                    StartCoroutine(playerController.StopInput());
+                    StartCoroutine(playerController.StopInput(clipPath_Bow));
                 }
             }
         }

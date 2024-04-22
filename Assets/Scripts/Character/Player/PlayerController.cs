@@ -24,9 +24,13 @@ public class PlayerController : MonoBehaviour
     // behavior delegate
     public Action onInteraction;
 
+    // 컴포넌트
+    Weapon weapon;
+
     void Awake()
     {
         playerInputAction = new PlayerinputActions();
+        weapon = GetComponent<Weapon>();
     }
 
     void OnEnable()
@@ -153,11 +157,34 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// 입력 처리 불가 처리 코루틴
     /// </summary>
-    /// <returns></returns>
-    public IEnumerator StopInput()
+    /// <param name="clipPath">애니메이션 클립의 리소스 경로</param>
+    public IEnumerator StopInput(string clipPath)
     {
-        playerInputAction.Player.Disable();          // Player 액션맵 비활성화
-        yield return new WaitForSeconds(4.0f);
-        playerInputAction.Player.Enable();           // Player 액션맵 활성화
+        float waitingTime = GetAnimationLegth(clipPath);    // 애니메이션 클립 로드
+
+        if (clipPath == weapon.clipPath_None)
+        {
+            waitingTime *= 0.5f;
+        }
+
+        if (clipPath == weapon.clipPath_Sword1 || clipPath == weapon.clipPath_Sword2)
+        {
+            waitingTime = waitingTime + GetAnimationLegth(weapon.clipPath_SwordSheath2); // 검 꺼내는 시간 고려
+        }
+
+        playerInputAction.Player.Disable();                 // Player 액션맵 비활성화
+        yield return new WaitForSeconds(waitingTime);       // waitingTime만큼 딜레이
+        playerInputAction.Player.Enable();                  // Player 액션맵 활성화
+    }
+
+    /// <summary>
+    /// 애니메이션 클립 로드 및 재생 시간 출력 함수
+    /// </summary>
+    /// <param name="clipPath">애니메이션 클립의 리소스 경로</param>
+    /// <returns>애니메이션 재생 시간</returns>
+    float GetAnimationLegth(string clipPath)
+    {
+        AnimationClip clip = Resources.Load<AnimationClip>(clipPath);
+        return clip.length;
     }
 }
