@@ -10,7 +10,6 @@ public class PlayerMapController : MonoBehaviour
 
     CanvasGroup largeMap_CanvasGroup;
     LineRenderer playerLineRenderer;
-    Camera mapCamera;
 
     /// <summary>
     /// Linerenderer의 최대 정점 개수
@@ -69,6 +68,23 @@ public class PlayerMapController : MonoBehaviour
         DrawLine();
     }
 
+    private void LateUpdate()
+    {
+        FollowMapCam();
+        MapManager.Instance.SetPlayerMarkPosition(playerPos);
+    }
+
+    /// <summary>
+    /// 플레이어를 따라다니는 Map Camera 위치 설정 함수
+    /// </summary>
+    void FollowMapCam()
+    {
+        if (isOpenedLargeMap == false)
+        {
+            MapManager.Instance.SetCaemraPosition(playerPos);
+        }
+    }
+
     /// <summary>
     /// PlayerMapController 변수 초기화 함수
     /// </summary>
@@ -76,7 +92,6 @@ public class PlayerMapController : MonoBehaviour
     {
         largeMap_CanvasGroup = MapManager.Instance.LargeMapPanelUI.GetComponent<CanvasGroup>();
         playerLineRenderer = MapManager.Instance.PlayerLineRendere;
-        mapCamera = MapManager.Instance.MapCamera;
 
         InitLine();
     }
@@ -119,7 +134,8 @@ public class PlayerMapController : MonoBehaviour
     /// </summary>
     void DrawLine()
     {
-        playerPos = new Vector3(Mathf.FloorToInt(transform.position.x), lineY, Mathf.FloorToInt(transform.position.z));   // Line Position 위치
+        //playerPos = new Vector3(Mathf.FloorToInt(transform.position.x), lineY, Mathf.FloorToInt(transform.position.z));   // Line Position 위치
+        playerPos = new Vector3(transform.position.x, lineY, transform.position.z);   // Line Position 위치
 
         if (playerLineRenderer.positionCount == 0) // 최초 지점 ( 거리를 측정할 이전 값이 없기 때문에 )
         {
@@ -132,17 +148,17 @@ public class PlayerMapController : MonoBehaviour
         {
             float betweenVertex = (playerPos - prePos).sqrMagnitude;    // 거리
             float maxLength = 5f;                                       // 각 Vertex의 최대 거리
-            if (betweenVertex >= maxLength * maxLength)                  // betweenVertex보다 거리가 크다
+            if (betweenVertex > maxLength * maxLength)                  // betweenVertex보다 거리가 크다
             {
                 if (playerLineRenderer.positionCount > 10)
                 {
+                    playerPos = new Vector3(transform.position.x, lineY, transform.position.z);
                     AddLine(playerPos);
                     ResetLines(playerLineRenderer.positionCount);
                 }
 
                 AddLine(playerPos);
                 prePos = playerPos; // 이전 위치값 저장
-
             }
         }
     }
@@ -165,7 +181,6 @@ public class PlayerMapController : MonoBehaviour
     {
         if (lineCount > lineMaxCount)
         {
-
             playerLineRenderer.positionCount = 2;
             playerLineRenderer.SetPosition(0, prePos);
             playerLineRenderer.SetPosition(playerLineRenderer.positionCount - 1, playerPos);
