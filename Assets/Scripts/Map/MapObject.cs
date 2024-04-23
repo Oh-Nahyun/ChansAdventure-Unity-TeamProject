@@ -54,6 +54,7 @@ public class MapObject : MonoBehaviour
             //Debug.Log($"{gameObject.name}.y : {hit.point}");
             Debug.DrawRay(transform.position, transform.forward * 1000f, Color.red);
             position_Y = hit.point.y;
+            Debug.Log($"{gameObject.name} : {hit.collider.material}");
 
             Color mapColor = MapManager.Instance.SetColor(position_Y);
 

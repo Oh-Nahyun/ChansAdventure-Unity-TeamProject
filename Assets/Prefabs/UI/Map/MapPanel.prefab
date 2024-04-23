@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6348039371745028792}
   - component: {fileID: 1420418420385710971}
-  - component: {fileID: 947053908710226997}
   - component: {fileID: 215637487612943064}
   - component: {fileID: 2307004033507585811}
+  - component: {fileID: 6072697357930846877}
   m_Layer: 5
   m_Name: MapPanel
   m_TagString: Untagged
@@ -48,18 +48,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5472050357392260089}
   m_CullTransparentMesh: 1
---- !u!225 &947053908710226997
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5472050357392260089}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
 --- !u!114 &215637487612943064
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72,8 +60,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b839e4e54af6464489f85f8ba941b76b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapCamera: {fileID: 0}
-  pointPrefab: {fileID: 7190854795178144493, guid: 83202222342b515428f02ee66cc24086,
+  mapPingPrefab: {fileID: 7190854795178144493, guid: 83202222342b515428f02ee66cc24086,
     type: 3}
 --- !u!114 &2307004033507585811
 MonoBehaviour:
@@ -88,7 +75,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.69803923}
+  m_Color: {r: 0.754717, g: 0.754717, b: 0.754717, a: 0.40784314}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -105,6 +92,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!225 &6072697357930846877
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5472050357392260089}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &8816350452783367695
 GameObject:
   m_ObjectHideFlags: 0

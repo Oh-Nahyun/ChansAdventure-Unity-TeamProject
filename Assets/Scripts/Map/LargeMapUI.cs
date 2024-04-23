@@ -51,7 +51,6 @@ public class LargeMapUI : MonoBehaviour,
             onPointerInMark?.Invoke(eventData.position);
         }
     }
-
     public void OnBeginDrag(PointerEventData eventData)
     {
         onPointerDragBegin?.Invoke(eventData.position);

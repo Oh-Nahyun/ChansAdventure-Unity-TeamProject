@@ -24,16 +24,6 @@ public class MapPanelUI : MonoBehaviour
     public GameObject mapPingPrefab;
 
     /// <summary>
-    /// Mark 오브젝트를 강조해줄 UI 오브젝트 프리팹
-    /// </summary>
-    public GameObject highlightPingPrefab;
-
-    /// <summary>
-    /// Mark 오브젝트를 강조해줄 UI 오브젝트
-    /// </summary>
-    GameObject highlightObject;
-
-    /// <summary>
     /// 드래그 시작 Vector값
     /// </summary>
     Vector3 startDragVector = Vector3.zero;
@@ -59,9 +49,6 @@ public class MapPanelUI : MonoBehaviour
         mapUI = GetComponentInChildren<LargeMapUI>();
 
         mapUI.onClick += OnClickInput;
-
-        highlightObject = Instantiate(highlightPingPrefab, transform);
-        highlightObject.SetActive(false);
 
         mapUI.onPointerInMark += OnCheckMark;
         mapUI.onPointerDragBegin += OnDragEnter;
@@ -148,6 +135,8 @@ public class MapPanelUI : MonoBehaviour
         }
     }
 
+    MapPointMark lastMark = null;
+
     /// <summary>
     /// 맵 안에서 Mark에 포인터가 닿으면 실행되는 함수
     /// </summary>
@@ -159,18 +148,15 @@ public class MapPanelUI : MonoBehaviour
         if (isDrag || hit.collider == null)
             return;
 
-        GameObject pointObject = hit.transform.gameObject;
-
         MapPointMark mark = hit.transform.gameObject?.GetComponent<MapPointMark>(); // 닿은 오브젝트가 Mark 오브젝트인지 확인
         if (mark != null)
         {
-            highlightObject.SetActive(true);
-            highlightObject.transform.localPosition = pointObject.transform.position;
-            Debug.Log("Map Mark 찍음");
+            mark.EnableHighlightMark();
+            lastMark = mark;
         }
-        else
+        else if (lastMark != null)
         {
-            highlightObject.SetActive(false);
+            lastMark.DisableHighlightMark();
         }
     }
 
@@ -186,7 +172,7 @@ public class MapPanelUI : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, 1000f, LayerMask.GetMask("Map Object"))) // Map Object 탐지
         {
-            Debug.DrawRay(ray.origin, ray.direction * 100, Color.red, 5f);
+            //Debug.DrawRay(ray.origin, ray.direction * 100, Color.red, 5f);
         }
 
         return hit;

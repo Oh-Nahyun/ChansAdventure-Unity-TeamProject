@@ -38,12 +38,27 @@ public class MapManager : MonoBehaviour
     /// <summary>
     /// 맵 패널 UI
     /// </summary>
-    MapPanelUI mapPanelUI;
+    MapPanelUI largeMapPanelUI;
 
     /// <summary>
     /// 맵 패널 UI를 접근하기 위한 프로퍼티
     /// </summary>
-    public MapPanelUI MapPanelUI => mapPanelUI;
+    public MapPanelUI LargeMapPanelUI => largeMapPanelUI;
+
+    /// <summary>
+    /// largeMap panel canvasGruop
+    /// </summary>
+    CanvasGroup largeMapCanvasGroup;
+
+    /// <summary>
+    /// 미니맵 패널
+    /// </summary>
+    CanvasGroup miniMapPanelUI;
+
+    /// <summary>
+    /// 미니맵 패널 접근을 위한 프로퍼티
+    /// </summary>
+    public CanvasGroup MiniMapPanelUI => miniMapPanelUI;
 
     /// <summary>
     /// Map상에 플레이어 이동흔적을 표시할 Linerenderer
@@ -93,11 +108,23 @@ public class MapManager : MonoBehaviour
 
     private void InitalizeMapUI()
     {
-        mapPanelUI = FindObjectOfType<MapPanelUI>();
+        largeMapPanelUI = FindObjectOfType<MapPanelUI>();
 
-        if(mapPanelUI == null)
+        if(largeMapPanelUI == null)
         {
             Debug.LogWarning("[MapManager] : MapPanelUI가 존재하지 않습니다.");
+        }
+        else
+        {
+            largeMapCanvasGroup = LargeMapPanelUI.GetComponent<CanvasGroup>();
+        }
+
+        miniMapPanelUI = GameObject.Find("MiniMapPanel")?.GetComponent<CanvasGroup>();
+
+        if (miniMapPanelUI == null)
+        {
+            Debug.LogWarning("[MapManager] : miniMapPanelUI 존재하지 않습니다." +
+                "/ 오브젝트 이름을 확인해주세요 (MiniMapPanel)");
         }
 
         playerLineRenderer = GameObject.Find("PlayerFollowLine")?.GetComponent<LineRenderer>();
@@ -175,6 +202,25 @@ public class MapManager : MonoBehaviour
 
         return resultColor;
     }
+
+    /// <summary>
+    /// large 맵을 키는 함수 ( largeMap 켜짐, miniMap 꺼짐 )
+    /// </summary>
+    public void OpenMapUI()
+    {
+        largeMapCanvasGroup.alpha = 1.0f;
+        miniMapPanelUI.alpha = 0.0f;
+    }
+
+    /// <summary>
+    /// large 맵을 끄는 함수 ( largeMap 꺼짐, miniMap 켜짐 )
+    /// </summary>
+    public void CloseMapUI()
+    {
+        largeMapCanvasGroup.alpha = 0.0f;
+        miniMapPanelUI.alpha = 1.0f;
+    }
+
     #endregion
 
     #region MapCameraSetting

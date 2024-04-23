@@ -8,7 +8,7 @@ public class PlayerMapController : MonoBehaviour
 {
     PlayerinputActions inputActions;
 
-    CanvasGroup map_CanvasGroup;
+    CanvasGroup largeMap_CanvasGroup;
     LineRenderer playerLineRenderer;
     Camera mapCamera;
 
@@ -37,6 +37,11 @@ public class PlayerMapController : MonoBehaviour
     /// </summary>
     public Vector3 prePos;
 
+    /// <summary>
+    /// LargeMap을 열었는지 확인하는 변수
+    /// </summary>
+    bool isOpenedLargeMap = false;
+
     void Awake()
     {
         inputActions = new PlayerinputActions();
@@ -51,12 +56,10 @@ public class PlayerMapController : MonoBehaviour
     {
         inputActions.Player.Enable();
         inputActions.Player.Open_Map.performed += OnOpenMap;
-        inputActions.Player.Open_Map.canceled += OnOpenMap;
     }
 
     void OnDisable()
     {
-        inputActions.Player.Open_Map.canceled -= OnOpenMap;
         inputActions.Player.Open_Map.performed -= OnOpenMap;
         inputActions.Player.Disable();
     }
@@ -71,7 +74,7 @@ public class PlayerMapController : MonoBehaviour
     /// </summary>
     void Initialize()
     {
-        map_CanvasGroup = MapManager.Instance.MapPanelUI.GetComponent<CanvasGroup>();
+        largeMap_CanvasGroup = MapManager.Instance.LargeMapPanelUI.GetComponent<CanvasGroup>();
         playerLineRenderer = MapManager.Instance.PlayerLineRendere;
         mapCamera = MapManager.Instance.MapCamera;
 
@@ -85,17 +88,16 @@ public class PlayerMapController : MonoBehaviour
     private void OnOpenMap(InputAction.CallbackContext context)
     {
         // 임시 온오프
-        if (context.performed)
+        if (isOpenedLargeMap == false)
         {
-            mapCamera.transform.position = new Vector3(transform.position.x, 100f, transform.position.z); // 플레이어 위치 동기화
-            if (map_CanvasGroup.alpha == 1f)
-            {
-                map_CanvasGroup.alpha = 0f;
-            }
-            else
-            {
-                map_CanvasGroup.alpha = 1f;
-            }
+            MapManager.Instance.OpenMapUI();
+            isOpenedLargeMap = true;
+        }
+        else if(isOpenedLargeMap == true)
+        {
+            MapManager.Instance.SetCaemraPosition(transform.position);
+            MapManager.Instance.CloseMapUI();
+            isOpenedLargeMap = false;
         }
     }
 
