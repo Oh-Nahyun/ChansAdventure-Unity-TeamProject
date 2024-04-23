@@ -53,8 +53,7 @@ public class ShopItemPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     /// </summary>
     /// <param name="eventData"></param>
     public void OnPointerEnter(PointerEventData eventData)
-    {
-        Debug.Log("마우스 들어옴");
+    {   
         if (shopItemData != null)
         {
             // 해당 패널의 ItemData를 건내줌
@@ -68,7 +67,6 @@ public class ShopItemPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     /// <param name="eventData"></param>
     public void OnPointerExit(PointerEventData eventData)
     {
-        Debug.Log("마우스 나감");
         if (shopItemData != null)
         {
             shopItemData.gameObject.SetActive(false);
@@ -77,7 +75,7 @@ public class ShopItemPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        Debug.Log("마우스 클릭");
+        Debug.Log($"{itemNameText.text} 구매");
         
     }
 }

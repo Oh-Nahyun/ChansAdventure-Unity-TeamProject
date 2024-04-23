@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class TextBoxItem : MonoBehaviour
 {
+    Test_EquipCharacter player;
+
     public float alphaChangeSpeed = 5.0f;
     TextMeshProUGUI talkText;
     TextMeshProUGUI nameText;
@@ -53,10 +55,14 @@ public class TextBoxItem : MonoBehaviour
 
         // TextBoxManager에 대한 참조 가져오기
         textBoxManager = FindObjectOfType<TextBoxManager>();
+        
+        player = FindAnyObjectByType<Test_EquipCharacter>();
     }
 
     private void Start()
     {
+        inventory = player.Inventory;
+
         canvasGroup.alpha = 0.0f;
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
@@ -127,7 +133,9 @@ public class TextBoxItem : MonoBehaviour
                 itemIcon.sprite = Chestdata.scriptableObject.itemIcon;
                 nameText.text = $"{Chestdata.scriptableObject.itemName}";
                 talkText.text = $"{Chestdata.scriptableObject.desc}";
-                //inventory.AddSlotItem(Chestdata.itemCode, Chestdata.itemCount + 1);
+                Debug.Log((uint)Chestdata.scriptableObject.itemCode);
+                inventory.AddSlotItem((uint)Chestdata.scriptableObject.itemCode);
+               // inventory.AddSlotItem((uint)ItemCode.Hammer);
             }
             else
             {
