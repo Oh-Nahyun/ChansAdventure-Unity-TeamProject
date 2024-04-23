@@ -16,16 +16,24 @@ public class PlayerFollowVCam : MonoBehaviour
     readonly Vector3 zoomIn = new Vector3(0.25f, 0.0f, 2.0f);
     readonly Vector3 zoomOut = new Vector3(0.0f, 0.25f, -2.0f);
 
+    /// <summary>
+    /// 플레이어 Forward 방향에 위치한 트랜스폼
+    /// </summary>
+    Transform lookAtPosition;
+
     // 컴포넌트들
+    Player player;
     Weapon weapon;
     CinemachineVirtualCamera vcam;
     Cinemachine3rdPersonFollow follow;
 
     private void Awake()
     {
+        player = FindAnyObjectByType<Player>();
         weapon = FindAnyObjectByType<Weapon>();
         vcam = GetComponent<CinemachineVirtualCamera>();
         follow = vcam.GetCinemachineComponent<Cinemachine3rdPersonFollow>();
+        lookAtPosition = GameObject.FindWithTag("LookAtPosition").transform;
     }
 
     private void Update()
@@ -78,12 +86,18 @@ public class PlayerFollowVCam : MonoBehaviour
             if (IsZoom)
             {
                 follow.ShoulderOffset = Vector3.Lerp(zoomOut, zoomIn, timeElapsed);
+                follow.Damping = new Vector3(0.0f, 0.0f, 0.0f); // 카메라 Damping 제거
+                vcam.LookAt = lookAtPosition;
                 weapon.IsZoomIn = true; // 활이 조금이라도 당겨지면 ZoomIn이 true가 된다.
                 weapon.LoadArrowAfter();
+
+                vcam.transform.position = lookAtPosition.transform.position + new Vector3(0.25f, 0.0f, -1.0f); /////////////
             }
             else
             {
                 follow.ShoulderOffset = Vector3.Lerp(zoomIn, zoomOut, timeElapsed);
+                follow.Damping = new Vector3(0.1f, 0.5f, 0.3f); // 카메라 Damping 생성
+                vcam.LookAt = null;
                 weapon.IsZoomIn = false;
                 weapon.LoadArrowAfter();
             }
