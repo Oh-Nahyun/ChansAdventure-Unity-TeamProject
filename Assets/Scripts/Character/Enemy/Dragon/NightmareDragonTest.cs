@@ -544,6 +544,22 @@ public class NightmareDragonTest : RecycleObject, IBattler, IHealth
         }
     }
 
+    // 기본적으로는 3개 모션을 1개만 랜덤재생
+    // 확률로 연속 공격
+    // 연속 3번 or 2번 결정해야됨
+
+    // 2번
+    // 물기 박치기
+    // 박치기 휘두르기
+    // 물기 휘두르기
+    // 더 추가 하던가 말던가
+
+    // 3번
+    // 물기 물기 휘두르기
+    // 박치기 박치기 휘두르기
+    // 박치기 물기 휘두르기
+    // 더 추가 하던가 말던가
+
     IEnumerator BasicAttack()
     {
         animator.SetTrigger("AttackBasic");
