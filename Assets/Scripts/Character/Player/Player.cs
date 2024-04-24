@@ -188,6 +188,8 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth
     const float AnimatorStopSpeed = 0.0f;
     const float AnimatorWalkSpeed = 0.3f;
     const float AnimatorRunSpeed = 1.0f;
+    readonly int DieHash = Animator.StringToHash("IsDie");
+    readonly int GetHitHash = Animator.StringToHash("IsGetHit");
 
     // 컴포넌트
     Weapon weapon;
@@ -335,8 +337,14 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth
     {
         characterController.Move(Time.fixedDeltaTime * currentSpeed * inputDirection); // 캐릭터의 움직임
 
-        if (!weapon.IsZoomIn) // 카메라가 줌을 당기지 않을 경우에만 회전 적용
+        if (weapon.IsZoomIn)
         {
+            // 카메라가 줌을 당긴 경우
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 0.0f); // 회전을 적용하지 않는다.
+        }
+        else
+        {
+            // 카메라가 줌을 당기지 않을 경우
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * turnSpeed); // 목표 회전으로 변경
         }
     }
@@ -649,11 +657,19 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth
     #endregion
     #region Player IHealth Method
     /// <summary>
+    /// 적으로부터 공격을 받으면 실행되는 함수
+    /// </summary>
+    public void GetHit()
+    {
+        animator.SetTrigger(GetHitHash);
+    }
+
+    /// <summary>
     /// 사망시 실행되는 함수
     /// </summary>
     public void Die()
     {
-        throw new NotImplementedException();
+        animator.SetTrigger(DieHash);
     }
 
     /// <summary>
