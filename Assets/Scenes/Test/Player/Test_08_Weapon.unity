@@ -1783,12 +1783,12 @@ PrefabInstance:
     - target: {fileID: 958319394830657368, guid: b4c4bf6af9cc0ba458c6971e1d0146d0,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9914449
+      value: 0.9992035
       objectReference: {fileID: 0}
     - target: {fileID: 958319394830657368, guid: b4c4bf6af9cc0ba458c6971e1d0146d0,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.13052616
+      value: 0.039904393
       objectReference: {fileID: 0}
     - target: {fileID: 958319394830657368, guid: b4c4bf6af9cc0ba458c6971e1d0146d0,
         type: 3}
@@ -1825,6 +1825,11 @@ PrefabInstance:
       propertyPath: m_Follow
       value: 
       objectReference: {fileID: 44782377}
+    - target: {fileID: 6040742010599425935, guid: b4c4bf6af9cc0ba458c6971e1d0146d0,
+        type: 3}
+      propertyPath: m_LookAt
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 9177593735975562046, guid: b4c4bf6af9cc0ba458c6971e1d0146d0,
         type: 3}
       propertyPath: CameraSide

@@ -51,7 +51,6 @@ public class PlayerFollowVCam : MonoBehaviour
             // 플레이어가 마우스 왼쪽 버튼을 누르고 있는 경우
             if (Input.GetMouseButtonDown(0))
             {
-                // vcam.transform.rotation = Quaternion.LookRotation(player.transform.forward, Vector3.up); // 활시위를 당길 때, 캐릭터와 카메라가 같은 방향 바라보기
                 StopAllCoroutines();
                 StartCoroutine(Timer(true));
                 // Debug.Log("Camera Zoom-In");
@@ -85,20 +84,19 @@ public class PlayerFollowVCam : MonoBehaviour
 
             if (IsZoom)
             {
+                // vcam.transform.rotation = Quaternion.LookRotation(player.transform.forward, Vector3.up); // 활시위를 당길 때, 캐릭터와 카메라가 같은 방향 바라보기
                 follow.ShoulderOffset = Vector3.Lerp(zoomOut, zoomIn, timeElapsed);
                 follow.Damping = new Vector3(0.0f, 0.0f, 0.0f); // 카메라 Damping 제거
-                vcam.LookAt = lookAtPosition;
-                weapon.IsZoomIn = true; // 활이 조금이라도 당겨지면 ZoomIn이 true가 된다.
+                vcam.LookAt = lookAtPosition;                   // 카메라 목표물 설정
+                weapon.IsZoomIn = true;                         // 활이 조금이라도 당겨지면 ZoomIn이 true가 된다.
                 weapon.LoadArrowAfter();
-
-                vcam.transform.position = lookAtPosition.transform.position + new Vector3(0.25f, 0.0f, -1.0f); /////////////
             }
             else
             {
                 follow.ShoulderOffset = Vector3.Lerp(zoomIn, zoomOut, timeElapsed);
                 follow.Damping = new Vector3(0.1f, 0.5f, 0.3f); // 카메라 Damping 생성
-                vcam.LookAt = null;
-                weapon.IsZoomIn = false;
+                vcam.LookAt = null;                             // 카메라 목표물 초기화
+                weapon.IsZoomIn = false;                        // ZoomOut 표시
                 weapon.LoadArrowAfter();
             }
 

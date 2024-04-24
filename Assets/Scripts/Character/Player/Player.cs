@@ -188,6 +188,9 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth
     const float AnimatorStopSpeed = 0.0f;
     const float AnimatorWalkSpeed = 0.3f;
     const float AnimatorRunSpeed = 1.0f;
+
+    // 컴포넌트
+    Weapon weapon;
     #endregion
 
     #region Inventory Values (IHealth 포함되있음)
@@ -285,6 +288,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth
         controller = GetComponent<PlayerController>();
         characterController = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
+        weapon = GetComponent<Weapon>();
 
         interaction = GetComponent<Interaction>();
 
@@ -330,7 +334,11 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth
     void FixedUpdate()
     {
         characterController.Move(Time.fixedDeltaTime * currentSpeed * inputDirection); // 캐릭터의 움직임
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * turnSpeed); // 목표 회전으로 변경
+
+        if (!weapon.IsZoomIn) // 카메라가 줌을 당기지 않을 경우에만 회전 적용
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * turnSpeed); // 목표 회전으로 변경
+        }
     }
     #endregion
     #region Player Movement Method
