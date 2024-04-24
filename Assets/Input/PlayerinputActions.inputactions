@@ -112,6 +112,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Open_Map",
+                    "type": "Button",
+                    "id": "737a8fdb-fcb5-448e-b8b2-903601f994c1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -288,6 +297,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Get_Item",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5fabfa7f-7294-4607-819f-d3543147a784",
+                    "path": "<Keyboard>/m",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KM",
+                    "action": "Open_Map",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -564,6 +584,34 @@
                     "processors": "",
                     "groups": "KM",
                     "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "UI",
+            "id": "71e02c91-b80c-449b-90f8-2a7958ff69f3",
+            "actions": [
+                {
+                    "name": "Click",
+                    "type": "Button",
+                    "id": "19d9d04b-c567-404e-9e68-239cf225187e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "2fceb6b1-70d9-43e5-9b2f-2e4ea1c63907",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Click",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
