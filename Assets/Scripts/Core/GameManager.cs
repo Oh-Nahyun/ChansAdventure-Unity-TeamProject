@@ -20,6 +20,13 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     public ItemDataManager ItemDataManager => itemDataManager;
 
+    MapManager mapManager;
+
+    /// <summary>
+    /// mapManager 접근을 위한 프로퍼티
+    /// </summary>
+    public MapManager MapManager => mapManager;
+
     public CameraManager Cam
     {
         get
@@ -36,6 +43,7 @@ public class GameManager : Singleton<GameManager>
         weapon = FindAnyObjectByType<Weapon>();
         cameraManager = GetComponent<CameraManager>();
         itemDataManager = GetComponent<ItemDataManager>();
+        mapManager = GetComponent<MapManager>();
     }
 
 #if UNITY_EDITOR

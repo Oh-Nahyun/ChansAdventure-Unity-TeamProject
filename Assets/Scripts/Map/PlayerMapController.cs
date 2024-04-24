@@ -6,8 +6,6 @@ using UnityEngine.InputSystem;
 
 public class PlayerMapController : MonoBehaviour
 {
-    PlayerinputActions inputActions;
-
     CanvasGroup largeMap_CanvasGroup;
     LineRenderer playerLineRenderer;
 
@@ -36,31 +34,9 @@ public class PlayerMapController : MonoBehaviour
     /// </summary>
     public Vector3 prePos;
 
-    /// <summary>
-    /// LargeMap을 열었는지 확인하는 변수
-    /// </summary>
-    bool isOpenedLargeMap = false;
-
-    void Awake()
-    {
-        inputActions = new PlayerinputActions();
-    }
-
     private void Start()
     {
         Initialize();
-    }
-
-    void OnEnable()
-    {
-        inputActions.Player.Enable();
-        inputActions.Player.Open_Map.performed += OnOpenMap;
-    }
-
-    void OnDisable()
-    {
-        inputActions.Player.Open_Map.performed -= OnOpenMap;
-        inputActions.Player.Disable();
     }
 
     private void Update()
@@ -79,7 +55,7 @@ public class PlayerMapController : MonoBehaviour
     /// </summary>
     void FollowMapCam()
     {
-        if (isOpenedLargeMap == false)
+        if (GameManager.Instance.Player.IsOpenedLargeMap == false)
         {
             MapManager.Instance.SetCameraPosition(playerPos);
         }
@@ -94,26 +70,6 @@ public class PlayerMapController : MonoBehaviour
         playerLineRenderer = MapManager.Instance.PlayerLineRendere;
 
         InitLine();
-    }
-
-    /// <summary>
-    /// 맵 키는 함수 ( M key )
-    /// </summary>
-    /// <param name="context"></param>
-    private void OnOpenMap(InputAction.CallbackContext context)
-    {
-        // 임시 온오프
-        if (isOpenedLargeMap == false)
-        {
-            MapManager.Instance.OpenMapUI();
-            isOpenedLargeMap = true;
-        }
-        else if(isOpenedLargeMap == true)
-        {
-            MapManager.Instance.SetCameraPosition(transform.position);
-            MapManager.Instance.CloseMapUI();
-            isOpenedLargeMap = false;
-        }
     }
 
     /// <summary>

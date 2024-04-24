@@ -12,11 +12,6 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth
 {
     #region additional Classes
     PlayerController controller;
-    
-    /// <summary>
-    /// PlayerSKills를 받기위한 프로퍼티
-    /// </summary>
-    public PlayerSkills Skills => gameObject.GetComponent<PlayerSkills>();
 
     Animator animator;
     CharacterController characterController;
@@ -236,6 +231,11 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth
     /// </summary>
     Inventory inventory;
 
+    /// <summary>
+    /// 인벤토리가 열렸는지 확인하는 변수
+    /// </summary>
+    bool isInventoryOpen;
+
     #endregion
 
     #region PlayerInteraction Values
@@ -244,6 +244,16 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth
     /// 상호작용을 하기위한 interaction 클래스
     /// </summary>
     Interaction interaction;
+
+    #endregion
+
+    #region Etc Values
+    /// <summary>
+    /// LargeMap을 열었는지 확인하는 변수
+    /// </summary>
+    bool isOpenedLargeMap = false;
+
+    public bool IsOpenedLargeMap => isOpenedLargeMap;
 
     #endregion
 
@@ -269,33 +279,34 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth
 
         // controller
         controller.onMove += OnMove;
-        controller.onMoveModeChagne += OnMoveModeChange;
+        controller.onMoveModeChange += OnMoveModeChange;
         controller.onLook += OnLookAround;
         controller.onSlide += OnSlide;
         controller.onJump += OnJump;
-        controller.onInteraction = OnGetItem;
+        controller.onInteraction += OnGetItem;
+        controller.onInventoryOpen += OnInventoryShow;
+        controller.onMapOpen += OnMapShow;
 
         // inventory
         inventory = new Inventory(this.gameObject, 16);
         GameManager.Instance.ItemDataManager.InventoryUI.InitializeInventoryUI(inventory); // 인벤 UI 초기화
         EquipPart = new InventorySlot[partCount]; // EquipPart 배열 초기화
-#if UNITY_EDITOR
-        Test_AddItem();
-#endif
     }
 
-    void Update()
+    private void Update()
     {        
         LookRotation();
         Jump();
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         characterController.Move(Time.fixedDeltaTime * currentSpeed * inputDirection); // 캐릭터의 움직임
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * turnSpeed);  // 목표 회전으로 변경
     }
+
     #endregion
+
     #region Player Movement Method
     /// <summary>
     /// Get Player input Values
@@ -443,6 +454,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth
         animator.SetTrigger(IsSlideHash);
     }
     #endregion 
+
     #region Player Inventory Method
 
     /// <summary>
@@ -499,7 +511,31 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth
         Destroy(partPosition[(int)part].GetChild(0).gameObject);    // 아이템 오브젝트 파괴
     }
 
+    /// <summary>
+    /// 인벤토리 키 ( I Key )를 눌렀을 때 실행되는 함수
+    /// </summary>
+    private void OnInventoryShow()
+    {
+        if (IsOpenedLargeMap)
+            return;
+        else
+        {
+            isInventoryOpen = GameManager.Instance.ItemDataManager.InventoryUI.ShowInventory();
+            GameManager.Instance.ItemDataManager.CharaterRenderCameraPoint.transform.eulerAngles = new Vector3(0, 180f, 0); // RenderTexture 플레이어 위치 초기화
+
+            if(isInventoryOpen)
+            {
+                GameManager.Instance.MapManager.CloseMiniMapUI();
+            }
+            else
+            {
+                GameManager.Instance.MapManager.OpenMiniMapUI();
+            }
+        }        
+    }
+
     #endregion
+
     #region Player IHealth Method
     /// <summary>
     /// 사망시 실행되는 함수
@@ -571,7 +607,28 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth
     }
     #endregion
 
-    #region additional Method
+    #region Etc Method
+
+    void OnMapShow()
+    {
+        if(isInventoryOpen)
+            return;
+
+        // 임시 온오프
+        if (isOpenedLargeMap == false)
+        {
+            MapManager.Instance.OpenMapUI();
+            isOpenedLargeMap = true;
+        }
+        else if (isOpenedLargeMap == true)
+        {
+            MapManager.Instance.SetCameraPosition(transform.position);
+            MapManager.Instance.CloseMapUI();
+            isOpenedLargeMap = false;
+        }
+    }
+
+
     /// <summary>
     /// 캐릭터의 Collider를 켜는 함수 (Animation 설정용)
     /// </summary>

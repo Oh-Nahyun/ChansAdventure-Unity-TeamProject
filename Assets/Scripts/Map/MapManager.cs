@@ -166,6 +166,22 @@ public class MapManager : MonoBehaviour
         MapCamera.orthographicSize = 20f;
     }
 
+    /// <summary>
+    /// 미니맵 열 때 실행하는 함수
+    /// </summary>
+    public void OpenMiniMapUI()
+    {
+        miniMapPanelUI.alpha = 1.0f;
+    }
+
+    /// <summary>
+    /// 미니맵 끌 때 실행하는 함수
+    /// </summary>
+    public void CloseMiniMapUI()
+    {
+        miniMapPanelUI.alpha = 0.0f;        
+    }
+
     #endregion
 
     #region ObjectSetting

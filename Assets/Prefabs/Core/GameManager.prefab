@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3538699424490670605}
   - component: {fileID: 7616533183204277396}
   - component: {fileID: 1789021134245975183}
+  - component: {fileID: 8413078663783774573}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -83,6 +84,25 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 26764ef1ae7ad6a47bf75f6eba901eae, type: 2}
   - {fileID: 11400000, guid: d4ffee2bd0191214ea867cb3133356ac, type: 2}
   CharaterRenderCameraPoint: {fileID: 0}
+--- !u!114 &8413078663783774573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4259061661310028882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c7a4a50e2e404c4caa12015f2bd96d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapSizeX: 300
+  mapSizeY: 300
+  panelSize: 10
+  color: []
+  ColorCount: 0
+  colorGap: 5
+  playerMark: {fileID: 0}
 --- !u!1001 &1512909484931155663
 PrefabInstance:
   m_ObjectHideFlags: 0

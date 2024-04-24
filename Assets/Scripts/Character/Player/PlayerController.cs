@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
 
     // movment delegate
     public Action<Vector2, bool> onMove;
-    public Action onMoveModeChagne;
+    public Action onMoveModeChange;
     public Action<Vector2, bool> onLook;
     public Action onSlide;
     public Action<bool> onJump;
@@ -23,6 +23,8 @@ public class PlayerController : MonoBehaviour
 
     // behavior delegate
     public Action onInteraction;
+    public Action onInventoryOpen;
+    public Action onMapOpen;
 
     void Awake()
     {
@@ -45,12 +47,18 @@ public class PlayerController : MonoBehaviour
         playerInputAction.Player.Open_Inventory.performed += OnOpenInventory;
         playerInputAction.Player.Get_Item.performed += OnGetItem;
 
+        // Map
+        playerInputAction.Player.Open_Map.performed += OnOpenMap;
+
         //playerInputAction.Player.ActiveSkillMode.performed += OnSkillModeChange;
     }
 
     void OnDisable()
     {
         //playerInputAction.Player.ActiveSkillMode.performed -= OnSkillModeChange;
+
+        // Map
+        playerInputAction.Player.Open_Map.performed -= OnOpenMap;
 
         // Player Inventory
         playerInputAction.Player.Open_Inventory.performed -= OnOpenInventory;
@@ -100,7 +108,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void OnMoveModeChangeInput(CallbackContext _)
     {
-        onMoveModeChagne?.Invoke();
+        onMoveModeChange?.Invoke();
     }
 
     /// <summary>
@@ -135,9 +143,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void OnOpenInventory(InputAction.CallbackContext _)
     {
-        GameManager.Instance.ItemDataManager.InventoryUI.ShowInventory();
-
-        GameManager.Instance.ItemDataManager.CharaterRenderCameraPoint.transform.eulerAngles = new Vector3(0, 180f, 0); // RenderTexture 플레이어 위치 초기화
+        onInventoryOpen?.Invoke();        
     }
 
     /// <summary>
@@ -147,6 +153,18 @@ public class PlayerController : MonoBehaviour
     {
         onInteraction?.Invoke();
     }
+    #endregion
+
+    #region Etc
+    /// <summary>
+    /// 맵 키는 함수 ( M key )
+    /// </summary>
+    /// <param name="context"></param>
+    private void OnOpenMap(InputAction.CallbackContext context)
+    {
+        onMapOpen?.Invoke();
+    }
+
     #endregion
 
     /// <summary>
