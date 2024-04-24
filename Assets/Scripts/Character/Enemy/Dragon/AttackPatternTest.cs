@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class AttackPatternTest : MonoBehaviour
 {
+    // NightmareDragon
+    // IBattler => void Defence(float damage);
     // BasicAttack, HornAttack, ClawAttack 애니메이션 이름
-    // AttackBasic, nAttackHor, AttackClaw 이름의 Trigger형으로 각각 연결되어 있음
-    // // BasicAttack, HornAttack, ClawAttack 애니메이션 시간 각각 1.2f, 2.167f, 3.333f
+    // AttackBasic, AttackHorn, AttackClaw 이름의 Trigger형으로 각각 연결되어 있음
+    // BasicAttack, HornAttack, ClawAttack 애니메이션 시간 각각 1.2f, 2.167f, 3.333f
 
     // 기본적으로는 3개 모션을 1개만 랜덤재생
     // 확률로 연속 공격
