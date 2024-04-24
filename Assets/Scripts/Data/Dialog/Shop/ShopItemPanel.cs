@@ -15,6 +15,13 @@ public class ShopItemPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public ItemData itemData;
     ShopItemData shopItemData;
 
+    Inventory inventory;
+
+    Test_EquipCharacter player;
+
+    public Color inStockColor = Color.white;
+    public Color noStockColor = Color.red;
+
     /// <summary>
     /// 아이템의 남은 재고
     /// </summary>
@@ -35,6 +42,8 @@ public class ShopItemPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         child = child.transform.GetChild(1);
         itemPriceText = child.GetComponent<TextMeshProUGUI>();
         shopItemData = FindAnyObjectByType<ShopItemData>();
+
+        player = FindAnyObjectByType<Test_EquipCharacter>();
     }
 
     private void Start()
@@ -46,6 +55,11 @@ public class ShopItemPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             itemStockText.text = itemStock.ToString();
             itemPriceText.text = itemData.price.ToString();
         }
+    }
+
+    private void Update()
+    {
+        setShopItemText();
     }
 
     /// <summary>
@@ -75,7 +89,53 @@ public class ShopItemPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        Debug.Log($"{itemNameText.text} 구매");
-        
+        if (inventory.Gold >= itemData.price)
+        {
+            if (itemStock > 0)
+            {
+                inventory.AddSlotItem((uint)itemData.itemCode);
+                itemStock--;
+                itemStockText.text = itemStock.ToString();
+
+                inventory.SubCoin(itemData.price);
+            }
+            else
+            {
+                Debug.Log($"{itemData.itemName} 재고 없음");
+            }
+        }
+        else
+        {
+            Debug.Log("잔액이 모자름");
+        }
+    }
+
+    private void setShopItemText()
+    {
+        if (inventory == null)
+        {
+            inventory = player.Inventory;
+        }
+
+        if (inventory.Gold > itemData.price)
+        {
+            itemNameText.color = inStockColor;
+            itemPriceText.color = inStockColor;
+        }
+        else
+        {
+            itemNameText.color = noStockColor;
+            itemPriceText.color = noStockColor;
+        }
+
+        if (itemStock > 0)
+        {
+            itemStockText.color = inStockColor;
+        }
+        else
+        {
+            itemNameText.color = noStockColor;
+            itemStockText.color = noStockColor;
+        }
     }
 }

@@ -6,11 +6,15 @@ using UnityEngine.UI;
 
 public class TextBoxItem : MonoBehaviour
 {
+    /// <summary>
+    /// 플레이어
+    /// </summary>
     Test_EquipCharacter player;
 
     public float alphaChangeSpeed = 5.0f;
     TextMeshProUGUI talkText;
     TextMeshProUGUI nameText;
+    TextMeshProUGUI itemCountText;
     CanvasGroup canvasGroup;
     Image endImage;
     Image itemIcon;
@@ -53,6 +57,9 @@ public class TextBoxItem : MonoBehaviour
         child = transform.GetChild(6);
         itemIcon = child.GetComponent<Image>();
 
+        child = transform.GetChild(7);
+        itemCountText = child.GetComponent<TextMeshProUGUI>();
+
         // TextBoxManager에 대한 참조 가져오기
         textBoxManager = FindObjectOfType<TextBoxManager>();
         
@@ -61,8 +68,6 @@ public class TextBoxItem : MonoBehaviour
 
     private void Start()
     {
-        inventory = player.Inventory;
-
         canvasGroup.alpha = 0.0f;
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
@@ -133,9 +138,22 @@ public class TextBoxItem : MonoBehaviour
                 itemIcon.sprite = Chestdata.scriptableObject.itemIcon;
                 nameText.text = $"{Chestdata.scriptableObject.itemName}";
                 talkText.text = $"{Chestdata.scriptableObject.desc}";
-                Debug.Log((uint)Chestdata.scriptableObject.itemCode);
-                inventory.AddSlotItem((uint)Chestdata.scriptableObject.itemCode);
-               // inventory.AddSlotItem((uint)ItemCode.Hammer);
+                itemCountText.text = $"X {Chestdata.itemCount}";
+
+                if(Chestdata.itemCount > 1)
+                {
+                    itemCountText.gameObject.SetActive(true);
+                }
+                else
+                {
+                    itemCountText.gameObject.SetActive(false);
+                }
+
+                if (inventory == null)
+                {
+                    inventory = player.Inventory;
+                }
+                inventory.AddSlotItem((uint)Chestdata.scriptableObject.itemCode, Chestdata.itemCount);
             }
             else
             {

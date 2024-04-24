@@ -87,6 +87,8 @@ public class TextBox : MonoBehaviour
     /// </summary>
     public void Action()
     {
+        Debug.Log("감지3");
+
         talkText.text = "";
         nameText.text = "";
         if (scanObject != null)
@@ -118,6 +120,7 @@ public class TextBox : MonoBehaviour
             {
                 nameText.text = $"{NPCdata.nameNPC}";
             }
+            Debug.Log("감지1");
             endImageAnimator.speed = 1.0f;
             endImage.color = new Color(endImage.color.r, endImage.color.g, endImage.color.b, 1f);
             typingTalk = false;
@@ -227,6 +230,12 @@ public class TextBox : MonoBehaviour
 
         if (NPCdata.selectId)
         {
+            Debug.Log("감지2");
+            string buttonText0 = textBoxManager.GetTalkData(NPCdata.id+4)[0];
+            string buttonText1 = textBoxManager.GetTalkData(NPCdata.id+4)[1];
+            string buttonText2 = textBoxManager.GetTalkData(NPCdata.id+4)[2];
+
+            textSelet.setButtonText(buttonText0, buttonText1, buttonText2);
             textSelet.onSeletStart();
         }
         else

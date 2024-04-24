@@ -55,6 +55,12 @@ public class TextBoxManager : MonoBehaviour
 
         // 상인
         talkData.Add(4000, new string[] { "어서옵쇼!!" });
+        talkData.Add(4010, new string[] { "어서옵쇼!!" });
+        talkData.Add(4011, new string[] { "구매"});
+        talkData.Add(4012, new string[] { "판매"});
+        talkData.Add(4013, new string[] { "안녕히 가십쇼!!" });
+
+        talkData.Add(4014, new string[] { "구매하기", "판매하기","나가기" });
 
         // 도사
         talkData.Add(5000, new string[] { "....." });

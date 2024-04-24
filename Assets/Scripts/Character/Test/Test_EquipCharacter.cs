@@ -256,6 +256,8 @@ public class Test_EquipCharacter : MonoBehaviour, IEquipTarget, IHealth
         inventory.AddSlotItem((uint)ItemCode.Sword);
         inventory.AddSlotItem((uint)ItemCode.HP_portion,3);
         inventory.AddSlotItem((uint)ItemCode.Coin);
+
+        inventory.AddCoin(25000);
     }
 #endif
 }

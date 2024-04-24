@@ -391,6 +391,15 @@ public class Inventory
         Gold += price;
     }
 
+    /// <summary>
+    /// 골드를 소모할 때 실행되는 함수
+    /// </summary>
+    /// <param name="price">획득할 골드량</param>
+    public void SubCoin(uint price)
+    {
+        Gold -= price;
+    }
+
 #if UNITY_EDITOR
 
     /// <summary>

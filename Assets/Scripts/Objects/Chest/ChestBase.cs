@@ -11,16 +11,9 @@ public class ChestBase : NPCBase
     public ItemData scriptableObject;
 
     /// <summary>
-    /// 상자안의 아이템 코드
-    /// </summary>
-    [Tooltip("아이템 코드 입력")]
-    public uint itemCode;
-
-    /// <summary>
     /// 상자안의 아이템 개수
     /// </summary>
     [Tooltip("아이템 개수 입력")]
-    [Range(1, 10)]
     public int itemCount = 1;
 
     protected override void Awake()
@@ -28,7 +21,6 @@ public class ChestBase : NPCBase
         base.Awake();
         isTextObject = true;
         isNPC = false;
-        itemCode = (uint)scriptableObject.itemCode;
     }
 
     protected override void Start()
@@ -52,7 +44,7 @@ public class ChestBase : NPCBase
         {
             animator.SetBool(IsOpenHash, true);
             id = 199;
-            gameObject.tag = "Object";
+            gameObject.tag = "Untagged";
         }
     }
 
