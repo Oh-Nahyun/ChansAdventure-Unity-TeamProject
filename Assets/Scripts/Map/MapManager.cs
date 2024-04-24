@@ -17,7 +17,6 @@ public class MapManager : MonoBehaviour
     public float mapSizeX = 300f;
     public float mapSizeY = 300f;
     public float panelSize = 10f;
-    public GameObject panelPrefab;
 
     [Header("Map Object Info")]
     /// <summary>
@@ -94,18 +93,12 @@ public class MapManager : MonoBehaviour
         InitalizeMapFunctions();
     }
 
-    private void Start()
-    {
-        GenerateWorldMapUI(mapSizeX, mapSizeY);
-    }
-
     /// <summary>
     /// Map에 관련된 초기화 함수를 모아둔 함수
     /// </summary>
     private void InitalizeMapFunctions()
     {
         InitalizeMapUI();
-        InitializeMapColor();
     }
 
     private void InitalizeMapUI()
@@ -147,71 +140,17 @@ public class MapManager : MonoBehaviour
 
     #region MapPanelMethods
 
-    private void InitializeMapColor()
-    {
-        color = new Color[ColorCount];
-
-        for (int i = 0; i < color.Length; i++)
-        {
-            float ratio = 1 / (float)ColorCount;    // 색깔개수 별로 색 비율 결정
-            color[i] = Color.white * ratio * (i + 1);         // 색상 정하기
-            color[i].a = 1f;                        // alpha값은 1로 다시 변경
-        }
-    }
-    
-    /// <summary>
-    /// Map Object Panel을 생성하는 함수
-    /// </summary>
-    /// <param name="mapSizeX">최대 맵 사이즈 x</param>
-    /// <param name="mapSizeY">최대 맵 사이즈 y</param>
-    void GenerateWorldMapUI(float mapSizeX, float mapSizeY)
-    {
-        int panelCountX = Mathf.FloorToInt(mapSizeX / panelSize); // x좌표값의 패널 개수
-        int panelCountY = Mathf.FloorToInt(mapSizeY / panelSize); // y좌표값의 패널 개수
-
-        GameObject MapObj = new GameObject("MapObject");
-        MapObj.transform.parent = transform;
-        MapObj.transform.localPosition = new Vector3(0, 20f, 0);
-
-        // panel 생성
-        for(int y = 0; y < panelCountY; y++)
-        {
-            for (int x = 0; x < panelCountX; x++)
-            {
-                Vector3 objVector = new Vector3(x * panelSize, 0f, y * panelSize);
-                GameObject panelobj = Instantiate(panelPrefab, Vector3.zero, Quaternion.Euler(90f,0f,0f), MapObj.transform);
-                panelobj.transform.localPosition = objVector;
-                panelobj.AddComponent<MapObject>().mapObject = panelobj;
-                //panelobj.name = $"NO.{y * panelCountX + x} Panel";
-                panelobj.name = $"[{x}]_[{y}] Panel";
-            }
-        }
-    }
-
-    /// <summary>
-    /// 오브젝트의 색깔을 정해주는 함수
-    /// </summary>
-    /// <param name="yPosition">오브젝트의 y좌표 값 ( World )</param>
-    /// <returns>yPosition / ColorCount의 결과 값 배열 색</returns>
-    public Color SetColor(float yPosition)
-    {
-        Color resultColor = Color.white;
-
-        int colorIndex = Mathf.FloorToInt(yPosition / (float)colorGap); // color 인덱스 값 설정
-        if (colorIndex > ColorCount - 1) colorIndex = (int)ColorCount - 1;
-
-        resultColor = color[colorIndex];
-
-        return resultColor;
-    }
-
     /// <summary>
     /// large 맵을 키는 함수 ( largeMap 켜짐, miniMap 꺼짐 )
     /// </summary>
     public void OpenMapUI()
     {
         largeMapCanvasGroup.alpha = 1.0f;
+        largeMapCanvasGroup.interactable = true;
+        largeMapCanvasGroup.blocksRaycasts = true;
         miniMapPanelUI.alpha = 0.0f;
+
+        MapCamera.orthographicSize = 50f;
     }
 
     /// <summary>
@@ -220,7 +159,11 @@ public class MapManager : MonoBehaviour
     public void CloseMapUI()
     {
         largeMapCanvasGroup.alpha = 0.0f;
+        largeMapCanvasGroup.interactable = false;
+        largeMapCanvasGroup.blocksRaycasts = false;
         miniMapPanelUI.alpha = 1.0f;
+
+        MapCamera.orthographicSize = 20f;
     }
 
     #endregion
@@ -231,17 +174,19 @@ public class MapManager : MonoBehaviour
     /// 카메라 위치를 조절하는 함수
     /// </summary>
     /// <param name="position"> 추가할 카메라 위치값 ( y좌표값은 100으로 고정 ) </param>
-    public void SetCaemraPosition(Vector3 position)
+    public void SetCameraPosition(Vector3 position)
     {
-        Transform child = transform.GetChild(0); // MapObject
+        //Transform child = transform.GetChild(0); // MapObject
 
         float minX = transform.position.x; // MapManager는 맵의 좌측 하단에 있다.
         float minY = transform.position.z;
-        float maxX = child.GetChild(child.childCount - 1).position.x; // 우측 상단의 Panel 좌표값
-        float maxY = child.GetChild(child.childCount - 1).position.z;
-
+        float maxX = mapSizeX * 0.5f; // 우측 상단의 Panel 좌표값
+        float maxY = mapSizeY * 0.5f;
+        //float maxX = child.GetChild(child.childCount - 1).position.x; // 우측 상단의 Panel 좌표값
+        //float maxY = child.GetChild(child.childCount - 1).position.z;
+        
         mapCamera.transform.position += position; // 카메라 위치 설정
-
+        
         // 카메라 위치값 범위 설정
         mapCamera.transform.position = new Vector3
                 (Mathf.Clamp(position.x, minX, maxX),

@@ -81,7 +81,7 @@ public class PlayerMapController : MonoBehaviour
     {
         if (isOpenedLargeMap == false)
         {
-            MapManager.Instance.SetCaemraPosition(playerPos);
+            MapManager.Instance.SetCameraPosition(playerPos);
         }
     }
 
@@ -110,7 +110,7 @@ public class PlayerMapController : MonoBehaviour
         }
         else if(isOpenedLargeMap == true)
         {
-            MapManager.Instance.SetCaemraPosition(transform.position);
+            MapManager.Instance.SetCameraPosition(transform.position);
             MapManager.Instance.CloseMapUI();
             isOpenedLargeMap = false;
         }

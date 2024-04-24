@@ -34,11 +34,6 @@ public class MapPanelUI : MonoBehaviour
     Vector3 onDragingVector = Vector3.zero;
 
     /// <summary>
-    /// 드래그가 끝나는 위치 Vector 값
-    /// </summary>
-    Vector3 endDragVector = Vector3.zero;
-
-    /// <summary>
     /// 드래그를 하는지 확인하는 플래그 변수
     /// </summary>
     bool isDrag = false;
@@ -78,7 +73,7 @@ public class MapPanelUI : MonoBehaviour
     {
         startDragVector = new Vector3(vector.x, 0, vector.y);
         startDragVector += mapCamera.transform.position;
-        MapManager.Instance.SetCaemraPosition(startDragVector);
+        MapManager.Instance.SetCameraPosition(startDragVector);
     }
 
     /// <summary>
@@ -93,8 +88,7 @@ public class MapPanelUI : MonoBehaviour
 
         Vector3 result = startDragVector - onDragingVector;
 
-        MapManager.Instance.SetCaemraPosition(result);
-        endDragVector = result;
+        MapManager.Instance.SetCameraPosition(result);
     }
 
     /// <summary>
@@ -104,7 +98,6 @@ public class MapPanelUI : MonoBehaviour
     private void OnDragEnd(Vector2 vector)
     {
         isDrag = false;
-        //endDragVector = mapCamera.ScreenToWorldPoint(endDragVector);
     }
 
     /// <summary>
@@ -126,7 +119,7 @@ public class MapPanelUI : MonoBehaviour
 
             if (mark != null)   // 닿은 곳에 Mark가 있다.
             {
-                mark.ShowMarkInfo();
+                mark.DestoryMark();
             }
             else // Mark가 없다 : Mark 생성
             {
@@ -172,7 +165,7 @@ public class MapPanelUI : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, 1000f, LayerMask.GetMask("Map Object"))) // Map Object 탐지
         {
-            //Debug.DrawRay(ray.origin, ray.direction * 100, Color.red, 5f);
+            Debug.DrawRay(ray.origin, ray.direction * 100, Color.red, 5f);
         }
 
         return hit;

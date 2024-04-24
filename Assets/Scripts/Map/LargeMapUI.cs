@@ -38,10 +38,7 @@ public class LargeMapUI : MonoBehaviour,
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if(eventData.pointerClick)
-        {
-            onClick?.Invoke(eventData.button, eventData.position);
-        }
+        onClick?.Invoke(eventData.button, eventData.position);
     }
 
     public void OnPointerMove(PointerEventData eventData)

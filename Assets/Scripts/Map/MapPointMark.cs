@@ -20,7 +20,7 @@ public class MapPointMark : MonoBehaviour
     /// <summary>
     /// Mark 오브젝트를 오른쪽 클릭했을 때 실행하는 함수
     /// </summary>
-    public void ShowMarkInfo()
+    public void DestoryMark()
     {
         Debug.Log($"GameObject Name : {transform.position}");
 
