@@ -18,6 +18,11 @@ public class TextInteraction : MonoBehaviour
         textBoxItem = FindAnyObjectByType<TextBoxItem>();
     }
 
+    private void Update()
+    {
+        
+    }
+
     /// <summary>
     /// 가장 가까운 오브젝트의 상호작용 텍스트를 출력하는 함수
     /// </summary>
@@ -55,7 +60,7 @@ public class TextInteraction : MonoBehaviour
 
     public void TextActive(bool t)
     {
-        if (textBox.Talking || textBoxItem.Talking)
+        if (textBox.TalkingEnd || textBoxItem.Talking)
         {
             gameObject.SetActive(false);
         }else if (t)

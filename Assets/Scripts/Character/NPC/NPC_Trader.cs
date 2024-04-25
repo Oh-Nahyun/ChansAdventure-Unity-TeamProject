@@ -5,6 +5,7 @@ using UnityEngine;
 public class NPC_Trader : NPCBase
 {
     ShopInfo shop;
+    TextBox textBox;
 
     public string selectButtonText1_1;
     public string selectButtonText1_2;
@@ -13,6 +14,7 @@ public class NPC_Trader : NPCBase
     protected override void Awake()
     {
         shop = FindAnyObjectByType<ShopInfo>();
+        textBox = FindAnyObjectByType<TextBox>();
 
         base.Awake();
         isNPC = true;    
@@ -21,6 +23,7 @@ public class NPC_Trader : NPCBase
     protected override void Start()
     {
         base.Start();
+        //shop.gameObject.SetActive(false);
     }
 
     protected override void Update()
@@ -34,11 +37,24 @@ public class NPC_Trader : NPCBase
         if(id == 4011)
         {
             shop.gameObject.SetActive(true);
-            id = 4010;
+            shop.CanvasGroup.alpha = 1;
+            if (!textBox.TalkingEnd)
+            {
+                id = 4010;
+            }
+        }else if (id == 4012)
+        {
+            if (!textBox.TalkingEnd)
+            {
+                id = 4010;
+            }
         }
         else
         {
-            id = 4010;
+            if (!textBox.TalkingEnd)
+            {
+                id = 4010;
+            }
         }
     }
 

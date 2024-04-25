@@ -26,7 +26,7 @@ public class TextBox : MonoBehaviour
 
     private bool talkingEnd;
     private bool talking;
-    public bool Talking => talking;
+    public bool TalkingEnd => talkingEnd;
 
     private bool typingTalk;
     private bool typingStop;
@@ -65,13 +65,13 @@ public class TextBox : MonoBehaviour
 
         endImageAnimator.speed = 0.0f;
 
-        if (scanObject != null)
+        GameManager.Instance.onTalkNPC += () =>
         {
-            GameManager.Instance.onTalkNPC += () =>
+            if (scanObject != null)
             {
                 Action();
-            };
-        }
+            }
+        };
     }
 
     private void Update()
@@ -167,6 +167,7 @@ public class TextBox : MonoBehaviour
         }
         else
         {
+            talkingEnd = false;
             while (canvasGroup.alpha > 0.0f)
             {
                 canvasGroup.alpha -= Time.deltaTime * alphaChangeSpeed;
@@ -178,7 +179,6 @@ public class TextBox : MonoBehaviour
             nameText.text = "";
             talkIndex = 0;
             talking = false;
-            talkingEnd = false;
             NPCdata.isTalk = false;
         }
     }
