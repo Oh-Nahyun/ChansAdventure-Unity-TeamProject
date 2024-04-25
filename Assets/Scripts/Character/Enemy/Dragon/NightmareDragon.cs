@@ -64,7 +64,7 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
                     case EnemyState.Attack:
                         agent.isStopped = true;
                         agent.velocity = Vector3.zero;
-                        attackCoolTime = attackInterval;
+                        attackCoolTime = 0.1f;
                         onStateUpdate = Update_Attack;
                         break;
                     case EnemyState.Dead:
@@ -246,6 +246,46 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
     /// </summary>
     public ItemDropInfo[] dropItems;
 
+    /// <summary>
+    /// 물기 공격 애니메이션 시간
+    /// </summary>
+    private const float BasicAttackDuration = 1.2f;
+
+    /// <summary>
+    /// 박치기 공격 애니메이션 시간
+    /// </summary>
+    private const float HornAttackDuration = 2.167f;
+
+    /// <summary>
+    /// 앞발 휘두르기 공격 애니메이션 시간
+    /// </summary>
+    private const float ClawAttackDuration = 3.333f;
+
+    /// <summary>
+    /// 단일 물기 공격 확률
+    /// </summary>
+    const float BasicAttackProbability = 0.25f;
+
+    /// <summary>
+    /// 단일 박치기 공격 확률
+    /// </summary>
+    const float HornAttackProbability = 0.25f;
+
+    /// <summary>
+    /// 단일 앞발 휘두르기 공격 확률
+    /// </summary>
+    const float ClawAttackProbability = 0.25f;
+
+    /// <summary>
+    /// 각 콤보 공격 확률
+    /// </summary>
+    const float ComboProbability = 0.08333f;
+
+    /// <summary>
+    /// 현재 공격 중인지 확인용 변수
+    /// </summary>
+    bool isAttacking = false;
+
     // 컴포넌트들
     Animator animator;
     NavMeshAgent agent;
@@ -422,13 +462,13 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
 
     void Update_Attack()
     {
-        if(!isAttacking)
+        if(!isAttacking && attackCoolTime > 0)
         {
             attackCoolTime -= Time.deltaTime;
         }
         transform.rotation = Quaternion.Slerp(transform.rotation,
             Quaternion.LookRotation(attackTarget.transform.position - transform.position), 0.1f);
-        if (attackCoolTime < 0)
+        if (attackCoolTime < 0 && !isAttacking)
         {
             Attack(attackTarget, false);
         }
@@ -507,16 +547,7 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
         return result;
     }
 
-    ///// <summary>
-    ///// 공격처리용 함수
-    ///// </summary>
-    ///// <param name="target">공격 대상</param>
-    //public void Attack(IBattler target, bool isWeakPoint)
-    //{
-    //    animator.SetTrigger("Attack");      // 애니메이션 재생
-    //    target.Defence(AttackPower);        // 공격 대상에게 데미지 전달
-    //    attackCoolTime = attackInterval;    // 쿨타임 초기화
-    //}
+    
 
     // 공격 설정 ------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -526,46 +557,34 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
     /// <param name="target">공격 대상</param>
     public void Attack(IBattler target, bool isWeakPoint)
     {
-        StopAllCoroutines(); // 버그 수정중
-        StartCoroutine(PerformAttack(target));
-        //Debug.Log("공격!!");
+        StartCoroutine(PerformAttack(target)); // 공격 코루틴 실행
     }
 
-
-    // 공격 설정 ------------------------------------------------------------------------------------------------------------------------------------------------
     // AttackBasic, AttackHorn, AttackClaw 이름의 Trigger형으로 각각 연결되어 있음
     // BasicAttack, HornAttack, ClawAttack 애니메이션 시간 각각 1.2f, 2.167f, 3.333f
-    // 물기 물기 휘두르기
-    // 박치기 박치기 휘두르기
-    // 박치기 물기 휘두르기
-    private const float BasicAttackDuration = 1.2f;
-    private const float HornAttackDuration = 2.167f;
-    private const float ClawAttackDuration = 3.333f;
-
-    private const float BasicAttackProbability = 0.25f;
-    private const float HornAttackProbability = 0.25f;
-    private const float ClawAttackProbability = 0.25f;
-
-    private const float ComboProbability = 0.08333f;
-
-    bool isAttacking = false;
-
+    
     private IEnumerator PerformAttack(IBattler target)
     {
-        isAttacking = true;
-        float rand = UnityEngine.Random.value;
+        isAttacking = true; // 공격 중
+        float rand = UnityEngine.Random.value;  // 랜덤 값 가져오기
 
         if (rand < BasicAttackProbability)
         {
+            Debug.Log("단일");
             PerformBasicAttack(target);
+            yield return new WaitForSeconds(BasicAttackDuration);
         }
         else if (rand < BasicAttackProbability + HornAttackProbability)
         {
+            Debug.Log("단일");
             PerformHornAttack(target);
+            yield return new WaitForSeconds(HornAttackDuration);
         }
         else if (rand < BasicAttackProbability + HornAttackProbability + ClawAttackProbability)
         {
+            Debug.Log("단일");
             PerformClawAttack(target);
+            yield return new WaitForSeconds(ClawAttackDuration);
         }
         else
         {
@@ -574,51 +593,68 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
             float comboRandomValue = UnityEngine.Random.value;
             if (comboRandomValue < ComboProbability)
             {
+                // 물기 물기 휘두르기
                 PerformBasicAttack(target);
                 yield return new WaitForSeconds(BasicAttackDuration);
                 PerformBasicAttack(target);
                 yield return new WaitForSeconds(BasicAttackDuration);
                 PerformClawAttack(target);
+                yield return new WaitForSeconds(ClawAttackDuration);
             }
             else if (comboRandomValue < ComboProbability * 2)
             {
+                // 박치기 박치기 휘두르기
                 PerformHornAttack(target);
                 yield return new WaitForSeconds(HornAttackDuration);
                 PerformHornAttack(target);
                 yield return new WaitForSeconds(HornAttackDuration);
                 PerformClawAttack(target);
+                yield return new WaitForSeconds(ClawAttackDuration);
             }
             else
             {
+                // 박치기 물기 휘두르기
                 PerformHornAttack(target);
                 yield return new WaitForSeconds(HornAttackDuration);
-                //attackCoolTime += HornAttackDuration;
                 PerformBasicAttack(target);
                 yield return new WaitForSeconds(BasicAttackDuration);
                 PerformClawAttack(target);
+                yield return new WaitForSeconds(ClawAttackDuration);
             }
         }
-        // 공격이 끝나고 난 후 공격 바꾸기
-        // Start cooldown
-        attackCoolTime = attackInterval;
-        isAttacking = false;
+        
+        attackCoolTime = attackInterval;    // 공격 쿨타임 초기화
+
+        isAttacking = false;    // 공격 중 아님
     }
 
+    /// <summary>
+    /// 물기 공격 실행 함수
+    /// </summary>
+    /// <param name="target">공격 대상</param>
     private void PerformBasicAttack(IBattler target)
     {
         target.Defence(AttackPower);
         animator.SetTrigger("AttackBasic");
     }
 
+    /// <summary>
+    /// 박치기 공격 실행 함수
+    /// </summary>
+    /// <param name="target">공격 대상</param>
     private void PerformHornAttack(IBattler target)
     {
         target.Defence(AttackPower);
         animator.SetTrigger("AttackHorn");
     }
 
+    /// <summary>
+    /// 앞발 휘두르기 공격 실행 함수
+    /// </summary>
+    /// <param name="target">공격 대상</param>
     private void PerformClawAttack(IBattler target)
     {
-        target.Defence(AttackPower * 1.2f); // Increased damage for ClawAttack
+        target.Defence(AttackPower * 1.2f); // 앞발 휘두르기 공격은 데미지 증가
         animator.SetTrigger("AttackClaw");
     }
 

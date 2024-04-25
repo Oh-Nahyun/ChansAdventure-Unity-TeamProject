@@ -505,99 +505,22 @@ public class NightmareDragonTest : RecycleObject, IBattler, IHealth
         return result;
     }
 
-    /// <summary>
-    /// 공격처리용 함수
-    /// </summary>
-    /// <param name="target">공격 대상</param>
-    public void Attack(IBattler target, bool isWeakPoint)
-    {
-        StartCoroutine(PerformAttack(target));
-    }
-
-
     // 공격 설정 ------------------------------------------------------------------------------------------------------------------------------------------------
     // AttackBasic, AttackHorn, AttackClaw 이름의 Trigger형으로 각각 연결되어 있음
     // BasicAttack, HornAttack, ClawAttack 애니메이션 시간 각각 1.2f, 2.167f, 3.333f
     // 물기 물기 휘두르기
     // 박치기 박치기 휘두르기
     // 박치기 물기 휘두르기
-    private const float BasicAttackDuration = 1.2f;
-    private const float HornAttackDuration = 2.167f;
-    private const float ClawAttackDuration = 3.333f;
 
-    private const float BasicAttackProbability = 0.25f;
-    private const float HornAttackProbability = 0.25f;
-    private const float ClawAttackProbability = 0.25f;
-
-    private const float ComboProbability = 0.08333f;
-
-    private IEnumerator PerformAttack(IBattler target)
+    /// <summary>
+    /// 공격처리용 함수
+    /// </summary>
+    /// <param name="target">공격 대상</param>
+    public void Attack(IBattler target, bool isWeakPoint)
     {
-        float rand = UnityEngine.Random.value;
-
-        if (rand < BasicAttackProbability)
-        {
-            PerformBasicAttack(target);
-        }
-        else if (rand < BasicAttackProbability + HornAttackProbability)
-        {
-            PerformHornAttack(target);
-        }
-        else if (rand < BasicAttackProbability + HornAttackProbability + ClawAttackProbability)
-        {
-            PerformClawAttack(target);
-        }
-        else
-        {
-            // Perform one of the combo attacks
-            float comboRandomValue = UnityEngine.Random.value;
-            if (comboRandomValue < ComboProbability)
-            {
-                PerformBasicAttack(target);
-                yield return new WaitForSeconds(BasicAttackDuration);
-                PerformBasicAttack(target);
-                yield return new WaitForSeconds(BasicAttackDuration);
-                PerformClawAttack(target);
-            }
-            else if (comboRandomValue < ComboProbability * 2)
-            {
-                PerformHornAttack(target);
-                yield return new WaitForSeconds(HornAttackDuration);
-                PerformHornAttack(target);
-                yield return new WaitForSeconds(HornAttackDuration);
-                PerformClawAttack(target);
-            }
-            else
-            {
-                PerformHornAttack(target);
-                yield return new WaitForSeconds(HornAttackDuration);
-                PerformBasicAttack(target);
-                yield return new WaitForSeconds(BasicAttackDuration);
-                PerformClawAttack(target);
-            }
-        }
-
-        // Start cooldown
-        attackCoolTime = attackInterval;
-        yield return null;
-    }
-
-    private void PerformBasicAttack(IBattler target)
-    {
-        target.Defence(AttackPower);
-        animator.SetTrigger("AttackBasic");
-    }
-
-    private void PerformHornAttack(IBattler target)
-    {
-        target.Defence(AttackPower);
-        animator.SetTrigger("AttackHorn");
-    }
-
-    private void PerformClawAttack(IBattler target)
-    {
-        target.Defence(AttackPower * 1.2f); // Increased damage for ClawAttack
-        animator.SetTrigger("AttackClaw");
+        animator.SetTrigger("Attack");      // 애니메이션 재생
+        target.Defence(AttackPower);        // 공격 대상에게 데미지 전달
+        attackCoolTime = attackInterval;    // 쿨타임 초기화
     }
 
     // ---------------------------------------------------------------------------------------------------------------------------------------------------
