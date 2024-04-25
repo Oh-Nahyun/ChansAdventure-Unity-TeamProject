@@ -291,6 +291,8 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth
         inventory = new Inventory(this.gameObject, 16);
         GameManager.Instance.ItemDataManager.InventoryUI.InitializeInventoryUI(inventory); // 인벤 UI 초기화
         EquipPart = new InventorySlot[partCount]; // EquipPart 배열 초기화
+
+        Test_AddItem();
     }
 
     private void Update()

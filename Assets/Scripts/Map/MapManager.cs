@@ -16,24 +16,8 @@ public class MapManager : MonoBehaviour
     [Header("Currnet Map Size")]
     public float mapSizeX = 300f;
     public float mapSizeY = 300f;
-    public float panelSize = 10f;
 
     [Header("Map Object Info")]
-    /// <summary>
-    /// 맵의 등고선 색 ( Color Gap마다 다른 색으로 표시 )
-    /// </summary>
-    public Color[] color;
-
-    /// <summary>
-    /// 등고선 색 개수
-    /// </summary>
-    public uint ColorCount;
-
-    /// <summary>
-    /// 색깔별 Object y값 차이
-    /// </summary>
-    public float colorGap = 5f;
-
     /// <summary>
     /// 맵 패널 UI
     /// </summary>
@@ -194,8 +178,8 @@ public class MapManager : MonoBehaviour
     {
         //Transform child = transform.GetChild(0); // MapObject
 
-        float minX = transform.position.x; // MapManager는 맵의 좌측 하단에 있다.
-        float minY = transform.position.z;
+        float minX = mapSizeX * -0.5f; // MapManager는 맵의 좌측 하단에 있다.
+        float minY = mapSizeY * -0.5f;
         float maxX = mapSizeX * 0.5f; // 우측 상단의 Panel 좌표값
         float maxY = mapSizeY * 0.5f;
         //float maxX = child.GetChild(child.childCount - 1).position.x; // 우측 상단의 Panel 좌표값

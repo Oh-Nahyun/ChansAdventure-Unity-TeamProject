@@ -165,7 +165,7 @@ public class MapPanelUI : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, 1000f, LayerMask.GetMask("Map Object"))) // Map Object Å½Áö
         {
-            Debug.DrawRay(ray.origin, ray.direction * 100, Color.red, 5f);
+            //Debug.DrawRay(ray.origin, ray.direction * 100, Color.red, 5f);
         }
 
         return hit;

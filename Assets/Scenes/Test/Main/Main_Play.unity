@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.2257134, b: 0.30692226, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -798,6 +798,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: GameManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 8413078663783774573, guid: 03e3a0de6a355401a8754d70887c467b,
+        type: 3}
+      propertyPath: mapSizeX
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 8413078663783774573, guid: 03e3a0de6a355401a8754d70887c467b,
+        type: 3}
+      propertyPath: mapSizeY
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 8413078663783774573, guid: 03e3a0de6a355401a8754d70887c467b,
         type: 3}
@@ -2106,37 +2116,37 @@ PrefabInstance:
     - target: {fileID: 3131259944175733433, guid: 5d515b54a3a3ef843b974e807c54e043,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.19100001
+      value: 0.38200003
       objectReference: {fileID: 0}
     - target: {fileID: 3131259944175733433, guid: 5d515b54a3a3ef843b974e807c54e043,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.6669168
+      value: 7.4551983
       objectReference: {fileID: 0}
     - target: {fileID: 3131259944175733433, guid: 5d515b54a3a3ef843b974e807c54e043,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.1179142
+      value: -16.03361
       objectReference: {fileID: 0}
     - target: {fileID: 3131259944175733433, guid: 5d515b54a3a3ef843b974e807c54e043,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.8670536
+      value: 0.97635704
       objectReference: {fileID: 0}
     - target: {fileID: 3131259944175733433, guid: 5d515b54a3a3ef843b974e807c54e043,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.37048268
+      value: 0.21583599
       objectReference: {fileID: 0}
     - target: {fileID: 3131259944175733433, guid: 5d515b54a3a3ef843b974e807c54e043,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.3063161
+      value: -0.011629184
       objectReference: {fileID: 0}
     - target: {fileID: 3131259944175733433, guid: 5d515b54a3a3ef843b974e807c54e043,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.13088559
+      value: 0.0025707772
       objectReference: {fileID: 0}
     - target: {fileID: 3131259944175733433, guid: 5d515b54a3a3ef843b974e807c54e043,
         type: 3}
