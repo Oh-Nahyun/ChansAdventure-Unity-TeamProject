@@ -14,6 +14,7 @@ public class ShopItemPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     public ItemData itemData;
     ShopItemData shopItemData;
+    ShopInfo shopInfo;
 
     Inventory inventory;
 
@@ -44,6 +45,8 @@ public class ShopItemPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         shopItemData = FindAnyObjectByType<ShopItemData>();
 
         player = FindAnyObjectByType<Test_EquipCharacter>();
+
+        shopInfo = FindAnyObjectByType<ShopInfo>();
     }
 
     private void Start()
@@ -93,11 +96,16 @@ public class ShopItemPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         {
             if (itemStock > 0)
             {
-                inventory.AddSlotItem((uint)itemData.itemCode);
-                itemStock--;
-                itemStockText.text = itemStock.ToString();
+                shopInfo.SelectBox.gameObject.SetActive(true);
 
-                inventory.SubCoin(itemData.price);
+                if (shopInfo.SelectBox.SelectCheck)
+                {
+                    inventory.AddSlotItem((uint)itemData.itemCode);
+                    itemStock--;
+                    itemStockText.text = itemStock.ToString();
+
+                    inventory.SubCoin(itemData.price);
+                }
             }
             else
             {

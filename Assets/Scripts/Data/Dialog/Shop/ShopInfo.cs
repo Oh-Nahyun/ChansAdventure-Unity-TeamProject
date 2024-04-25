@@ -8,6 +8,10 @@ public class ShopInfo : MonoBehaviour
     public CanvasGroup CanvasGroup => canvasGroup;
     TextBox textBox;
 
+    SelectBox selectBox;
+    public SelectBox SelectBox => selectBox;
+
+
     /// <summary>
     /// 상점 창 이 사라지는 속도 
     /// </summary>
@@ -17,6 +21,8 @@ public class ShopInfo : MonoBehaviour
     {
         canvasGroup = GetComponent<CanvasGroup>();
         textBox = FindAnyObjectByType<TextBox>();
+
+        selectBox = GetComponentInChildren<SelectBox>();
     }
 
     private void Start()
