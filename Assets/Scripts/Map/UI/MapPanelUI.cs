@@ -62,7 +62,7 @@ public class MapPanelUI : MonoBehaviour
 
     private void Start()
     {
-        mapCamera = MapManager.Instance.MapCamera;
+        mapCamera = GameManager.Instance.MapManager.MapCamera;
     }
 
     /// <summary>
@@ -73,7 +73,7 @@ public class MapPanelUI : MonoBehaviour
     {
         startDragVector = new Vector3(vector.x, 0, vector.y);
         startDragVector += mapCamera.transform.position;
-        MapManager.Instance.SetCameraPosition(startDragVector);
+        GameManager.Instance.MapManager.SetCameraPosition(startDragVector);
     }
 
     /// <summary>
@@ -88,7 +88,7 @@ public class MapPanelUI : MonoBehaviour
 
         Vector3 result = startDragVector - onDragingVector;
 
-        MapManager.Instance.SetCameraPosition(result);
+        GameManager.Instance.MapManager.SetCameraPosition(result);
     }
 
     /// <summary>

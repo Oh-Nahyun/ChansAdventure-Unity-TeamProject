@@ -8,11 +8,6 @@ using UnityEngine.UIElements;
 /// </summary>
 public class MapManager : MonoBehaviour
 {
-    /// <summary>
-    /// 임시 Map Singleton
-    /// </summary>
-    public static MapManager Instance;
-
     [Header("Currnet Map Size")]
     public float mapSizeX = 300f;
     public float mapSizeY = 300f;
@@ -70,22 +65,7 @@ public class MapManager : MonoBehaviour
     /// </summary>
     const float mapCameraY = 100f;
 
-    private void Awake()
-    {
-        Instance = this;
-
-        InitalizeMapFunctions();
-    }
-
-    /// <summary>
-    /// Map에 관련된 초기화 함수를 모아둔 함수
-    /// </summary>
-    private void InitalizeMapFunctions()
-    {
-        InitalizeMapUI();
-    }
-
-    private void InitalizeMapUI()
+    public void InitalizeMapUI()
     {
         largeMapPanelUI = FindObjectOfType<MapPanelUI>();
 

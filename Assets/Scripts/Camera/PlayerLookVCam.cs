@@ -14,7 +14,7 @@ public class PlayerLookVCam : MonoBehaviour
     /// </summary>
     public Vector3 offset = new Vector3(0.0f, 1.0f, 0.0f);
 
-    void Awake()
+    void Start()
     {
         player = FindAnyObjectByType<Player>();
     }

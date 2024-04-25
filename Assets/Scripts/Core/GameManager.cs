@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -37,13 +38,78 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    public bool isLoading;
+
+    string targetSceneName = null;
+
+    public string TargetSceneName
+    {
+        get => targetSceneName;
+        set
+        {
+            if(targetSceneName != value)
+            {
+                targetSceneName = value;
+                ChangeToLoadingScene();
+            }
+        }
+    }
+
+    public GameObject loadPlayerGameObject;
+
+    /// <summary>
+    /// 씬을 변경할 때 실행하는 함수
+    /// </summary>
+    /// <param name="SceneName"> 변경할 씬 이름</param>
+    public void ChangeToTargetScene(string SceneName, GameObject player)
+    {
+        Instantiate(player, loadPlayerGameObject.transform);
+        loadPlayerGameObject.SetActive(false);
+
+        TargetSceneName = SceneName;
+    }
+
+    public void SpawnPlayerAfterLoadScene()
+    {
+        if (loadPlayerGameObject.transform.childCount < 1)
+            return;
+
+        if(!isLoading)
+        {
+            loadPlayerGameObject.SetActive(true);
+            GameObject player = Instantiate(loadPlayerGameObject.transform.GetChild(0).gameObject);
+            Debug.Log($"{player.gameObject.name}");
+            Destroy(loadPlayerGameObject);
+        }
+    }
+
+    void ChangeToLoadingScene()
+    {
+        SceneManager.LoadScene("02_LoadingScene");
+        isLoading = true;
+    }
+
+    protected override void OnPreInitialize()
+    {
+        base.OnPreInitialize();
+
+        loadPlayerGameObject = new GameObject();
+        DontDestroyOnLoad(loadPlayerGameObject);
+    }
+
     protected override void OnInitialize()
     {
+        SpawnPlayerAfterLoadScene();
+
         player = FindAnyObjectByType<Player>();
         weapon = FindAnyObjectByType<Weapon>();
         cameraManager = GetComponent<CameraManager>();
         itemDataManager = GetComponent<ItemDataManager>();
         mapManager = GetComponent<MapManager>();
+
+        itemDataManager.InitializeItemDataUI();
+
+        mapManager.InitalizeMapUI();
     }
 
 #if UNITY_EDITOR

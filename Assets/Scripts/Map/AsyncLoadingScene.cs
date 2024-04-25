@@ -51,6 +51,8 @@ public class AsyncLoadingScene : MonoBehaviour
 
     private void Start()
     {
+        nextSceneName = GameManager.Instance.TargetSceneName;
+
         loadingSlider = FindAnyObjectByType<Slider>();
         loadingCoroutine = AsyncLoadScene();
 
@@ -72,6 +74,8 @@ public class AsyncLoadingScene : MonoBehaviour
     private void Press(InputAction.CallbackContext context)
     {
         async.allowSceneActivation = loadingDone;
+
+        GameManager.Instance.isLoading = false;
     }
 
     IEnumerator AsyncLoadScene()
