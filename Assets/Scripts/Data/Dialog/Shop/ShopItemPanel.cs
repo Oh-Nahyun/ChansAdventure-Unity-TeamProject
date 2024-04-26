@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -14,7 +15,7 @@ public class ShopItemPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     public ItemData itemData;
     ShopItemData shopItemData;
-    ShopInfo shopInfo;
+    SelectBox selectBox;
 
     Inventory inventory;
 
@@ -45,8 +46,7 @@ public class ShopItemPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         shopItemData = FindAnyObjectByType<ShopItemData>();
 
         player = FindAnyObjectByType<Test_EquipCharacter>();
-
-        shopInfo = FindAnyObjectByType<ShopInfo>();
+        selectBox = FindAnyObjectByType<SelectBox>();
     }
 
     private void Start()
@@ -62,7 +62,8 @@ public class ShopItemPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     private void Update()
     {
-        setShopItemText();
+        SetShopItemText();
+        BuyItem();
     }
 
     /// <summary>
@@ -70,7 +71,7 @@ public class ShopItemPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     /// </summary>
     /// <param name="eventData"></param>
     public void OnPointerEnter(PointerEventData eventData)
-    {   
+    {
         if (shopItemData != null)
         {
             // 해당 패널의 ItemData를 건내줌
@@ -96,16 +97,8 @@ public class ShopItemPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         {
             if (itemStock > 0)
             {
-                shopInfo.SelectBox.gameObject.SetActive(true);
-
-                if (shopInfo.SelectBox.SelectCheck)
-                {
-                    inventory.AddSlotItem((uint)itemData.itemCode);
-                    itemStock--;
-                    itemStockText.text = itemStock.ToString();
-
-                    inventory.SubCoin(itemData.price);
-                }
+                selectBox.gameObject.SetActive(true);
+                //();
             }
             else
             {
@@ -118,7 +111,7 @@ public class ShopItemPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         }
     }
 
-    private void setShopItemText()
+    private void SetShopItemText()
     {
         if (inventory == null)
         {
@@ -144,6 +137,17 @@ public class ShopItemPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         {
             itemNameText.color = noStockColor;
             itemStockText.color = noStockColor;
+        }
+    }
+
+    private void BuyItem(){
+        if (selectBox.SelectCheck)
+        {
+            inventory.AddSlotItem((uint)itemData.itemCode);
+            itemStock--;
+            itemStockText.text = itemStock.ToString();
+
+            inventory.SubCoin(itemData.price);
         }
     }
 }

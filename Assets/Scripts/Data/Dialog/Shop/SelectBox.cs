@@ -1,11 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class SelectBox : MonoBehaviour
 {
+
     /// <summary>
     /// ¡ﬂæ” ≈ÿΩ∫∆Æ
     /// </summary>
@@ -29,7 +32,6 @@ public class SelectBox : MonoBehaviour
     public float alphaChangeSpeed = 5.0f;
 
     bool selectCheck = false;
-
     public bool SelectCheck => selectCheck;
 
     Button buttonCheck;
@@ -58,20 +60,26 @@ public class SelectBox : MonoBehaviour
         selectText = child.GetComponent<TextMeshProUGUI>();
     }
 
+    private void Start()
+    {
+        gameObject.SetActive(false);
+    }
 
     private void Select(bool isCheck)
     {
         selectCheck = isCheck;
-        StartCoroutine(setAlphaChange());
+        selectCheck = false;
+        StartCoroutine(SetAlphaChange());
     }
 
-    IEnumerator setAlphaChange()
+    IEnumerator SetAlphaChange()
     {
         while (canvasGroup.alpha > 0.0f)
         {
             canvasGroup.alpha -= Time.deltaTime * alphaChangeSpeed;
             yield return null;
         }
+        selectCheck = false;
         gameObject.SetActive(false);
     }
 
