@@ -14,6 +14,12 @@ public enum SkillType
     MagnetCatchPool,
 }
 
+public enum EnemyObjectType
+{
+    SwordSkeleton = 0,
+    NightMareDragon,
+}
+
 public class Factory : Singleton<Factory>
 {
     RemoteBombPool remoteBombPool;
@@ -22,6 +28,7 @@ public class Factory : Singleton<Factory>
     SwordSkeletonPool swordSkeletonPool;
     DamageTextPool damageTextPool;
     ItemPool itemPool;
+    NightmareDragonPool nightmareDragonPool;
 
     ArrowPool arrowPool; //
 
@@ -39,6 +46,8 @@ public class Factory : Singleton<Factory>
         if (swordSkeletonPool != null) swordSkeletonPool.Initialize();
         damageTextPool = GetComponentInChildren<DamageTextPool>();
         if (damageTextPool != null) damageTextPool.Initialize();
+        nightmareDragonPool = GetComponentInChildren<NightmareDragonPool>();
+        if(nightmareDragonPool != null) nightmareDragonPool.Initialize();
 
         // Inventory Branch
         itemPool = GetComponentInChildren<ItemPool>();
@@ -93,10 +102,13 @@ public class Factory : Singleton<Factory>
     {
         return magnetCatchPool.GetObject(position, angle * Vector3.forward);
     }
+    
+    // 적 생성 함수 ------------------------------------------------------------------------------------------------------------------------------------------
+
     /// <summary>
     /// 검사스켈레톤 하나 가져오는 함수
     /// </summary>
-    /// <returns>배치된 슬라임 하나</returns>
+    /// <returns>배치된 검사스켈레톤 하나</returns>
     public SwordSkeleton GetEnemy()
     {
         return swordSkeletonPool.GetObject();
@@ -107,7 +119,7 @@ public class Factory : Singleton<Factory>
     /// </summary>
     /// <param name="position">배치될 위치</param>
     /// <param name="angle">배치 될 때의 각도</param>
-    /// <returns>배치된 슬라임 하나</returns>
+    /// <returns>배치된 검사스켈레톤 하나</returns>
     public SwordSkeleton GetEnemy(Vector3 position, float angle = 0.0f)
     {
         return swordSkeletonPool.GetObject(position, angle * Vector3.forward);
@@ -119,11 +131,45 @@ public class Factory : Singleton<Factory>
     /// <param name="index">사용할 웨이포인트의 인덱스</param>
     /// <param name="position">배치될 위치</param>
     /// <param name="angle">배치 될 때의 각도</param>
-    /// <returns>배치된 슬라임 하나</returns>
+    /// <returns>배치된 검사스켈레톤 하나</returns>
     public SwordSkeleton GetEnemy(int index, Vector3 position, float angle = 0.0f)
     {
         return swordSkeletonPool.GetObject(index, position, angle * Vector3.forward);
     }
+
+    /// <summary>
+    /// 나이트메어드래곤 하나 가져오는 함수
+    /// </summary>
+    /// <returns>배치된 나이트메어드래곤 하나</returns>
+    public NightmareDragon GetNightmareDragonEnemy()
+    {
+        return nightmareDragonPool.GetObject();
+    }
+
+    /// <summary>
+    /// 나이트메어드래곤 하나를 특정 위치에, 특정 각도로 배치
+    /// </summary>
+    /// <param name="position">배치될 위치</param>
+    /// <param name="angle">배치 될 때의 각도</param>
+    /// <returns>배치된 나이트메어드래곤 하나</returns>
+    public NightmareDragon GetNightmareDragonEnemy(Vector3 position, float angle = 0.0f)
+    {
+        return nightmareDragonPool.GetObject(position, angle * Vector3.forward);
+    }
+
+    /// <summary>
+    /// 나이트메어드래곤 하나를 특정 웨이포인트를 사용하고, 특정 위치에, 특정 각도로 배치
+    /// </summary>
+    /// <param name="index">사용할 웨이포인트의 인덱스</param>
+    /// <param name="position">배치될 위치</param>
+    /// <param name="angle">배치 될 때의 각도</param>
+    /// <returns>배치된 나이트메어드래곤 하나</returns>
+    public NightmareDragon GetNightmareDragonEnemy(int index, Vector3 position, float angle = 0.0f)
+    {
+        return nightmareDragonPool.GetObject(index, position, angle * Vector3.forward);
+    }
+
+    // -------------------------------------------------------------------------------------------------------------------------------------------
 
     /// <summary>
     /// 데미지 텍스트를 생성하는 함수
@@ -146,7 +192,13 @@ public class Factory : Singleton<Factory>
     {
         return itemPool.GetItemObject(slot, position);
     }
-    
+
+    // 나중에 빼야됨  ----------------------------------------------------------------------
+    public GameObject GetItemObject(ItemData data, Vector3? position = null)
+    {
+        return itemPool.GetItemObject(data, position);
+    }
+    // ---------------------------------------------------------------------------------------
     //
     /// <summary>
     /// 풀에 있는 게임 오브젝트 하나 가져오기

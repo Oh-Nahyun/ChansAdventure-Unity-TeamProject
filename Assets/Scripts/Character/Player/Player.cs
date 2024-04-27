@@ -8,7 +8,7 @@ using UnityEngine.Windows;
 /// <summary>
 /// 플레이어 스크립트
 /// </summary>
-public class Player : MonoBehaviour, IEquipTarget, IHealth
+public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
 {
     #region additional Classes
     PlayerController controller;
@@ -225,6 +225,12 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth
             equipPart = value;
         }
     }
+
+    public float AttackPower => throw new NotImplementedException();
+
+    public float DefencePower => throw new NotImplementedException();
+
+    public Action<int> onHit { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
     /// <summary>
     /// 해당 오브젝트의 인벤토리
@@ -658,5 +664,25 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth
         inventory.AddSlotItem((uint)ItemCode.HP_portion, 3);
         inventory.AddSlotItem((uint)ItemCode.Coin);
     }
+
+    //IBatter 인터페이스 상속 --------------------------------------------------------------------------------------------------
+    public float weakPointAttack = 1.2f;
+    public void Attack(IBattler target, bool isWeakPoint = false)
+    {
+        if (isWeakPoint)
+        {
+            target.Defence(AttackPower * weakPointAttack);
+        }
+        else
+        {
+            target.Defence(AttackPower);
+        }
+    }
+
+    public void Defence(float damage)
+    {
+        
+    }
+    //--------------------------------------------------------------------------------------------------
 #endif
 }
