@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class TextInteraction : MonoBehaviour
 {
+    CanvasGroup canvasGroup;
 
     TextMeshProUGUI tagText;
     public TextMeshProUGUI TagText => tagText;
@@ -13,14 +14,15 @@ public class TextInteraction : MonoBehaviour
 
     private void Awake()
     {
+        canvasGroup = GetComponent<CanvasGroup>();
         tagText = GetComponentInChildren<TextMeshProUGUI>();
         textBox = FindAnyObjectByType<TextBox>();
         textBoxItem = FindAnyObjectByType<TextBoxItem>();
     }
 
-    private void Update()
+    private void Start()
     {
-        
+        canvasGroup.alpha = 1; 
     }
 
     /// <summary>

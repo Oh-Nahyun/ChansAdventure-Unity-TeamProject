@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 public class SelectBox : MonoBehaviour
 {
+    CanvasGroup canvasGroup;
 
     /// <summary>
     /// 중앙 텍스트
@@ -24,18 +25,16 @@ public class SelectBox : MonoBehaviour
     /// </summary>
     public TextMeshProUGUI buttonCancelText;
 
-    CanvasGroup canvasGroup;
-
     /// <summary>
     /// 창 이 사라지는 속도 
     /// </summary>
     public float alphaChangeSpeed = 5.0f;
 
-    bool selectCheck = false;
-    public bool SelectCheck => selectCheck;
-
     Button buttonCheck;
     Button buttonCancel;
+
+    public Action onButtonCheck;
+    public Action onButtonCancel;
 
     private void Awake()
     {
@@ -47,41 +46,28 @@ public class SelectBox : MonoBehaviour
 
         child = transform.GetChild(2);
         buttonCheck = child.GetComponent<Button>();
-        buttonCheck.onClick.AddListener(() => Select(true));
+        buttonCheck.onClick.AddListener(() => onButtonCheck?.Invoke());
 
         child = child.GetChild(0);
-        selectText = child.GetComponent<TextMeshProUGUI>();
+        buttonCheckText = child.GetComponent<TextMeshProUGUI>();
 
         child = transform.GetChild(3);
         buttonCancel = child.GetComponent<Button>();
-        buttonCancel.onClick.AddListener(() => Select(false));
+        buttonCancel.onClick.AddListener(() => SetButtonCancel());
 
         child = child.GetChild(0);
-        selectText = child.GetComponent<TextMeshProUGUI>();
+        buttonCancelText = child.GetComponent<TextMeshProUGUI>();
     }
 
     private void Start()
     {
+        canvasGroup.alpha = 1;
         gameObject.SetActive(false);
     }
 
-    private void Select(bool isCheck)
+    private void SetButtonCancel()
     {
-        selectCheck = isCheck;
-        selectCheck = false;
-        StartCoroutine(SetAlphaChange());
-    }
-
-    IEnumerator SetAlphaChange()
-    {
-        while (canvasGroup.alpha > 0.0f)
-        {
-            canvasGroup.alpha -= Time.deltaTime * alphaChangeSpeed;
-            yield return null;
-        }
-        selectCheck = false;
+        onButtonCancel?.Invoke();
         gameObject.SetActive(false);
     }
-
-
 }

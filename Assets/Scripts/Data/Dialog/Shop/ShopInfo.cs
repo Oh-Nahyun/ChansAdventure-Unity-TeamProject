@@ -22,6 +22,7 @@ public class ShopInfo : MonoBehaviour
 
     private void Start()
     {
+        canvasGroup.alpha = 1;
         gameObject.SetActive(false);
     }
 

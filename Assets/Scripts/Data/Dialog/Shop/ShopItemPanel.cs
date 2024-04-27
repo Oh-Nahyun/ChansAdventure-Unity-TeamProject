@@ -21,6 +21,8 @@ public class ShopItemPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     Test_EquipCharacter player;
 
+    bool buyItem = false;
+
     public Color inStockColor = Color.white;
     public Color noStockColor = Color.red;
 
@@ -58,12 +60,13 @@ public class ShopItemPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             itemStockText.text = itemStock.ToString();
             itemPriceText.text = itemData.price.ToString();
         }
+        selectBox.onButtonCheck += () => BuyItem();
+        selectBox.onButtonCancel += () => buyItem = false;
     }
 
     private void Update()
     {
         SetShopItemText();
-        BuyItem();
     }
 
     /// <summary>
@@ -97,8 +100,12 @@ public class ShopItemPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         {
             if (itemStock > 0)
             {
+                buyItem = true;
                 selectBox.gameObject.SetActive(true);
-                //();
+
+                selectBox.selectText.text = $"정말로 {itemData.itemName}을(를) 구매하시겠습니까?";
+                selectBox.buttonCheckText.text = "구매";
+                selectBox.buttonCancelText.text = "취소";
             }
             else
             {
@@ -118,7 +125,7 @@ public class ShopItemPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             inventory = player.Inventory;
         }
 
-        if (inventory.Gold > itemData.price)
+        if (inventory.Gold >= itemData.price)
         {
             itemNameText.color = inStockColor;
             itemPriceText.color = inStockColor;
@@ -140,14 +147,18 @@ public class ShopItemPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         }
     }
 
-    private void BuyItem(){
-        if (selectBox.SelectCheck)
+    private void BuyItem()
+    {
+        if(buyItem) 
         {
             inventory.AddSlotItem((uint)itemData.itemCode);
             itemStock--;
             itemStockText.text = itemStock.ToString();
 
             inventory.SubCoin(itemData.price);
+            selectBox.gameObject.SetActive(false);
+            buyItem = false;
         }
     }
+
 }
