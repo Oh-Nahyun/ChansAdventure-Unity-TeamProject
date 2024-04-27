@@ -58,8 +58,6 @@ public class MapManager : MonoBehaviour
     /// </summary>
     public Camera MapCamera => mapCamera;
 
-    public GameObject playerMark;
-
     /// <summary>
     /// 맵 카메라의 y 고정 좌표값
     /// </summary>
@@ -172,15 +170,6 @@ public class MapManager : MonoBehaviour
                 (Mathf.Clamp(position.x, minX, maxX),
                 mapCameraY,
                 Mathf.Clamp(position.z, minY, maxY));
-    }
-
-    /// <summary>
-    /// Player Mark 위치를 설정하는 함수
-    /// </summary>
-    /// <param name="position">설정할 위치</param>
-    public void SetPlayerMarkPosition(Vector3 position)
-    {
-        playerMark.transform.position = position;
     }
     #endregion
 }

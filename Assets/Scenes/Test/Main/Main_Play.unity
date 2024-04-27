@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.2257134, b: 0.30692226, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -744,12 +744,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 01eee89cde26bf04aa9194d5dd3ca811, type: 3}
---- !u!1 &452232495 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 781883072065832991, guid: 01eee89cde26bf04aa9194d5dd3ca811,
-    type: 3}
-  m_PrefabInstance: {fileID: 452232494}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &495553688
 GameObject:
   m_ObjectHideFlags: 0
@@ -781,7 +775,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &787459207
+--- !u!1001 &692383062
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -789,31 +783,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1789021134245975183, guid: 03e3a0de6a355401a8754d70887c467b,
-        type: 3}
-      propertyPath: CharaterRenderCameraPoint
-      value: 
-      objectReference: {fileID: 452232495}
     - target: {fileID: 4259061661310028882, guid: 03e3a0de6a355401a8754d70887c467b,
         type: 3}
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
-    - target: {fileID: 8413078663783774573, guid: 03e3a0de6a355401a8754d70887c467b,
-        type: 3}
-      propertyPath: mapSizeX
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 8413078663783774573, guid: 03e3a0de6a355401a8754d70887c467b,
-        type: 3}
-      propertyPath: mapSizeY
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 8413078663783774573, guid: 03e3a0de6a355401a8754d70887c467b,
-        type: 3}
-      propertyPath: playerMark
-      value: 
-      objectReference: {fileID: 976597467}
     - target: {fileID: 9214185627190435623, guid: 03e3a0de6a355401a8754d70887c467b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -948,12 +922,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 83d5988287e4b42278a69a5f70030c40, type: 3}
---- !u!1 &976597467 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6169277157260538895, guid: 5e07d5f18d8bd8c4f9fa932d063a7ad2,
-    type: 3}
-  m_PrefabInstance: {fileID: 1411440543}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &979400133
 GameObject:
   m_ObjectHideFlags: 0
@@ -2249,7 +2217,7 @@ SceneRoots:
   - {fileID: 979400134}
   - {fileID: 859137608}
   - {fileID: 265232940}
-  - {fileID: 787459207}
+  - {fileID: 692383062}
   - {fileID: 2131773069}
   - {fileID: 1801400686}
   - {fileID: 495553689}

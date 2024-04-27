@@ -47,7 +47,6 @@ public class PlayerMapController : MonoBehaviour
     private void LateUpdate()
     {
         FollowMapCam();
-        GameManager.Instance.MapManager.SetPlayerMarkPosition(playerPos);
     }
 
     /// <summary>

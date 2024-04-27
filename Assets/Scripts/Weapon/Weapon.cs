@@ -34,12 +34,12 @@ public class Weapon : MonoBehaviour
     /// <summary>
     /// [무기1] 칼
     /// </summary>
-    Transform swordWeapon;
+    public Transform swordWeapon;
 
     /// <summary>
     /// [무기2-1] 활
     /// </summary>
-    Transform bowWeapon;
+    public Transform bowWeapon;
 
     /// <summary>
     /// [무기2-2] 화살
@@ -87,8 +87,8 @@ public class Weapon : MonoBehaviour
         inputActions = new PlayerinputActions();
         animator = GetComponent<Animator>();
         player = GetComponent<Player>();
-        sword = GetComponentInChildren<Sword>();
-        bow = GetComponentInChildren<Bow>();
+        sword = GetComponentInChildren<Sword>(true);
+        bow = GetComponentInChildren<Bow>(true);
         arrow = GetComponentInChildren<Arrow>(); 
         vcam = FindAnyObjectByType<PlayerFollowVCam>();
         
@@ -99,14 +99,11 @@ public class Weapon : MonoBehaviour
 
     private void Start()
     {
-        //rightHand = GameObject.Find("Character1_RightHand").transform;
-        //leftHand = GameObject.Find("Character1_LeftHand").transform;
-        swordWeapon = GameObject.FindWithTag("Sword").transform;
-        bowWeapon = GameObject.FindWithTag("Bow").transform;
-        //arrowWeapon = GameObject.FindWithTag("Arrow").transform;
-        ShowWeapon(false, false);
-        //arrowWeapon.gameObject.SetActive(false);
-        //arrow.CloseArrow();
+        //swordWeapon = GameObject.FindWithTag("Sword").transform;
+        //bowWeapon = GameObject.FindWithTag("Bow").transform;
+        //ShowWeapon(true, true);     // 초기화를 위한 Sword, Bow태그 오브젝트 활성화
+        //
+        //ShowWeapon(false, false);   // 오브젝트 찾은 후 비활성화
     }
 
     private void OnEnable()

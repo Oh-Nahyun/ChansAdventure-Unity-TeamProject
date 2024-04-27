@@ -16,12 +16,11 @@ public class PlayerLookVCam : MonoBehaviour
 
     void Start()
     {
-        player = FindAnyObjectByType<Player>();
+        player = GameManager.Instance.Player;
     }
 
     void Update()
     {
-        //transform.localPosition = player.transform.position + offset;
         transform.localPosition = player.transform.position + offset;
     }
 }

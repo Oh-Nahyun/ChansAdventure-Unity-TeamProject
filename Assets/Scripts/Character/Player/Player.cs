@@ -138,7 +138,13 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth
     /// <summary>
     /// 주변 시야 카메라
     /// </summary>
-    public GameObject cameraRoot;
+    GameObject cameraRoot;
+
+    /// <summary>
+    /// cameraRoot 게임 오브젝트를 접근하기 위한 프로퍼티
+    /// </summary>
+    public GameObject CameraRoot => cameraRoot;
+
 
     /// <summary>
     /// 주변 시야 카메라 회전 정도
@@ -267,17 +273,17 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth
         animator = GetComponent<Animator>();
 
         interaction = GetComponent<Interaction>();
-    }
 
-    void Start()
-    {
         // exception
         if (cameraRoot == null)
         {
             //Debug.LogError("CameraRoot가 비어있습니다. CameraRoot Prefab 오브젝트를 넣어주세요 ( PlayerLookVCam 스크립트 있는 오브젝트 )");
             cameraRoot = FindAnyObjectByType<PlayerLookVCam>().gameObject;
         }
+    }
 
+    void Start()
+    {
         // controller
         controller.onMove += OnMove;
         controller.onMoveModeChange += OnMoveModeChange;

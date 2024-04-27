@@ -28,9 +28,14 @@ public class PlayerFollowVCam : MonoBehaviour
         follow = vcam.GetCinemachineComponent<Cinemachine3rdPersonFollow>();
     }
 
+    private void Start()
+    {
+        vcam.Follow = GameManager.Instance.Player.CameraRoot.transform;
+    }
+
     private void Update()
     {
-        ChangeCameraZoom();
+        //ChangeCameraZoom();
     }
 
     void ChangeCameraZoom()

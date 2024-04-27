@@ -33,7 +33,7 @@ public class SkillVCam : MonoBehaviour
         player = GameManager.Instance.Player;
         if (player != null)
         {
-            FllowSelector();
+            FollwSelector();
         }
         else
         {
@@ -42,9 +42,9 @@ public class SkillVCam : MonoBehaviour
 
     }
 
-    protected virtual void FllowSelector()
+    protected virtual void FollwSelector()
     {
-        cameraRoot = player.cameraRoot.transform;
+        cameraRoot = player.CameraRoot.transform;
         vCam.Follow = cameraRoot;
     }
 

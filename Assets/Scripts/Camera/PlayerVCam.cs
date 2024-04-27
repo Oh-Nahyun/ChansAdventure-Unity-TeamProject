@@ -42,7 +42,7 @@ public class PlayerVCam : MonoBehaviour
 
     protected virtual void FllowSelector()
     {
-        cameraRoot = player.cameraRoot.transform;
+        cameraRoot = player.CameraRoot.transform;
         vCam.Follow = cameraRoot;
     }
 
