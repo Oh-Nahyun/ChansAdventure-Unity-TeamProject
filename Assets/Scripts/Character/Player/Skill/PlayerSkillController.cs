@@ -14,9 +14,19 @@ public class PlayerSkillController : MonoBehaviour
 {
     PlayerinputActions playerInputAction;
 
+    IEnumerator[] specialKeyPress;
+
     void Awake()
     {
         playerInputAction = new PlayerinputActions();
+
+        int specialKeyCount = Enum.GetValues(typeof(PlayerSkills.SpecialKey)).Length;
+        onSpecialKey = new Action[specialKeyCount];
+        specialKeyPress = new IEnumerator[specialKeyCount];
+        for (int i = 0; i < specialKeyCount; i++)
+        {
+            specialKeyPress[i] = SpecialKeyPress((PlayerSkills.SpecialKey)i);
+        }
     }
 
     void OnEnable()
@@ -33,11 +43,23 @@ public class PlayerSkillController : MonoBehaviour
         playerInputAction.Skill.Throw.performed += OnThrow;
         playerInputAction.Skill.Cancel.performed += OnCancel;
         playerInputAction.Skill.RightClick.performed += OnRightClick;
+
+        playerInputAction.Skill.SpecialKey1.performed += OnSpecialKey1Press;
+        playerInputAction.Skill.SpecialKey1.canceled += OnSpecialKey1Release;
+        playerInputAction.Skill.SpecialKey2.performed += OnSpecialKey2Press;
+        playerInputAction.Skill.SpecialKey2.canceled += OnSpecialKey2Release;
     }
+
+
 
     void OnDisable()
     {
         // Player Skills
+        playerInputAction.Skill.SpecialKey2.canceled -= OnSpecialKey2Release;
+        playerInputAction.Skill.SpecialKey2.performed -= OnSpecialKey2Press;
+        playerInputAction.Skill.SpecialKey1.canceled -= OnSpecialKey1Release;
+        playerInputAction.Skill.SpecialKey1.performed -= OnSpecialKey1Press;
+
         playerInputAction.Skill.RightClick.performed -= OnRightClick;
         playerInputAction.Skill.Cancel.performed -= OnCancel;
         playerInputAction.Skill.Throw.performed -= OnThrow;
@@ -55,8 +77,9 @@ public class PlayerSkillController : MonoBehaviour
     // delegates
     public Action onSkillActive; // onSkill
     public Action<SkillName> onSkillChange;
-    public Action onThrow; 
+    public Action onThrow;
     public Action onCancel;
+    public Action[] onSpecialKey;
 
     /// <summary>
     /// 선택된 스킬이 바뀌었음을 알리는 델리게이트 (F1:리모컨폭탄 F2:리모컨폭탄큐브 F3:마그넷캐치 F4:아이스메이커 F5:타임록)
@@ -107,6 +130,37 @@ public class PlayerSkillController : MonoBehaviour
     private void OnRightClick(InputAction.CallbackContext _)
     {
         rightClick?.Invoke();
+    }
+
+
+    private void OnSpecialKey1Press(CallbackContext context)
+    {
+        StartCoroutine(specialKeyPress[(int)PlayerSkills.SpecialKey.SquareBracket_Open]);
+    }
+    private void OnSpecialKey1Release(CallbackContext context)
+    {
+
+        StopCoroutine(specialKeyPress[(int)PlayerSkills.SpecialKey.SquareBracket_Open]);
+        onSpecialKey[(int)PlayerSkills.SpecialKey.None]?.Invoke();
+    }
+    private void OnSpecialKey2Press(CallbackContext context)
+    {
+        StartCoroutine(specialKeyPress[(int)PlayerSkills.SpecialKey.SquareBracket_Close]);
+
+    }
+    private void OnSpecialKey2Release(CallbackContext context)
+    {
+        StopCoroutine(specialKeyPress[(int)PlayerSkills.SpecialKey.SquareBracket_Close]);
+        onSpecialKey[(int)PlayerSkills.SpecialKey.None]?.Invoke();
+    }
+
+    IEnumerator SpecialKeyPress(PlayerSkills.SpecialKey key)
+    {
+        while (true)
+        {
+            onSpecialKey[(int)key]?.Invoke();
+            yield return null;
+        }
     }
 
     #endregion
