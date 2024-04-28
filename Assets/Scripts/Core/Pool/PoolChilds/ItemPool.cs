@@ -5,32 +5,22 @@ using UnityEngine;
 public class ItemPool : ObjectPool<ItemDataObject>
 {
     /// <summary>
-    /// ItemPoolО©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫о╢О©╫ О©╫т╪О©╫
+    /// ItemPoolЕ█═Л▐≥Л≤≥Е█═Л▐≥Л≤≥ Е█═Л▐≥Л≤≥Е█═Л▐≥Л≤≥Е█═Л▐≥Л≤≥Е█═Л▐≥Л≤≥ Е█═Л▐≥Л≤≥Е█═Л▐≥Л≤≥Е█═Л▀╧К▄░Л≤≥ Е█═Л▄┴Л┤╫Л≤≥
     /// </summary>
-    /// <param name="slot">О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫</param>
-    /// <param name="position">О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫д║</param>
+    /// <param name="slot">Е█═Л▐≥Л≤≥Е█═Л▐≥Л≤≥Е█═Л▐≥Л≤≥ Е█═Л▐≥Л≤≥Е█═Л▐≥Л≤≥Е█═Л▐≥Л≤≥Е█═Л▐≥Л≤≥ Е█═Л▐≥Л≤≥Е█═Л▐≥Л≤≥</param>
+    /// <param name="position">Е█═Л▐≥Л≤≥Е█═Л▐≥Л≤≥Е█═Л▐≥Л≤≥ Е█═Л▐≥Л≤≥Л╧≤</param>
     /// <returns></returns>
-    public GameObject GetItemObject(InventorySlot slot, Vector3? position = null)
+    public GameObject GetItemObject(ItemData itemData, uint count = 1, Vector3? position = null)
     {
-        GameObject itemObj = slot.SlotItemData.ItemPrefab;                      // О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫
+        GameObject itemObj = itemData.ItemPrefab;                      // М■└К╕╛М▄╧ Л∙└Л²╢М┘° Л┐²Л└╠
 
-        ItemDataObject parentObj = GetObject(position);                         // г╝О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫
-        parentObj.GetComponent<ItemDataObject>().SetData(slot.SlotItemData);    // О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫
+        ItemDataObject parentObj = GetObject(position);                         // М▓─Л≈░Л└° Л∙└Л²╢М┘° Й╨╪К┌╢Й╦╟
+        parentObj.GetComponent<ItemDataObject>().SetData(itemData);    // Й╨╪К┌╦ Л∙└Л²╢М┘°Л²≤ Л∙└Л²╢М┘° К█╟Л²╢М└╟ Л└╓Л═∙
         
-        Instantiate(itemObj, parentObj.transform);                              // О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫
-
-        return parentObj.gameObject;                                            // FactoryО©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫ф╝ О©╫О©╫х╞ ( О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫з╫О©╫ 0О©╫О©╫б╟ )
-    }
-
-    public GameObject GetItemDataObject(ItemData data, Vector3? position = null)
-    {
-        GameObject itemObj = data.ItemPrefab;                                   // га╦╝фу ╬фюлеш ╩Щ╪╨
-
-        ItemDataObject parentObj = GetObject(position);                         // г╝©║╪╜ ╬фюлеш ╡╗Ё╩╠Б
-        parentObj.GetComponent<ItemDataObject>().SetData(data);                 // ╡╗Ё╫ ╬фюлешюг ╬фюлеш ╣╔юлем ╪Ёа╓
-
-        Instantiate(itemObj, parentObj.transform);                              // ╪Ёа╓╣х ╬фюлеш га╦╝фу ╩Щ╪╨
-
-        return parentObj.gameObject;                                            // Factoryюг ©ю╨Йа╖ф╝ ╧щх╞ ( га╦╝фую╨ юз╫д 0╧Ьб╟ )
+        for(int i = 0; i < count; i++)
+        {
+            Instantiate(itemObj, parentObj.transform);                              // Л└╓Л═∙К░° Л∙└Л²╢М┘° М■└К╕╛М▄╧ Л┐²Л└╠
+        }
+        return parentObj.gameObject;                                            // FactoryЛ²≤ Л≤╓К╦▄Л═²М┼╦ К╟≤М≥≤ ( М■└К╕╛М▄╧Л²─ Л·░Л▀² 0К╡┬Л╖╦ )
     }
 }

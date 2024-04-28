@@ -84,10 +84,9 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
     public float turnSpeed = 10.0f;
 
     /// <summary>
-    /// 중력
+    /// 중력값 -9.81f / 04.15 
     /// </summary>
-    //[Range(-1, 1)]
-    //public float gravity = 0.96f;
+    readonly float gravity = -9.81f;
 
     /// <summary>
     /// 슬라이드 정도
@@ -95,15 +94,19 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
     public float slidePower = 5.0f;
 
     /// <summary>
+    /// 플레이어의 움직임 Velocity 값 / 04.15
+    /// </summary>
+    public Vector3 playerVelocity;
+
+    /// <summary>
     /// 점프 시간 제한
     /// </summary>
     //public float jumpTimeLimit = 4.0f;
 
     /// <summary>
-    /// 점프 시간
+    /// 점프 시간 ( 애니메이션 점프 체공 시간 ) / 04.15 
     /// </summary>
-    //[SerializeField]
-    //public float jumpTime;
+    readonly float jumpTime = 0.9f;
 
     /// <summary>
     /// 점프 정도
@@ -118,7 +121,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
     /// <summary>
     /// 점프 중인지 아닌지 확인용 변수
     /// </summary>
-    bool isJumping = false;
+    public bool isJumping = false;
 
     /// <summary>
     /// 점프가 가능한지 확인하는 프로퍼티 (점프중이 아닐 때)
@@ -308,6 +311,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
     {        
         LookRotation();
         Jump();
+        playerVelocity.y += gravity * Time.deltaTime; // 적용되고 있는 플레이어의 중력 / 04.15 추가
     }
 
     private void FixedUpdate()
@@ -459,15 +463,46 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
         }
     }
 
+    /// <summary>
+    /// 플레이어 점프를 실행하는 함수 ( Update ) / 04.15 추가
+    /// </summary>
     void Jump()
     {
         // 점프가 가능한 경우
-        if (IsJumpAvailable)
+        // IsJumpAvailavle => !isJumping
+        if (IsJumpAvailable) // 점프가 활성화 되면 실행
         {
+            StartCoroutine(Jump_co());
+
             animator.SetTrigger(IsJumpHash);
+        }
+        else // 점프 비활성화 중일 때 실행
+        {
+            playerVelocity.y = 0f; // 04.15 추가
         }
 
         isJumping = true;
+
+        characterController.Move(playerVelocity * Time.fixedDeltaTime); // Move 값 추가 / 04.15 
+    }
+
+    /// <summary>
+    /// 점프를 시작할때 실행하는 코루틴 / 04.15
+    /// </summary>
+    IEnumerator Jump_co()
+    {
+        float curHeight = 0f; // 현재 높이
+        yield return new WaitForSeconds(0.1f); // Jump 딜레이
+
+        while(curHeight < jumpTime) // jumpTime 만큼 실행
+        {
+            curHeight += Time.deltaTime;
+
+            playerVelocity.y = curHeight * -jumpPower * gravity; // 점프 할 동안 y값을 Time.deltaTime만큼 받는다
+            characterController.Move(playerVelocity * Time.deltaTime); // Jump할 때 실행하는 .Move메소드 / 04.15 
+
+            yield return null;
+        }
     }
 
     /// <summary>
