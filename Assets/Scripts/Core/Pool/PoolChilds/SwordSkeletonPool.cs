@@ -5,23 +5,23 @@ using UnityEngine;
 public class SwordSkeletonPool : ObjectPool<SwordSkeleton>
 {
     /// <summary>
-    /// ÀûµéÀÌ »ç¿ëÇÒ ¿şÀÌÆ÷ÀÎÆ®µé. ¹İµå½Ã ÇÏ³ª´Â ÀÖ¾î¾ß ÇÑ´Ù.
+    /// ì ë“¤ì´ ì‚¬ìš©í•  ì›¨ì´í¬ì¸íŠ¸ë“¤. ë°˜ë“œì‹œ í•˜ë‚˜ëŠ” ìˆì–´ì•¼ í•œë‹¤.
     /// </summary>
     public Waypoints[] waypoints;
 
     private void Awake()
     {
         Transform child = transform.GetChild(0);
-        waypoints = child.GetComponentsInChildren<Waypoints>(); // Ç®ÀÇ ÀÚ½Ä¿¡¼­ ¸ğµÎ Ã£±â
+        waypoints = child.GetComponentsInChildren<Waypoints>(); // í’€ì˜ ìì‹ì—ì„œ ëª¨ë‘ ì°¾ê¸°
     }
 
     /// <summary>
-    /// Ç®¿¡¼­ »ç¿ëÇÏÁö ¾Ê´Â ¿ÀºêÁ§Æ®¸¦ ÇÏ³ª ²¨³½ ÈÄ ¸®ÅÏ ÇÏ´Â ÇÔ¼ö
+    /// í’€ì—ì„œ ì‚¬ìš©í•˜ì§€ ì•ŠëŠ” ì˜¤ë¸Œì íŠ¸ë¥¼ í•˜ë‚˜ êº¼ë‚¸ í›„ ë¦¬í„´ í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <param name="index">»ç¿ëÇÒ ¿şÀÌÆ÷ÀÎÆ® ÀÎµ¦½º</param>
-    /// <param name="position">¹èÄ¡µÉ À§Ä¡(¿ùµåÁÂÇ¥)</param>
-    /// <param name="eulerAngle">¹èÄ¡µÉ ¶§ÀÇ °¢µµ</param>
-    /// <returns>Ç®¿¡¼­ ²¨³½ ¿ÀºêÁ§Æ®(È°¼ºÈ­µÊ)</returns>
+    /// <param name="index">ì‚¬ìš©í•  ì›¨ì´í¬ì¸íŠ¸ ì¸ë±ìŠ¤</param>
+    /// <param name="position">ë°°ì¹˜ë  ìœ„ì¹˜(ì›”ë“œì¢Œí‘œ)</param>
+    /// <param name="eulerAngle">ë°°ì¹˜ë  ë•Œì˜ ê°ë„</param>
+    /// <returns>í’€ì—ì„œ êº¼ë‚¸ ì˜¤ë¸Œì íŠ¸(í™œì„±í™”ë¨)</returns>
     public SwordSkeleton GetObject(int index, Vector3? position = null, Vector3? eulerAngle = null)
     {
         SwordSkeleton swordSkeleton = GetObject(position, eulerAngle);
@@ -32,6 +32,6 @@ public class SwordSkeletonPool : ObjectPool<SwordSkeleton>
 
     protected override void OnGenerateObject(SwordSkeleton comp)
     {
-        comp.waypoints = waypoints[0];  // µğÆúÆ®·Î Ã¹¹øÂ° ¿şÀÌÆ÷ÀÎÆ® »ç¿ë
+        comp.waypoints = waypoints[0];  // ë””í´íŠ¸ë¡œ ì²«ë²ˆì§¸ ì›¨ì´í¬ì¸íŠ¸ ì‚¬ìš©
     }
 }

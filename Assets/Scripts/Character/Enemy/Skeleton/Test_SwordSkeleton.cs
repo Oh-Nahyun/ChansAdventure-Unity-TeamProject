@@ -8,22 +8,22 @@ public class Test_SwordSkeleton : EnemyBase
 {
     public Waypoints waypoints;
 
-    // NavMeshAgent ÄÄÆ÷³ÍÆ®
+    // NavMeshAgent ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
     private NavMeshAgent navMeshAgent;
 
-    // Animator ÄÄÆ÷³ÍÆ®
+    // Animator ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
     private Animator animator;
 
-    // Ãß°ÝÇÒ ´ë»ó
+    // ï¿½ß°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
     private Transform target;
 
-    // °ø°Ý °¡´ÉÇÑÁö ¿©ºÎ
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     private bool canAttack = true;
 
-    // Idle »óÅÂ Áö¼Ó ½Ã°£
+    // Idle ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½
     public float idleDuration = 5f;
 
-    // ¾Ö´Ï¸ÞÀÌ¼Ç »óÅÂ ÇØ½ÃÄÚµå
+    // ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ø½ï¿½ï¿½Úµï¿½
     private readonly int Idle_Hash = Animator.StringToHash("Idle");
     private readonly int Patrol_Hash = Animator.StringToHash("Patrol");
     private readonly int Chase_Hash = Animator.StringToHash("Chase");
@@ -31,19 +31,19 @@ public class Test_SwordSkeleton : EnemyBase
     private readonly int Gethit_Hash = Animator.StringToHash("Gethit");
     private readonly int Die_Hash = Animator.StringToHash("Die");
 
-    // SwordPoint ¿ÀºêÁ§Æ®
+    // SwordPoint ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
     private GameObject swordPoint;
 
-    // SwordPoint ¿ÀºêÁ§Æ®ÀÇ ÄÝ¶óÀÌ´õ
+    // SwordPoint ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Ý¶ï¿½ï¿½Ì´ï¿½
     private Collider swordCollider;
 
-    // onWeaponBladeEnabe µ¨¸®°ÔÀÌÆ® º¯¼ö
+    // onWeaponBladeEnabe ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
     public Action<bool> onWeaponBladeEnabe;
 
-    // Waypoints¸¦ ÀúÀåÇÒ ¸®½ºÆ®
+    // Waypointsï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®
     private List<Transform> waypointsList = new List<Transform>();
 
-    // Ãß°Ý »ç°Å¸® ³»ÀÎÁö Ã¼Å©ÇÏ´Â ¸Þ¼­µå
+    // ï¿½ß°ï¿½ ï¿½ï¿½Å¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã¼Å©ï¿½Ï´ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½
     private bool IsPlayerInRange()
     {
         if (target != null)
@@ -54,7 +54,7 @@ public class Test_SwordSkeleton : EnemyBase
         return false;
     }
 
-    // °ø°Ý °¡´ÉÇÑÁö Ã¼Å©ÇÏ´Â ¸Þ¼­µå
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã¼Å©ï¿½Ï´ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½
     private bool CanAttack()
     {
         if (target != null && target.CompareTag("Player"))
@@ -65,88 +65,88 @@ public class Test_SwordSkeleton : EnemyBase
         return false;
     }
 
-    // °ø°Ý ½ÇÇà ¸Þ¼­µå
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½
     private void Attack()
     {
         if (canAttack && CanAttack())
         {
-            // °ø°Ý ¾Ö´Ï¸ÞÀÌ¼Ç ½ÇÇà
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½ï¿½ï¿½
             animator.SetTrigger(Attack_Hash);
 
-            // ¹«±â ºí·¹ÀÌµå È°¼ºÈ­
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ìµï¿½ È°ï¿½ï¿½È­
             WeaponBladeEnable_Old();
 
-            // °ø°Ý Äð´Ù¿î Àû¿ë
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ù¿ï¿½ ï¿½ï¿½ï¿½ï¿½
             canAttack = false;
             Invoke("ResetAttack", attackCooldown);
 
-            // TODO: °ø°Ý Ã³¸®
+            // TODO: ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½
         }
     }
 
-    // °ø°Ý Äð´Ù¿î ¸®¼Â ¸Þ¼­µå
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ù¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½
     private void ResetAttack()
     {
         canAttack = true;
     }
 
-    // ÇÃ·¹ÀÌ¾î ÃßÀû ¸Þ¼­µå
+    // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½
     private void ChasePlayer()
     {
         if (target != null)
         {
-            // ÇÃ·¹ÀÌ¾î ÃßÀû ¹× °ø°Ý
+            // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             navMeshAgent.SetDestination(target.position);
             if (IsPlayerInRange())
             {
-                // ÃßÀû »óÅÂ·Î º¯°æ
+                // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â·ï¿½ ï¿½ï¿½ï¿½ï¿½
                 animator.SetTrigger(Chase_Hash);
 
-                // ÃßÀû »óÅÂ¿¡¼­ °ø°Ý °¡´ÉÇÑ °æ¿ì °ø°Ý ½ÇÇà
+                // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                 Attack();
             }
         }
     }
 
-    // Awake ¸Þ¼­µå¸¦ »ç¿ëÇÏ¿© ÃÊ±âÈ­
+    // Awake ï¿½Þ¼ï¿½ï¿½å¸¦ ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½Ê±ï¿½È­
     void Awake()
     {
-        // NavMeshAgent ÄÄÆ÷³ÍÆ® °¡Á®¿À±â
+        // NavMeshAgent ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         navMeshAgent = GetComponent<NavMeshAgent>();
 
-        // Animator ÄÄÆ÷³ÍÆ® °¡Á®¿À±â
+        // Animator ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         animator = GetComponent<Animator>();
 
-        // Ã¼·Â ÃÊ±âÈ­
+        // Ã¼ï¿½ï¿½ ï¿½Ê±ï¿½È­
         CurrentHealth = maxHealth;
 
-        // ÃßÀû ´ë»ó ¼³Á¤
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         target = GameObject.FindGameObjectWithTag("Player").transform;
 
-        // SwordPoint ¿ÀºêÁ§Æ® Ã£±â
+        // SwordPoint ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® Ã£ï¿½ï¿½
         swordPoint = GameObject.Find("SwordPoint").gameObject;
-        // SwordPoint ¿ÀºêÁ§Æ®ÀÇ ÄÝ¶óÀÌ´õ Ã£±â
+        // SwordPoint ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Ý¶ï¿½ï¿½Ì´ï¿½ Ã£ï¿½ï¿½
         swordCollider = swordPoint.GetComponent<Collider>();
 
-        // Waypoints¸¦ Ã£¾Æ ¸®½ºÆ®¿¡ ÀúÀå
-        Transform waypointsParent = transform.GetChild(3); // 3¹øÂ° ÀÚ½Ä
+        // Waypointsï¿½ï¿½ Ã£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        Transform waypointsParent = transform.GetChild(3); // 3ï¿½ï¿½Â° ï¿½Ú½ï¿½
         foreach (Transform waypoint in waypointsParent)
         {
             waypointsList.Add(waypoint);
         }
 
-        // Idle »óÅÂ Áö¼Ó ÈÄ Walk ¾Ö´Ï¸ÞÀÌ¼ÇÀ¸·Î º¯°æ
+        // Idle ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Walk ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         Invoke("StartPatrolling", idleDuration);
     }
 
-    // Walk ¾Ö´Ï¸ÞÀÌ¼ÇÀ¸·Î º¯°æÇÏ¿© ¹èÈ¸ ½ÃÀÛ
+    // Walk ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½È¸ ï¿½ï¿½ï¿½ï¿½
     private void StartPatrolling()
     {
-        // Walk ¾Ö´Ï¸ÞÀÌ¼Ç ½ÇÇà
+        // Walk ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½ï¿½ï¿½
         animator.SetTrigger(Patrol_Hash);
         navMeshAgent.speed = patrollingSpeed;
 
-        // Waypoints À§Ä¡·Î ÀÌµ¿
+        // Waypoints ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½Ìµï¿½
         if (waypointsList.Count > 0)
         {
             Transform randomWaypoint = waypointsList[UnityEngine.Random.Range(0, waypointsList.Count)];
@@ -154,22 +154,22 @@ public class Test_SwordSkeleton : EnemyBase
         }
     }
 
-    // Update ¸Þ¼­µå¸¦ »ç¿ëÇÏ¿© ÇÁ·¹ÀÓ¸¶´Ù ½ÇÇà
+    // Update ï¿½Þ¼ï¿½ï¿½å¸¦ ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ó¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     void Update()
     {
-        // ÇÃ·¹ÀÌ¾î ÃßÀû ¹× °ø°Ý
+        // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         if (IsPlayerInRange())
         {
-            // ÃßÀû »óÅÂ·Î º¯°æ
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â·ï¿½ ï¿½ï¿½ï¿½ï¿½
             ChasePlayer();
         }
         else
         {
-            // Ãß°Ý »ç°Å¸®¸¦ ¹þ¾î³ª¸é Walk ¾Ö´Ï¸ÞÀÌ¼ÇÀ¸·Î º¯°æÇÏ¿© ¹èÈ¸ ½ÃÀÛ
+            // ï¿½ß°ï¿½ ï¿½ï¿½Å¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½î³ªï¿½ï¿½ Walk ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½È¸ ï¿½ï¿½ï¿½ï¿½
             animator.SetTrigger(Idle_Hash);
             navMeshAgent.speed = patrollingSpeed;
 
-            // Waypoints À§Ä¡·Î ÀÌµ¿
+            // Waypoints ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½Ìµï¿½
             if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance < 0.5f)
             {
                 if (waypointsList.Count > 0)
@@ -181,33 +181,33 @@ public class Test_SwordSkeleton : EnemyBase
         }
     }
 
-    // ÇÃ·¹ÀÌ¾îÀÇ °ø°ÝÀ» ¹Þ¾ÒÀ» ¶§ È£ÃâµÇ´Â ¸Þ¼­µå
+    // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¾ï¿½ï¿½ï¿½ ï¿½ï¿½ È£ï¿½ï¿½Ç´ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½
     public void TakeDamage(float damageAmount)
     {
-        // °ø°ÝÀ» ¹Þ¾ÒÀ» ¶§ ½ÇÇàÇÒ ·ÎÁ÷
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¾ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         CurrentHealth -= damageAmount;
         if (CurrentHealth <= 0)
         {
-            // Ã¼·ÂÀÌ 0 ÀÌÇÏÀÏ ¶§ Die ¾Ö´Ï¸ÞÀÌ¼Ç ½ÇÇà ÈÄ ¿ÀºêÁ§Æ® ºñÈ°¼ºÈ­
+            // Ã¼ï¿½ï¿½ï¿½ï¿½ 0 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Die ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½È°ï¿½ï¿½È­
             Die();
         }
         else
         {
-            // Damage ¾Ö´Ï¸ÞÀÌ¼Ç ½ÇÇà
+            // Damage ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½ï¿½ï¿½
             animator.SetTrigger(Gethit_Hash);
-            // TODO: Damage ¾Ö´Ï¸ÞÀÌ¼Ç ½ÇÇà
+            // TODO: Damage ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½ï¿½ï¿½
         }
     }
 
-    // Á×À½ Ã³¸® ¸Þ¼­µå
+    // ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½
     private void Die()
     {
-        // Die ¾Ö´Ï¸ÞÀÌ¼Ç ½ÇÇà ÈÄ ¿ÀºêÁ§Æ® ºñÈ°¼ºÈ­
+        // Die ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½È°ï¿½ï¿½È­
         animator.SetTrigger("Die");
-        // TODO: Die ¾Ö´Ï¸ÞÀÌ¼Ç ½ÇÇà ÈÄ ¿ÀºêÁ§Æ® ºñÈ°¼ºÈ­
+        // TODO: Die ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½È°ï¿½ï¿½È­
     }
 
-    // ¹«±â ºí·¹ÀÌµå È°¼ºÈ­ ¸Þ¼­µå
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ìµï¿½ È°ï¿½ï¿½È­ ï¿½Þ¼ï¿½ï¿½ï¿½
     private void WeaponBladeEnable_Old()
     {
         if (swordCollider != null)
@@ -215,11 +215,11 @@ public class Test_SwordSkeleton : EnemyBase
             swordCollider.enabled = true;
         }
 
-        // onWeaponBladeEnabe µ¨¸®°ÔÀÌÆ® È£Ãâ
+        // onWeaponBladeEnabe ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® È£ï¿½ï¿½
         onWeaponBladeEnabe?.Invoke(true);
     }
 
-    // ¹«±â ºí·¹ÀÌµå ºñÈ°¼ºÈ­ ¸Þ¼­µå
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ìµï¿½ ï¿½ï¿½È°ï¿½ï¿½È­ ï¿½Þ¼ï¿½ï¿½ï¿½
     private void WeaponBladeDisable_Old()
     {
         if (swordCollider != null)
@@ -227,7 +227,7 @@ public class Test_SwordSkeleton : EnemyBase
             swordCollider.enabled = false;
         }
 
-        // onWeaponBladeEnabe µ¨¸®°ÔÀÌÆ® È£Ãâ
+        // onWeaponBladeEnabe ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® È£ï¿½ï¿½
         onWeaponBladeEnabe?.Invoke(false);
     }
 }

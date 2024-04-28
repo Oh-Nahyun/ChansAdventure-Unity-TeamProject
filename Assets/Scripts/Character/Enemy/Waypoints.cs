@@ -3,28 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// ¿şÀÌÆ÷ÀÎÆ®¸¦ ÀúÀåÇÏ°í Ã³¸®ÇÏ´Â Å¬·¡½º
+/// ì›¨ì´í¬ì¸íŠ¸ë¥¼ ì €ì¥í•˜ê³  ì²˜ë¦¬í•˜ëŠ” í´ë˜ìŠ¤
 /// </summary>
 public class Waypoints : MonoBehaviour
 {
     /// <summary>
-    /// ¿şÀÌÆ÷ÀÎÆ® ÁöÁ¡µé
+    /// ì›¨ì´í¬ì¸íŠ¸ ì§€ì ë“¤
     /// </summary>
     Transform[] children;
 
     /// <summary>
-    /// ´ÙÀ½ ¸ñÀûÁöÀÇ ÀÎµ¦½º
+    /// ë‹¤ìŒ ëª©ì ì§€ì˜ ì¸ë±ìŠ¤
     /// </summary>
     int index = 0;
 
     /// <summary>
-    /// ´ÙÀ½ ¸ñÀûÁöÀÇ À§Ä¡
+    /// ë‹¤ìŒ ëª©ì ì§€ì˜ ìœ„ì¹˜
     /// </summary>
     public Vector3 NextTarget => children[index].position;
 
     private void Awake()
     {
-        // ÀÚ½ÄµéÀ» ÀüºÎ ¿şÀÌÆ÷ÀÎÆ®·Î »ç¿ë
+        // ìì‹ë“¤ì„ ì „ë¶€ ì›¨ì´í¬ì¸íŠ¸ë¡œ ì‚¬ìš©
         children = new Transform[transform.childCount];
         for (int i = 0; i < children.Length; i++)
         {
@@ -33,7 +33,7 @@ public class Waypoints : MonoBehaviour
     }
 
     /// <summary>
-    /// ´ÙÀ½ ¿şÀÌÆ÷ÀÎÆ® ÁöÁ¡À» ¼³Á¤ÇÏ±â À§ÇÑ ÇÔ¼ö
+    /// ë‹¤ìŒ ì›¨ì´í¬ì¸íŠ¸ ì§€ì ì„ ì„¤ì •í•˜ê¸° ìœ„í•œ í•¨ìˆ˜
     /// </summary>
     public void StepNextWaypoint()
     {

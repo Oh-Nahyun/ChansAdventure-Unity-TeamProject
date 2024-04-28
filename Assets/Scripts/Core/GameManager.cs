@@ -16,9 +16,16 @@ public class GameManager : Singleton<GameManager>
     ItemDataManager itemDataManager;
 
     /// <summary>
-    /// ¾ÆÀÌÅÛ µ¥ÀÌÅÍ Å¬·¡½º Á¢±ÙÀ» À§ÇÑ ÇÁ·ÎÆÛÆ¼
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¼
     /// </summary>
     public ItemDataManager ItemDataManager => itemDataManager;
+
+    MapManager mapManager;
+
+    /// <summary>
+    /// mapManager Á¢±ÙÀ» À§ÇÑ ÇÁ·ÎÆÛÆ¼
+    /// </summary>
+    public MapManager MapManager => mapManager;
 
     public CameraManager Cam
     {
@@ -36,6 +43,7 @@ public class GameManager : Singleton<GameManager>
         weapon = FindAnyObjectByType<Weapon>();
         cameraManager = GetComponent<CameraManager>();
         itemDataManager = GetComponent<ItemDataManager>();
+        mapManager = GetComponent<MapManager>();
     }
 
 #if UNITY_EDITOR
@@ -49,12 +57,12 @@ public class GameManager : Singleton<GameManager>
         if (!isNPC)
         {
             onTalkNPC?.Invoke();
-            Debug.Log("»óÈ£ÀÛ¿ë Å° ´©¸§");
+            Debug.Log("ï¿½ï¿½È£ï¿½Û¿ï¿½ Å° ï¿½ï¿½ï¿½ï¿½");
         }
         else
         {
             onTalkObj?.Invoke();
-            Debug.Log("¿ÀºêÁ§Æ®¿Í ´ëÈ­");
+            Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½È­");
         }
     }
 

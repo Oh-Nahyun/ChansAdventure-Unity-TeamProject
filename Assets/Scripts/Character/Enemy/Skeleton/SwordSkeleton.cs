@@ -11,24 +11,24 @@ using UnityEditor;
 public class SwordSkeleton : RecycleObject, IBattler, IHealth
 {
     /// <summary>
-    /// ÀûÀÌ °¡Áú ¼ö ÀÖ´Â »óÅÂÀÇ Á¾·ù
+    /// ì ì´ ê°€ì§ˆ ìˆ˜ ìˆëŠ” ìƒíƒœì˜ ì¢…ë¥˜
     /// </summary>
     protected enum EnemyState
     {
-        Wait = 0,   // ´ë±â
-        Patrol,     // ¼øÂû
-        Chase,      // ÃßÀû
-        Attack,     // °ø°İ
-        Dead        // »ç¸Á
+        Wait = 0,   // ëŒ€ê¸°
+        Patrol,     // ìˆœì°°
+        Chase,      // ì¶”ê²©
+        Attack,     // ê³µê²©
+        Dead        // ì‚¬ë§
     }
 
     /// <summary>
-    /// ÀûÀÇ ÇöÀç »óÅÂ
+    /// ì ì˜ í˜„ì¬ ìƒíƒœ
     /// </summary>
     EnemyState state = EnemyState.Patrol;
 
     /// <summary>
-    /// »óÅÂ¸¦ ¼³Á¤ÇÏ°í È®ÀÎÇÏ´Â ÇÁ·ÎÆÛÆ¼
+    /// ìƒíƒœë¥¼ ì„¤ì •í•˜ê³  í™•ì¸í•˜ëŠ” í”„ë¡œí¼í‹°
     /// </summary>
     protected EnemyState State
     {
@@ -38,23 +38,22 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
             if (state != value)
             {
                 state = value;
-                switch (state)  // »óÅÂ¿¡ ÁøÀÔÇÒ ¶§ ÇÒ ÀÏµé Ã³¸®
+                switch (state)  // ìƒíƒœì— ì§„ì…í•  ë•Œ í•  ì¼ë“¤ ì²˜ë¦¬
                 {
                     case EnemyState.Wait:
-                        // ÀÏÁ¤ ½Ã°£ ´ë±â
-                        agent.isStopped = true;         // agent Á¤Áö
-                        agent.velocity = Vector3.zero;  // agent¿¡ ³²¾ÆÀÖ´ø ¿îµ¿·® Á¦°Å
-                        animator.SetTrigger("Idle");    // ¾Ö´Ï¸ŞÀÌ¼Ç Á¤Áö
-                        WaitTimer = waitTime;           // ±â´Ù·Á¾ß ÇÏ´Â ½Ã°£ ÃÊ±âÈ­
-                        onStateUpdate = Update_Wait;    // ´ë±â »óÅÂ¿ë ¾÷µ¥ÀÌÆ® ÇÔ¼ö ¼³Á¤
+                        // ì¼ì • ì‹œê°„ ëŒ€ê¸°
+                        agent.isStopped = true;         // agent ì •ì§€
+                        agent.velocity = Vector3.zero;  // agentì— ë‚¨ì•„ìˆë˜ ìš´ë™ëŸ‰ ì œê±°
+                        animator.SetTrigger("Idle");    // ì •ì§€ ì• ë‹ˆë©”ì´ì…˜
+                        WaitTimer = waitTime;           // ê¸°ë‹¤ë ¤ì•¼ í•˜ëŠ” ì‹œê°„ ì´ˆê¸°í™”
+                        onStateUpdate = Update_Wait;    // ëŒ€ê¸° ìƒíƒœìš© ì—…ë°ì´íŠ¸ í•¨ìˆ˜ ì„¤ì •
                         break;
                     case EnemyState.Patrol:
-                        // Debug.Log("ÆĞÆ®·Ñ »óÅÂ");
-                        agent.isStopped = false;        // agent ´Ù½Ã ÄÑ±â
-                        agent.speed = walkSpeed;
-                        agent.SetDestination(waypoints.NextTarget);  // ¸ñÀûÁö ÁöÁ¤(¿şÀÌÆ÷ÀÎÆ® ÁöÁ¡)
-                        animator.SetTrigger("Patrol");
-                        onStateUpdate = Update_Patrol;
+                        agent.isStopped = false;        // agent ë‹¤ì‹œ ì¼œê¸°
+                        agent.speed = walkSpeed;        // ê±·ëŠ” ì†ë„ë¡œ ë³€ê²½
+                        agent.SetDestination(waypoints.NextTarget);  // ëª©ì ì§€ ì§€ì •(ì›¨ì´í¬ì¸íŠ¸ ì§€ì )
+                        animator.SetTrigger("Patrol");  // ìˆœì°° ì• ë‹ˆë©”ì´ì…˜
+                        onStateUpdate = Update_Patrol;  // ìˆœì°° ìƒíƒœìš© ì—…ë°ì´íŠ¸ í•¨ìˆ˜ ì„¤ì •
                         break;
                     case EnemyState.Chase:
                         agent.isStopped = false;
@@ -80,17 +79,17 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
     }
 
     /// <summary>
-    /// ´ë±â »óÅÂ·Î µé¾î°¬À» ¶§ ±â´Ù¸®´Â ½Ã°£
+    /// ëŒ€ê¸° ìƒíƒœë¡œ ë“¤ì–´ê°”ì„ ë•Œ ê¸°ë‹¤ë¦¬ëŠ” ì‹œê°„
     /// </summary>
     public float waitTime = 1.0f;
 
     /// <summary>
-    /// ´ë±â ½Ã°£ ÃøÁ¤¿ë(°è¼Ó °¨¼Ò)
+    /// ëŒ€ê¸° ì‹œê°„ ì¸¡ì •ìš©(ê³„ì† ê°ì†Œ)
     /// </summary>
     float waitTimer = 1.0f;
 
     /// <summary>
-    /// ÃøÁ¤¿ë ½Ã°£ Ã³¸®¿ë ÇÁ·ÎÆÛÆ¼
+    /// ì¸¡ì •ìš© ì‹œê°„ ì²˜ë¦¬ìš© í”„ë¡œí¼í‹°
     /// </summary>
     protected float WaitTimer
     {
@@ -106,64 +105,76 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
     }
 
     /// <summary>
-    /// °È´Â(¼øÂû) ¼Óµµ
+    /// ë¬´ì  ì‹œê°„
+    /// </summary>
+    public float invincibleTime = 0.2f;
+
+
+    /// <summary>
+    /// ê±·ê¸°(ìˆœì°°) ì†ë„
     /// </summary>
     public float walkSpeed = 2.0f;
 
     /// <summary>
-    /// ¶Ù´Â(Ãß°İ)¼Óµµ
+    /// ë›°ê¸°(ì¶”ê²© ì†ë„)
     /// </summary>
     public float runSpeed = 4.0f;
 
     /// <summary>
-    /// ÀûÀÌ ¼øÂûÇÒ ¿şÀÌÆ÷ÀÎÆ®(publicÀÌÁö¸¸ privateÃ³·³ »ç¿ëÇÒ °Í)
+    /// ì ì´ ìˆœì°°í•  ì›¨ì´í¬ì¸íŠ¸(publicì´ì§€ë§Œ privateì²˜ëŸ¼ ì‚¬ìš©í•  ê²ƒ)
     /// </summary>
     public Waypoints waypoints;
 
     /// <summary>
-    /// ¿ø°Å¸® ½Ã¾ß ¹üÀ§
+    /// ì›ê±°ë¦¬ ì‹œì•¼ ë²”ìœ„
     /// </summary>
     public float farSightRange = 10.0f;
 
     /// <summary>
-    /// ¿ø°Å¸® ½Ã¾ß°¢ÀÇ Àı¹İ
+    /// ì›ê±°ë¦¬ ì‹œì•¼ê°ì˜ ì ˆë°˜
     /// </summary>
     public float sightHalfAngle = 50.0f;
 
     /// <summary>
-    /// ±Ù°Å¸® ½Ã¾ß ¹üÀ§
+    /// ê·¼ê±°ë¦¬ ì‹œì•¼ ë²”ìœ„
     /// </summary>
     public float nearSightRange = 1.5f;
 
     /// <summary>
-    /// ÃßÀû ´ë»óÀÇ Æ®·£½ºÆû
+    /// ì¶”ì  ëŒ€ìƒì˜ íŠ¸ëœìŠ¤í¼
     /// </summary>
     protected Transform chaseTarget = null;
 
     /// <summary>
-    /// °ø°İ ´ë»ó
+    /// ê³µê²© ëŒ€ìƒ
     /// </summary>
     protected IBattler attackTarget = null;
 
     /// <summary>
-    /// °ø°İ·Â(º¯¼ö´Â ÀÎ½ºÆåÅÍ¿¡¼­ ¼öÁ¤ÇÏ±â À§ÇØ publicÀ¸·Î ¸¸µç °ÍÀÓ)
+    /// ê³µê²©ë ¥(ë³€ìˆ˜ëŠ” ì¸ìŠ¤í™í„°ì—ì„œ ìˆ˜ì •í•˜ê¸° ìœ„í•´ publicìœ¼ë¡œ ë§Œë“  ê²ƒì„)
     /// </summary>
     public float attackPower = 10.0f;
     public float AttackPower => attackPower;
 
     /// <summary>
-    /// ¹æ¾î·Â(º¯¼ö´Â ÀÎ½ºÆåÅÍ¿¡¼­ ¼öÁ¤ÇÏ±â À§ÇØ publicÀ¸·Î ¸¸µç °ÍÀÓ)
+    /// ë°©ì–´ë ¥(ë³€ìˆ˜ëŠ” ì¸ìŠ¤í™í„°ì—ì„œ ìˆ˜ì •í•˜ê¸° ìœ„í•´ publicìœ¼ë¡œ ë§Œë“  ê²ƒì„)
     /// </summary>
     public float defencePower = 3.0f;
     public float DefencePower => defencePower;
 
     /// <summary>
-    /// °ø°İ ¼Óµµ
+    /// ì•½ì  ë§ì„ë•Œ ì¶”ê°€ ë°ë¯¸ì§€ ë°°ìœ¨
+    /// </summary>
+
+    public float weaknessDefence = 1.2f;
+
+    /// <summary>
+    /// ê³µê²© ì†ë„
     /// </summary>
     public float attackInterval = 1.0f;
 
     /// <summary>
-    /// ³²¾ÆÀÖ´Â °ø°İ ÄğÅ¸ÀÓ
+    /// ë‚¨ì•„ìˆëŠ” ê³µê²© ì¿¨íƒ€ì„
     /// </summary>
     float attackCoolTime = 0.0f;
 
@@ -177,7 +188,7 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
         set
         {
             hp = value;
-            if (State != EnemyState.Dead && hp <= 0)    // ÇÑ¹ø¸¸ Á×±â¿ëµµ
+            if (State != EnemyState.Dead && hp <= 0)    // í•œë²ˆë§Œ ì£½ê¸°ìš©ë„
             {
                 Die();
             }
@@ -187,52 +198,71 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
     }
 
     /// <summary>
-    /// ÃÖ´ë HP(º¯¼ö´Â ÀÎ½ºÆåÅÍ¿¡¼­ ¼öÁ¤ÇÏ±â À§ÇØ publicÀ¸·Î ¸¸µç °ÍÀÓ)
+    /// ìµœëŒ€ HP(ë³€ìˆ˜ëŠ” ì¸ìŠ¤í™í„°ì—ì„œ ìˆ˜ì •í•˜ê¸° ìœ„í•´ publicìœ¼ë¡œ ë§Œë“  ê²ƒì„)
     /// </summary>
     public float maxHP = 100.0f;
     public float MaxHP => maxHP;
 
     /// <summary>
-    /// HP º¯°æ½Ã ½ÇÇàµÇ´Â µ¨¸®°ÔÀÌÆ®
+    /// HP ë³€ê²½ì‹œ ì‹¤í–‰ë˜ëŠ” ë¸ë¦¬ê²Œì´íŠ¸
     /// </summary>
     public Action<float> onHealthChange { get; set; }
 
     /// <summary>
-    /// »ì¾Ò´ÂÁö Á×¾ú´ÂÁö È®ÀÎÇÏ±â À§ÇÑ ÇÁ·ÎÆÛÆ¼
+    /// ì‚´ì•˜ëŠ”ì§€ ì£½ì—ˆëŠ”ì§€ í™•ì¸í•˜ê¸° ìœ„í•œ í”„ë¡œí¼í‹°
     /// </summary>
     public bool IsAlive => hp > 0;
 
     /// <summary>
-    /// ÀÌ Ä³¸¯ÅÍ°¡ Á×¾úÀ» ¶§ ½ÇÇàµÇ´Â µ¨¸®°ÔÀÌÆ®
+    /// ì´ ìºë¦­í„°ê°€ ì£½ì—ˆì„ ë•Œ ì‹¤í–‰ë˜ëŠ” ë¸ë¦¬ê²Œì´íŠ¸
     /// </summary>
     public Action onDie { get; set; }
 
     /// <summary>
-    /// ÀÌ Ä³¸¯ÅÍ°¡ ¸Â¾ÒÀ»¶§ ½ÇÇàµÇ´Â µ¨¸®°ÔÀÌÆ®(int : ½ÇÁ¦·Î ÀÔÀº µ¥¹ÌÁö)
+    /// ì´ ìºë¦­í„°ê°€ ë§ì•˜ì„ ë•Œ ì‹¤í–‰ë˜ëŠ” ë¸ë¦¬ê²Œì´íŠ¸(int : ì‹¤ì œë¡œ ì…ì€ ë°ë¯¸ì§€)
     /// </summary>
     public Action<int> onHit { get; set; }
 
-    // onWeaponBladeEnabe µ¨¸®°ÔÀÌÆ® º¯¼ö
+    /// <summary>
+    /// ë¬´ê¸° ì»¬ë¼ì´ë” ì¼œê³  ë„ëŠ” ì‹ í˜¸ë¥¼ ë³´ë‚´ëŠ” ë¸ë¦¬ê²Œì´íŠ¸
+    /// </summary>
     public Action<bool> onWeaponBladeEnabe;
 
     /// <summary>
-    /// »óÅÂº° ¾÷µ¥ÀÌÆ® ÇÔ¼ö°¡ ÀúÀåµÉ µ¨¸®°ÔÀÌÆ®(ÇÔ¼ö ÀúÀå¿ë)
+    /// ìƒíƒœë³„ ì—…ë°ì´íŠ¸ í•¨ìˆ˜ê°€ ì €ì¥ë  ë¸ë¦¬ê²Œì´íŠ¸(í•¨ìˆ˜ ì €ì¥ìš©)
     /// </summary>
     Action onStateUpdate;
 
-    // ÄÄÆ÷³ÍÆ®µé
+    [System.Serializable]   // ì´ê²Œ ìˆì–´ì•¼ êµ¬ì¡°ì²´ ë‚´ìš©ì„ ì¸ìŠ¤íŒ©í„° ì°½ì—ì„œ ìˆ˜ì •í•  ìˆ˜ ìˆë‹¤.
+    public struct ItemDropInfo
+    {
+        public ItemCode code;       // ì•„ì´í…œ ì¢…ë¥˜
+        [Range(0, 1)]
+        public float dropRatio;     // ë“œë í™•ìœ¨(1.0f = 100%)
+        public uint dropCount;      // ìµœëŒ€ ë“œë ê°œìˆ˜
+    }
+    /// <summary>
+    /// ì´ ì ì´ ì£½ì„ë•Œ ë“œëí•˜ëŠ” ì•„ì´í…Œ ì •ë³´
+    /// </summary>
+    public ItemDropInfo[] dropItems;
+
+    // ì»´í¬ë„ŒíŠ¸ë“¤
     Animator animator;
     NavMeshAgent agent;
-    // º¯°æ ÇØ¾ßµÊ(¸öºÎºĞ ¸Ó¸®ºÎºĞ µû·Î ºĞ¸®)
-    CapsuleCollider bodyCollider;   // ¸öÅë ºÎºĞ Äİ¶óÀÌ´õ
-    SphereCollider headCollider;    // ¸Ó¸® ºÎºĞ Äİ¶óÀÌ´õ
-    BoxCollider swordCollider;      // ¹«±â ºÎºĞ Äİ¶óÀÌ´õ
-
     Rigidbody rigid;
-    EnemyHealthBar hpBar;           // ÀûÀÇ HP¹Ù
 
-    // ÀĞ±â Àü¿ë
-    readonly Vector3 EffectResetPosition = new(0.0f, 0.01f, 0.0f);
+    // ë¬´ê¸°, ì•½ì , ëª¸ì²´ ì½œë¼ì´ë” 
+    CapsuleCollider bodyCollider;   // ëª¸ì²´ ì½œë¼ì´ë”
+    SphereCollider weakCollider;    // ë¨¸ë¦¬ ì½œë¼ì´ë”
+    BoxCollider swordCollider;      // ë¬´ê¸° ì½œë¼ì´ë”
+
+    EnemyHealthBar hpBar;           // ì  ì²´ë ¥ë°” ìŠ¤í¬ë¦½íŠ¸
+
+    // ë¬´ê¸°, ì•½ì , ëª¸ì²´ ì»´í¬ë„ŒíŠ¸ë¥¼ ì°¾ê¸°ìœ„í•œ ê²Œì„ ì˜¤ë¸Œì íŠ¸
+    GameObject bodyPoint;       // ëª¸í†µ í¬ì¸íŠ¸ ê²Œì„ ì˜¤ë¸Œì íŠ¸
+    GameObject weakPoint;       // ì•½ì  í¬ì¸íŠ¸ ê²Œì„ ì˜¤ë¸Œì íŠ¸
+    GameObject weaponPoint;     // ë¬´ê¸° í¬ì¸íŠ¸ ê²Œì„ ì˜¤ë¸Œì íŠ¸
+
 
     void Awake()
     {
@@ -240,14 +270,14 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
         agent = GetComponent<NavMeshAgent>();
         rigid = GetComponent<Rigidbody>();
 
-        GameObject bodyPoint = GameObject.Find("BodyPoint").gameObject;
+        bodyPoint = GameObject.Find("BodyPoint").gameObject;
         bodyCollider = bodyPoint.GetComponent<CapsuleCollider>();
 
-        GameObject headPoint = GameObject.Find("HeadPoint").gameObject;
-        headCollider = headPoint.GetComponent<SphereCollider>();
+        weakPoint = GameObject.Find("WeakPoint").gameObject;
+        weakCollider = weakPoint.GetComponent<SphereCollider>();
 
-        GameObject swordPoint = GameObject.Find("SwordPoint").gameObject;
-        swordCollider = swordPoint.GetComponent<BoxCollider>();
+        weaponPoint = GameObject.Find("SwordPoint").gameObject;
+        swordCollider = weaponPoint.GetComponent<BoxCollider>();
 
 
         Transform child = transform.GetChild(3);
@@ -259,21 +289,21 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
         
         attackArea.onPlayerIn += (target) =>
         {
-            // ÇÃ·¹ÀÌ¾î°¡ µé¾î¿Â »óÅÂ¿¡¼­
-            if (State == EnemyState.Chase)   // ÃßÀû »óÅÂÀÌ¸é
+            // í”Œë ˆì´ì–´ê°€ ë“¤ì–´ì˜¨ ìƒíƒœì—ì„œ
+            if (State == EnemyState.Chase)   // ì¶”ì  ìƒíƒœì´ë©´
             {
-                attackTarget = target;      // °ø°İ ´ë»ó ÁöÁ¤ÇÏ°í
-                State = EnemyState.Attack;  // °ø°İ »óÅÂ·Î º¯È¯
+                attackTarget = target;      // ê³µê²© ëŒ€ìƒ ì§€ì •í•˜ê³ 
+                State = EnemyState.Attack;  // ê³µê²© ìƒíƒœë¡œ ë³€í™˜
             }
         };
         attackArea.onPlayerOut += (target) =>
         {
-            if (attackTarget == target)            // °ø°İ ´ë»óÀÌ ³ª°¬À¸¸é
+            if (attackTarget == target)             // ê³µê²© ëŒ€ìƒì´ ë‚˜ê°”ìœ¼ë©´
             {
-                attackTarget = null;                // °ø°İ ´ë»óÀ» ºñ¿ì°í
-                if (State != EnemyState.Dead)        // Á×Áö ¾Ê¾Ò´Ù¸é
+                attackTarget = null;                // ê³µê²© ëŒ€ìƒì„ ë¹„ìš°ê³ 
+                if (State != EnemyState.Dead)       // ì£½ì§€ ì•Šì•˜ë‹¤ë©´
                 {
-                    State = EnemyState.Chase;       // ÃßÀû »óÅÂ¸¦ µÇµ¹¸®±â
+                    State = EnemyState.Chase;       // ì¶”ì  ìƒíƒœë¥¼ ë˜ëŒë¦¬ê¸°
                 }
             }
         };
@@ -283,19 +313,35 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
     {
         base.OnEnable();
 
-        agent.speed = walkSpeed;            // ÀÌµ¿ ¼Óµµ ÁöÁ¤
-        State = EnemyState.Wait;            // ±âº» »óÅÂ ÁöÁ¤
-        animator.ResetTrigger("Idle");      // Wait »óÅÂ·Î ¼³Á¤ÇÏ¸é¼­ Stop Æ®¸®°Å°¡ ½×ÀÎ °ÍÀ» Á¦°ÅÇÏ±â À§ÇØ ÇÊ¿ä
-        rigid.isKinematic = true;           // Å°³×¸¶Æ½À» ²¨¼­ ¹°¸®°¡ Àû¿ëµÇ°Ô ¸¸µé±â
-        rigid.drag = Mathf.Infinity;        // ¹«ÇÑ´ë·Î µÇ¾î ÀÖ´ø ¸¶Âû·ÂÀ» ³·Ãç¼­ ¶³¾îÁú ¼ö ÀÖ°Ô ÇÏ±â
-        HP = maxHP;                         // HP ÃÖ´ë·Î
+        agent.speed = walkSpeed;            // ì´ë™ ì†ë„ ì§€ì •
+        State = EnemyState.Wait;            // ê¸°ë³¸ ìƒíƒœ ì§€ì •
+        animator.ResetTrigger("Idle");      // Wait ìƒíƒœë¡œ ì„¤ì •í•˜ë©´ì„œ Stop íŠ¸ë¦¬ê±°ê°€ ìŒ“ì¸ ê²ƒì„ ì œê±°í•˜ê¸° ìœ„í•´ í•„ìš”
+        rigid.isKinematic = true;           // í‚¤ë„¤ë§ˆí‹±ì„ êº¼ì„œ ë¬¼ë¦¬ê°€ ì ìš©ë˜ê²Œ ë§Œë“¤ê¸°
+        rigid.drag = Mathf.Infinity;        // ë¬´í•œëŒ€ë¡œ ë˜ì–´ ìˆë˜ ë§ˆì°°ë ¥ì„ ë‚®ì¶°ì„œ ë–¨ì–´ì§ˆ ìˆ˜ ìˆê²Œ í•˜ê¸°
+        HP = maxHP;                         // HP ìµœëŒ€ë¡œ
+
+        Player player = GameManager.Instance.Player;
+        if (player != null)
+        {
+            player.onDie += PlayerDie;
+        }
     }
 
     protected override void OnDisable()
     {
-        bodyCollider.enabled = true;        // ÄÃ¶óÀÌ´õ È°¼ºÈ­
-        hpBar.gameObject.SetActive(true);   // HP¹Ù ´Ù½Ã º¸ÀÌ°Ô ¸¸µé±â
-        agent.enabled = true;               // agent°¡ È°¼ºÈ­ µÇ¾î ÀÖÀ¸¸é Ç×»ó ³×ºê¸Ş½Ã À§¿¡ ÀÖÀ½
+        if (GameManager.Instance != null)
+        {
+            Player player = GameManager.Instance.Player;
+            if (player != null)
+            {
+                player.onDie -= PlayerDie;
+            }
+        }
+
+        bodyCollider.enabled = true;        // ì»¬ë¼ì´ë” í™œì„±í™”
+        weakCollider.enabled = true;
+        hpBar.gameObject.SetActive(true);   // HPë°” ë‹¤ì‹œ ë³´ì´ê²Œ ë§Œë“¤ê¸°
+        agent.enabled = true;               // agentê°€ í™œì„±í™” ë˜ì–´ ìˆìœ¼ë©´ í•­ìƒ ë„¤ë¸Œë©”ì‹œ ìœ„ì— ìˆìŒ
 
         base.OnDisable();
     }
@@ -306,7 +352,7 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
     }
 
     /// <summary>
-    /// Wait »óÅÂ¿ë ¾÷µ¥ÀÌÆ® ÇÔ¼ö
+    /// Wait ìƒíƒœìš© ì—…ë°ì´íŠ¸ í•¨ìˆ˜
     /// </summary>
     void Update_Wait()
     {
@@ -316,16 +362,16 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
         }
         else
         {
-            WaitTimer -= Time.deltaTime;    // ±â´Ù¸®´Â ½Ã°£ °¨¼Ò(0ÀÌµÇ¸é Patrol·Î º¯°æ)
+            WaitTimer -= Time.deltaTime;    // ê¸°ë‹¤ë¦¬ëŠ” ì‹œê°„ ê°ì†Œ(0ì´ë˜ë©´ Patrolë¡œ ë³€ê²½)
 
-            // ´ÙÀ½ ¸ñÀûÁö¸¦ ¹Ù¶óº¸°Ô ¸¸µé±â
+            // ë‹¤ìŒ ëª©ì ì§€ë¥¼ ë°”ë¼ë³´ê²Œ ë§Œë“¤ê¸°
             Quaternion look = Quaternion.LookRotation(waypoints.NextTarget - transform.position);
             transform.rotation = Quaternion.Slerp(transform.rotation, look, Time.deltaTime * 2);
         }
     }
 
     /// <summary>
-    /// Patrol »óÅÂ¿ë ¾÷µ¥ÀÌÆ® ÇÔ¼ö
+    /// Patrol ìƒíƒœìš© ì—…ë°ì´íŠ¸ í•¨ìˆ˜
     /// </summary>
     void Update_Patrol()
     {
@@ -335,10 +381,10 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
         }
         else
         {
-            if (agent.remainingDistance <= agent.stoppingDistance) // µµÂøÇÏ¸é
+            if (agent.remainingDistance <= agent.stoppingDistance) // ë„ì°©í•˜ë©´
             {
-                waypoints.StepNextWaypoint();   // ¿şÀÌÆ÷ÀÎÆ®°¡ ´ÙÀ½ ÁöÁ¡À» ¼³Á¤ÇÏµµ·Ï ½ÇÇà
-                State = EnemyState.Wait;        // ´ë±â »óÅÂ·Î ÀüÈ¯
+                waypoints.StepNextWaypoint();   // ì›¨ì´í¬ì¸íŠ¸ê°€ ë‹¤ìŒ ì§€ì ì„ ì„¤ì •í•˜ë„ë¡ ì‹¤í–‰
+                State = EnemyState.Wait;        // ëŒ€ê¸° ìƒíƒœë¡œ ì „í™˜
             }
         }
     }
@@ -362,7 +408,7 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
             Quaternion.LookRotation(attackTarget.transform.position - transform.position), 0.1f);
         if (attackCoolTime < 0)
         {
-            Attack(attackTarget);
+            Attack(attackTarget, false);
         }
     }
 
@@ -371,33 +417,33 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
     }
 
     /// <summary>
-    /// ½Ã¾ß ¹üÀ§¾È¿¡ ÇÃ·¹ÀÌ¾î°¡ ÀÖ´ÂÁö ¾ø´ÂÁö Ã£´Â ÇÔ¼ö
+    /// ì‹œì•¼ ë²”ìœ„ì•ˆì— í”Œë ˆì´ì–´ê°€ ìˆëŠ”ì§€ ì—†ëŠ”ì§€ ì°¾ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <returns>Ã£¾ÒÀ¸¸é true, ¸øÃ£¾ÒÀ¸¸é false</returns>
+    /// <returns>ì°¾ì•˜ìœ¼ë©´ true, ëª»ì°¾ì•˜ìœ¼ë©´ false</returns>
     bool SearchPlayer()
     {
         bool result = false;
         chaseTarget = null;
 
-        // ÀÏÁ¤ ¹İ°æ(=farSightRange)¾È¿¡ ÀÖ´Â ÇÃ·¹ÀÌ¾î ·¹ÀÌ¾î¿¡ ÀÖ´Â ¿ÀºêÁ§Æ® ÀüºÎ Ã£±â
+        // í”Œë ˆì´ì–´ê°€ ì‚´ì•„ìˆì„ ë•Œë§Œ ì°¾ê¸°
         Collider[] colliders = Physics.OverlapSphere(transform.position, farSightRange, LayerMask.GetMask("Player"));
         if (colliders.Length > 0)
         {
-            // ÀÏÁ¤ ¹İ°æ(=farSightRange)¾È¿¡ ÇÃ·¹ÀÌ¾î°¡ ÀÖ´Ù.
-            Vector3 playerPos = colliders[0].transform.position;    // 0¹øÀÌ ¹«Á¶°Ç ÇÃ·¹ÀÌ¾î´Ù(ÇÃ·¹ÀÌ¾î´Â 1¸íÀÌ´Ï±î)
-            Vector3 toPlayerDir = playerPos - transform.position;   // Àû->ÇÃ·¹ÀÌ¾î·Î °¡´Â ¹æÇâ ¹éÅÍ
-            if (toPlayerDir.sqrMagnitude < nearSightRange * nearSightRange)  // ÇÃ·¹ÀÌ¾î´Â nearSightRangeº¸´Ù ¾ÈÂÊ¿¡ ÀÖ´Ù.
+            // í”Œë ˆì´ì–´ê°€ ì‚´ì•„ìˆì„ ë•Œë§Œ ì°¾ê¸°
+            Vector3 playerPos = colliders[0].transform.position;    // 0ë²ˆì´ ë¬´ì¡°ê±´ í”Œë ˆì´ì–´ë‹¤(í”Œë ˆì´ì–´ëŠ” 1ëª…ì´ë‹ˆê¹Œ)
+            Vector3 toPlayerDir = playerPos - transform.position;   // ì ->í”Œë ˆì´ì–´ë¡œ ê°€ëŠ” ë°©í–¥ ë°±í„°
+            if (toPlayerDir.sqrMagnitude < nearSightRange * nearSightRange)  // í”Œë ˆì´ì–´ëŠ” nearSightRangeë³´ë‹¤ ì•ˆìª½ì— ìˆë‹¤.
             {
-                // ±ÙÁ¢¹üÀ§(=nearSightRange) ¾ÈÂÊÀÌ´Ù.
+                // ê·¼ì ‘ë²”ìœ„(=nearSightRange) ì•ˆìª½ì´ë‹¤.
                 chaseTarget = colliders[0].transform;
                 result = true;
             }
             else
             {
-                // ±ÙÁ¢¹üÀ§ ¹ÛÀÌ´Ù => ½Ã¾ß°¢ È®ÀÎ
-                if (IsInSightAngle(toPlayerDir))     // ½Ã¾ß°¢ ¾ÈÀÎÁö È®ÀÎ
+                // ê·¼ì ‘ë²”ìœ„ ë°–ì´ë‹¤ => ì‹œì•¼ê° í™•ì¸
+                if (IsInSightAngle(toPlayerDir))     // ì‹œì•¼ê° ì•ˆì¸ì§€ í™•ì¸
                 {
-                    if (IsSightClear(toPlayerDir))   // Àû°ú ÇÃ·¹ÀÌ¾î »çÀÌ¿¡ ½Ã¾ß¸¦ °¡¸®´Â ¿ÀºêÁ§Æ®°¡ ÀÖ´ÂÁö È®ÀÎ
+                    if (IsSightClear(toPlayerDir))   // ì ê³¼ í”Œë ˆì´ì–´ ì‚¬ì´ì— ì‹œì•¼ë¥¼ ê°€ë¦¬ëŠ” ì˜¤ë¸Œì íŠ¸ê°€ ìˆëŠ”ì§€ í™•ì¸
                     {
                         chaseTarget = colliders[0].transform;
                         result = true;
@@ -410,30 +456,30 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
     }
 
     /// <summary>
-    /// ½Ã¾ß°¢(-sightHalfAngle ~ +sightHalfAngle)¾È¿¡ ÇÃ·¹ÀÌ¾î°¡ ÀÖ´ÂÁö ¾ø´ÂÁö È®ÀÎÇÏ´Â ÇÔ¼ö
+    /// ì‹œì•¼ê°(-sightHalfAngle ~ +sightHalfAngle)ì•ˆì— í”Œë ˆì´ì–´ê°€ ìˆëŠ”ì§€ ì—†ëŠ”ì§€ í™•ì¸í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <param name="toTargetDirection">Àû¿¡¼­ ´ë»óÀ¸·Î ÇâÇÏ´Â ¹æÇâ ¹éÅÍ</param>
-    /// <returns>½Ã¾ß°¢ ¾È¿¡ ÀÖÀ¸¸é true, ¾øÀ¸¸é false</returns>
+    /// <param name="toTargetDirection">ì ì—ì„œ ëŒ€ìƒìœ¼ë¡œ í–¥í•˜ëŠ” ë°©í–¥ ë°±í„°</param>
+    /// <returns>ì‹œì•¼ê° ì•ˆì— ìˆìœ¼ë©´ true, ì—†ìœ¼ë©´ false</returns>
     bool IsInSightAngle(Vector3 toTargetDirection)
     {
-        float angle = Vector3.Angle(transform.forward, toTargetDirection);  // ÀûÀÇ Æ÷¿öµå¿Í ÀûÀ» ¹Ù¶óº¸´Â ¹æÇâ¹éÅÍ »çÀÌÀÇ °¢À» ±¸ÇÔ
+        float angle = Vector3.Angle(transform.forward, toTargetDirection);  // ì ì˜ í¬ì›Œë“œì™€ ì ì„ ë°”ë¼ë³´ëŠ” ë°©í–¥ë°±í„° ì‚¬ì´ì˜ ê°ì„ êµ¬í•¨
         return sightHalfAngle > angle;
     }
 
     /// <summary>
-    /// ÀûÀÌ ´Ù¸¥ ¿ÀºêÁ§Æ®¿¡ ÀÇÇØ °¡·ÁÁö´ÂÁö ¾Æ´ÑÁö È®ÀÎÇÏ´Â ÇÔ¼ö
+    /// ì ì´ ë‹¤ë¥¸ ì˜¤ë¸Œì íŠ¸ì— ì˜í•´ ê°€ë ¤ì§€ëŠ”ì§€ ì•„ë‹Œì§€ í™•ì¸í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <param name="toTargetDirection">Àû¿¡¼­ ´ë»óÀ¸·Î ÇâÇÏ´Â ¹æÇâ ¹éÅÍ</param>
-    /// <returns>true¸é °¡·ÁÁöÁö ¾Ê´Â´Ù. false¸é °¡·ÁÁø´Ù.</returns>
+    /// <param name="toTargetDirection">ì ì—ì„œ ëŒ€ìƒìœ¼ë¡œ í–¥í•˜ëŠ” ë°©í–¥ ë°±í„°</param>
+    /// <returns>trueë©´ ê°€ë ¤ì§€ì§€ ì•ŠëŠ”ë‹¤. falseë©´ ê°€ë ¤ì§„ë‹¤.</returns>
     bool IsSightClear(Vector3 toTargetDirection)
     {
         bool result = false;
-        Ray ray = new(transform.position + transform.up * 0.5f, toTargetDirection); // ·¡ÀÌ »ı¼º(´« ³ôÀÌ ¶§¹®¿¡ Á¶±İ ³ôÀÓ)
-        if (Physics.Raycast(ray, out RaycastHit hitInfo, farSightRange))
+        Ray ray = new(transform.position + transform.up * 0.5f, toTargetDirection); // ë˜ì´ ìƒì„±(ëˆˆ ë†’ì´ ë•Œë¬¸ì— ì¡°ê¸ˆ ë†’ì„)
+        if (Physics.Raycast(ray, out RaycastHit hitInfo, farSightRange, LayerMask.GetMask("Player")))
         {
-            if (hitInfo.collider.CompareTag("Player"))   // Ã³À½ Ãæµ¹ÇÑ °ÍÀÌ ÇÃ·¹ÀÌ¾î¶ó¸é
+            if (hitInfo.collider.CompareTag("Player"))   // ì²˜ìŒ ì¶©ëŒí•œ ê²ƒì´ í”Œë ˆì´ì–´ë¼ë©´
             {
-                result = true;                          // Áß°£¿¡ °¡¸®´Â ¹°Ã¼°¡ ¾ø´Ù´Â ¼Ò¸®
+                result = true;                          // ì¤‘ê°„ì— ê°€ë¦¬ëŠ” ë¬¼ì²´ê°€ ì—†ë‹¤ëŠ” ì†Œë¦¬
             }
         }
 
@@ -441,72 +487,97 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
     }
 
     /// <summary>
-    /// °ø°İÃ³¸®¿ë ÇÔ¼ö
+    /// ê³µê²©ì²˜ë¦¬ìš© í•¨ìˆ˜
     /// </summary>
-    /// <param name="target">°ø°İ ´ë»ó</param>
-    public void Attack(IBattler target)
+    /// <param name="target">ê³µê²© ëŒ€ìƒ</param>
+    public void Attack(IBattler target, bool isWeakPoint)
     {
-        animator.SetTrigger("Attack");      // ¾Ö´Ï¸ŞÀÌ¼Ç Á¤¿ë
-        target.Defence(AttackPower);        // °ø°İ ´ë»ì¿¡°Ô µ¥¹ÌÁö ÀıÀå
-        attackCoolTime = attackInterval;    // ÄğÅ¸ÀÓ ÃÊ±âÈ­
+        animator.SetTrigger("Attack");      // ì• ë‹ˆë©”ì´ì…˜ ì¬ìƒ
+        target.Defence(AttackPower);        // ê³µê²© ëŒ€ìƒì—ê²Œ ë°ë¯¸ì§€ ì „ë‹¬
+        attackCoolTime = attackInterval;    // ì¿¨íƒ€ì„ ì´ˆê¸°í™”
     }
 
     /// <summary>
-    /// ¹æ¾î Ã³¸®¿ä ¤· ÇÔ¼ö
+    /// ë°©ì–´ ì²˜ë¦¬ìš© í•¨ìˆ˜
     /// </summary>
-    /// <param name="damage">³»°¡ ¹Ş¤·´À ¼ø¼ö ´ë¹ÌÁö</param>
+    /// <param name="damage">ë‚´ê°€ ë°›ì€ ìˆœìˆ˜ ë°ë¯¸ì§€</param>
     public void Defence(float damage)
     {
-        if (IsAlive) // »ì¾ÆÀÖÀ» ¶§¸¸ µ¥¹Ì¤Ó¸¦ ¹ŞÀ½
+        if (IsAlive) // ì‚´ì•„ìˆì„ ë•Œë§Œ ë°ë¯¸ì§€ë¥¼ ë°›ìŒ
         {
-            animator.SetTrigger("Hit");                 // ¾Ö´Ï¸ŞÀÌ¼Ç Àû¿ë
+            animator.SetTrigger("Hit");                 // ì• ë‹ˆë©”ì´ì…˜ ì¬ìƒ
 
-            float final = Mathf.Max(0, damage - DefencePower);  // ÃÖÁ¾ µ¥¹ÌÁö °è»êÇØ¼­
+            float final = Mathf.Max(0, damage - DefencePower);  // ìµœì¢… ë°ë¯¸ì§€ ê³„ì‚°í•´ì„œ ì ìš©
             HP -= final;
             onHit?.Invoke(Mathf.RoundToInt(final));
-            //Debug.Log($"ÀûÀÌ ¸Â¾Ò´Ù. ³²Àº HP = {HP}");     
+            StartCoroutine(InvinvibleMode());
         }
     }
 
+
     /// <summary>
-    /// »ç¸Á Ã³¸®¿ë ÇÔ¼ö
+    /// ì‚¬ë§ ì²˜ë¦¬ìš© í•¨ìˆ˜
     /// </summary>
     public void Die()
     {
-        //Debug.Log("»ç¸Á");
-        State = EnemyState.Dead;        // 
-        StartCoroutine(DeadSquence());  // »ç¸Á ¿¬Ãâ ½ÃÀÛ
-        onDie?.Invoke();                // Á×¾ú´Ù°í ¾Ë¸² º¸³»±â
+        State = EnemyState.Dead;        // ìƒíƒœ ë³€ê²½
+        StartCoroutine(DeadSquence());  // ì‚¬ë§ ì—°ì¶œ ì‹œì‘
+        onDie?.Invoke();                // ì£½ì—ˆë‹¤ê³  ì•Œë¦¼ ë³´ë‚´ê¸°
+        onDie = null;                   // ì£½ìœ¼ë©´ onDieë„ ì´ˆê¸°í™”
     }
 
     /// <summary>
-    /// »ç¸Á ¿¬Ãâ¿ë ÄÚ·çÆ¾
+    /// ì‚¬ë§ ì—°ì¶œìš© ì½”ë£¨í‹´
     /// </summary>
     /// <returns></returns>
     IEnumerator DeadSquence()
     {
-        // ÄÃ¶óÀÌ´õ ºñÈ°¼ºÈ­
+        // ì»¬ë¼ì´ë” ë¹„í™œì„±í™”
         bodyCollider.enabled = false;
+        weakCollider.enabled = false;
 
-        // HP¹Ù ¾Èº¸ÀÌ°Ô ¸¸µé±â
+        // HPë°” ì•ˆë³´ì´ê²Œ ë§Œë“¤ê¸°
         hpBar.gameObject.SetActive(false);
 
-        // »ç¸Á ¾Ö´Ï¸ŞÀÌ¼Ç ³¡³¯¶§±îÁö ´ë±â
-        yield return new WaitForSeconds(2.5f);  // »ç¸Á ¾Ö´Ï¸ŞÀÌ¼Ç ½Ã°£(2.167ÃÊ) -> 2.5ÃÊ·Î Ã³¸®
+        yield return new WaitForSeconds(0.5f);  // ì•„ì´í…œì´ ë°”ë¡œ ë–¨ì–´ì§€ë©´ ì–´ìƒ‰í•´ì„œ ì•½ê°„ ëŒ€ê¸°
 
-        // ¹Ù´ÚÀ¸·Î °¡¶ó ¾É±â ½ÃÀÛ
-        agent.enabled = false;                  // agent°¡ È°¼ºÈ­ µÇ¾î ÀÖÀ¸¸é Ç×»ó ³×ºê¸Ş½Ã À§¿¡ ÀÖÀ½
-        rigid.isKinematic = false;              // Å°³×¸¶Æ½À» ²¨¼­ ¹°¸®°¡ Àû¿ëµÇ°Ô ¸¸µé±â
-        rigid.drag = 10.0f;                     // ¹«ÇÑ´ë·Î µÇ¾î ÀÖ´ø ¸¶Âû·ÂÀ» ³·Ãç¼­ ¶³¾îÁú ¼ö ÀÖ°Ô ÇÏ±â
+        // ì•„ì´í…œ ë“œë
+        MakeDropItems();
 
-        // ÃæºĞÈ÷ ¹Ù´Ú¾Æ·¡·Î ³»·Á°¥¶§±îÁö ´ë±â
-        yield return new WaitForSeconds(2.0f);  // 2ÃÊ¸é ´Ù ¶³¾îÁú °ÍÀÌ´Ù.
+        // ì‚¬ë§ ì• ë‹ˆë©”ì´ì…˜ ëë‚ ë•Œê¹Œì§€ ëŒ€ê¸°
+        yield return new WaitForSeconds(2.5f);  // ì‚¬ë§ ì• ë‹ˆë©”ì´ì…˜ ì‹œê°„(2.167ì´ˆ) -> 2.5ì´ˆë¡œ ì²˜ë¦¬
 
-        // Àû Ç®·Î µÇµ¹¸®±â
-        gameObject.SetActive(false);    // Áï½Ã Àû Ç®·Î µÇµ¹¸®±â
+        // ë°”ë‹¥ìœ¼ë¡œ ê°€ë¼ ì•‰ê¸° ì‹œì‘
+        agent.enabled = false;                  // agentê°€ í™œì„±í™” ë˜ì–´ ìˆìœ¼ë©´ í•­ìƒ ë„¤ë¸Œë©”ì‹œ ìœ„ì— ìˆìŒ
+        rigid.isKinematic = false;              // í‚¤ë„¤ë§ˆí‹±ì„ êº¼ì„œ ë¬¼ë¦¬ê°€ ì ìš©ë˜ê²Œ ë§Œë“¤ê¸°
+        rigid.drag = 10.0f;                     // ë¬´í•œëŒ€ë¡œ ë˜ì–´ ìˆë˜ ë§ˆì°°ë ¥ì„ ë‚®ì¶°ì„œ ë–¨ì–´ì§ˆ ìˆ˜ ìˆê²Œ í•˜ê¸°
+
+        // ì¶©ë¶„íˆ ë°”ë‹¥ì•„ë˜ë¡œ ë‚´ë ¤ê°ˆë•Œê¹Œì§€ ëŒ€ê¸°
+        yield return new WaitForSeconds(2.0f);  // 2ì´ˆë©´ ë‹¤ ë–¨ì–´ì§ˆ ê²ƒì´ë‹¤.
+
+        // ì  í’€ë¡œ ë˜ëŒë¦¬ê¸°
+        gameObject.SetActive(false);    // ì¦‰ì‹œ ì  í’€ë¡œ ë˜ëŒë¦¬ê¸°
     }
 
-    // ¹«±â ºí·¹ÀÌµå È°¼ºÈ­ ¸Ş¼­µå
+    /// <summary>
+    /// ì•„ì´í…œì„ ë“œëí•˜ëŠ” í•¨ìˆ˜
+    /// </summary>
+    void MakeDropItems()
+    {
+        // dropItems; ì´ ì •ë³´ë¥¼ ë°”íƒ•ìœ¼ë¡œ ì•„ì´í…œì„ ë“œë
+        foreach (var item in dropItems)
+        {
+            if (item.dropRatio > UnityEngine.Random.value) // í™•ë¥  ì²´í¬í•˜ê³ 
+            {
+                uint count = (uint)UnityEngine.Random.Range(0, item.dropCount) + 1;     // ê°œìˆ˜ ê²°ì •
+                //Factory.Instance.GetItemObject(GameManager.Instance.ItemDataManager[ItemCode.Coin], transform.position); // ì‹¤ì œ ìƒì„± // í™í† ë¦¬ ìŠ¤í¬ë¦½íŠ¸ì— ì•„ì´í…œ ìƒì„±í•¨ìˆ˜ ì‘ì„±í•´ì•¼ë¨
+            }
+        }
+    }
+
+    /// <summary>
+    /// ë¬´ê¸° ì½œë¼ì´ë” ì¼œëŠ” í•¨ìˆ˜
+    /// </summary>
     private void WeaponBladeEnable()
     {
         if (swordCollider != null)
@@ -514,11 +585,13 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
             swordCollider.enabled = true;
         }
 
-        // onWeaponBladeEnabe µ¨¸®°ÔÀÌÆ® È£Ãâ
+        // onWeaponBladeEnabe ì¼œë¼ê³  ì‹ í˜¸ë³´ë‚´ê¸°
         onWeaponBladeEnabe?.Invoke(true);
     }
 
-    // ¹«±â ºí·¹ÀÌµå ºñÈ°¼ºÈ­ ¸Ş¼­µå
+    /// <summary>
+    /// ë¬´ê¸° ì½œë¼ì´ë” ë„ëŠ” í•¨ìˆ˜
+    /// </summary>
     private void WeaponBladeDisable()
     {
         if (swordCollider != null)
@@ -526,18 +599,47 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
             swordCollider.enabled = false;
         }
 
-        // onWeaponBladeEnabe µ¨¸®°ÔÀÌÆ® È£Ãâ
+        // onWeaponBladeEnabe ë„ë¼ê³  ì‹ í˜¸ë³´ë‚´ê¸°
         onWeaponBladeEnabe?.Invoke(false);
+    }
+
+
+    void PlayerDie()
+    {
+        State = EnemyState.Wait;
     }
 
     public void HealthRegenerate(float totalRegen, float duration)
     {
-        // ¸Å°³º¯¼ö Ãß°¡µÊ
+        
     }
 
     public void HealthRegenerateByTick(float tickRegen, float tickInterval, uint totalTickCount)
     {
         
+    }
+
+    /// <summary>
+    /// ë¬´ì ìš© ì½”ë£¨í‹´
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator InvinvibleMode()
+    {
+        // í”Œë ˆì´ì–´ ë¬´ê¸°ì— ë§ìœ¼ë©´ ë ˆì´ì–´ ë°”ê¾¸ê¸°(ë¨¸ë¦¬ ë§ê³  ëª¸í†µê¹Œì§€ ì—°ì†ìœ¼ë¡œ ë§ëŠ”ê±° ë°©ì§€)
+        weakPoint.gameObject.layer = LayerMask.NameToLayer("Invincible"); // ì•½ì  ì˜¤ë¸Œì íŠ¸ì˜ ë ˆì´ì–´ë¥¼ Invincibleë¡œ ë°”ê¾¸ê¸°
+        bodyPoint.gameObject.layer = LayerMask.NameToLayer("Invincible"); // ëª¸ì²´ ì˜¤ë¸Œì íŠ¸ì˜ ë ˆì´ì–´ë¥¼ Invincibleë¡œ ë°”ê¾¸ê¸°
+
+        float timeElapsed = 0.0f;
+        while (timeElapsed < invincibleTime) // Invincible ë¬´ì ì‹œê°„ ë™ì•ˆë§Œ
+        {
+            timeElapsed += Time.deltaTime;
+
+            yield return null;
+        }
+
+        // 2ï¿½Ê°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        weakPoint.gameObject.layer = LayerMask.NameToLayer("HitPoint"); // ì•½ì  ì˜¤ë¸Œì íŠ¸ì˜ ë ˆì´ì–´ë¥¼ HitPointë¡œ ë°”ê¾¸ê¸°
+        bodyPoint.gameObject.layer = LayerMask.NameToLayer("HitPoint"); // ëª¸ì²´ ì˜¤ë¸Œì íŠ¸ì˜ ë ˆì´ì–´ë¥¼ HitPointë¡œ ë°”ê¾¸ê¸°
     }
 
 #if UNITY_EDITOR
@@ -549,22 +651,45 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
         Handles.color = playerShow ? Color.red : Color.green;
 
         Vector3 forward = transform.forward * farSightRange;
-        Handles.DrawDottedLine(transform.position, transform.position + forward, 2.0f); // Áß½É¼± ±×¸®±â
+        Handles.DrawDottedLine(transform.position, transform.position + forward, 2.0f); // ì¤‘ì‹¬ì„  ê·¸ë¦¬ê¸°
 
-        Quaternion q1 = Quaternion.AngleAxis(-sightHalfAngle, transform.up);            // Áß½É¼± È¸Àü½ÃÅ°°í
-        Handles.DrawLine(transform.position, transform.position + q1 * forward);        // ¼± ±ß±â
+        Quaternion q1 = Quaternion.AngleAxis(-sightHalfAngle, transform.up);            // ì¤‘ì‹¬ì„  íšŒì „ì‹œí‚¤ê³ 
+        Handles.DrawLine(transform.position, transform.position + q1 * forward);        // ì„  ê¸‹ê¸°
 
         Quaternion q2 = Quaternion.AngleAxis(sightHalfAngle, transform.up);
         Handles.DrawLine(transform.position, transform.position + q2 * forward);
 
-        Handles.DrawWireArc(transform.position, transform.up, q1 * forward, sightHalfAngle * 2, farSightRange, 2.0f);   // È£ ±×¸®±â
+        Handles.DrawWireArc(transform.position, transform.up, q1 * forward, sightHalfAngle * 2, farSightRange, 2.0f);   // í˜¸ ê·¸ë¦¬ê¸°
 
-        Handles.DrawWireDisc(transform.position, transform.up, nearSightRange);         // ±Ù°Å¸® ¹üÀ§ ±×¸®±â
+        Handles.DrawWireDisc(transform.position, transform.up, nearSightRange);         // ê·¼ê±°ë¦¬ ì‹œì•¼ ë²”ìœ„ ê·¸ë¦¬ê¸°
     }
-    // ÇÃ·¹ÀÌ¾î Ãß°İ½Ã ¹ö±×ÀÏ¾î³²
-    // ¾Ö´Ï¸ŞÀÌÅÍ Æ®¸®°Å ¼³Á¤ ¹Ù²Ù±â(»óÈ²¿¡ ¾Ë¸Â°Ô)
-    // ¼øÂû »óÅÂ¿Í Ãß°İ »óÅÂÀÏ¶§ ÀÌµ¿¼Óµµ ¹Ù²Ù±â
-    // ¸ö°ú ¸Ó¸® ºÎºĞ Äİ¶óÀÌ´õ ³ª´²¼­ µ¥¹ÌÁö ´Ù¸£°Ô ¹Ş±â
+
+
+    //public void Test_DropItems(int testCount)
+    //{
+    //    uint[] types = new uint[dropItems.Length];
+    //    uint[] total = new uint[dropItems.Length];
+
+    //    for (int i = 0; i < testCount; i++)
+    //    {
+    //        int index = 0;
+    //        foreach (var item in dropItems)
+    //        {
+    //            if (item.dropRatio > UnityEngine.Random.value)
+    //            {
+    //                uint count = (uint)UnityEngine.Random.Range(0, item.dropCount) + 1;
+    //                //Factory.Instance.MakeItems(item.code, count, transform.position, true);
+    //                types[index]++;
+    //                total[index] += count;
+    //            }
+    //            index++;
+    //        }
+    //    }
+
+    //    Debug.Log($"1st : {types[0]}ë²ˆ ë“œë, {total[0]}ê°œ ë“œë");
+    //    Debug.Log($"2nd : {types[1]}ë²ˆ ë“œë, {total[1]}ê°œ ë“œë");
+    //}
+
 #endif
 }
 

@@ -5,6 +5,14 @@ using UnityEngine;
 
 public class RemoteBomb : Skill
 {
+
+    protected override void Awake()
+    {
+        base.Awake();
+        skillName = SkillName.RemoteBomb;
+
+    }
+
     protected override void OnEnable()
     {
         base.OnEnable();
@@ -12,8 +20,8 @@ public class RemoteBomb : Skill
 
     protected override void OnSKillAction()
     {
-        Debug.Log(currentState);
-        if (currentState == StateType.Throw || currentState == StateType.Drop)
+        //if (currentState == StateType.Throw || currentState == StateType.Drop)
+        if (currentState == StateType.None)
         {
             TryBoom();
         }
@@ -34,12 +42,14 @@ public class RemoteBomb : Skill
 
     protected override void CollisionActionAfterThrow()
     {
-        currentState = StateType.Throw;
+        currentState = StateType.None;  // 현재 상태를 기본 상태로
+        //currentState = StateType.Throw;
     }
 
     protected override void CollisionActionAfterDrop()
     {
-        currentState = StateType.Drop;
+        currentState = StateType.None;  // 현재 상태를 기본 상태로
+        //currentState = StateType.Drop;
     }
 
 #if UNITY_EDITOR

@@ -418,12 +418,14 @@ public class InventoryUI : MonoBehaviour
         detailUI.ClearText();
         detailUI.CloseItemDetail();
     }
-    // UI 열기
-    // UI 닫기
 
-
-    public void ShowInventory()
+    /// <summary>
+    /// 인벤토리 UI를 여는 함수
+    /// </summary>
+    /// <returns>UI 활성화 true, 아니면 false</returns>
+    public bool ShowInventory()
     {
+        bool result = false;
         if(canvasGroup.alpha == 1) // 비활성화
         {
             canvasGroup.alpha = 0;
@@ -435,7 +437,11 @@ public class InventoryUI : MonoBehaviour
             canvasGroup.alpha = 1;
             canvasGroup.interactable = true;
             canvasGroup.blocksRaycasts = true;
+
+            result = true;
         }
+
+        return result;
     }
 
 #if UNITY_EDITOR

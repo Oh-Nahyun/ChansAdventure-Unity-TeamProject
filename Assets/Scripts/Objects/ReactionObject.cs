@@ -1,11 +1,7 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.Rendering;
-using static UnityEngine.UIElements.UxmlAttributeDescription;
 
 /// <summary>
 /// 반응 오브젝트의 종류를 정하는 비트플래그
@@ -23,7 +19,7 @@ public enum ReactionType
 }
 
 [RequireComponent(typeof(Rigidbody))]
-public class ReactionObject : RecycleObject
+public class ReactionObject : RecycleObject, IBattler
 {
     /// <summary>
     /// 폭발 관련 데이터 저장용 클래스
@@ -58,16 +54,16 @@ public class ReactionObject : RecycleObject
     /// <summary>
     /// 무게 (이동, 던질 때 영향)
     /// </summary>
-    public float Weight = 1.0f;
+    public float weight = 1.0f;
     /// <summary>
     /// 무게로 감소되는 이동량 계산용
     /// </summary>
-    protected float reducePower = 1.0f;
+    //protected float reducePower = 1.0f;
     /// <summary>
     /// 최대 체력 (오브젝트가 파괴,폭발할 때 필요한 데미지량)
     /// </summary>
     public float objectMaxHp = 1.0f;
-    
+
     /// <summary>
     /// 현재 체력
     /// </summary>
@@ -88,6 +84,46 @@ public class ReactionObject : RecycleObject
             }
         }
     }
+
+    float timeLockDuration = 0;
+
+    /// <summary>
+    /// 현재 지속 시간 축적용 (타임록)
+    /// </summary>
+    float elapsedTime = 0;
+
+    float ElapsedTime
+    {
+        get => elapsedTime;
+        set
+        {
+            elapsedTime = value;
+            if (timeLockDuration < elapsedTime)
+            {
+                FinishTimeLock();
+            }
+            else if (timeLockDuration * intervalChange2 < elapsedTime)
+            {
+                timeLockInterval = new WaitForSeconds(interval2);
+            }
+            else if (timeLockDuration * intervalChange1 < elapsedTime)
+            {
+                timeLockInterval = new WaitForSeconds(interval1);
+            }
+        }
+    }
+    WaitForSeconds timeLockInterval;
+
+    const float intervalChange1 = 0.5f;
+    const float intervalChange2 = 0.8f;
+    const float baseInterval = 0.5f;
+    const float interval1 = 0.2f;
+    const float interval2 = 0.05f;
+
+    IEnumerator blinkCoroutine;
+    IEnumerator durationCoroutine;
+
+    public float defencePower = 1.0f;
 
     /// <summary>
     /// 반응하는 타입
@@ -128,20 +164,61 @@ public class ReactionObject : RecycleObject
     {
         None = 0,   // 아무것도 아님(원래상태)
         PickUp,     // 들려있음
-        Drop,        // 떨어트림
+        Drop,       // 떨어트림
         Throw,      // 던짐
         Move,       // 이동중
         Destroy,    // 파괴중
         Boom,       // 터지는중
+        Enable,     // 생성 직후 (활성화 직후에만 사용)
+        TimeLock    // 타임록 걸린 상태
     }
     /// <summary>
     /// 현재 상태(기본, 들림, 던져짐, 이동, 파괴, 폭발)
     /// </summary>
-    protected StateType currentState = StateType.None;
+    protected StateType currentState = StateType.Enable;
 
-    //bool isCarried = false;
-    //bool isThrow = false;
+    /// <summary>
+    /// 현재 상태 확인용 프로퍼티 (get)
+    /// </summary>
     public StateType State => currentState;
+
+    /// <summary>
+    /// 폭발 시 데미지
+    /// </summary>
+    public float AttackPower
+    {
+        get
+        {
+            if (IsExplosive)
+            {
+                return explosiveInfo.damage;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 피해 감소량
+    /// </summary>
+    public float DefencePower
+    {
+        get
+        {
+            if (IsExplosive || IsDestructible)
+            {
+                return defencePower;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+    }
+
+    public Action<int> onHit { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
     /// <summary>
     /// 원래 부모 (들렸을 때 변경된 부모를 되돌리기 위함)
@@ -168,54 +245,63 @@ public class ReactionObject : RecycleObject
     float attachMoveSpeed;
 
     /// <summary>
-    /// 자석에 붙었을 때 목적지
-    /// </summary>
-    Transform magentDestination;
-
-
-    /// <summary>
     /// 자석에 붙어있는지 확인 (자석 목적지가 있는 경우 true)
     /// </summary>
-    bool IsAttachMagnet => magentDestination != null;
+    bool isAttachMagnet = false;
+
+    Material[] originMaterials;
+    Material skillMaterial;
 
     // 컴포넌트
     protected Rigidbody rigid;
+    protected Renderer thisRenderer;
 
+    // TODO: 플레이어 배틀 머지 완료되면 타격 데미지 저장되는 메서드 구현
 
     protected virtual void Awake()
     {
         rigid = GetComponent<Rigidbody>();
-        if(rigid == null)
+        if (rigid == null)
         {
             rigid = transform.AddComponent<Rigidbody>();
         }
-        originParent = transform.parent;
-        reducePower = 1.0f / Weight;
+
+        originParent = transform.parent;    // 원래 부모 설정
+        rigid.mass = weight;
+        //reducePower = 1.0f / Weight;        // TODO: 감소량 결정 (리지드바디의 mess로 정할지 결정)
+
+        thisRenderer = GetComponent<Renderer>();
+        if (thisRenderer != null)
+        {
+            originMaterials = thisRenderer.materials;
+        }
+
+        durationCoroutine = DurationCoroutine();
+        blinkCoroutine = BlinkCoroutine();
     }
 
     protected override void OnEnable()
     {
         base.OnEnable();
-        currentState = StateType.None;
-        ObjectHP = objectMaxHp;
+        currentState = StateType.Enable;    // 활성화 상태로 설정
+        ObjectHP = objectMaxHp;             // TODO: hp 설정 (인터페이스 있으면 그걸로 사용)
     }
 
     protected void OnCollisionEnter(Collision collision)
     {
-
-        if (currentState == StateType.Throw && collision.transform != pickUpUser) // 던져진 상태일 때 부딪친 물체가 던진오브젝트가 아니면 (던져지자마자 바로 터짐 방지)
+        if (currentState == StateType.Throw && collision.transform != pickUpUser)       // 던져진 상태일 때 부딪친 물체가 던진오브젝트가 아니면 (던져지자마자 바로 터짐 방지)
         {
-            CollisionActionAfterThrow();
+            CollisionActionAfterThrow();        // 던진 후 충돌 동작
         }
-        else if (currentState == StateType.Drop && collision.transform != pickUpUser) // 떨어트린 상태일 때 부딪친 물체가 던진오브젝트가 아니면 (던져지자마자 바로 동작 방지)
+        else if (currentState == StateType.Drop && collision.transform != pickUpUser)   // 떨어트린 상태일 때 부딪친 물체가 던진오브젝트가 아니면 (던져지자마자 바로 동작 방지)
         {
-            CollisionActionAfterDrop();
+            CollisionActionAfterDrop();         // 떨어트린 후 충돌 동작
         }
     }
 
     protected void OnCollisionExit(Collision collision)
     {
-        if (IsAttachMagnet)
+        if (isAttachMagnet)
         {
             // 현재 자석에 붙어있다면
             //rigid.velocity = Vector3.zero;          // 물체에서 부딪친 후 밀리는 힘 제거
@@ -226,21 +312,22 @@ public class ReactionObject : RecycleObject
     /// <summary>
     /// 자석에 붙어있을 때 움직이는 동작을 하는 메서드
     /// </summary>
-    public void AttachMagnetMove()
+    public void AttachMagnetMove(Vector3 localPosition, Transform user)
     {
-        if (IsAttachMagnet)
+        if (isAttachMagnet)
         {
-            Vector3 dir = magentDestination.position - rigid.position;
+            if (transform.parent != user)
+            {
+                transform.SetParent(user);
+            }
+            Vector3 dir = localPosition - transform.localPosition;
             if (dir.sqrMagnitude > 0.001f * attachMoveSpeed)            // 이동속도에 따라 적당한 정지거리 지정(떨림 방지)
             {
-                //rigid.MovePosition(rigid.position + Time.fixedDeltaTime * attachMoveSpeed * dir.normalized);    // 이동
                 // 모서리부분, 끝부분 뚫리는 현상 방지를 위해 velocity 사용
-                rigid.velocity = attachMoveSpeed * dir.normalized;
-                //Debug.Log($"큐브위치: {rigid.position} 목적지위치: {magentDestination.position} 뺀값: {magentDestination.position - rigid.position}");
+                rigid.velocity = transform.parent.TransformDirection(dir.normalized * attachMoveSpeed);
             }
             else
             {
-                //rigid.MovePosition(magentDestination.position);         // 정지거리 도달 시 정확한 목적지로 옮기기
                 // 도착하면 velocity를 없애 떨림 방지 (안하면 지나가고 되돌아오고 반복하면서 떨림)
                 rigid.velocity = Vector3.zero;
             }
@@ -252,21 +339,22 @@ public class ReactionObject : RecycleObject
     /// </summary>
     /// <param name="destination">자석으로 옮기고자하는 목적지</param>
     /// <param name="moveSpeed">자석에 붙어서 이동할 때 속도</param>
-    public void AttachMagnet(Transform destination, float moveSpeed)
+    public void AttachMagnet(Transform user, float moveSpeed)
     {
-        if(IsMagnetic)
+        if (IsMagnetic)
         {
-            // 중력 사용 x, 자석 목적지 설정, 이동속도 설정
+            // 중력 사용 x, 마찰력 없앰, 자석에 붙음(true), 이동속도 설정
             rigid.useGravity = false;
-            //rigid.drag = Mathf.Infinity;
-            //rigid.angularDrag = Mathf.Infinity;
-            magentDestination = destination;
+            rigid.drag = 0;
+            rigid.angularDrag = 0;
+            isAttachMagnet = true;
             attachMoveSpeed = moveSpeed;
-            rotateAngle = rigid.rotation.eulerAngles;
+            if (currentState != StateType.TimeLock)
+            {
+                transform.SetParent(user);  // 이 오브젝트의 부모를 사용자로 설정
+            }
         }
     }
-
-    Vector3 rotateAngle;
 
     /// <summary>
     /// 자석에서 떨어질 때 동작하는 메서드
@@ -275,21 +363,86 @@ public class ReactionObject : RecycleObject
     {
         if (IsMagnetic)
         {
-            // 중력 원래대로, 목적지 없애기
+            // 중력 원래대로, 마찰력 원래대로, 자석에서 떨어짐(false)
             rigid.useGravity = true;
             rigid.drag = originDrag;
             rigid.angularDrag = originAngularDrag;
-            magentDestination = null;
+            isAttachMagnet = false;
+
+            transform.SetParent(originParent);  // 이 오브젝트의 부모를 원래대로 돌림
         }
     }
 
-    /// <summary>
-    /// 자석에 붙어있을 때 카메라 회전을 해도 자석 사용자를 그대로 바라보기 위한 메서드
-    /// </summary>
-    /// <param name="euler">사용자의 회전 각도</param>
-    public void AttachRotate(Vector3 euler)
+
+    RigidbodyConstraints originConstraints = RigidbodyConstraints.None;
+    public float MaxTimeLockDamage = 50.0f;
+    Vector3 accumulateDirection = Vector3.zero;
+    float accumulateDamage = 0;
+    float AccumulateDamage
     {
-        rigid.MoveRotation(Quaternion.Euler(rotateAngle + euler));
+        get => accumulateDamage;
+        set
+        {
+            accumulateDamage = Mathf.Min(MaxTimeLockDamage, value);
+        }
+    }
+
+    public void OnTimeLock(Material timeLockColor, float duration)
+    {
+        if (currentState != StateType.TimeLock)
+        {
+            originConstraints = rigid.constraints;
+            rigid.constraints = RigidbodyConstraints.FreezeAll;
+            currentState = StateType.TimeLock;
+
+            originMaterials = thisRenderer.materials;
+            skillMaterial = timeLockColor;
+
+            timeLockDuration = duration;
+            timeLockInterval = new WaitForSeconds(baseInterval);
+            ElapsedTime = 0;
+
+            StartCoroutine(durationCoroutine);
+            StartCoroutine(blinkCoroutine);
+        }
+    }
+
+    public void FinishTimeLock()
+    {
+        rigid.constraints = originConstraints;
+        currentState = StateType.None;
+
+        thisRenderer.materials = originMaterials;
+        skillMaterial = null;
+
+        StopCoroutine(durationCoroutine);
+        StopCoroutine(blinkCoroutine);
+
+        rigid.AddForce(accumulateDirection * AccumulateDamage, ForceMode.Impulse);
+        currentState = StateType.Throw;
+
+        accumulateDirection = Vector3.zero;
+        AccumulateDamage = 0;
+    }
+
+    public void SetSkillColor(Material material)
+    {
+        // TODO: 나중에 셰이더로 바꾸기
+        if (material == null)
+        {
+            thisRenderer.materials = originMaterials;
+        }
+        else
+        {
+            Material[] materials = new Material[thisRenderer.materials.Length + 1];
+            for (int i = 0; i < thisRenderer.materials.Length; i++)
+            {
+                materials[i] = thisRenderer.materials[i];
+            }
+            materials[materials.Length - 1] = material;
+
+            thisRenderer.materials = materials;
+        }
     }
 
 
@@ -298,11 +451,14 @@ public class ReactionObject : RecycleObject
     /// </summary>
     protected virtual void CollisionActionAfterThrow()
     {
+        pickUpUser = null;              // 부딪치면 들고 있는 사용자 없애기
         currentState = StateType.None;  // 현재 상태를 기본 상태로
-        TryDestroy();              // 파괴 동작 (내부에서 파괴 가능한지 판단)
+        TryBoom();                      // 폭발 동작 (내부에서 폭발 가능한지 판단)
+        TryDestroy();                   // 파괴 동작 (내부에서 파괴 가능한지 판단)
     }
     protected virtual void CollisionActionAfterDrop()
     {
+        pickUpUser = null;              // 부딪치면 들고 있는 사용자 없애기
         currentState = StateType.None;  // 현재 상태를 기본 상태로
     }
 
@@ -316,7 +472,14 @@ public class ReactionObject : RecycleObject
         if (isExplosion)
         {
             // 폭발하는 오브젝트면 터짐
-            TryBoom();
+            if (isExplosion)
+            {
+                TryBoom();
+            }
+            else
+            {
+                TryDestroy();
+            }
         }
         else
         {
@@ -339,7 +502,7 @@ public class ReactionObject : RecycleObject
     /// </summary>
     protected void TryDestroy()
     {
-        if (IsDestructible) 
+        if (IsDestructible)
         {
             currentState = StateType.Destroy;   // 현재 상태 파괴중으로 설정
             // -- 파괴 동작 코루틴 추가해야됨
@@ -354,6 +517,7 @@ public class ReactionObject : RecycleObject
         // 폭발가능한 오브젝트이고 현재 폭발중이 아닐 때(폭발물 끼리 폭발 범위가 겹쳤을 때 무한 호출 방지)
         if (IsExplosive && currentState != StateType.Boom)
         {
+            Debug.Log("터짐");
             currentState = StateType.Boom;  // 현재 상태 폭발중으로 설정
             // -- 폭발 동작 코루틴 추가해야됨
             Collider[] objects = Physics.OverlapSphere(transform.position, explosiveInfo.boomRange);    // 범위 내 모든 물체 검사
@@ -364,7 +528,7 @@ public class ReactionObject : RecycleObject
                 if (reactionObj != null)                // 반응 오브젝트라면
                 {
                     Vector3 dir = obj.transform.position - transform.position;  // 날아갈 방향벡터 구하기
-                    Vector3 power = dir.normalized * explosiveInfo.force + obj.transform.up * explosiveInfo.forceY; // 방향벡터에 파워 지정해주기
+                    Vector3 power = dir.normalized * explosiveInfo.force + Vector3.up * explosiveInfo.forceY; // 방향벡터에 파워 지정해주기
                     reactionObj.ExplosionShock(power);  // 폭발시 충격(이동) 가함
                     reactionObj.TryHit(true);      // 폭발 타격(데미지) 가함
                 }
@@ -373,20 +537,37 @@ public class ReactionObject : RecycleObject
         }
     }
 
+    /// <summary>
+    /// 폭발시 다른 오브젝트에 충격을 주는 메서드
+    /// </summary>
+    /// <param name="power">충격량</param>
     public void ExplosionShock(Vector3 power)
     {
         if (IsMoveable)
         {
-            rigid.AddForce(power * reducePower, ForceMode.Impulse);
+            if (currentState == StateType.TimeLock)
+            {
+                accumulateDirection = power.normalized; // 방향 설정
+                AccumulateDamage += power.magnitude;     // 실제 수치가 필요해서 sqr 사용 x
+            }
+            else
+            {
+                //rigid.AddForce(power * reducePower, ForceMode.Impulse);   // 무게Ver2
+                rigid.AddForce(power, ForceMode.Impulse);
+            }
         }
     }
 
-    public void TryPickUp(Transform user)
+    /// <summary>
+    /// 이 물체를 들기 시도하는 메서드
+    /// </summary>
+    /// <param name="user">드는 사용자</param>
+    public virtual void TryPickUp(Transform user)
     {
-        if ((IsSkill || IsThrowable) && currentState == StateType.None)
+        if ((IsSkill || IsThrowable) && (currentState == StateType.None || currentState == StateType.Enable))
         {
             ILifter lifter = user.GetComponent<ILifter>();
-            
+
             if (lifter != null)
             {
                 pickUpUser = user;
@@ -404,55 +585,84 @@ public class ReactionObject : RecycleObject
         }
     }
 
-    //public void TryPickUp()
-    //{
-    //    if (IsThrowable && currentState == StateType.None)
-    //    {
-    //        currentState = StateType.PickUp;
-    //        rigid.isKinematic = true;
-    //    }
-    //}
-
+    /// <summary>
+    /// 이 물체를 던지기 시도하는 메서드
+    /// </summary>
+    /// <param name="throwPower">던지는 힘</param>
+    /// <param name="user">들고있는 사용자</param>
     public void TryThrow(float throwPower, Transform user)
     {
         if (IsThrowable && currentState == StateType.PickUp)
         {
             rigid.isKinematic = false;
-            //isCarried = false;
-            //isThrow = true;
             currentState = StateType.Throw;
-
-            rigid.AddForce((user.forward + user.up) * throwPower * reducePower, ForceMode.Impulse);
-            //rigid.AddRelativeForce((transform.forward + transform.up) * throwPower, ForceMode.Impulse);
+            //rigid.AddForce((user.forward + user.up) * throwPower * reducePower, ForceMode.Impulse);   // 무게 Ver2
+            rigid.AddForce((user.forward + user.up) * throwPower, ForceMode.Impulse);
             transform.parent = originParent;
-            pickUpUser = null;
         }
     }
 
-    protected void ReturnToPool()
-    {
-        ReturnAction();
-        transform.SetParent(originParent);
-        gameObject.SetActive(false);
-    }
-
-    protected virtual void ReturnAction()
-    {
-
-    }
-
+    /// <summary>
+    /// 이 물체를 버리기 시도하는 메서드
+    /// </summary>
     public void TryDrop()
     {
         if (IsThrowable)
         {
             transform.parent = originParent;
-            //isCarried = true;
             currentState = StateType.Drop;
             rigid.isKinematic = false;
             pickUpUser = null;
         }
     }
+    /// <summary>
+    /// 풀로 돌아감(비활성화)
+    /// </summary>
+    protected void ReturnToPool()
+    {
+        ReturnAction();
+        pickUpUser = null;
+        transform.SetParent(originParent);
+        gameObject.SetActive(false);
+    }
 
+    /// <summary>
+    /// 풀로 돌아갈 때 동작 (오버라이드용)
+    /// </summary>
+    protected virtual void ReturnAction()
+    {
+
+    }
+
+    IEnumerator BlinkCoroutine()
+    {
+        while (true)
+        {
+            SetSkillColor(skillMaterial);
+            yield return timeLockInterval;
+            SetSkillColor(null);
+            yield return timeLockInterval;
+        }
+    }
+    IEnumerator DurationCoroutine()
+    {
+        while (true)
+        {
+            ElapsedTime += Time.deltaTime;
+            yield return null;
+        }
+    }
+
+    public void Attack(IBattler target, bool isWeakPoint = false)
+    {
+        throw new NotImplementedException();
+    }
+
+
+    public void Defence(float damage)
+    {
+        throw new NotImplementedException();
+    }
 
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
@@ -463,6 +673,13 @@ public class ReactionObject : RecycleObject
             Gizmos.DrawWireSphere(transform.position, explosiveInfo.boomRange);
         }
     }
+
+
+    public void TestBoom()
+    {
+        TryBoom();
+    }
+
 
     //private void OnValidate()
     //{
