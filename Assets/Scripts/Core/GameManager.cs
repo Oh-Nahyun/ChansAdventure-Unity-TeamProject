@@ -83,7 +83,6 @@ public class GameManager : Singleton<GameManager>
     protected override void OnAdditiveInitiallize()
     {
         player = FindAnyObjectByType<Player>();
-        player = FindAnyObjectByType<Player>();
         weapon = FindAnyObjectByType<Weapon>();
         cameraManager = GetComponent<CameraManager>();
         itemDataManager = GetComponent<ItemDataManager>();
