@@ -145,6 +145,11 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
     /// </summary>
     public float followCamRotatePower = 5.0f;
 
+    /// <summary>
+    /// 카메라의 수직회전을 하는지 여부 (마그넷캐치에서 사용중)
+    /// </summary>
+    bool isCameraRotateVertical = true;
+
     // 애니메이터용 해시값
     //readonly int IsMoveBackHash = Animator.StringToHash("IsMoveBack");
     readonly int IsJumpHash = Animator.StringToHash("IsJump");
@@ -295,7 +300,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
 
         // inventory
         inventory = new Inventory(this.gameObject, 16);
-        GameManager.Instance.ItemDataManager.InventoryUI.InitializeInventoryUI(inventory); // 인벤 UI 초기화
+        //GameManager.Instance.ItemDataManager.InventoryUI.InitializeInventoryUI(inventory); // 인벤 UI 초기화
         EquipPart = new InventorySlot[partCount]; // EquipPart 배열 초기화
     }
 
@@ -409,7 +414,11 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
             return;
 
         cameraRoot.transform.localRotation *= Quaternion.AngleAxis(lookVector.x * followCamRotatePower, Vector3.up);
-        cameraRoot.transform.localRotation *= Quaternion.AngleAxis(-lookVector.y * followCamRotatePower, Vector3.right);
+
+        if (isCameraRotateVertical)
+        {
+            cameraRoot.transform.localRotation *= Quaternion.AngleAxis(-lookVector.y * followCamRotatePower, Vector3.right);
+        }
 
         var angles = cameraRoot.transform.localEulerAngles;
         angles.z = 0;
@@ -427,6 +436,15 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
         cameraRoot.transform.localEulerAngles = angles;
         cameraRoot.transform.localEulerAngles = new Vector3(angles.x, angles.y, 0);
     }
+
+    public void SetMagnetCamera(bool isRotateVertical, float angle)
+    {
+        isCameraRotateVertical = isRotateVertical;
+        Vector3 rotate = cameraRoot.transform.localRotation.eulerAngles;
+        rotate.x = angle;
+        cameraRoot.transform.localRotation = Quaternion.Euler(rotate);
+    }
+
     private void OnJump(bool isJump)
     {
         if (isJump)

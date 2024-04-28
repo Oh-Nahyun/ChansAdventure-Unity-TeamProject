@@ -496,6 +496,24 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SpecialKey1"",
+                    ""type"": ""Button"",
+                    ""id"": ""9dd2a7b1-b748-4608-b262-a3deda748aba"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SpecialKey2"",
+                    ""type"": ""Button"",
+                    ""id"": ""ac4efe34-db19-4f5f-9121-7435f70c266b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -608,6 +626,28 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Cancel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""26cb31fe-87e3-47a3-9dc4-d1f6c3f105f8"",
+                    ""path"": ""<Keyboard>/rightBracket"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SpecialKey2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fb690cff-cbeb-4055-983b-685533afbec6"",
+                    ""path"": ""<Keyboard>/leftBracket"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SpecialKey1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -691,6 +731,8 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         m_Skill_OnSkill = m_Skill.FindAction("OnSkill", throwIfNotFound: true);
         m_Skill_Throw = m_Skill.FindAction("Throw", throwIfNotFound: true);
         m_Skill_Cancel = m_Skill.FindAction("Cancel", throwIfNotFound: true);
+        m_Skill_SpecialKey1 = m_Skill.FindAction("SpecialKey1", throwIfNotFound: true);
+        m_Skill_SpecialKey2 = m_Skill.FindAction("SpecialKey2", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Click = m_UI.FindAction("Click", throwIfNotFound: true);
@@ -969,6 +1011,8 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Skill_OnSkill;
     private readonly InputAction m_Skill_Throw;
     private readonly InputAction m_Skill_Cancel;
+    private readonly InputAction m_Skill_SpecialKey1;
+    private readonly InputAction m_Skill_SpecialKey2;
     public struct SkillActions
     {
         private @PlayerinputActions m_Wrapper;
@@ -983,6 +1027,8 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         public InputAction @OnSkill => m_Wrapper.m_Skill_OnSkill;
         public InputAction @Throw => m_Wrapper.m_Skill_Throw;
         public InputAction @Cancel => m_Wrapper.m_Skill_Cancel;
+        public InputAction @SpecialKey1 => m_Wrapper.m_Skill_SpecialKey1;
+        public InputAction @SpecialKey2 => m_Wrapper.m_Skill_SpecialKey2;
         public InputActionMap Get() { return m_Wrapper.m_Skill; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1022,6 +1068,12 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
             @Cancel.started += instance.OnCancel;
             @Cancel.performed += instance.OnCancel;
             @Cancel.canceled += instance.OnCancel;
+            @SpecialKey1.started += instance.OnSpecialKey1;
+            @SpecialKey1.performed += instance.OnSpecialKey1;
+            @SpecialKey1.canceled += instance.OnSpecialKey1;
+            @SpecialKey2.started += instance.OnSpecialKey2;
+            @SpecialKey2.performed += instance.OnSpecialKey2;
+            @SpecialKey2.canceled += instance.OnSpecialKey2;
         }
 
         private void UnregisterCallbacks(ISkillActions instance)
@@ -1056,6 +1108,12 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
             @Cancel.started -= instance.OnCancel;
             @Cancel.performed -= instance.OnCancel;
             @Cancel.canceled -= instance.OnCancel;
+            @SpecialKey1.started -= instance.OnSpecialKey1;
+            @SpecialKey1.performed -= instance.OnSpecialKey1;
+            @SpecialKey1.canceled -= instance.OnSpecialKey1;
+            @SpecialKey2.started -= instance.OnSpecialKey2;
+            @SpecialKey2.performed -= instance.OnSpecialKey2;
+            @SpecialKey2.canceled -= instance.OnSpecialKey2;
         }
 
         public void RemoveCallbacks(ISkillActions instance)
@@ -1162,6 +1220,8 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         void OnOnSkill(InputAction.CallbackContext context);
         void OnThrow(InputAction.CallbackContext context);
         void OnCancel(InputAction.CallbackContext context);
+        void OnSpecialKey1(InputAction.CallbackContext context);
+        void OnSpecialKey2(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

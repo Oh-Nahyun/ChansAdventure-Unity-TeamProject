@@ -12,6 +12,8 @@ public enum SkillType
     RemoteBombPool = 0,
     RemoteBombCubePool,
     MagnetCatchPool,
+    IceMakerPool,
+    TimeLock
 }
 
 public enum EnemyObjectType
@@ -25,6 +27,9 @@ public class Factory : Singleton<Factory>
     RemoteBombPool remoteBombPool;
     RemoteBombCubePool remoteBombCubePool;
     MagnetCatchPool magnetCatchPool;
+    IceMakerPool iceMakerPool;
+    IceMaker_IcePool iceMaker_IcePool;
+    TimeLockPool timeLockPool;
     SwordSkeletonPool swordSkeletonPool;
     DamageTextPool damageTextPool;
     ItemPool itemPool;
@@ -42,6 +47,12 @@ public class Factory : Singleton<Factory>
         if (remoteBombCubePool != null) remoteBombCubePool.Initialize();
         magnetCatchPool = GetComponentInChildren<MagnetCatchPool>();
         if (magnetCatchPool != null) magnetCatchPool.Initialize();
+        iceMakerPool = GetComponentInChildren<IceMakerPool>();
+        if (iceMakerPool != null) iceMakerPool.Initialize();
+        iceMaker_IcePool = GetComponentInChildren<IceMaker_IcePool>();
+        if (iceMaker_IcePool != null) iceMaker_IcePool.Initialize();
+        timeLockPool = GetComponentInChildren<TimeLockPool>();
+        if (timeLockPool != null) timeLockPool.Initialize();
         swordSkeletonPool = GetComponentInChildren<SwordSkeletonPool>();
         if (swordSkeletonPool != null) swordSkeletonPool.Initialize();
         damageTextPool = GetComponentInChildren<DamageTextPool>();
@@ -80,6 +91,12 @@ public class Factory : Singleton<Factory>
             case SkillType.MagnetCatchPool:
                 result = magnetCatchPool.GetObject(position, euler).gameObject;
                 break;
+            case SkillType.IceMakerPool:
+                result = iceMakerPool.GetObject(position, euler).gameObject;
+                break;
+            case SkillType.TimeLock:
+                result = timeLockPool.GetObject(position, euler).gameObject;
+                break;
         }
 
         return result;
@@ -102,7 +119,19 @@ public class Factory : Singleton<Factory>
     {
         return magnetCatchPool.GetObject(position, angle * Vector3.forward);
     }
-    
+    public IceMaker GetIceMaker(Vector3? position = null, float angle = 0.0f)
+    {
+        return iceMakerPool.GetObject(position, angle * Vector3.forward);
+    }
+    public IceMaker_Ice GetIceMaker_Ice(Vector3? position = null, float angle = 0.0f)
+    {
+        return iceMaker_IcePool.GetObject(position, angle * Vector3.forward);
+    }
+    public TimeLock GetTimeLock(Vector3? position = null, float angle = 0.0f)
+    {
+        return timeLockPool.GetObject(position, angle * Vector3.forward);
+    }
+
     // 적 생성 함수 ------------------------------------------------------------------------------------------------------------------------------------------
 
     /// <summary>
@@ -194,10 +223,10 @@ public class Factory : Singleton<Factory>
     }
 
     // 나중에 빼야됨  ----------------------------------------------------------------------
-    public GameObject GetItemObject(ItemData data, Vector3? position = null)
-    {
-        return itemPool.GetItemObject(data, position);
-    }
+    //public GameObject GetItemObject(ItemData data, Vector3? position = null)
+    //{
+    //    return itemPool.GetItemObject(data, position);
+    //}
     // ---------------------------------------------------------------------------------------
     //
     /// <summary>
