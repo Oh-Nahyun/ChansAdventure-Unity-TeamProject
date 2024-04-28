@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9214185627190435623}
-  - component: {fileID: 3538699424490670605}
+  - component: {fileID: 7525014269693007579}
   - component: {fileID: 7616533183204277396}
   - component: {fileID: 1789021134245975183}
   - component: {fileID: 8413078663783774573}
@@ -37,7 +37,7 @@ Transform:
   - {fileID: 7875589753598165296}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3538699424490670605
+--- !u!114 &7525014269693007579
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -49,6 +49,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f40596ba75c9f449ae4b82ed6ba2c63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLoading: 0
+  loadPlayerGameObject: {fileID: 0}
   isNPC: 0
 --- !u!114 &7616533183204277396
 MonoBehaviour:
@@ -96,13 +98,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c7a4a50e2e404c4caa12015f2bd96d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapSizeX: 300
-  mapSizeY: 300
-  panelSize: 10
-  color: []
-  ColorCount: 0
-  colorGap: 5
-  playerMark: {fileID: 0}
+  mapSizeX: 100
+  mapSizeY: 100
 --- !u!1001 &1512909484931155663
 PrefabInstance:
   m_ObjectHideFlags: 0

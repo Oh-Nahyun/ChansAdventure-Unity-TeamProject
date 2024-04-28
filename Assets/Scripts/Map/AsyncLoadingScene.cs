@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 public class AsyncLoadingScene : MonoBehaviour
 {
+    #region AsyncLoad Values
     /// <summary>
     /// 로딩 씬이 끝나고 불려진 다음 씬 이름
     /// </summary>
@@ -19,6 +20,7 @@ public class AsyncLoadingScene : MonoBehaviour
     AsyncOperation async;
 
     Slider loadingSlider;
+    PlayerinputActions inputActions;
 
     IEnumerator loadingCoroutine;
 
@@ -29,12 +31,19 @@ public class AsyncLoadingScene : MonoBehaviour
     /// 로딩 완료 여부 ( true : 완료, false : 미완 )
     /// </summary>
     bool loadingDone = false;
+    #endregion
 
-    PlayerinputActions inputActions;
+    #region Loading Image
+    LoadingImageUI loadingImageUI;
 
+    #endregion
+
+    #region LifeCycle Method
     private void Awake()
     {
         inputActions = new PlayerinputActions();
+
+        loadingImageUI = FindAnyObjectByType<LoadingImageUI>();
     }
 
     private void OnEnable()
@@ -51,10 +60,13 @@ public class AsyncLoadingScene : MonoBehaviour
 
     private void Start()
     {
+        nextSceneName = GameManager.Instance.TargetSceneName;
+
         loadingSlider = FindAnyObjectByType<Slider>();
         loadingCoroutine = AsyncLoadScene();
 
         StartCoroutine(loadingCoroutine);
+        loadingImageUI.ChangeLoadingImages();
     }
 
     private void Update()
@@ -66,12 +78,18 @@ public class AsyncLoadingScene : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region AsyncLoad Method
     /// <summary>
     /// 클릭시 실행하는 함수
     /// </summary>
     private void Press(InputAction.CallbackContext context)
     {
         async.allowSceneActivation = loadingDone;
+        loadingImageUI.FinishLoadingImage();
+
+        GameManager.Instance.isLoading = false;
     }
 
     IEnumerator AsyncLoadScene()
@@ -85,11 +103,14 @@ public class AsyncLoadingScene : MonoBehaviour
         while(loadRatio < 1.0f)
         {
             loadRatio = async.progress + 0.1f; // 진행률 갱신
+
             yield return null;
         }
 
         yield return new WaitForSeconds((1 - loadingSlider.value / loadingBarSpeed));
 
-        loadingDone = true;
+        loadingDone = true;        
     }
+
+    #endregion
 }

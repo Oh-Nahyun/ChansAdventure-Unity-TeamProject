@@ -24,6 +24,23 @@ public class ArrowFirePoint : MonoBehaviour
     /// </summary>
     Transform rightHand;
 
+    Transform RightHand
+    {
+        get
+        {
+            if (rightHand == null)
+            {
+                rightHand = GameObject.FindWithTag("RightHand").transform;
+            }
+
+            return rightHand;
+        }
+        set
+        {
+            rightHand = value;
+        }
+    }
+
     /// <summary>
     /// 화살 발사 위치
     /// </summary>
@@ -31,13 +48,13 @@ public class ArrowFirePoint : MonoBehaviour
 
     private void Start()
     {
-        rightHand = GameObject.FindWithTag("RightHand").transform;
+        RightHand = GameObject.FindWithTag("RightHand").transform;
         fireTransform = transform.GetChild(0);
     }
 
     private void Update()
     {
-        fireTransform.position = rightHand.position; // 화살 발사 위치는 캐릭터 오른손 위치와 일치
+        fireTransform.position = RightHand.position; // 화살 발사 위치는 캐릭터 오른손 위치와 일치
     }
 
     /// <summary>

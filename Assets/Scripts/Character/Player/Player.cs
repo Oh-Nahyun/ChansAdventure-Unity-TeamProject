@@ -141,7 +141,13 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
     /// <summary>
     /// 주변 시야 카메라
     /// </summary>
-    public GameObject cameraRoot;
+    GameObject cameraRoot;
+
+    /// <summary>
+    /// cameraRoot 게임 오브젝트를 접근하기 위한 프로퍼티
+    /// </summary>
+    public GameObject CameraRoot => cameraRoot;
+
 
     /// <summary>
     /// 주변 시야 카메라 회전 정도
@@ -281,16 +287,17 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
         animator = GetComponent<Animator>();
 
         interaction = GetComponent<Interaction>();
+
+        // exception
+        if (cameraRoot == null)
+        {
+            //Debug.LogError("CameraRoot가 비어있습니다. CameraRoot Prefab 오브젝트를 넣어주세요 ( PlayerLookVCam 스크립트 있는 오브젝트 )");
+            cameraRoot = FindAnyObjectByType<PlayerLookVCam>().gameObject;
+        }
     }
 
     void Start()
     {
-        // exception
-        if (cameraRoot == null)
-        {
-            Debug.LogError("CameraRoot가 비어있습니다. CameraRoot Prefab 오브젝트를 넣어주세요 ( PlayerLookVCam 스크립트 있는 오브젝트 )");
-        }
-
         // controller
         controller.onMove += OnMove;
         controller.onMoveModeChange += OnMoveModeChange;
@@ -305,6 +312,8 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
         inventory = new Inventory(this.gameObject, 16);
         //GameManager.Instance.ItemDataManager.InventoryUI.InitializeInventoryUI(inventory); // 인벤 UI 초기화
         EquipPart = new InventorySlot[partCount]; // EquipPart 배열 초기화
+
+        Test_AddItem();
     }
 
     private void Update()
@@ -676,13 +685,13 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
         // 임시 온오프
         if (isOpenedLargeMap == false)
         {
-            MapManager.Instance.OpenMapUI();
+            GameManager.Instance.MapManager.OpenMapUI();
             isOpenedLargeMap = true;
         }
         else if (isOpenedLargeMap == true)
         {
-            MapManager.Instance.SetCameraPosition(transform.position);
-            MapManager.Instance.CloseMapUI();
+            GameManager.Instance.MapManager.SetCameraPosition(transform.position);
+            GameManager.Instance.MapManager.CloseMapUI();
             isOpenedLargeMap = false;
         }
     }

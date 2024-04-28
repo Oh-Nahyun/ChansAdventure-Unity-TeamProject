@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -37,14 +38,95 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    public bool isLoading;
+
+    string targetSceneName = null;
+
+    public string TargetSceneName
+    {
+        get => targetSceneName;
+        set
+        {
+            if(targetSceneName != value)
+            {
+                targetSceneName = value;
+                ChangeToLoadingScene();
+            }
+        }
+    }
+
+    public GameObject loadPlayerGameObject;
+
+    protected override void OnPreInitialize()
+    {
+        base.OnPreInitialize();
+
+        loadPlayerGameObject = new GameObject();
+        DontDestroyOnLoad(loadPlayerGameObject);
+    }
+
     protected override void OnInitialize()
+    {
+        SpawnPlayerAfterLoadScene();
+
+        player = FindAnyObjectByType<Player>();
+        weapon = FindAnyObjectByType<Weapon>();
+        cameraManager = GetComponent<CameraManager>();
+        itemDataManager = GetComponent<ItemDataManager>();
+        mapManager = GetComponent<MapManager>();
+
+        itemDataManager.InitializeItemDataUI();
+
+        mapManager.InitalizeMapUI();
+    }
+
+    protected override void OnAdditiveInitiallize()
     {
         player = FindAnyObjectByType<Player>();
         weapon = FindAnyObjectByType<Weapon>();
         cameraManager = GetComponent<CameraManager>();
         itemDataManager = GetComponent<ItemDataManager>();
         mapManager = GetComponent<MapManager>();
+
+        itemDataManager.InitializeItemDataUI();
+
+        mapManager.InitalizeMapUI();
     }
+
+    #region Loading Function
+    /// <summary>
+    /// 씬을 변경할 때 실행하는 함수
+    /// </summary>
+    /// <param name="SceneName"> 변경할 씬 이름</param>
+    public void ChangeToTargetScene(string SceneName, GameObject player)
+    {
+        Instantiate(player, loadPlayerGameObject.transform);
+        loadPlayerGameObject.SetActive(false);
+
+        TargetSceneName = SceneName;
+    }
+
+    public void SpawnPlayerAfterLoadScene()
+    {
+        if (loadPlayerGameObject.transform.childCount < 1)
+            return;
+
+        if (!isLoading)
+        {
+            loadPlayerGameObject.SetActive(true);
+            GameObject loadingPlayer = Instantiate(loadPlayerGameObject.transform.GetChild(0).gameObject);  // 새로운 씬에 플레이어 생성
+            loadingPlayer.name = "Player";
+
+            Destroy(loadPlayerGameObject.transform.GetChild(0).gameObject); // 저장된 플레이어 오브젝트 제거
+        }
+    }
+
+    void ChangeToLoadingScene()
+    {
+        SceneManager.LoadScene("02_LoadingScene");
+        isLoading = true;
+    }
+    #endregion
 
 #if UNITY_EDITOR
     public bool isNPC = false;

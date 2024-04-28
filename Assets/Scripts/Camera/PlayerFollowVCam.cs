@@ -21,6 +21,8 @@ public class PlayerFollowVCam : MonoBehaviour
     CinemachineVirtualCamera vcam;
     Cinemachine3rdPersonFollow follow;
 
+
+
     private void Awake()
     {
         weapon = FindAnyObjectByType<Weapon>();
@@ -28,9 +30,14 @@ public class PlayerFollowVCam : MonoBehaviour
         follow = vcam.GetCinemachineComponent<Cinemachine3rdPersonFollow>();
     }
 
+    private void Start()
+    {
+        vcam.Follow = GameManager.Instance.Player.CameraRoot.transform;
+    }
+
     private void Update()
     {
-        ChangeCameraZoom();
+        //ChangeCameraZoom();
     }
 
     void ChangeCameraZoom()
