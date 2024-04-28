@@ -59,7 +59,7 @@ public class PlayerSkills : MonoBehaviour
     public Action<SkillName> onSkillSelect;
 
 
-    void Awake()
+    void Start()
     {
         PlayerSkillController skillController = GetComponent<PlayerSkillController>();
 

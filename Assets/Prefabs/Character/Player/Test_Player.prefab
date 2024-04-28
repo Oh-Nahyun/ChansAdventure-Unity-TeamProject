@@ -7847,15 +7847,17 @@ MonoBehaviour:
   currentSpeed: 0
   turnSpeed: 10
   slidePower: 5
-  jumpPower: 5
+  playerVelocity: {x: 0, y: 0, z: 0}
+  jumpPower: 2.5
+  isJumping: 0
   isLook: 0
-  cameraRoot: {fileID: 0}
   followCamRotatePower: 5
   hp: 0
   maxHP: 5
   partPosition:
   - {fileID: 4511879611240405110}
   - {fileID: 7500145302657611700}
+  weakPointAttack: 1.2
 --- !u!114 &6161648334508872447
 MonoBehaviour:
   m_ObjectHideFlags: 0

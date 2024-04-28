@@ -24,12 +24,13 @@ public class SkillVCam : MonoBehaviour
 
     protected void Awake()
     {
-        vCam = GetComponent<CinemachineVirtualCamera>();
-        personFollow = vCam.GetCinemachineComponent<Cinemachine3rdPersonFollow>();
     }
 
     void Start()
     {
+        vCam = GetComponent<CinemachineVirtualCamera>();
+        personFollow = vCam.GetCinemachineComponent<Cinemachine3rdPersonFollow>();
+
         player = GameManager.Instance.Player;
         if (player != null)
         {
