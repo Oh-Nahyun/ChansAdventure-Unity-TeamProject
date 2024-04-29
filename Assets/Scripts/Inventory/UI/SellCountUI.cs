@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class InventoryDividUI : MonoBehaviour
+public class SellCountUI : MonoBehaviour
 {
     CanvasGroup canvasGroup;
 
@@ -17,27 +17,35 @@ public class InventoryDividUI : MonoBehaviour
     Button okBtn;
     Button cancelBtn;
 
-    InventorySlot targetSlot = null; // 나누기를 수행할 슬롯 
+    InventorySlot targetSlot = null; // 판매할 아이템 슬롯
 
     /// <summary>
     /// 나눌 아이템 
     /// </summary>
-    int dividCount = 1;
+    int sellCount = 1;
 
     /// <summary>
     /// 나눌 아이템을 설정 및 접근을 하기 위한 프로퍼티
     /// </summary>
-    int DividCount
+    int SellCount
     {
-        get => dividCount;
+        get => sellCount;
         set
         {
-            dividCount = value;
-            dividCount = Mathf.Clamp(value, 1, (int)slider.maxValue);
+            sellCount = value;
+            sellCount = Mathf.Clamp(value, 1, (int)slider.maxValue);
         }
     }
 
-    public Action<InventorySlot, int> onDivid; // 나눌 때 실행하는 델리게이트
+    /// <summary>
+    /// 판매할 때 실행하는 델리게이트
+    /// </summary>
+    public Action<InventorySlot, int> onSell;
+    
+    /// <summary>
+    /// SellCountUI창을 닫았을 때 실행하는 델리게이트
+    /// </summary>
+    public Action onCloseSellCount;
 
     void Awake()
     {
@@ -52,8 +60,8 @@ public class InventoryDividUI : MonoBehaviour
         slider.onValueChanged.AddListener((float count) =>
         {
             // 슬라이더 value 업데이트
-            DividCount = (int)count;
-            UpdateValue(DividCount);
+            SellCount = (int)count;
+            UpdateValue(SellCount);
         });
 
         child = transform.GetChild(3);
@@ -61,8 +69,8 @@ public class InventoryDividUI : MonoBehaviour
         decreaseBtn.onClick.AddListener(() =>
         {
             // 왼쪽 버튼 value 업데이트 ( 빼기 )
-            DividCount--;
-            UpdateValue(DividCount);
+            SellCount--;
+            UpdateValue(SellCount);
         });
 
         child = transform.GetChild(4);
@@ -70,8 +78,8 @@ public class InventoryDividUI : MonoBehaviour
         increaseBtn.onClick.AddListener(() =>
         {
             // 오른쪽 버튼 value 업데이트 ( 추가하기 )
-            DividCount++;
-            UpdateValue(DividCount);
+            SellCount++;
+            UpdateValue(SellCount);
         });
 
         child = transform.GetChild(5);
@@ -79,8 +87,8 @@ public class InventoryDividUI : MonoBehaviour
         okBtn.onClick.AddListener(() =>
         {
             // 확인 버튼 ( 아이템 나누기 )
-            onDivid?.Invoke(targetSlot, DividCount);
-            DividUIClose();
+            onSell?.Invoke(targetSlot, SellCount);
+            SellCountUIClose();
         });
 
         child = transform.GetChild(6);
@@ -88,37 +96,27 @@ public class InventoryDividUI : MonoBehaviour
         cancelBtn.onClick.AddListener(() =>
         {
             // 취소 버튼 ( 패널 닫기 )
-            DividUIClose();
+            SellCountUIClose();
         });
     }
 
     void Start()
     {
-        DividUIClose();
+        SellCountUIClose();
     }
 
-    /// <summary>
-    /// 패널의 값을 초기화하는 함수
-    /// </summary>
-    /// <param name="slot">나눌 아이템 슬롯</param>
-    /// <param name="minCount">아이템 최소 개수</param>
-    /// <param name="maxCount">아이템 최대 개수</param>
     public void InitializeValue(InventorySlot slot, int minCount, int maxCount)
-    {       
+    {
         itemIcon.sprite = slot.SlotItemData.itemIcon;
 
         slider.minValue = minCount;
         slider.maxValue = maxCount;
-        slider.value = DividCount;
+        slider.value = SellCount;
 
         //DividCount = Mathf.Clamp(DividCount, minCount, maxCount);
         targetSlot = slot;
     }
 
-    /// <summary>
-    /// 값을 업데이트 하는 함수
-    /// </summary>
-    /// <param name="count"></param>
     public void UpdateValue(int count)
     {
         inputField.text = count.ToString();
@@ -126,18 +124,19 @@ public class InventoryDividUI : MonoBehaviour
     }
 
     /// <summary>
-    /// Divid UI 보이게 하는 함수
+    /// SellCountUI 보이게 하는 함수
     /// </summary>
-    public void DividUIOpen()
+    public void SellCountUIOpen()
     {
         canvasGroup.alpha = 1;
     }
-    
+
     /// <summary>
-    /// Divid UI 숨기는 함수 ( alpha = 0 )
+    /// SellCountUI 숨기는 함수 ( alpha = 0 )
     /// </summary>
-    public void DividUIClose()
+    public void SellCountUIClose()
     {
         canvasGroup.alpha = 0;
+        onCloseSellCount?.Invoke();
     }
 }

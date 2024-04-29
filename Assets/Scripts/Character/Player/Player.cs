@@ -246,6 +246,11 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
     Inventory inventory;
 
     /// <summary>
+    /// 오브젝트 인벤토리 접근을 위한 프로퍼티
+    /// </summary>
+    public Inventory PlayerInventory => inventory;
+
+    /// <summary>
     /// 인벤토리가 열렸는지 확인하는 변수
     /// </summary>
     bool isInventoryOpen;
@@ -303,7 +308,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
 
         // inventory
         inventory = new Inventory(this.gameObject, 16);
-        //GameManager.Instance.ItemDataManager.InventoryUI.InitializeInventoryUI(inventory); // 인벤 UI 초기화
+        GameManager.Instance.ItemDataManager.InventoryUI.InitializeInventoryUI(inventory); // 인벤 UI 초기화
         EquipPart = new InventorySlot[partCount]; // EquipPart 배열 초기화
     }
 

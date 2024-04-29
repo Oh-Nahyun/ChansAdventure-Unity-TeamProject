@@ -388,7 +388,7 @@ public class Inventory
     /// °ñµå¸¦ È¹µæÇÒ ¶§ ½ÇÇàµÇ´Â ÇÔ¼ö
     /// </summary>
     /// <param name="price">È¹µæÇÒ °ñµå·®</param>
-    public void AddCoin(uint price)
+    public void AddGold(uint price)
     {
         Gold += price;
     }

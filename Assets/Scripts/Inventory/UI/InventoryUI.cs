@@ -52,6 +52,8 @@ public class InventoryUI : MonoBehaviour
     /// </summary>
     InventorySelectedMenuUI selectedMenuUI;
 
+
+
     CanvasGroup canvasGroup;
 
     public Action<uint> onSlotDragBegin;
@@ -79,11 +81,8 @@ public class InventoryUI : MonoBehaviour
         selectedMenuUI = GetComponentInChildren<InventorySelectedMenuUI>(); // 아이템 슬롯 매뉴 UI
         canvasGroup = GetComponent<CanvasGroup>();
 
-        for (uint i = 0; i < Inventory.SlotSize; i++)
-        {
-            slotsUIs[i].InitializeSlotUI(Inventory[i]); // 인벤토리슬롯을 slotUI와 연결
-        }
-        tempSlotUI.InitializeSlotUI(Inventory.TempSlot); // null 참조
+        RefreshInventoryUI();
+        tempSlotUI.InitializeSlotUI(Inventory.TempSlot);
 
         onSlotDragBegin += OnSlotDragBegin;
         onSlotDragEnd += OnSlotDragEnd;
@@ -441,7 +440,20 @@ public class InventoryUI : MonoBehaviour
             result = true;
         }
 
+        RefreshInventoryUI();
+
         return result;
+    }
+
+    /// <summary>
+    /// 인벤토리 내용을 초기화 하는 함수 
+    /// </summary>
+    public void RefreshInventoryUI()
+    {
+        for (uint i = 0; i < Inventory.SlotSize; i++)
+        {
+            slotsUIs[i].InitializeSlotUI(Inventory[i]); // 인벤토리슬롯을 slotUI와 연결
+        }
     }
 
 #if UNITY_EDITOR
