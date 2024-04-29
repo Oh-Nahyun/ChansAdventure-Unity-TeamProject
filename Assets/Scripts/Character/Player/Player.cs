@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Windows;
 
-public class Player : MonoBehaviour, IEquipTarget, IHealth
+public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina
 {
     #region additional Classes
     PlayerController controller;
@@ -195,12 +195,13 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth
     const float AnimatorRunSpeed = 1.0f;
     readonly int DieHash = Animator.StringToHash("IsDie");
     readonly int GetHitHash = Animator.StringToHash("IsGetHit");
+    readonly int SpendAllStaminaHash = Animator.StringToHash("IsSpendAllStamina");
 
     // 컴포넌트
     Weapon weapon;
     #endregion
 
-    #region Inventory Values (IHealth 포함되있음)
+    #region Inventory Values (IHealth, IStamina 포함되있음)
 
     [Header("# Inventory Values")]
     /// <summary>
@@ -270,6 +271,53 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth
             equipPart = value;
         }
     }
+
+    // Stamina ===================================================================================
+
+    /// <summary>
+    /// 현재 기력
+    /// </summary>
+    public float stamina;
+
+    /// <summary>
+    /// 기력 확인 및 설정용 프로퍼티
+    /// </summary>
+    public float Stamina
+    {
+        get => stamina;
+        set
+        {
+            hp = Mathf.Clamp(value, 0, MaxStamina);
+            onStaminaChange?.Invoke(stamina);
+        }
+    }
+
+    /// <summary>
+    /// 최대 기력
+    /// </summary>
+    public float maxStamina = 100;
+
+    /// <summary>
+    /// 최대 기력 확인용 프로퍼티
+    /// </summary>
+    public float MaxStamina => maxStamina;
+
+    /// <summary>
+    /// 기력이 변경될 때마다 실행될 델리게이트용 프로퍼티
+    /// </summary>
+    public Action<float> onStaminaChange { get; set; }
+
+    /// <summary>
+    /// 기력이 남아있는지 확인하기 위한 프로퍼티
+    /// </summary>
+    public bool IsEnergetic => Stamina > 0;
+
+    /// <summary>
+    /// 기력 소진을 알리기 위한 델리게이트용 프로퍼티
+    /// </summary>
+    public Action onSpendAllStamina { get; set; }
+
+    // ===================================================================================================
 
     /// <summary>
     /// 해당 오브젝트의 인벤토리
@@ -738,6 +786,14 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth
         }
     }
     #endregion
+
+    /// <summary>
+    /// 기력을 모두 소진했을 경우 처리용 함수
+    /// </summary>
+    public void SpendAllStamina()
+    {
+        animator.SetTrigger(SpendAllStaminaHash);
+    }
 
     #region additional Method
     /// <summary>
