@@ -37,6 +37,16 @@ public class ItemDataManager : MonoBehaviour
     public InventoryUI InventoryUI => inventoryUI;
 
     /// <summary>
+    /// 판매창 UI 클래스
+    /// </summary>
+    SellPanelUI sellPanelUI;
+
+    /// <summary>
+    /// sellPanelUI 접근을 위한 프로퍼티
+    /// </summary>
+    public SellPanelUI SellPanelUI => sellPanelUI;  
+
+    /// <summary>
     /// Inventory RenderTexture Object Point
     /// </summary>
     public GameObject CharaterRenderCameraPoint;
@@ -44,5 +54,6 @@ public class ItemDataManager : MonoBehaviour
     public void InitializeItemDataUI()
     {
         inventoryUI = FindAnyObjectByType<InventoryUI>(); // find inventoryUI
+        sellPanelUI = FindAnyObjectByType<SellPanelUI>();
     }
 }
