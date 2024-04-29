@@ -95,17 +95,15 @@ public class PlayerFollowVCam : MonoBehaviour
 
             if (IsZoom)
             {
-
+                //cameraRoot.forward = player.transform.forward; // 회전 방향 일치시키기
+                //cameraRoot.position = lookAtPosition.position + new Vector3(1.0f, 0.0f, -1.0f); // 카메라 최종 위치 설정
                 cameraRoot.rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f); // 카메라 최종 회전 설정 (높이)
-                // 방향 벡터 맞추기
 
                 follow.ShoulderOffset = Vector3.Lerp(zoomOut, zoomIn, timeElapsed);
                 follow.Damping = new Vector3(0.0f, 0.0f, 0.0f); // 카메라 Damping 제거
                 vcam.LookAt = lookAtPosition;                   // 카메라 목표물 설정
                 weapon.IsZoomIn = true;                         // 활이 조금이라도 당겨지면 ZoomIn이 true가 된다.
                 weapon.LoadArrowAfter();
-
-                //cameraRoot.position = lookAtPosition.position + new Vector3(1.0f, 0.0f, -1.0f); // 카메라 최종 위치 설정
             }
             else
             {

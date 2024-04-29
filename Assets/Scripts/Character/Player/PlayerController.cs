@@ -222,6 +222,14 @@ public class PlayerController : MonoBehaviour
     float GetAnimationLegth(string clipPath)
     {
         AnimationClip clip = Resources.Load<AnimationClip>(clipPath);
-        return clip.length;
+        if (clip != null)
+        {
+            return clip.length;
+        }
+        else
+        {
+            Debug.Log("애니메이션 재생 시간을 출력할 수 없습니다.");
+            return -1.0f;
+        }
     }
 }
