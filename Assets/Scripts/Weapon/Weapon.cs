@@ -132,6 +132,9 @@ public class Weapon : MonoBehaviour
     /// <param name="context"></param>
     private void OnAttackInput(InputAction.CallbackContext context)
     {
+        if (player.SkillRelatedAction.IsPickUp)
+            return;
+
         animator.SetTrigger(IsAttackHash);
 
         if (currentWeaponMode == WeaponMode.None)
@@ -189,6 +192,9 @@ public class Weapon : MonoBehaviour
     /// <param name="context"></param>
     private void OnChangeInput(InputAction.CallbackContext context)
     {
+        if (player.SkillRelatedAction.IsPickUp)
+            return;
+
         if (currentWeaponMode == WeaponMode.None)
         {
             // 무기를 들고 있지 않는 경우 => 칼을 들도록 한다.

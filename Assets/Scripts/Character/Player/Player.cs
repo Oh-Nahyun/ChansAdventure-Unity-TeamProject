@@ -15,6 +15,16 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
 
     Animator animator;
     CharacterController characterController;
+
+    /// <summary>
+    /// 스킬 관련 클래스
+    /// </summary>
+    PlayerSkillRelatedAction skillRelatedAction;
+
+    /// <summary>
+    /// 스킬 관련 클래스 접근을 위한 프로퍼티
+    /// </summary>
+    public PlayerSkillRelatedAction SkillRelatedAction => skillRelatedAction;
     #endregion
 
     // 변수 ==========================================================================================================================
@@ -299,6 +309,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
         animator = GetComponent<Animator>();
 
         interaction = GetComponent<Interaction>();
+        skillRelatedAction = GetComponent<PlayerSkillRelatedAction>();
 
         cameraRoot = FindAnyObjectByType<PlayerLookVCam>().gameObject;
     }

@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class PlayerSkillRelatedAction : MonoBehaviour, ILifter
 {
-
     /// <summary>
     /// 플레이어 스킬사용 및 오브젝트 관련 손의 위치 추적용 트랜스폼 (플레이어와 동일한 회전값을 가짐 = 정면이 동일)
     /// </summary>
@@ -98,10 +97,10 @@ public class PlayerSkillRelatedAction : MonoBehaviour, ILifter
     /// <summary>
     /// 오브젝트를 집었는 지 확인용 프로퍼티
     /// </summary>
-    bool IsPickUp
+    public bool IsPickUp
     {
         get => isPickUp;
-        set
+        private set
         {
             if (isPickUp != value)  // 다른 값일 때만 가능 = 맨손일때만 들 수 있고 들고 있을 때만 내릴 수 있음
             {
