@@ -15,6 +15,8 @@ public class GameManager : Singleton<GameManager>
     // ItemData
     ItemDataManager itemDataManager;
 
+    QuestManager questManager;
+
     /// <summary>
     /// 아이템 데이터 클래스 접근을 위한 프로퍼티
     /// </summary>
