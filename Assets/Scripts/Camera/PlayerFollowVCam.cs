@@ -6,6 +6,11 @@ using UnityEngine;
 public class PlayerFollowVCam : MonoBehaviour
 {
     /// <summary>
+    /// 카메라 원래 위치
+    /// </summary>
+    public Vector3 followCamPosition = new Vector3(0.0f, 1.65f, -4.0f);
+
+    /// <summary>
     /// 카메라 변경 속도
     /// </summary>
     public float speed = 1.0f;
@@ -21,6 +26,11 @@ public class PlayerFollowVCam : MonoBehaviour
     /// </summary>
     Transform lookAtPosition;
 
+    /// <summary>
+    /// 플레이어 카메라 위치 트랜스폼
+    /// </summary>
+    Transform cameraRoot;
+
     // 컴포넌트들
     Player player;
     Weapon weapon;
@@ -34,6 +44,7 @@ public class PlayerFollowVCam : MonoBehaviour
         vcam = GetComponent<CinemachineVirtualCamera>();
         follow = vcam.GetCinemachineComponent<Cinemachine3rdPersonFollow>();
         lookAtPosition = GameObject.FindWithTag("LookAtPosition").transform;
+        cameraRoot = GameObject.FindWithTag("CameraRoot").transform;
     }
 
     private void Update()
@@ -84,12 +95,17 @@ public class PlayerFollowVCam : MonoBehaviour
 
             if (IsZoom)
             {
-                // vcam.transform.rotation = Quaternion.LookRotation(player.transform.forward, Vector3.up); // 활시위를 당길 때, 캐릭터와 카메라가 같은 방향 바라보기
+
+                cameraRoot.rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f); // 카메라 최종 회전 설정 (높이)
+                // 방향 벡터 맞추기
+
                 follow.ShoulderOffset = Vector3.Lerp(zoomOut, zoomIn, timeElapsed);
                 follow.Damping = new Vector3(0.0f, 0.0f, 0.0f); // 카메라 Damping 제거
                 vcam.LookAt = lookAtPosition;                   // 카메라 목표물 설정
                 weapon.IsZoomIn = true;                         // 활이 조금이라도 당겨지면 ZoomIn이 true가 된다.
                 weapon.LoadArrowAfter();
+
+                //cameraRoot.position = lookAtPosition.position + new Vector3(1.0f, 0.0f, -1.0f); // 카메라 최종 위치 설정
             }
             else
             {

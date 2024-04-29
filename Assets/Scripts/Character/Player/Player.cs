@@ -81,6 +81,11 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth
     bool isMoving = false;
 
     /// <summary>
+    /// 카메라 회전
+    /// </summary>
+    Quaternion followCamY;
+
+    /// <summary>
     /// 캐릭터의 목표방향으로 회전시키는 회전
     /// </summary>
     Quaternion targetRotation = Quaternion.identity;
@@ -335,12 +340,12 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth
 
     void FixedUpdate()
     {
-        characterController.Move(Time.fixedDeltaTime * currentSpeed * inputDirection); // 캐릭터의 움직임
+        characterController.Move(Time.fixedDeltaTime * currentSpeed * inputDirection);      // 캐릭터의 움직임
 
         if (weapon.IsZoomIn)
         {
             // 카메라가 줌을 당긴 경우
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 0.0f); // 회전을 적용하지 않는다.
+            transform.rotation = Quaternion.Slerp(transform.rotation, followCamY, 0.0f);    // 회전을 적용하지 않는다.
         }
         else
         {
@@ -368,9 +373,9 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth
             isMoving = true;
 
             // 입력 방향 회전시키기
-            Quaternion followCamY = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0);   // 카메라의 y회전만 따로 추출
-            inputDirection = followCamY * inputDirection;                                                   // 입력 방향을 카메라의 y회전과 같은 정도로 회전시키기
-            targetRotation = Quaternion.LookRotation(inputDirection);                                       // 회전 저장
+            followCamY = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0);   // 카메라의 y회전만 따로 추출
+            inputDirection = followCamY * inputDirection;                                        // 입력 방향을 카메라의 y회전과 같은 정도로 회전시키기
+            targetRotation = Quaternion.LookRotation(inputDirection);                            // 회전 저장
 
             // 이동 모드 변경
             MoveSpeedChange(CurrentMoveMode);
