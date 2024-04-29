@@ -21,7 +21,7 @@ public class TestNPC : TestBase
 
     protected override void OnTest3(InputAction.CallbackContext context)
     {
-        GameManager.Instance.OpenChest();
+        //GameManager.Instance.OpenChest();
         //GameManager.Instance.IsNPCObj();
     }
 

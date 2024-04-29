@@ -32,7 +32,9 @@ public class TextBox : MonoBehaviour
     private bool typingStop;
 
     public NPCBase NPCdata;
+
     TextBoxManager textBoxManager; // TextBoxManager에 대한 참조
+    QuestManager questManager;
 
     private void Awake()
     {
@@ -54,6 +56,7 @@ public class TextBox : MonoBehaviour
         interaction = FindObjectOfType<Interaction>();
 
         textBoxManager = FindObjectOfType<TextBoxManager>();
+        questManager = FindObjectOfType<QuestManager>();
         warpBase = FindObjectOfType<WarpBase>();
     }
 

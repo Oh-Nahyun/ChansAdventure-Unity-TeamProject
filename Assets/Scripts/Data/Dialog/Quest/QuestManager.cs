@@ -20,7 +20,7 @@ public class QuestManager : MonoBehaviour
         questList.Add(10, new QuestData("퀘스트 이름", new int[] {1000, 2000}));  //퀘스트 ID / 퀘스트 이름 / 관련 NPC ID 입력
     }
 
-    public int QusetTalkIndex()
+    public int GetQusetTalkIndex(int id)
     {
         return questList.Count;
     }
