@@ -20,6 +20,11 @@ public class InventoryDividUI : MonoBehaviour
     InventorySlot targetSlot = null; // 나누기를 수행할 슬롯 
 
     /// <summary>
+    /// 최소값
+    /// </summary>
+    const int minValue = 1;
+
+    /// <summary>
     /// 나눌 아이템 
     /// </summary>
     int dividCount = 1;
@@ -47,6 +52,21 @@ public class InventoryDividUI : MonoBehaviour
         itemIcon = child.GetComponent<Image>();
         child = transform.GetChild(1);
         inputField = child.GetComponent<TMP_InputField>();
+        inputField.onValueChanged.AddListener((text) =>
+        {
+            if (int.TryParse(text, out int value))
+            {
+                DividCount = value;
+            }
+            else
+            {
+                // inputField가 정수만 받게 설정되어 있어서 -값을 넣는 것이 아니면 실행 안됨                
+                DividCount = minValue;
+            }
+
+            UpdateValue(DividCount);
+        });
+
         child = transform.GetChild(2);
         slider = child.GetComponent<Slider>();
         slider.onValueChanged.AddListener((float count) =>

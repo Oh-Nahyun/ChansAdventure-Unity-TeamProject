@@ -168,6 +168,9 @@ public class SellPanelUI : MonoBehaviour
     /// <param name="index">판매할 아이템 슬롯</param>
     public void OnShowSellCount(uint index)
     {
+        if (IsProcess)
+            return;
+
         if(targetInventory[index] == null)
         {
             Debug.Log("아이템이 존재하지 않습니다.");

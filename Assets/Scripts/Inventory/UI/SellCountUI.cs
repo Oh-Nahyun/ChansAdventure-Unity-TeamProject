@@ -20,6 +20,11 @@ public class SellCountUI : MonoBehaviour
     InventorySlot targetSlot = null; // 판매할 아이템 슬롯
 
     /// <summary>
+    /// 최소값
+    /// </summary>
+    const int minValue = 1;
+
+    /// <summary>
     /// 나눌 아이템 
     /// </summary>
     int sellCount = 1;
@@ -55,6 +60,18 @@ public class SellCountUI : MonoBehaviour
         itemIcon = child.GetComponent<Image>();
         child = transform.GetChild(1);
         inputField = child.GetComponent<TMP_InputField>();
+        inputField.onValueChanged.AddListener((text) =>
+        {
+            if(int.TryParse(text, out int value))
+            {
+                SellCount = value;
+            }
+            else
+            {
+                SellCount = minValue;
+            }
+            UpdateValue(SellCount);
+        });
         child = transform.GetChild(2);
         slider = child.GetComponent<Slider>();
         slider.onValueChanged.AddListener((float count) =>
