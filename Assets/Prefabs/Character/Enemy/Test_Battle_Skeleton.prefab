@@ -541,8 +541,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5870774990137390821}
   - component: {fileID: 7487209984856664268}
-  - component: {fileID: 3943102696053182496}
-  m_Layer: 10
+  - component: {fileID: 431404869008677363}
+  m_Layer: 11
   m_Name: BodyPoint
   m_TagString: BodyPoint
   m_Icon: {fileID: 0}
@@ -587,7 +587,7 @@ CapsuleCollider:
   m_Height: 1.3513087
   m_Direction: 0
   m_Center: {x: 0.09377605, y: 0.07055295, z: -0.0351432}
---- !u!54 &3943102696053182496
+--- !u!54 &431404869008677363
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -612,7 +612,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!1 &3013430000094954414
 GameObject:
@@ -975,8 +975,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3173572183916016508}
   - component: {fileID: 2234676719061704552}
-  - component: {fileID: 597096759437425964}
-  m_Layer: 10
+  - component: {fileID: 9070814985058891507}
+  m_Layer: 11
   m_Name: WeakPoint
   m_TagString: WeakPoint
   m_Icon: {fileID: 0}
@@ -1019,7 +1019,7 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.17575404
   m_Center: {x: -0.088903524, y: 0.019529106, z: -0.0028743437}
---- !u!54 &597096759437425964
+--- !u!54 &9070814985058891507
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1044,7 +1044,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!1 &5798847762978674193
 GameObject:
@@ -1492,7 +1492,7 @@ GameObject:
   - component: {fileID: 6177753987079059310}
   - component: {fileID: 2290657201577526858}
   m_Layer: 12
-  m_Name: SwordSkeleton
+  m_Name: Test_Battle_Skeleton
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1603,8 +1603,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waitTime: 1
   invincibleTime: 2
-  walkSpeed: 1
-  runSpeed: 3
+  walkSpeed: 0
+  runSpeed: 0
   waypoints: {fileID: -8054210421774038281, guid: 8f85199086d70e84e9c542b7138b0a44,
     type: 3}
   farSightRange: 10
@@ -1955,6 +1955,11 @@ PrefabInstance:
     - target: {fileID: 6889361315165134435, guid: 2958af7bbf05d1143950acec5e3b246b,
         type: 3}
       propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6889361315165134435, guid: 2958af7bbf05d1143950acec5e3b246b,
+        type: 3}
+      propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8586944899660401181, guid: 2958af7bbf05d1143950acec5e3b246b,

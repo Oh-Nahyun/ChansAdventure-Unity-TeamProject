@@ -355,7 +355,16 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     public Action onSpendAllStamina { get; set; }
 
     // IBattler ====================================================================================
-    public float AttackPower => throw new NotImplementedException();
+
+    /// <summary>
+    /// 플레이어의 기본 공격력
+    /// </summary>
+    public float attackPower = 10f;
+
+    /// <summary>
+    /// 공격력을 받는 프로퍼티
+    /// </summary>
+    public float AttackPower => attackPower;
 
     public float DefencePower => throw new NotImplementedException();
 

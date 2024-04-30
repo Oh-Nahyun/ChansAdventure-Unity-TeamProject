@@ -211,7 +211,7 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
     /// <summary>
     /// 살았는지 죽었는지 확인하기 위한 프로퍼티
     /// </summary>
-    public bool IsAlive => hp > 0;
+    public bool IsAlive => HP > 0;
 
     /// <summary>
     /// 이 캐릭터가 죽었을 때 실행되는 델리게이트
@@ -510,7 +510,9 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
             float final = Mathf.Max(0, damage - DefencePower);  // 최종 데미지 계산해서 적용
             HP -= final;
             onHit?.Invoke(Mathf.RoundToInt(final));
+
             StartCoroutine(InvinvibleMode());
+            
         }
     }
 
@@ -619,6 +621,8 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
         
     }
 
+    [Header("invinvible Time")]
+    public float timeElapsed = 0.0f;
     /// <summary>
     /// 무적용 코루틴
     /// </summary>
@@ -629,7 +633,8 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
         weakPoint.gameObject.layer = LayerMask.NameToLayer("Invincible"); // 약점 오브젝트의 레이어를 Invincible로 바꾸기
         bodyPoint.gameObject.layer = LayerMask.NameToLayer("Invincible"); // 몸체 오브젝트의 레이어를 Invincible로 바꾸기
 
-        float timeElapsed = 0.0f;
+        //float timeElapsed = 0.0f;
+        timeElapsed = 0.0f;
         while (timeElapsed < invincibleTime) // Invincible 무적시간 동안만
         {
             timeElapsed += Time.deltaTime;
