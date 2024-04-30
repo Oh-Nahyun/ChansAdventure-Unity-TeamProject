@@ -1,27 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using TMPro;
 using UnityEngine;
 
 public class QuestMessage : MonoBehaviour
 {
-    /// <summary>
-    /// 퀘스트 이름
-    /// </summary>
-    TextMeshProUGUI questName;
-
-    TextMeshProUGUI QuestName => questName;
-
-    CanvasGroup questMessage;
-
-    CanvasGroup completeMessage;
-
-    public float alphaChangeSpeed = 5.0f;
-    /// <summary>
-    /// 퀘스트 메시지가 남아있는 시간
-    /// </summary>
-    float delayTime = 5.0f;
-
+    private TextMeshProUGUI questName;
+    private CanvasGroup questMessage;
+    private CanvasGroup completeMessage;
+    private float alphaChangeSpeed = 2.0f;
+    public float delayTime = 10.0f;
 
     private void Awake()
     {
@@ -35,39 +24,28 @@ public class QuestMessage : MonoBehaviour
     private void Start()
     {
         questMessage.alpha = 0;
+        completeMessage.alpha = 0;
+        completeMessage.gameObject.SetActive(false);
     }
 
-
-
-    /// <summary>
-    /// 퀘스트가 시작, 클리어시 표시
-    /// </summary>
-    /// <param name="text">퀘스트 이름</param>
-    /// <param name="Complete">true면 퀘스트 클리어</param>
-    public void onQuestMessage(string text, bool Complete)
+    public void OnQuestMessage(string text, bool complete)
     {
+        StopAllCoroutines();
         StartCoroutine(SetOnAlphaChange());
         questName.text = text;
-        if (Complete)
-        {
-            completeMessage.alpha = 1;
-        }
-        else
-        {
-            completeMessage.alpha = 0;
-        }
+        completeMessage.gameObject.SetActive(complete);
         StartCoroutine(DelayTime(delayTime));
-        StartCoroutine(SetOffAlphaChange());
     }
 
     IEnumerator SetOnAlphaChange()
     {
-        while (questMessage.alpha > 0.0f)
+        while (questMessage.alpha < 1.0f)
         {
-            questMessage.alpha -= Time.deltaTime * alphaChangeSpeed;
+            questMessage.alpha += Time.deltaTime * alphaChangeSpeed;
+            completeMessage.alpha += Time.deltaTime * alphaChangeSpeed;
             yield return null;
         }
-        gameObject.SetActive(false);
+
     }
 
     IEnumerator SetOffAlphaChange()
@@ -75,14 +53,16 @@ public class QuestMessage : MonoBehaviour
         while (questMessage.alpha > 0.0f)
         {
             questMessage.alpha -= Time.deltaTime * alphaChangeSpeed;
+            completeMessage.alpha -= Time.deltaTime * alphaChangeSpeed;
             yield return null;
         }
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
     }
 
     IEnumerator DelayTime(float delayTime)
     {
         yield return new WaitForSeconds(delayTime);
+        StartCoroutine(SetOffAlphaChange());
     }
-
 }
+

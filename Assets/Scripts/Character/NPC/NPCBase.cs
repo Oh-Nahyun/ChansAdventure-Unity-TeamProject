@@ -7,6 +7,7 @@ using UnityEngine;
 public class NPCBase : MonoBehaviour
 {
     protected TextBoxManager textBoxManager;
+    protected QuestManager questManager;
     TextMeshPro textViweName;
     protected readonly int Talk_Hash = Animator.StringToHash("IsTalk");
 
@@ -25,6 +26,7 @@ public class NPCBase : MonoBehaviour
         name = nameNPC;
         textBoxManager = FindObjectOfType<TextBoxManager>();
         textViweName = GetComponentInChildren<TextMeshPro>(true);
+        questManager = FindObjectOfType<QuestManager>();
     }
 
     protected virtual void Start()

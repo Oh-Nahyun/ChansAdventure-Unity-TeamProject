@@ -5,23 +5,28 @@ using UnityEngine;
 
 public class QuestManager : MonoBehaviour
 {
-    public int questId;
+    private Dictionary<int, QuestData> questList = new Dictionary<int, QuestData>();
 
-    Dictionary<int, QuestData> questList;
+    private QuestMessage questMessage;
 
     private void Awake()
     {
-        questList = new Dictionary<int, QuestData>();
-        GenerteData();
+        questMessage = FindObjectOfType<QuestMessage>();
+        GenerateData();
     }
 
-    private void GenerteData()
+    private void GenerateData()
     {
-        //questList.Add(10, new QuestData("퀘스트 이름", new int[] {1000, 2000}));  //퀘스트 ID / 퀘스트 이름 / 관련 NPC ID 입력
+        questList.Add(0, new QuestData(QuestData.QuestType.None, "퀘스트 이름", "퀘스트 내용", "퀘스트 목표"));
+        questList.Add(10, new QuestData(QuestData.QuestType.Hunt, "퀘스트 사냥", "퀘스트 내용 사냥", "퀘스트 목표 10마리"));
     }
 
-    public int GetQusetTalkIndex(int id)
+    public void GetQuestTalkIndex(int id, bool complete)
     {
-        return questList.Count;
+        if (questList.ContainsKey(id))
+        {
+            string questName = questList[id].questName;
+            questMessage.OnQuestMessage(questName, complete);
+        }
     }
 }

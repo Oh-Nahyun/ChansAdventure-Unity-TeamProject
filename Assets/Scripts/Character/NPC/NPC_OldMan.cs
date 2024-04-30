@@ -80,6 +80,8 @@ public class NPC_OldMan : NPCBase
                     isGesture = false;
                     break;
                 case 1011:
+                    questManager.GetQuestTalkIndex(10, false);
+                    break;
                 case 1012:
                 case 1013:
                     // 선택지를 보여줄 때에는 서 있고 제스처 애니메이션은 비활성화.
