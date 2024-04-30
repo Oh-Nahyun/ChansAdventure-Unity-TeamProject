@@ -9,6 +9,8 @@ public class Test_GetItemToPlayer : TestBase
     Player player;
     SphereCollider GetObjectRange;
 
+    Transform target;
+
     public float range = 5f;
 
     private void Start()
@@ -17,6 +19,8 @@ public class Test_GetItemToPlayer : TestBase
         GetObjectRange = GetComponent<SphereCollider>();
         GetObjectRange.isTrigger = true;
         GetObjectRange.radius = range;
+
+        target = transform.GetChild(0);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -38,7 +42,7 @@ public class Test_GetItemToPlayer : TestBase
 
     protected override void OnTest2(InputAction.CallbackContext context)
     {
-
+        Factory.Instance.GetEnemy(target.transform.position);
     }
 
 
