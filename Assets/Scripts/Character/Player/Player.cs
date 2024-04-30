@@ -901,7 +901,6 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         animator.SetTrigger(SpendAllStaminaHash);
     }
 
-    #region additional Method
     #region Etc Method
 
     void OnMapShow()
