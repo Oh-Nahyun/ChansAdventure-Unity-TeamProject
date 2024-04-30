@@ -24,6 +24,7 @@ public class Arrow : RecycleObject
     Collider arrowCollider;
     Rigidbody rigid;
     //ParticleSystem ps;
+    Player player;
 
     private void Awake()
     {
@@ -31,6 +32,7 @@ public class Arrow : RecycleObject
         arrowCollider = GetComponent<Collider>();
         rigid = GetComponent<Rigidbody>();
         //ps = GetComponent<ParticleSystem>();
+        player = GameManager.Instance.Player;   // 플레이어 찾기
 
         arrowRange = arrowFirePoint.arrowFireRange;
     }
@@ -49,13 +51,29 @@ public class Arrow : RecycleObject
         StartCoroutine(LifeOver(5.0f)); // 충돌하고 5초 뒤에 사라짐
     }
 
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.CompareTag("Enemy"))
-    //    {
-    //        // 적에게 화살을 맞췄을 경우
-    //    }
-    //}
+    // 플레이어가 화살로 적을 공격했을 때 ---------------------------------------------------------------------------
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("BodyPoint"))
+        {
+            // 몸에 화살을 맞췄을 경우
+            IBattler target = other.GetComponent<IBattler>();
+            if (target != null)
+            {
+                player.Attack(target, false);
+            }
+        }
+        else if (other.CompareTag("WeakPoint"))
+        {
+            // 적에게 화살을 맞췄을 경우
+            IBattler target = other.GetComponent<IBattler>();
+            if (target != null)
+            {
+                player.Attack(target, true);
+            }
+        }
+    }
+    // --------------------------------------------------------------------------------------------------------------
 
     /// <summary>
     /// 화살의 Collider를 켜는 함수 (Animation 설정용)

@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class PlayerSkillRelatedAction : MonoBehaviour, ILifter
 {
-
     /// <summary>
     /// 플레이어 스킬사용 및 오브젝트 관련 손의 위치 추적용 트랜스폼 (플레이어와 동일한 회전값을 가짐 = 정면이 동일)
     /// </summary>
@@ -36,28 +35,44 @@ public class PlayerSkillRelatedAction : MonoBehaviour, ILifter
         {
             if (selectSkill != value)
             {
-                switch (selectSkill)
+                if (reaction != null && reaction.IsSkill)     // 리모컨폭탄류의 스킬을 들고 있는 경우
                 {
-                    case SkillName.RemoteBomb:
-                    case SkillName.RemoteBomb_Cube:
-                    case SkillName.IceMaker:
-                    case SkillName.TimeLock:
-                        if (reaction != null && reaction.transform.CompareTag("Skill"))     // 리모컨폭탄류의 스킬을 들고 있는 경우
-                        {
+
+                    switch (selectSkill)
+                    {
+                        case SkillName.RemoteBomb:
+                        case SkillName.RemoteBomb_Cube:
                             Drop();   // 땅에 버리기
-                        }
-                        break;
-                    case SkillName.MagnetCatch: // 마그넷캐치가 활성화 된 상태면 스킬 변경 불가능
-                        value = selectSkill;
-                        break;
+                            break;
+                        case SkillName.IceMaker:
+                        case SkillName.TimeLock:
+                            Skill skill = reaction as Skill;
+                            skill?.OffSkill();
+                            //Drop();
+                            break;
+                        case SkillName.MagnetCatch: // 마그넷캐치가 활성화 된 상태면 스킬 변경 불가능
+                            MagnetCatch magnet = reaction as MagnetCatch;
+                            if (magnet != null && magnet.IsActivate)
+                            {
+                                value = selectSkill;
+                            }
+                            else if (magnet != null)
+                            {
+                                magnet.OffSkill();
+                                Drop();
+                            }
+                            break;
+                    }
                 }
                 selectSkill = value;            // 현재 스킬 설정
                 Debug.Log($"스킬 [{selectSkill}]로 설정");
-                //
-                //skillController.onSkillSelect?.Invoke(selectSkill);         // 현재 선택된 스킬을 알림
+
+                onSkillChange?.Invoke(selectSkill);         // 현재 선택된 스킬을 알림
             }
         }
     }
+
+    public Action<SkillName> onSkillChange;
 
     /// <summary>
     /// 물건을 집을 수 있는 범위(높이)
@@ -82,10 +97,10 @@ public class PlayerSkillRelatedAction : MonoBehaviour, ILifter
     /// <summary>
     /// 오브젝트를 집었는 지 확인용 프로퍼티
     /// </summary>
-    bool IsPickUp
+    public bool IsPickUp
     {
         get => isPickUp;
-        set
+        private set
         {
             if (isPickUp != value)  // 다른 값일 때만 가능 = 맨손일때만 들 수 있고 들고 있을 때만 내릴 수 있음
             {
@@ -129,7 +144,7 @@ public class PlayerSkillRelatedAction : MonoBehaviour, ILifter
         skillController.onThrow += Throw;                 // 던지기
         skillController.onCancel += Drop;                // 취소
         skillController.onSkillActive += OnSkillAction;
-
+        skillController.onSkillChange += (skillName) => SelectSkill = skillName;
 
         HandRoot handRoot = transform.GetComponentInChildren<HandRoot>();       // 플레이어 손 위치를 찾기 귀찮아서 스크립트 넣어서 찾음
         handRootTracker = transform.GetComponentInChildren<HandRootTracker>();  // 플레이어 손 위치를 추적하는 트랜스폼 => 집어든 오브젝트를 자식으로 놨을 때 정면을 플레이어의 정면으로 맞추기 위해
@@ -142,6 +157,7 @@ public class PlayerSkillRelatedAction : MonoBehaviour, ILifter
 
     /// <summary>
     /// 들 수 있는 오브젝트 파악하는 메서드
+    /// (상호작용키 실행시 행동)
     /// </summary>
     void PickUpObjectDetect()
     {
@@ -150,14 +166,14 @@ public class PlayerSkillRelatedAction : MonoBehaviour, ILifter
             Vector3 heightPoint = pickUpRoot.position;
             heightPoint.y += pickUpHeightRange;
             Collider[] hit = Physics.OverlapCapsule(pickUpRoot.position, heightPoint, liftRadius);  // 픽업 범위 파악해서 체크한 뒤
-            
+
             for (int i = 0; i < hit.Length; i++)        // 범위 안의 모든 물체 중
             {
                 ReactionObject detecedObj = hit[i].transform.GetComponent<ReactionObject>();
                 if (detecedObj != null)   // 반응형 오브젝트가 있고
                 {
                     detecedObj.TryPickUp(transform);    // 물체를 들어봤을 때
-                    if(reaction != null)    // 물체가 들리면
+                    if (reaction != null)    // 물체가 들리면
                     {
                         break;              // 첫번째로 감지된 물체를 들고 종료
                     }
@@ -194,7 +210,7 @@ public class PlayerSkillRelatedAction : MonoBehaviour, ILifter
     /// </summary>
     void Throw()
     {
-        if (IsPickUp && reaction != null)
+        if (IsPickUp && reaction != null && reaction.IsThrowable)
         {
             animator.SetTrigger(Hash_Throw);
             reaction.TryThrow(throwPower, transform);
@@ -205,7 +221,6 @@ public class PlayerSkillRelatedAction : MonoBehaviour, ILifter
 
     /// <summary>
     /// 물체 들기
-    /// (상호작용키 실행시 행동)
     /// </summary>
     public void PickUp(ReactionObject pickUpObject)
     {
@@ -226,12 +241,9 @@ public class PlayerSkillRelatedAction : MonoBehaviour, ILifter
     {
         if (reaction != null)
         {
-            if (!(reaction is Skill))
-            {
-                reaction.TryDrop();
-            }
-             IsPickUp = false;
-             reaction = null;
+            reaction.TryDrop();
+            IsPickUp = false;
+            reaction = null;
         }
 
     }

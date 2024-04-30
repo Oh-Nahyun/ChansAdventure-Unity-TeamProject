@@ -5,20 +5,22 @@ using UnityEngine;
 public class ItemPool : ObjectPool<ItemDataObject>
 {
     /// <summary>
-    /// ItemPool¿¡¼­ ¾ÆÀÌÅÛÀ» »ı¼ºÇÏ´Â ÇÔ¼ö
+    /// ItemPoolå ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™å ì‹¹ëŒì˜™ å ìŒ‰ì‡½ì˜™
     /// </summary>
-    /// <param name="slot">»ı¼ºÇÒ ¾ÆÀÌÅÛÀÇ ½½·Ô</param>
-    /// <param name="position">»ı¼ºÇÒ À§Ä¡</param>
+    /// <param name="slot">å ì™ì˜™å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™</param>
+    /// <param name="position">å ì™ì˜™å ì™ì˜™å ì™ì˜™ å ì™ì˜™ì¹˜</param>
     /// <returns></returns>
-    public GameObject GetItemObject(InventorySlot slot, Vector3? position = null)
+    public GameObject GetItemObject(ItemData itemData, uint count = 1, Vector3? position = null)
     {
-        GameObject itemObj = slot.SlotItemData.ItemPrefab;                      // ÇÁ¸®ÆÕ ¾ÆÀÌÅÛ »ı¼º
+        GameObject itemObj = itemData.ItemPrefab;                      // í”„ë¦¬íŒ¹ ì•„ì´í…œ ìƒì„±
 
-        ItemDataObject parentObj = GetObject(position);                         // Ç®¿¡¼­ ¾ÆÀÌÅÛ ²¨³»±â
-        parentObj.GetComponent<ItemDataObject>().SetData(slot.SlotItemData);    // ²¨³½ ¾ÆÀÌÅÛÀÇ ¾ÆÀÌÅÛ µ¥ÀÌÅÍ ¼³Á¤
+        ItemDataObject parentObj = GetObject(position);                         // í’€ì—ì„œ ì•„ì´í…œ êº¼ë‚´ê¸°
+        parentObj.GetComponent<ItemDataObject>().SetData(itemData);    // êº¼ë‚¸ ì•„ì´í…œì˜ ì•„ì´í…œ ë°ì´í„° ì„¤ì •
         
-        Instantiate(itemObj, parentObj.transform);                              // ¼³Á¤µÈ ¾ÆÀÌÅÛ ÇÁ¸®ÆÕ »ı¼º
-
-        return parentObj.gameObject;                                            // FactoryÀÇ ¿ÀºêÁ§Æ® ¹İÈ¯ ( ÇÁ¸®ÆÕÀº ÀÚ½Ä 0¹øÂ° )
+        for(int i = 0; i < count; i++)
+        {
+            Instantiate(itemObj, parentObj.transform);                              // ì„¤ì •ëœ ì•„ì´í…œ í”„ë¦¬íŒ¹ ìƒì„±
+        }
+        return parentObj.gameObject;                                            // Factoryì˜ ì˜¤ë¸Œì íŠ¸ ë°˜í™˜ ( í”„ë¦¬íŒ¹ì€ ìì‹ 0ë²ˆì§¸ )
     }
 }

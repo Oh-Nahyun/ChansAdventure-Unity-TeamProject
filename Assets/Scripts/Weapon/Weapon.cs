@@ -24,12 +24,12 @@ public class Weapon : MonoBehaviour
     /// <summary>
     /// [무기1] 칼
     /// </summary>
-    Transform swordWeapon;
+    public Transform swordWeapon;
 
     /// <summary>
     /// [무기2-1] 활
     /// </summary>
-    Transform bowWeapon;
+    public Transform bowWeapon;
 
     /// <summary>
     /// [무기2-2] 화살
@@ -198,7 +198,6 @@ public class Weapon : MonoBehaviour
     /// <summary>
     /// 무기 모드에 따라 보여줄 무기이 변경되는 함수
     /// </summary>
-    /// <param name="mode"></param>
     private void ChangeWeapon(WeaponMode mode)
     {
         switch (mode)

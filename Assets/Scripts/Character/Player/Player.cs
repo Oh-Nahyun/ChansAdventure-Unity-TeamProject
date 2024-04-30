@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Windows;
 
-public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina
+public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
 {
     #region additional Classes
     PlayerController controller;
@@ -17,6 +17,16 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina
 
     Animator animator;
     CharacterController characterController;
+
+    /// <summary>
+    /// 스킬 관련 클래스
+    /// </summary>
+    PlayerSkillRelatedAction skillRelatedAction;
+
+    /// <summary>
+    /// 스킬 관련 클래스 접근을 위한 프로퍼티
+    /// </summary>
+    public PlayerSkillRelatedAction SkillRelatedAction => skillRelatedAction;
     #endregion
 
     // 변수 ==========================================================================================================================
@@ -96,9 +106,14 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina
     public float turnSpeed = 10.0f;
 
     /// <summary>
-    /// 중력
+    /// 중력값 9.8f 
     /// </summary>
     const float gravity = 9.8f;
+
+    /// <summary>
+    /// 플레이어의 움직임 Velocity 값 / 04.15
+    /// </summary>
+    public Vector3 playerVelocity;
 
     /// <summary>
     /// 점프 시간 제한
@@ -106,7 +121,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina
     const float jumpTimeLimit = 1.0f;
 
     /// <summary>
-    /// 점프 시간
+    /// 점프 시간 ( 애니메이션 점프 체공 시간 ) / 04.15 
     /// </summary>
     float jumpTime = 0.0f;
 
@@ -128,7 +143,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina
     /// <summary>
     /// 점프 중인지 아닌지 확인용 변수
     /// </summary>
-    bool isJumping = false;
+    public bool isJumping = false;
 
     /// <summary>
     /// 점프가 가능한지 확인하는 프로퍼티 (점프중이 아닐 때)
@@ -178,12 +193,34 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina
     /// <summary>
     /// 주변 시야 카메라
     /// </summary>
-    public GameObject cameraRoot;
+    GameObject cameraRoot;
+
+    /// <summary>
+    /// cameraRoot 게임 오브젝트를 접근하기 위한 프로퍼티
+    /// </summary>
+    public GameObject CameraRoot
+    {
+        get 
+        {
+            if(cameraRoot == null)
+            {
+                cameraRoot = FindAnyObjectByType<PlayerLookVCam>().gameObject;
+            }
+
+            return cameraRoot;
+        } 
+    }
+
 
     /// <summary>
     /// 주변 시야 카메라 회전 정도
     /// </summary>
     public float followCamRotatePower = 5.0f;
+
+    /// <summary>
+    /// 카메라의 수직회전을 하는지 여부 (마그넷캐치에서 사용중)
+    /// </summary>
+    bool isCameraRotateVertical = true;
 
     // 애니메이터용 해시값
     //readonly int IsMoveBackHash = Animator.StringToHash("IsMoveBack");
@@ -317,12 +354,27 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina
     /// </summary>
     public Action onSpendAllStamina { get; set; }
 
-    // ===================================================================================================
+    // IBattler ====================================================================================
+    public float AttackPower => throw new NotImplementedException();
+
+    public float DefencePower => throw new NotImplementedException();
+
+    public Action<int> onHit { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
     /// <summary>
     /// 해당 오브젝트의 인벤토리
     /// </summary>
     Inventory inventory;
+
+    /// <summary>
+    /// 오브젝트 인벤토리 접근을 위한 프로퍼티
+    /// </summary>
+    public Inventory PlayerInventory => inventory;
+
+    /// <summary>
+    /// 인벤토리가 열렸는지 확인하는 변수
+    /// </summary>
+    bool isInventoryOpen;
 
     #endregion
 
@@ -335,11 +387,22 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina
 
     #endregion
 
+    #region Etc Values
+    /// <summary>
+    /// LargeMap을 열었는지 확인하는 변수
+    /// </summary>
+    bool isOpenedLargeMap = false;
+
+    public bool IsOpenedLargeMap => isOpenedLargeMap;
+
+    #endregion
+
     // 함수 ==========================================================================================================================
 
     #region Player LifeCycle Method
     void Awake()
     {
+        // initialize
         controller = GetComponent<PlayerController>();
         characterController = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
@@ -348,6 +411,9 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina
         interaction = GetComponent<Interaction>();
 
         isJumping = true;
+        skillRelatedAction = GetComponent<PlayerSkillRelatedAction>();
+
+        cameraRoot = FindAnyObjectByType<PlayerLookVCam>().gameObject;
     }
 
     void Start()
@@ -364,29 +430,30 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina
 
         // controller
         controller.onMove += OnMove;
-        controller.onMoveModeChagne += OnMoveModeChange;
+        controller.onMoveModeChange += OnMoveModeChange;
         controller.onLook += OnLookAround;
         controller.onSlide += OnSlide;
         controller.onJump += OnJump;
-        controller.onInteraction = OnGetItem;
+        controller.onInteraction += OnGetItem;
+        controller.onInventoryOpen += OnInventoryShow;
+        controller.onMapOpen += OnMapShow;
 
         // inventory
-        //inventory = new Inventory(this.gameObject, 16);
-        //GameManager.Instance.ItemDataManager.InventoryUI.InitializeInventoryUI(inventory); // 인벤 UI 초기화
-        //EquipPart = new InventorySlot[partCount]; // EquipPart 배열 초기화
-#if UNITY_EDITOR
-        //Test_AddItem();
-#endif
+        inventory = new Inventory(this.gameObject, 16);
+        GameManager.Instance.ItemDataManager.InventoryUI.InitializeInventoryUI(inventory); // 인벤 UI 초기화
+        EquipPart = new InventorySlot[partCount]; // EquipPart 배열 초기화
+
+        Test_AddItem();
     }
 
-    void Update()
+    private void Update()
     {        
         LookRotation();
         Jump();
         Slide();
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         characterController.Move(Time.fixedDeltaTime * currentSpeed * inputDirection);      // 캐릭터의 움직임
 
@@ -401,7 +468,9 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * turnSpeed); // 목표 회전으로 변경
         }
     }
+
     #endregion
+
     #region Player Movement Method
     /// <summary>
     /// Get Player input Values
@@ -503,7 +572,11 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina
             return;
 
         cameraRoot.transform.localRotation *= Quaternion.AngleAxis(lookVector.x * followCamRotatePower, Vector3.up);
-        cameraRoot.transform.localRotation *= Quaternion.AngleAxis(-lookVector.y * followCamRotatePower, Vector3.right);
+
+        if (isCameraRotateVertical)
+        {
+            cameraRoot.transform.localRotation *= Quaternion.AngleAxis(-lookVector.y * followCamRotatePower, Vector3.right);
+        }
 
         var angles = cameraRoot.transform.localEulerAngles;
         angles.z = 0;
@@ -520,6 +593,14 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina
 
         cameraRoot.transform.localEulerAngles = angles;
         cameraRoot.transform.localEulerAngles = new Vector3(angles.x, angles.y, 0);
+    }
+
+    public void SetMagnetCamera(bool isRotateVertical, float angle)
+    {
+        isCameraRotateVertical = isRotateVertical;
+        Vector3 rotate = cameraRoot.transform.localRotation.eulerAngles;
+        rotate.x = angle;
+        cameraRoot.transform.localRotation = Quaternion.Euler(rotate);
     }
 
     /// <summary>
@@ -557,7 +638,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina
             jumpVelocity = 0.0f;             // 점프 속도 초기화
             playerJump.y = jumpVelocity;
         }
-
+        
         isJumping = true;
         characterController.Move(playerJump * Time.fixedDeltaTime); // 점프 실행
     }
@@ -651,6 +732,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina
     }
 
     #endregion 
+
     #region Player Inventory Method
 
     /// <summary>
@@ -707,7 +789,31 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina
         Destroy(partPosition[(int)part].GetChild(0).gameObject);    // 아이템 오브젝트 파괴
     }
 
+    /// <summary>
+    /// 인벤토리 키 ( I Key )를 눌렀을 때 실행되는 함수
+    /// </summary>
+    private void OnInventoryShow()
+    {
+        if (IsOpenedLargeMap)
+            return;
+        else
+        {
+            isInventoryOpen = GameManager.Instance.ItemDataManager.InventoryUI.ShowInventory();
+            GameManager.Instance.ItemDataManager.CharaterRenderCameraPoint.transform.eulerAngles = new Vector3(0, 180f, 0); // RenderTexture 플레이어 위치 초기화
+
+            if(isInventoryOpen)
+            {
+                GameManager.Instance.MapManager.CloseMiniMapUI();
+            }
+            else
+            {
+                GameManager.Instance.MapManager.OpenMiniMapUI();
+            }
+        }        
+    }
+
     #endregion
+
     #region Player IHealth Method
     /// <summary>
     /// 적으로부터 공격을 받으면 실행되는 함수
@@ -796,6 +902,27 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina
     }
 
     #region additional Method
+    #region Etc Method
+
+    void OnMapShow()
+    {
+        if(isInventoryOpen)
+            return;
+
+        // 임시 온오프
+        if (isOpenedLargeMap == false)
+        {
+            GameManager.Instance.MapManager.OpenMapUI();
+            isOpenedLargeMap = true;
+        }
+        else if (isOpenedLargeMap == true)
+        {
+            GameManager.Instance.MapManager.SetCameraPosition(transform.position);
+            GameManager.Instance.MapManager.CloseMapUI();
+            isOpenedLargeMap = false;
+        }
+    }
+
     /// <summary>
     /// 캐릭터의 Collider를 켜는 함수 (Animation 설정용)
     /// </summary>
@@ -825,5 +952,25 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina
         inventory.AddSlotItem((uint)ItemCode.HP_portion, 3);
         inventory.AddSlotItem((uint)ItemCode.Coin);
     }
+
+    //IBatter 인터페이스 상속 --------------------------------------------------------------------------------------------------
+    public float weakPointAttack = 1.2f;
+    public void Attack(IBattler target, bool isWeakPoint = false)
+    {
+        if (isWeakPoint)
+        {
+            target.Defence(AttackPower * weakPointAttack);
+        }
+        else
+        {
+            target.Defence(AttackPower);
+        }
+    }
+
+    public void Defence(float damage)
+    {
+        
+    }
+    //--------------------------------------------------------------------------------------------------
 #endif
 }

@@ -134,6 +134,15 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Open_Map"",
+                    ""type"": ""Button"",
+                    ""id"": ""737a8fdb-fcb5-448e-b8b2-903601f994c1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -312,6 +321,17 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Get_Item"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5fabfa7f-7294-4607-819f-d3543147a784"",
+                    ""path"": ""<Keyboard>/m"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KM"",
+                    ""action"": ""Open_Map"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -476,6 +496,24 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SpecialKey1"",
+                    ""type"": ""Button"",
+                    ""id"": ""9dd2a7b1-b748-4608-b262-a3deda748aba"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SpecialKey2"",
+                    ""type"": ""Button"",
+                    ""id"": ""ac4efe34-db19-4f5f-9121-7435f70c266b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -588,6 +626,56 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Cancel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""26cb31fe-87e3-47a3-9dc4-d1f6c3f105f8"",
+                    ""path"": ""<Keyboard>/rightBracket"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SpecialKey2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fb690cff-cbeb-4055-983b-685533afbec6"",
+                    ""path"": ""<Keyboard>/leftBracket"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SpecialKey1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""UI"",
+            ""id"": ""71e02c91-b80c-449b-90f8-2a7958ff69f3"",
+            ""actions"": [
+                {
+                    ""name"": ""Click"",
+                    ""type"": ""Button"",
+                    ""id"": ""19d9d04b-c567-404e-9e68-239cf225187e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""2fceb6b1-70d9-43e5-9b2f-2e4ea1c63907"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -625,6 +713,7 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         m_Player_ActiveSkillMode = m_Player.FindAction("ActiveSkillMode", throwIfNotFound: true);
         m_Player_Open_Inventory = m_Player.FindAction("Open_Inventory", throwIfNotFound: true);
         m_Player_Get_Item = m_Player.FindAction("Get_Item", throwIfNotFound: true);
+        m_Player_Open_Map = m_Player.FindAction("Open_Map", throwIfNotFound: true);
         // Weapon
         m_Weapon = asset.FindActionMap("Weapon", throwIfNotFound: true);
         m_Weapon_Attack = m_Weapon.FindAction("Attack", throwIfNotFound: true);
@@ -642,6 +731,11 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         m_Skill_OnSkill = m_Skill.FindAction("OnSkill", throwIfNotFound: true);
         m_Skill_Throw = m_Skill.FindAction("Throw", throwIfNotFound: true);
         m_Skill_Cancel = m_Skill.FindAction("Cancel", throwIfNotFound: true);
+        m_Skill_SpecialKey1 = m_Skill.FindAction("SpecialKey1", throwIfNotFound: true);
+        m_Skill_SpecialKey2 = m_Skill.FindAction("SpecialKey2", throwIfNotFound: true);
+        // UI
+        m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
+        m_UI_Click = m_UI.FindAction("Click", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -715,6 +809,7 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_ActiveSkillMode;
     private readonly InputAction m_Player_Open_Inventory;
     private readonly InputAction m_Player_Get_Item;
+    private readonly InputAction m_Player_Open_Map;
     public struct PlayerActions
     {
         private @PlayerinputActions m_Wrapper;
@@ -731,6 +826,7 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         public InputAction @ActiveSkillMode => m_Wrapper.m_Player_ActiveSkillMode;
         public InputAction @Open_Inventory => m_Wrapper.m_Player_Open_Inventory;
         public InputAction @Get_Item => m_Wrapper.m_Player_Get_Item;
+        public InputAction @Open_Map => m_Wrapper.m_Player_Open_Map;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -776,6 +872,9 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
             @Get_Item.started += instance.OnGet_Item;
             @Get_Item.performed += instance.OnGet_Item;
             @Get_Item.canceled += instance.OnGet_Item;
+            @Open_Map.started += instance.OnOpen_Map;
+            @Open_Map.performed += instance.OnOpen_Map;
+            @Open_Map.canceled += instance.OnOpen_Map;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -816,6 +915,9 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
             @Get_Item.started -= instance.OnGet_Item;
             @Get_Item.performed -= instance.OnGet_Item;
             @Get_Item.canceled -= instance.OnGet_Item;
+            @Open_Map.started -= instance.OnOpen_Map;
+            @Open_Map.performed -= instance.OnOpen_Map;
+            @Open_Map.canceled -= instance.OnOpen_Map;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -909,6 +1011,8 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Skill_OnSkill;
     private readonly InputAction m_Skill_Throw;
     private readonly InputAction m_Skill_Cancel;
+    private readonly InputAction m_Skill_SpecialKey1;
+    private readonly InputAction m_Skill_SpecialKey2;
     public struct SkillActions
     {
         private @PlayerinputActions m_Wrapper;
@@ -923,6 +1027,8 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         public InputAction @OnSkill => m_Wrapper.m_Skill_OnSkill;
         public InputAction @Throw => m_Wrapper.m_Skill_Throw;
         public InputAction @Cancel => m_Wrapper.m_Skill_Cancel;
+        public InputAction @SpecialKey1 => m_Wrapper.m_Skill_SpecialKey1;
+        public InputAction @SpecialKey2 => m_Wrapper.m_Skill_SpecialKey2;
         public InputActionMap Get() { return m_Wrapper.m_Skill; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -962,6 +1068,12 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
             @Cancel.started += instance.OnCancel;
             @Cancel.performed += instance.OnCancel;
             @Cancel.canceled += instance.OnCancel;
+            @SpecialKey1.started += instance.OnSpecialKey1;
+            @SpecialKey1.performed += instance.OnSpecialKey1;
+            @SpecialKey1.canceled += instance.OnSpecialKey1;
+            @SpecialKey2.started += instance.OnSpecialKey2;
+            @SpecialKey2.performed += instance.OnSpecialKey2;
+            @SpecialKey2.canceled += instance.OnSpecialKey2;
         }
 
         private void UnregisterCallbacks(ISkillActions instance)
@@ -996,6 +1108,12 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
             @Cancel.started -= instance.OnCancel;
             @Cancel.performed -= instance.OnCancel;
             @Cancel.canceled -= instance.OnCancel;
+            @SpecialKey1.started -= instance.OnSpecialKey1;
+            @SpecialKey1.performed -= instance.OnSpecialKey1;
+            @SpecialKey1.canceled -= instance.OnSpecialKey1;
+            @SpecialKey2.started -= instance.OnSpecialKey2;
+            @SpecialKey2.performed -= instance.OnSpecialKey2;
+            @SpecialKey2.canceled -= instance.OnSpecialKey2;
         }
 
         public void RemoveCallbacks(ISkillActions instance)
@@ -1013,6 +1131,52 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         }
     }
     public SkillActions @Skill => new SkillActions(this);
+
+    // UI
+    private readonly InputActionMap m_UI;
+    private List<IUIActions> m_UIActionsCallbackInterfaces = new List<IUIActions>();
+    private readonly InputAction m_UI_Click;
+    public struct UIActions
+    {
+        private @PlayerinputActions m_Wrapper;
+        public UIActions(@PlayerinputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Click => m_Wrapper.m_UI_Click;
+        public InputActionMap Get() { return m_Wrapper.m_UI; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(UIActions set) { return set.Get(); }
+        public void AddCallbacks(IUIActions instance)
+        {
+            if (instance == null || m_Wrapper.m_UIActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_UIActionsCallbackInterfaces.Add(instance);
+            @Click.started += instance.OnClick;
+            @Click.performed += instance.OnClick;
+            @Click.canceled += instance.OnClick;
+        }
+
+        private void UnregisterCallbacks(IUIActions instance)
+        {
+            @Click.started -= instance.OnClick;
+            @Click.performed -= instance.OnClick;
+            @Click.canceled -= instance.OnClick;
+        }
+
+        public void RemoveCallbacks(IUIActions instance)
+        {
+            if (m_Wrapper.m_UIActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IUIActions instance)
+        {
+            foreach (var item in m_Wrapper.m_UIActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_UIActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public UIActions @UI => new UIActions(this);
     private int m_KMSchemeIndex = -1;
     public InputControlScheme KMScheme
     {
@@ -1036,6 +1200,7 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         void OnActiveSkillMode(InputAction.CallbackContext context);
         void OnOpen_Inventory(InputAction.CallbackContext context);
         void OnGet_Item(InputAction.CallbackContext context);
+        void OnOpen_Map(InputAction.CallbackContext context);
     }
     public interface IWeaponActions
     {
@@ -1055,5 +1220,11 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         void OnOnSkill(InputAction.CallbackContext context);
         void OnThrow(InputAction.CallbackContext context);
         void OnCancel(InputAction.CallbackContext context);
+        void OnSpecialKey1(InputAction.CallbackContext context);
+        void OnSpecialKey2(InputAction.CallbackContext context);
+    }
+    public interface IUIActions
+    {
+        void OnClick(InputAction.CallbackContext context);
     }
 }

@@ -3,22 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Àåºñ¸¦ ÀåÂøÇÒ ¼ö ÀÖ´Â Ä³¸¯ÅÍ°¡ °¡Áö´Â ÀÎÅÍÆäÀÌ½º
+/// ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö´ï¿½ Ä³ï¿½ï¿½ï¿½Í°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì½ï¿½
 /// </summary>
 public interface IEquipTarget
 {
     /// <summary>
-    /// Ä³¸¯ÅÍ°¡ ÀåÂøÇÑ ÀåºñµéÀ» Á¢±ÙÇÏ±â À§ÇÑ ÇÁ·ÎÆÛÆ¼
+    /// Ä³ï¿½ï¿½ï¿½Í°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¼
     /// </summary>
     public InventorySlot[] EquipPart { get; set; }
 
     /// <summary>
-    /// Ä³¸¯ÅÍ°¡ Àåºñ¸¦ ÀåÂøÇÒ ¶§ ½ÇÇàµÇ´Â ÇÔ¼ö
+    /// Ä³ï¿½ï¿½ï¿½Í°ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ç´ï¿½ ï¿½Ô¼ï¿½
     /// </summary>
     public void CharacterEquipItem(GameObject Equipment, EquipPart partNumber, InventorySlot slot);
 
     /// <summary>
-    /// Ä³¸¯ÅÍ°¡ Àåºñ ÀåÂø ÇØÁ¦ ÇÒ ¶§ ½ÇÇàµÇ´Â ÇÔ¼ö
+    /// Ä³ï¿½ï¿½ï¿½Í°ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ç´ï¿½ ï¿½Ô¼ï¿½
     /// </summary>
     public void CharacterUnequipItem(EquipPart partNumber);
 }
