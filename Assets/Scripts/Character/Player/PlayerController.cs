@@ -17,8 +17,8 @@ public class PlayerController : MonoBehaviour
     public Action<Vector2, bool> onMove;
     public Action onMoveModeChange;
     public Action<Vector2, bool> onLook;
-    public Action onSlide;
     public Action<bool> onJump;
+    public Action<bool> onSlide;
     public Action onSkillModeChange;
 
     // behavior delegate
@@ -26,14 +26,19 @@ public class PlayerController : MonoBehaviour
     public Action onInventoryOpen;
     public Action onMapOpen;
 
+    // 컴포넌트
+    Weapon weapon;
+
     void Awake()
     {
         playerInputAction = new PlayerinputActions();
+        weapon = GetComponent<Weapon>();
     }
 
     void OnEnable()
     {
         playerInputAction.Player.Enable();
+
         // Player Movement
         playerInputAction.Player.Move.performed += OnMoveInput;
         playerInputAction.Player.Move.canceled += OnMoveInput;
@@ -116,15 +121,16 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void OnLookInput(InputAction.CallbackContext context)
     {
-        onLook?.Invoke(context.ReadValue<Vector2>(), context.performed);
-    }
-
-    /// <summary>
-    /// 회피 처리 함수
-    /// </summary>
-    private void OnSlideInput(InputAction.CallbackContext context)
-    {
-        onSlide?.Invoke();
+        if (weapon.IsZoomIn)
+        {
+            // 카메라가 줌을 당길 경우 => 카메라 회전 중지
+            onLook?.Invoke(context.ReadValue<Vector2>(), !context.performed);
+        }
+        else
+        {
+            // 그 외의 경우 => 주변 시야 확인 가능
+            onLook?.Invoke(context.ReadValue<Vector2>(), context.performed);
+        }
     }
 
     /// <summary>
@@ -132,7 +138,31 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void OnJumpInput(InputAction.CallbackContext context)
     {
-        onJump?.Invoke(context.performed);
+        if (weapon.IsZoomIn)
+        {
+            // 카메라가 줌을 당길 경우 => 점프 불가능
+            onJump?.Invoke(!context.performed);
+        }
+        else
+        {
+            onJump?.Invoke(context.performed);
+        }
+    }
+
+    /// <summary>
+    /// 회피 처리 함수
+    /// </summary>
+    private void OnSlideInput(InputAction.CallbackContext context)
+    {
+        if (weapon.IsZoomIn)
+        {
+            // 카메라가 줌을 당길 경우 => 슬라이드 불가능
+            onSlide?.Invoke(!context.performed);
+        }
+        else
+        {
+            onSlide?.Invoke(context.performed);
+        }
     }
     #endregion
 
@@ -170,11 +200,54 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// 입력 처리 불가 처리 코루틴
     /// </summary>
-    /// <returns></returns>
-    public IEnumerator StopInput()
+    /// <param name="clipPath">애니메이션 클립의 리소스 경로</param>
+    public IEnumerator StopInput(string clipPath)
     {
-        playerInputAction.Player.Disable();          // Player 액션맵 비활성화
-        yield return new WaitForSeconds(4.0f);
-        playerInputAction.Player.Enable();           // Player 액션맵 활성화
+        float waitingTime = GetAnimationLegth(clipPath);    // 애니메이션 클립 로드
+
+        if (clipPath == weapon.clipPath_None)
+        {
+            waitingTime *= 0.5f;
+        }
+        else if (clipPath == weapon.clipPath_SwordSheath2)
+        {
+            // 검 공격 시간 고려
+            waitingTime += GetAnimationLegth(weapon.clipPath_Sword1);
+
+            //Debug.Log(GetAnimationLegth(weapon.clipPath_Sword1)); // 1.5초
+            //Debug.Log(GetAnimationLegth(weapon.clipPath_Sword2)); // 2.43초
+
+            //if (randomAttackSelector.AttackModeHash == 0) // 일반 공격
+            //{
+            //    waitingTime += GetAnimationLegth(weapon.clipPath_Sword1);
+            //}
+            //else if (randomAttackSelector.AttackModeHash == 1) // Critical 공격
+            //{
+            //    waitingTime += GetAnimationLegth(weapon.clipPath_Sword2);
+            //}
+        }
+
+        playerInputAction.Player.Disable();                 // Player 액션맵 비활성화
+        yield return new WaitForSeconds(waitingTime);       // waitingTime만큼 딜레이
+        playerInputAction.Player.Enable();                  // Player 액션맵 활성화
+    }
+
+    /// <summary>
+    /// 애니메이션 클립 로드 및 재생 시간 출력 함수
+    /// </summary>
+    /// <param name="clipPath">애니메이션 클립의 리소스 경로</param>
+    /// <returns>애니메이션 재생 시간</returns>
+    float GetAnimationLegth(string clipPath)
+    {
+        AnimationClip clip = Resources.Load<AnimationClip>(clipPath);
+        if (clip != null)
+        {
+            return clip.length;
+        }
+        else
+        {
+            Debug.Log("애니메이션 재생 시간을 출력할 수 없습니다.");
+            return -1.0f;
+        }
     }
 }

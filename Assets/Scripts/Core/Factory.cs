@@ -36,7 +36,7 @@ public class Factory : Singleton<Factory>
     ItemPool itemPool;
     NightmareDragonPool nightmareDragonPool;
 
-    ArrowPool arrowPool; //
+    ArrowPool arrowPool;
 
     protected override void OnInitialize()
     {
@@ -64,7 +64,8 @@ public class Factory : Singleton<Factory>
         // Inventory Branch
         itemPool = GetComponentInChildren<ItemPool>();
         if (itemPool != null) itemPool.Initialize();
-        
+
+        // Player Weapon Arrow
         arrowPool = GetComponentInChildren<ArrowPool>();
         if (arrowPool != null)
             arrowPool.Initialize();
@@ -224,13 +225,7 @@ public class Factory : Singleton<Factory>
         return itemPool.GetItemObject(itemData, count, position);
     }
 
-    // 나중에 빼야됨  ----------------------------------------------------------------------
-    //public GameObject GetItemObject(ItemData data, Vector3? position = null)
-    //{
-    //    return itemPool.GetItemObject(data, position);
-    //}
-    // ---------------------------------------------------------------------------------------
-    //
+    // Player Weapon Arrow
     /// <summary>
     /// 풀에 있는 게임 오브젝트 하나 가져오기
     /// </summary>

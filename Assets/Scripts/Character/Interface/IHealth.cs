@@ -8,7 +8,7 @@ using UnityEngine;
 public interface IHealth
 {
     /// <summary>
-    /// MP 확인 및 설정용 프로퍼티
+    /// HP 확인 및 설정용 프로퍼티
     /// </summary>
     float HP { get; set; }
 
