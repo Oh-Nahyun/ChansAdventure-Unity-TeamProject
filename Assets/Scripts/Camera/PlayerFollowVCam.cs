@@ -45,11 +45,13 @@ public class PlayerFollowVCam : MonoBehaviour
         follow = vcam.GetCinemachineComponent<Cinemachine3rdPersonFollow>();
         lookAtPosition = GameObject.FindWithTag("LookAtPosition").transform;
         cameraRoot = GameObject.FindWithTag("CameraRoot").transform;
+
+        vcam.Follow = cameraRoot; // cameraRoot 연결
     }
 
     private void Update()
     {
-        //ChangeCameraZoom();
+        ChangeCameraZoom();
     }
 
     /// <summary>
