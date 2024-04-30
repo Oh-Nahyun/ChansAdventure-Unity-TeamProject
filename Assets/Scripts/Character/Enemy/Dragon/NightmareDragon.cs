@@ -673,6 +673,7 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
             float final = Mathf.Max(0, damage - DefencePower);  // 최종 데미지 계산해서 적용
             HP -= final;
             onHit?.Invoke(Mathf.RoundToInt(final));
+
             StartCoroutine(InvinvibleMode());
         }
     }

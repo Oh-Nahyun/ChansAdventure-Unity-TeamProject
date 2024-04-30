@@ -5,10 +5,10 @@ using UnityEngine;
 public class ItemPool : ObjectPool<ItemDataObject>
 {
     /// <summary>
-    /// ItemPool占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占싹댐옙 占쌉쇽옙
+    /// ItemPool에서 아이템을 가져오는 함수
     /// </summary>
-    /// <param name="slot">占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙</param>
-    /// <param name="position">占쏙옙占쏙옙占쏙옙 占쏙옙치</param>
+    /// <param name="itemData">생성할 아이템 데이터</param>
+    /// <param name="position">아이템 위치</param>
     /// <returns></returns>
     public GameObject GetItemObject(ItemData itemData, uint count = 1, Vector3? position = null)
     {

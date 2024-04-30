@@ -5,13 +5,15 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Windows;
 
-/// <summary>
-/// 플레이어 스크립트
-/// </summary>
-public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
+public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
 {
     #region additional Classes
     PlayerController controller;
+    
+    /// <summary>
+    /// PlayerSKills를 받기 위한 프로퍼티
+    /// </summary>
+    public PlayerSkills Skills => gameObject.GetComponent<PlayerSkills>();
 
     Animator animator;
     CharacterController characterController;
@@ -84,6 +86,16 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
     }
 
     /// <summary>
+    /// 이동 중인지 아닌지 확인용 변수
+    /// </summary>
+    bool isMoving = false;
+
+    /// <summary>
+    /// 카메라 회전
+    /// </summary>
+    Quaternion followCamY;
+
+    /// <summary>
     /// 캐릭터의 목표방향으로 회전시키는 회전
     /// </summary>
     Quaternion targetRotation = Quaternion.identity;
@@ -94,14 +106,9 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
     public float turnSpeed = 10.0f;
 
     /// <summary>
-    /// 중력값 -9.81f / 04.15 
+    /// 중력값 9.8f 
     /// </summary>
-    readonly float gravity = -9.81f;
-
-    /// <summary>
-    /// 슬라이드 정도
-    /// </summary>
-    public float slidePower = 5.0f;
+    const float gravity = 9.8f;
 
     /// <summary>
     /// 플레이어의 움직임 Velocity 값 / 04.15
@@ -111,12 +118,12 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
     /// <summary>
     /// 점프 시간 제한
     /// </summary>
-    //public float jumpTimeLimit = 4.0f;
+    const float jumpTimeLimit = 1.0f;
 
     /// <summary>
     /// 점프 시간 ( 애니메이션 점프 체공 시간 ) / 04.15 
     /// </summary>
-    readonly float jumpTime = 0.9f;
+    float jumpTime = 0.0f;
 
     /// <summary>
     /// 점프 정도
@@ -124,9 +131,14 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
     public float jumpPower = 5.0f;
 
     /// <summary>
-    /// 점프 속도값
+    /// 점프 속도
     /// </summary>
-    //public float jumpVelocity;
+    float jumpVelocity;
+
+    /// <summary>
+    /// 플레이어 점프 벡터
+    /// </summary>
+    Vector3 playerJump;
 
     /// <summary>
     /// 점프 중인지 아닌지 확인용 변수
@@ -137,6 +149,36 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
     /// 점프가 가능한지 확인하는 프로퍼티 (점프중이 아닐 때)
     /// </summary>
     bool IsJumpAvailable => !isJumping;
+
+    /// <summary>
+    /// 슬라이드 시간 제한
+    /// </summary>
+    const float slideTimeLimit = 1.0f;
+
+    /// <summary>
+    /// 슬라이드 시간
+    /// </summary>
+    float slideTime = 0.0f;
+
+    /// <summary>
+    /// 슬라이드 정도
+    /// </summary>
+    public float slidePower = 10.0f;
+
+    /// <summary>
+    /// 플레이어 슬라이드 벡터
+    /// </summary>
+    Vector3 playerSlide;
+
+    /// <summary>
+    /// 슬라이드 중인지 아닌지 확인용 변수
+    /// </summary>
+    bool isSliding = false;
+
+    /// <summary>
+    /// 슬라이드가 가능한지 확인하는 프로퍼티 (슬라이드중이 아닐 때)
+    /// </summary>
+    bool IsSlideAvailable => !isSliding;
 
     /// <summary>
     /// 주변 시야 버튼이 눌렸는지 아닌지 확인용 변수
@@ -188,9 +230,15 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
     const float AnimatorStopSpeed = 0.0f;
     const float AnimatorWalkSpeed = 0.3f;
     const float AnimatorRunSpeed = 1.0f;
+    readonly int DieHash = Animator.StringToHash("IsDie");
+    readonly int GetHitHash = Animator.StringToHash("IsGetHit");
+    readonly int SpendAllStaminaHash = Animator.StringToHash("IsSpendAllStamina");
+
+    // 컴포넌트
+    Weapon weapon;
     #endregion
 
-    #region Inventory Values (IHealth 포함되있음)
+    #region Inventory Values (IHealth, IStamina 포함되있음)
 
     [Header("# Inventory Values")]
     /// <summary>
@@ -261,7 +309,62 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
         }
     }
 
-    public float AttackPower => throw new NotImplementedException();
+    // Stamina ===================================================================================
+
+    /// <summary>
+    /// 현재 기력
+    /// </summary>
+    public float stamina;
+
+    /// <summary>
+    /// 기력 확인 및 설정용 프로퍼티
+    /// </summary>
+    public float Stamina
+    {
+        get => stamina;
+        set
+        {
+            hp = Mathf.Clamp(value, 0, MaxStamina);
+            onStaminaChange?.Invoke(stamina);
+        }
+    }
+
+    /// <summary>
+    /// 최대 기력
+    /// </summary>
+    public float maxStamina = 100;
+
+    /// <summary>
+    /// 최대 기력 확인용 프로퍼티
+    /// </summary>
+    public float MaxStamina => maxStamina;
+
+    /// <summary>
+    /// 기력이 변경될 때마다 실행될 델리게이트용 프로퍼티
+    /// </summary>
+    public Action<float> onStaminaChange { get; set; }
+
+    /// <summary>
+    /// 기력이 남아있는지 확인하기 위한 프로퍼티
+    /// </summary>
+    public bool IsEnergetic => Stamina > 0;
+
+    /// <summary>
+    /// 기력 소진을 알리기 위한 델리게이트용 프로퍼티
+    /// </summary>
+    public Action onSpendAllStamina { get; set; }
+
+    // IBattler ====================================================================================
+
+    /// <summary>
+    /// 플레이어의 기본 공격력
+    /// </summary>
+    public float attackPower = 10f;
+
+    /// <summary>
+    /// 공격력을 받는 프로퍼티
+    /// </summary>
+    public float AttackPower => attackPower;
 
     public float DefencePower => throw new NotImplementedException();
 
@@ -312,8 +415,11 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
         controller = GetComponent<PlayerController>();
         characterController = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
+        weapon = GetComponent<Weapon>();
 
         interaction = GetComponent<Interaction>();
+
+        isJumping = true;
         skillRelatedAction = GetComponent<PlayerSkillRelatedAction>();
 
         cameraRoot = FindAnyObjectByType<PlayerLookVCam>().gameObject;
@@ -321,6 +427,16 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
 
     void Start()
     {
+        // exception
+        if (cameraRoot == null)
+        {
+            Debug.LogError("CameraRoot가 비어있습니다. CameraRoot Prefab 오브젝트를 넣어주세요 ( PlayerLookVCam 스크립트 있는 오브젝트 )");
+        }
+
+        isMoving = false;
+        isJumping = true;
+        isSliding = true;
+
         // controller
         controller.onMove += OnMove;
         controller.onMoveModeChange += OnMoveModeChange;
@@ -343,13 +459,23 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
     {        
         LookRotation();
         Jump();
-        playerVelocity.y += gravity * Time.deltaTime; // 적용되고 있는 플레이어의 중력 / 04.15 추가
+        Slide();
     }
 
     private void FixedUpdate()
     {
-        characterController.Move(Time.fixedDeltaTime * currentSpeed * inputDirection); // 캐릭터의 움직임
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * turnSpeed);  // 목표 회전으로 변경
+        characterController.Move(Time.fixedDeltaTime * currentSpeed * inputDirection);      // 캐릭터의 움직임
+
+        if (weapon.IsZoomIn)
+        {
+            // 카메라가 줌을 당긴 경우
+            transform.rotation = Quaternion.Slerp(transform.rotation, followCamY, 0.0f);    // 회전을 적용하지 않는다.
+        }
+        else
+        {
+            // 카메라가 줌을 당기지 않을 경우
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * turnSpeed); // 목표 회전으로 변경
+        }
     }
 
     #endregion
@@ -370,10 +496,12 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
         // 입력을 시작한 상황
         if (isMove)
         {
+            isMoving = true;
+
             // 입력 방향 회전시키기
-            Quaternion followCamY = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0);   // 카메라의 y회전만 따로 추출
-            inputDirection = followCamY * inputDirection;                                                   // 입력 방향을 카메라의 y회전과 같은 정도로 회전시키기
-            targetRotation = Quaternion.LookRotation(inputDirection);                                       // 회전 저장
+            followCamY = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0);   // 카메라의 y회전만 따로 추출
+            inputDirection = followCamY * inputDirection;                                        // 입력 방향을 카메라의 y회전과 같은 정도로 회전시키기
+            targetRotation = Quaternion.LookRotation(inputDirection);                            // 회전 저장
 
             // 이동 모드 변경
             MoveSpeedChange(CurrentMoveMode);
@@ -382,6 +510,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
         // 입력을 끝낸 상황
         else
         {
+            isMoving = false;
             currentSpeed = 0.0f; // 정지
             animator.SetFloat(SpeedHash, AnimatorStopSpeed);
         }
@@ -431,10 +560,12 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
         switch (mode)
         {
             case MoveMode.Walk:
+                jumpPower = 1.0f;
                 currentSpeed = walkSpeed;
                 animator.SetFloat(SpeedHash, AnimatorWalkSpeed);
                 break;
             case MoveMode.Run:
+                jumpPower = 1.25f;
                 currentSpeed = runSpeed;
                 animator.SetFloat(SpeedHash, AnimatorRunSpeed);
                 break;
@@ -481,6 +612,9 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
         cameraRoot.transform.localRotation = Quaternion.Euler(rotate);
     }
 
+    /// <summary>
+    /// 점프 입력 함수
+    /// </summary>
     private void OnJump(bool isJump)
     {
         if (isJump)
@@ -496,54 +630,116 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
     }
 
     /// <summary>
-    /// 플레이어 점프를 실행하는 함수 ( Update ) / 04.15 추가
+    /// 점프 처리 함수
     /// </summary>
     void Jump()
     {
-        // 점프가 가능한 경우
-        // IsJumpAvailavle => !isJumping
-        if (IsJumpAvailable) // 점프가 활성화 되면 실행
+        if (IsJumpAvailable)
         {
-            StartCoroutine(Jump_co());
-
-            animator.SetTrigger(IsJumpHash);
+            // 점프가 가능한 경우
+            StopAllCoroutines();
+            StartCoroutine(JumpProcess());   // 실제 점프 과정 처리
+            animator.SetTrigger(IsJumpHash); // 점프 애니메이션 재생
         }
-        else // 점프 비활성화 중일 때 실행
+        else
         {
-            playerVelocity.y = 0f; // 04.15 추가
+            // 점프가 불가능한 경우
+            jumpVelocity = 0.0f;             // 점프 속도 초기화
+            playerJump.y = jumpVelocity;
         }
-
+        
         isJumping = true;
-
-        characterController.Move(playerVelocity * Time.fixedDeltaTime); // Move 값 추가 / 04.15 
+        characterController.Move(playerJump * Time.fixedDeltaTime); // 점프 실행
     }
 
     /// <summary>
-    /// 점프를 시작할때 실행하는 코루틴 / 04.15
+    /// 실제 점프 과정 처리 코루틴
     /// </summary>
-    IEnumerator Jump_co()
+    IEnumerator JumpProcess()
     {
-        float curHeight = 0f; // 현재 높이
-        yield return new WaitForSeconds(0.1f); // Jump 딜레이
+        jumpTime = 0.0f;                                            // 변수 초기화
+        yield return new WaitForSeconds(0.1f);                      // 0.1초 딜레이
 
-        while(curHeight < jumpTime) // jumpTime 만큼 실행
+        while (jumpTime < jumpTimeLimit)
         {
-            curHeight += Time.deltaTime;
-
-            playerVelocity.y = curHeight * -jumpPower * gravity; // 점프 할 동안 y값을 Time.deltaTime만큼 받는다
-            characterController.Move(playerVelocity * Time.deltaTime); // Jump할 때 실행하는 .Move메소드 / 04.15 
+            jumpTime += Time.deltaTime;                             // 점프 시간 갱신
+            playerJump.y = jumpTime * jumpPower * gravity;          // 플레이어의 y값
+            characterController.Move(playerJump * Time.deltaTime);  // 점프 실행
 
             yield return null;
         }
     }
 
     /// <summary>
+    /// 회피 입력 함수
+    /// </summary>
+    private void OnSlide(bool isSlide)
+    {
+        if (isSlide)
+        {
+            if (CurrentMoveMode == MoveMode.Run)    // 달리기 모드인 경우
+            {
+                if (isMoving)                       // 이동 중인 경우
+                {
+                    isSliding = false;              // 슬라이드 가능
+                }
+                else                                // 이동 중이 아닌 경우
+                {
+                    isSliding = true;               // 슬라이드 불가능
+                }
+            }
+            else
+            {
+                isSliding = true;                   // 달리기 모드가 아닌 경우 => 슬라이드 불가능
+            }
+        }
+        else
+        {
+            isSliding = true;                       // 슬라이드 중인 경우 => 슬라이드 불가능
+        }
+    }
+
+    /// <summary>
     /// 회피 처리 함수
     /// </summary>
-    private void OnSlide()
+    void Slide()
     {
-        animator.SetTrigger(IsSlideHash);
+        if (IsSlideAvailable)
+        {
+            // 슬라이드가 가능한 경우
+            StopAllCoroutines();
+            StartCoroutine(SlideProcess());   // 실제 슬라이드 과정 처리
+            animator.SetTrigger(IsSlideHash); // 슬라이드 애니메이션 처리
+        }
+        else
+        {
+            // 슬라이드가 불가능한 경우
+            playerSlide = Vector3.zero;
+        }
+
+        isSliding = true;
+        characterController.Move(playerSlide * Time.fixedDeltaTime); // 슬라이드 실행
     }
+
+    /// <summary>
+    /// 실제 슬라이드 과정 처리 코루틴
+    /// </summary>
+    IEnumerator SlideProcess()
+    {
+        slideTime = 0.0f;                                                           // 변수 초기화
+        yield return new WaitForSeconds(0.1f);                                      // 0.1초 딜레이
+
+        while (slideTime < slideTimeLimit)
+        {
+            slideTime += Time.deltaTime;                                            // 슬라이드 시간 갱신
+            Vector3 localForward = transform.TransformDirection(Vector3.forward);   // 로컬 기준 Forward
+            playerSlide = slideTime * slidePower * localForward;                    // 플레이어 슬라이드
+            characterController.Move(playerSlide * Time.deltaTime);                 // 슬라이드 실행
+
+            yield return null;
+        }
+    }
+
     #endregion 
 
     #region Player Inventory Method
@@ -629,11 +825,19 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
 
     #region Player IHealth Method
     /// <summary>
+    /// 적으로부터 공격을 받으면 실행되는 함수
+    /// </summary>
+    public void GetHit()
+    {
+        animator.SetTrigger(GetHitHash);
+    }
+
+    /// <summary>
     /// 사망시 실행되는 함수
     /// </summary>
     public void Die()
     {
-        throw new NotImplementedException();
+        animator.SetTrigger(DieHash);
     }
 
     /// <summary>
@@ -698,6 +902,14 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
     }
     #endregion
 
+    /// <summary>
+    /// 기력을 모두 소진했을 경우 처리용 함수
+    /// </summary>
+    public void SpendAllStamina()
+    {
+        animator.SetTrigger(SpendAllStaminaHash);
+    }
+
     #region Etc Method
 
     void OnMapShow()
@@ -718,7 +930,6 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
             isOpenedLargeMap = false;
         }
     }
-
 
     /// <summary>
     /// 캐릭터의 Collider를 켜는 함수 (Animation 설정용)
