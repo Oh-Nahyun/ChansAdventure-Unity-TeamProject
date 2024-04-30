@@ -439,11 +439,9 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         controller.onMapOpen += OnMapShow;
 
         // inventory
-        inventory = new Inventory(this.gameObject, 16);
-        GameManager.Instance.ItemDataManager.InventoryUI.InitializeInventoryUI(inventory); // 인벤 UI 초기화
-        EquipPart = new InventorySlot[partCount]; // EquipPart 배열 초기화
-
-        Test_AddItem();
+        //inventory = new Inventory(this.gameObject, 16);
+        //GameManager.Instance.ItemDataManager.InventoryUI.InitializeInventoryUI(inventory); // 인벤 UI 초기화
+        //EquipPart = new InventorySlot[partCount]; // EquipPart 배열 초기화
     }
 
     private void Update()
@@ -901,7 +899,6 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         animator.SetTrigger(SpendAllStaminaHash);
     }
 
-    #region additional Method
     #region Etc Method
 
     void OnMapShow()
@@ -971,6 +968,6 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     {
         
     }
-    //--------------------------------------------------------------------------------------------------
+    
 #endif
 }

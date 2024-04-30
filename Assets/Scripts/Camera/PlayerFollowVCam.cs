@@ -49,7 +49,7 @@ public class PlayerFollowVCam : MonoBehaviour
 
     private void Update()
     {
-        //ChangeCameraZoom();
+        ChangeCameraZoom();
     }
 
     /// <summary>

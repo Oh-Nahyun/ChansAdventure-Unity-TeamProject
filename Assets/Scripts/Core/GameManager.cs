@@ -27,14 +27,14 @@ public class GameManager : Singleton<GameManager>
     ItemDataManager itemDataManager;
 
     /// <summary>
-    /// ¾ÆÀÌÅÛ µ¥ÀÌÅÍ Å¬·¡½º Á¢±ÙÀ» ÇÏ±âÀ§ÇÑ ÇÁ·ÎÆÛÆ¼
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï±ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¼
     /// </summary>
     public ItemDataManager ItemDataManager => itemDataManager;
 
     MapManager mapManager;
 
     /// <summary>
-    /// mapManager Á¢±ÙÀ» À§ÇÑ ÇÁ·ÎÆÛÆ¼
+    /// mapManager ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¼
     /// </summary>
     public MapManager MapManager => mapManager;
 
@@ -49,17 +49,17 @@ public class GameManager : Singleton<GameManager>
     }
 
     /// <summary>
-    /// ·Îµù ÁßÀÎÁö È®ÀÎÇÏ´Â bool°ª
+    /// ï¿½Îµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ï´ï¿½ boolï¿½ï¿½
     /// </summary>
     public bool isLoading;
 
     /// <summary>
-    /// ÀÌµ¿ÇÒ ¾ÀÀÇ ÀÌ¸§
+    /// ï¿½Ìµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½
     /// </summary>
     string targetSceneName = null;
 
     /// <summary>
-    /// ÀÌµ¿ÇÒ ¾ÀÀÇ ÀÌ¸§À» Á¢±Ù ¹× ¼öÁ¤ÇÏ±â À§ÇÑ ÇÁ·ÎÆÛÆ¼ ( ÀÌ¸§ÀÌ ¹Ù²î¸é ÇØ´ç ¾ÀÀÌ TragetSceneÀÌ µÇ°í ·Îµù¾ÀÀ» È£ÃâÇÑ´Ù. )
+    /// ï¿½Ìµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¼ ( ï¿½Ì¸ï¿½ï¿½ï¿½ ï¿½Ù²ï¿½ï¿½ ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ TragetSceneï¿½ï¿½ ï¿½Ç°ï¿½ ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ È£ï¿½ï¿½ï¿½Ñ´ï¿½. )
     /// </summary>
     public string TargetSceneName
     {
@@ -97,7 +97,7 @@ public class GameManager : Singleton<GameManager>
 
         itemDataManager.InitializeItemDataUI();
 
-        mapManager.InitalizeMapUI();
+        //mapManager.InitalizeMapUI();
     }
 
     protected override void OnAdditiveInitiallize()
@@ -111,14 +111,14 @@ public class GameManager : Singleton<GameManager>
 
         itemDataManager.InitializeItemDataUI();
 
-        mapManager.InitalizeMapUI();
+        //mapManager.InitalizeMapUI();
     }
 
     #region Loading Function
     /// <summary>
-    /// ¾ÀÀ» º¯°æÇÒ ¶§ ½ÇÇàÇÏ´Â ÇÔ¼ö
+    /// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½Ô¼ï¿½
     /// </summary>
-    /// <param name="SceneName"> º¯°æÇÒ ¾À ÀÌ¸§</param>
+    /// <param name="SceneName"> ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ì¸ï¿½</param>
     public void ChangeToTargetScene(string SceneName, GameObject playerObject)
     {
         GameObject obj = Instantiate(playerObject, loadPlayerGameObject.transform);
@@ -130,7 +130,7 @@ public class GameManager : Singleton<GameManager>
     }
 
     /// <summary>
-    /// ¾À ·ÎµùÀÌ ³¡³­ ÈÄ ÇÃ·¹ÀÌ¾î ½ºÆùÀ» ½ÇÇàÇÏ´Â ÇÔ¼ö
+    /// ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½Ô¼ï¿½
     /// </summary>
     public void SpawnPlayerAfterLoadScene()
     {
@@ -140,19 +140,19 @@ public class GameManager : Singleton<GameManager>
         if (!isLoading)
         {
             loadPlayerGameObject.SetActive(true);
-            GameObject loadingPlayer = Instantiate(loadPlayerGameObject.transform.GetChild(0).gameObject);  // »õ·Î¿î ¾À¿¡ ÇÃ·¹ÀÌ¾î »ý¼º
+            GameObject loadingPlayer = Instantiate(loadPlayerGameObject.transform.GetChild(0).gameObject);  // ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½
             loadingPlayer.name = "Player";
 
             loadingPlayer.transform.position = Vector3.zero;
 
-            Destroy(loadPlayerGameObject.transform.GetChild(0).gameObject); // ÀúÀåµÈ ÇÃ·¹ÀÌ¾î ¿ÀºêÁ§Æ® Á¦°Å
+            Destroy(loadPlayerGameObject.transform.GetChild(0).gameObject); // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
 
             player = loadingPlayer.GetComponent<Player>();
         }
     }
 
     /// <summary>
-    /// ¸ÊÀ» ÀÌµ¿ÇÒ ¶§ È£ÃâµÇ´Â ÇÔ¼ö ( ·Îµù¾ÀÀ¸·Î ÀÌµ¿ )
+    /// ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ï¿½ï¿½ ï¿½ï¿½ È£ï¿½ï¿½Ç´ï¿½ ï¿½Ô¼ï¿½ ( ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ )
     /// </summary>
     void ChangeToLoadingScene()
     {

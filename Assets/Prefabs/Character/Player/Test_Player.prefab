@@ -7322,10 +7322,10 @@ MonoBehaviour:
   runSpeed: 7
   currentSpeed: 0
   turnSpeed: 10
-  slidePower: 5
   playerVelocity: {x: 0, y: 0, z: 0}
   jumpPower: 2.5
   isJumping: 0
+  slidePower: 5
   isLook: 0
   followCamRotatePower: 5
   hp: 0
@@ -7333,6 +7333,8 @@ MonoBehaviour:
   partPosition:
   - {fileID: 4511879611240405110}
   - {fileID: 7500145302657611700}
+  stamina: 0
+  maxStamina: 100
   weakPointAttack: 1.2
 --- !u!114 &6161648334508872447
 MonoBehaviour:
@@ -7402,6 +7404,10 @@ MonoBehaviour:
   IsBowEquip: 0
   IsArrowEquip: 0
   IsZoomIn: 0
+  clipPath_None: PlayerAnimations/N_Attack
+  clipPath_Sword1: PlayerAnimations/S_Attack1
+  clipPath_Sword2: PlayerAnimations/S_Attack2
+  clipPath_SwordSheath2: PlayerAnimations/S_Sheath2
 --- !u!114 &2167921399001070902
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7428,7 +7434,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7973622836142104029}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f10f6577cbcf67041a22da4e22587c5a, type: 3}
   m_Name: 
