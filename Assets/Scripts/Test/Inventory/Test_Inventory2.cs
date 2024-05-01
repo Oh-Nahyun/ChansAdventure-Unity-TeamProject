@@ -29,15 +29,13 @@ public class Test_Inventory2 : TestBase
     {
         inven = new Inventory(Test_Player);
 
-        inven.AddSlotItem(0, 3);
-        inven.AddSlotItem(1, 2);
-        inven.AddSlotItem(2, 1);
+        inven.AddSlotItem(5, 3);
         inven.AddSlotItem(1, 3);
         inven.AddSlotItem(3, 1);
         inven.AddSlotItem(4, 1);
 
         inven.TestShowInventory();
-        ItemDataManager.Instance.InventoryUI.InitializeInventoryUI(inven);
+        GameManager.Instance.ItemDataManager.InventoryUI.InitializeInventoryUI(inven);
     }
 
     protected override void OnTest1(InputAction.CallbackContext context)
