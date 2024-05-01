@@ -43,6 +43,8 @@ public class TextBoxManager : MonoBehaviour
         talkData.Add(1023, new string[] { "선택지 23 선택완료", "CCCCC" });
         talkData.Add(1024, new string[] { "선택지1", "선택지2", "나가기" });
 
+        talkData.Add(1030, new string[] { "다다음대사" });
+
         talkData.Add(1100, new string[] { "선택지 없는 다음대사" });
         talkData.Add(1110, new string[] { "선택지 있는 다다음대사" });
         talkData.Add(1111, new string[] { "선택지 111 선택완료", "AAAAA" });

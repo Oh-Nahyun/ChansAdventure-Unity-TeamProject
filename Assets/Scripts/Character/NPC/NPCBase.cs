@@ -22,6 +22,8 @@ public class NPCBase : MonoBehaviour
     /// </summary>
     public Action onQuestCompleted;
 
+    protected Inventory inventory;
+
     public int id = 0;
     public string nameNPC = "";
     public bool selectId = false;

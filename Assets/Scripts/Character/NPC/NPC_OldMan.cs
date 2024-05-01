@@ -80,7 +80,6 @@ public class NPC_OldMan : NPCBase
                     isGesture = false;
                     break;
                 case 1011:
-                    
                     if (!isTalk)
                     {
                         questManager.GetQuestTalkIndex(10, false);
@@ -94,18 +93,19 @@ public class NPC_OldMan : NPCBase
                         GameManager.Instance.NextTalk();
                     }
                     break;
-                case 1013:
-                    // 선택지를 보여줄 때에는 서 있고 제스처 애니메이션은 비활성화.
-                    isStanding = true;
-                    isGesture = false;
+                case 1022:
+                    if (!isTalk)
+                    {
+                        questManager.GetQuestTalkIndex(10, true);
+                        GameManager.Instance.NextTalk();
+                    }
                     break;
                 case 1100:
-                    // 선택지가 없는 대화일 때에는 서 있고 제스처 애니메이션을 재생.
                     isStanding = true;
                     isGesture = true;
                     break;
                 default:
-                    // 나머지 경우에는 말하는 애니메이션을 비활성화하고 나머지는 비활성화.
+                    
                     isStanding = false;
                     isGesture = false;
                     break;
