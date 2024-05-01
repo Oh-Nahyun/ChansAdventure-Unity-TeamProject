@@ -95,12 +95,16 @@ public class Weapon : MonoBehaviour
     {
         //rightHand = GameObject.Find("Character1_RightHand").transform;
         //leftHand = GameObject.Find("Character1_LeftHand").transform;
-        swordWeapon = GameObject.FindWithTag("Sword").transform;
-        bowWeapon = GameObject.FindWithTag("Bow").transform;
         //arrowWeapon = GameObject.FindWithTag("Arrow").transform;
-        ShowWeapon(false, false);
         //arrowWeapon.gameObject.SetActive(false);
         //arrow.CloseArrow();
+
+        //swordWeapon = GameObject.FindWithTag("Sword").transform; // 아이템 장착을 위한 주석처리
+        //bowWeapon = GameObject.FindWithTag("Bow").transform; // 아이템 장착을 위한 주석처리
+        //ShowWeapon(false, false); // 아이템 장착을 위한 주석처리
+
+        player.OnEquipWeaponItem += OnEquipWeapon;
+        player.OnUnEquipWeaponItem += OnUnEquipWeapon;
     }
 
     private void OnEnable()
@@ -179,19 +183,24 @@ public class Weapon : MonoBehaviour
         if (player.SkillRelatedAction.IsPickUp) // 물건을 들고 있을 때 입력 막기
             return;
 
-        if (currentWeaponMode == WeaponMode.None)
+        if (currentWeaponMode == WeaponMode.None
+            && player.EquipPart[0] != null) // 현재 오른손에 무기가 있으면 아이템 장착
         {
             // 무기를 들고 있지 않는 경우 => 칼을 들도록 한다.
             currentWeaponMode = WeaponMode.Sword;
+            ShowWeapon(true, false);
             Debug.Log("WeaponMode_Change : None >> Sword");
         }
-        else if (currentWeaponMode == WeaponMode.Sword)
+        else if (currentWeaponMode == WeaponMode.Sword
+            && player.EquipPart[1] != null) // 현재 왼손에 무기가 있으면 아이템 장착
         {
             // 칼을 무기로 사용하고 있던 경우 => 활을 들도록 한다.
             currentWeaponMode = WeaponMode.Bow;
+            ShowWeapon(false, true);
             Debug.Log("WeaponMode_Change : Sword >> Bow");
         }
-        else if (currentWeaponMode == WeaponMode.Bow)
+        else if (currentWeaponMode == WeaponMode.Bow
+              || currentWeaponMode == WeaponMode.Sword) // 무기를 장착하고 있으면 해제한다
         {
             // 활을 무기로 사용하고 있던 경우 => 무기를 넣도록 한다.
             currentWeaponMode = WeaponMode.None;
@@ -209,15 +218,15 @@ public class Weapon : MonoBehaviour
         switch (mode)
         {
             case WeaponMode.None:
-                ShowWeapon(false, false);
+                //ShowWeapon(false, false);
                 IsBowEquip = false;
                 break;
             case WeaponMode.Sword:
-                ShowWeapon(true, false);
+                //ShowWeapon(true, false);
                 IsBowEquip = false;
                 break;
             case WeaponMode.Bow:
-                ShowWeapon(false, true);
+                //ShowWeapon(false, true);
                 IsBowEquip = true;
                 break;
         }
@@ -229,8 +238,8 @@ public class Weapon : MonoBehaviour
     /// <param name="isShow">true면 보여주고, false면 안보여준다.</param>
     public void ShowWeapon(bool isSwordShow = false, bool isBowShow = false)
     {
-        swordWeapon.gameObject.SetActive(isSwordShow);
-        bowWeapon.gameObject.SetActive(isBowShow);
+        if(swordWeapon != null) swordWeapon.gameObject.SetActive(isSwordShow);
+        if(bowWeapon != null) bowWeapon.gameObject.SetActive(isBowShow);
     }
 
     /// <summary>
@@ -407,5 +416,50 @@ public class Weapon : MonoBehaviour
     //{
     //    arrow.CloseArrow();
     //}
-}
 
+    #region Weapon Equip
+    /// <summary>
+    /// 아이템 장착시 실행되는 함수 ( 무기 정보를 가진 변수 초기화 함수 )
+    /// </summary>
+    /// <param name="partIndex">장착부위 인덱스</param>
+    void OnEquipWeapon(int partIndex)
+    {
+        // 장착한 아이템이 검이면
+        if(partIndex == (int)EquipPart.Hand_R)
+        {
+            swordWeapon = player.partPosition[0].GetChild(0);
+            sword = swordWeapon.GetComponent<Sword>();
+        }
+
+        // 장착한 아이템이 활이면
+        if(partIndex == (int)EquipPart.Hand_L)
+        {
+            bowWeapon = player.partPosition[1].GetChild(0);
+            bow = bowWeapon.GetComponent<Bow>();
+        }
+
+        ShowWeapon(false, false);
+    }
+
+    /// <summary>
+    /// 장비 장착이 해제됬을 때 실행하는 함수
+    /// </summary>
+    /// <param name="partIndex">장비 부위 인덱스</param>
+    void OnUnEquipWeapon(int partIndex)
+    {
+        // 장착해제한 아이템이 검이면
+        if (partIndex == (int)EquipPart.Hand_R)
+        {
+            swordWeapon = null;
+            sword = null;
+        }
+
+        // 장착해제한 아이템이 활이면
+        if (partIndex == (int)EquipPart.Hand_L)
+        {
+            bowWeapon = null;
+            bow = null;
+        }
+    }
+    #endregion
+}

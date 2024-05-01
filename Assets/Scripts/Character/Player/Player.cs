@@ -309,6 +309,16 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         }
     }
 
+    /// <summary>
+    /// 인벤토리에서 아이템 장착시 실행되는 델리게이트
+    /// </summary>
+    public Action<int> OnEquipWeaponItem;
+
+    /// <summary>
+    /// 인벤토리에서 아이템 장착해제시 실행되는 델리게이트
+    /// </summary>
+    public Action<int> OnUnEquipWeaponItem;
+
     // Stamina ===================================================================================
 
     /// <summary>
@@ -451,8 +461,6 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         inventory = new Inventory(this.gameObject, 16);
         GameManager.Instance.ItemDataManager.InventoryUI.InitializeInventoryUI(inventory); // 인벤 UI 초기화
         EquipPart = new InventorySlot[partCount]; // EquipPart 배열 초기화
-
-        Test_AddItem();
     }
 
     private void Update()
@@ -796,6 +804,8 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
             EquipPart[(int)part] = slot;
             Instantiate(equipment, partPosition[(int)part]); // 아이템 오브젝트 생성
         }
+
+        OnEquipWeaponItem?.Invoke((int)part); // 아이템 장착을 알림
     }
 
     /// <summary>
@@ -804,6 +814,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// <param name="part"></param>
     public void CharacterUnequipItem(EquipPart part)
     {
+        OnUnEquipWeaponItem?.Invoke((int)part);
         Destroy(partPosition[(int)part].GetChild(0).gameObject);    // 아이템 오브젝트 파괴
     }
 

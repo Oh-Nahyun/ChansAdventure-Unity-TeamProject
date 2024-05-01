@@ -15,7 +15,8 @@ public enum ItemCode
     Sword,
     HP_portion,
     HP_portion_Tick,
-    Coin
+    Coin,
+    Bow
 }
 
 /// <summary>
