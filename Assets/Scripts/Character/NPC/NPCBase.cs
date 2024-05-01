@@ -8,6 +8,7 @@ public class NPCBase : MonoBehaviour
 {
     protected TextBoxManager textBoxManager;
     protected QuestManager questManager;
+    protected TextBox textbox;
     TextMeshPro textViweName;
     protected readonly int Talk_Hash = Animator.StringToHash("IsTalk");
 

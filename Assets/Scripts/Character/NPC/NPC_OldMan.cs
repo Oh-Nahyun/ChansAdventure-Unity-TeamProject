@@ -79,8 +79,12 @@ public class NPC_OldMan : NPCBase
                     isStanding = true;
                     isGesture = false;
                     break;
-                case 1011:
-                    questManager.GetQuestTalkIndex(10, false);
+                case 1011:     
+                    if (!isTalk)
+                    {
+                        questManager.GetQuestTalkIndex(10, false);
+                        GameManager.Instance.NextTalk();
+                    }
                     break;
                 case 1012:
                 case 1013:

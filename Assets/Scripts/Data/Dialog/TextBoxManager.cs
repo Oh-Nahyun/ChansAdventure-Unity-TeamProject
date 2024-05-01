@@ -35,16 +35,20 @@ public class TextBoxManager : MonoBehaviour
         talkData.Add(1012, new string[] { "선택지 12 선택완료", "BBBBB" });
         talkData.Add(1013, new string[] { "선택지 13 선택완료", "CCCCC" });
 
+        talkData.Add(1014, new string[] { "선택지1", "선택지2", "나가기" });
+
         talkData.Add(1020, new string[] { "다다음대사" });
         talkData.Add(1021, new string[] { "선택지 21 선택완료", "AAAAA" });
         talkData.Add(1022, new string[] { "선택지 22 선택완료", "BBBBB" });
         talkData.Add(1023, new string[] { "선택지 23 선택완료", "CCCCC" });
+        talkData.Add(1024, new string[] { "선택지1", "선택지2", "나가기" });
 
         talkData.Add(1100, new string[] { "선택지 없는 다음대사" });
         talkData.Add(1110, new string[] { "선택지 있는 다다음대사" });
         talkData.Add(1111, new string[] { "선택지 111 선택완료", "AAAAA" });
         talkData.Add(1112, new string[] { "선택지 112 선택완료", "BBBBB" });
         talkData.Add(1113, new string[] { "선택지 113 선택완료", "CCCCC" });
+        talkData.Add(1114, new string[] { "선택지1", "선택지2", "나가기" });
         talkData.Add(1200, new string[] { "선택지 없는 다다음대사" });
 
         // 시민
@@ -77,7 +81,7 @@ public class TextBoxManager : MonoBehaviour
             return talkData[id];
         else
         {
-            Debug.LogError("해당 ID에 대한 대화 데이터를 찾을 수 없습니다: " + id);
+            //Debug.LogError("해당 ID에 대한 대화 데이터를 찾을 수 없습니다: " + id);
             return null;
         }
     }
