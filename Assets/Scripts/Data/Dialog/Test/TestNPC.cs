@@ -5,10 +5,8 @@ using UnityEngine.InputSystem;
 
 public class TestNPC : TestBase
 {
-
-    ChestBase chestBase;
+    public QuestInfo quest;
 #if UNITY_EDITOR
-
     protected override void OnTest1(InputAction.CallbackContext context)
     {
         GameManager.Instance.StartTalk();
@@ -21,8 +19,7 @@ public class TestNPC : TestBase
 
     protected override void OnTest3(InputAction.CallbackContext context)
     {
-        //GameManager.Instance.OpenChest();
-        //GameManager.Instance.IsNPCObj();
+        quest.OnQuestInfo();
     }
 
     protected override void OnTest5(InputAction.CallbackContext context)

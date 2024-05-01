@@ -1,7 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class NPCBase : MonoBehaviour
@@ -11,6 +11,16 @@ public class NPCBase : MonoBehaviour
     protected TextBox textbox;
     TextMeshPro textViweName;
     protected readonly int Talk_Hash = Animator.StringToHash("IsTalk");
+
+    /// <summary>
+    /// 퀘스트 수락을 알리는 델리게이트
+    /// </summary>
+    public Action onQuestAccept;
+
+    /// <summary>
+    /// 퀘스트 완료를 알리는 델리게이트
+    /// </summary>
+    public Action onQuestCompleted;
 
     public int id = 0;
     public string nameNPC = "";
@@ -96,7 +106,9 @@ public class NPCBase : MonoBehaviour
         int ones = id % 10; // 1의 자리
         if (tens != 0 && ones == 0)
         {
+           
             selectId = true;
+            
         }
         else
         {
