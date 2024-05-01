@@ -617,6 +617,9 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// </summary>
     private void OnJump(bool isJump)
     {
+        if (SkillRelatedAction.IsPickUp) // 물건을 들고 있을 때 입력 막기
+            return;
+
         if (isJump)
         {
             // 점프하는 중이 아닌 경우 => 점프 가능
@@ -675,6 +678,9 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// </summary>
     private void OnSlide(bool isSlide)
     {
+        if (SkillRelatedAction.IsPickUp) // 물건을 들고 있을 때 입력 막기
+            return;
+
         if (isSlide)
         {
             if (CurrentMoveMode == MoveMode.Run)    // 달리기 모드인 경우
@@ -749,6 +755,9 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// </summary>
     void OnGetItem()
     {
+        if (SkillRelatedAction.IsPickUp) // 물건을 들고 있을 때 입력 막기
+            return;
+
         if (interaction.short_enemy != null) // 감지한 아이템 오브젝트가 존재한다.
         {
             GameObject itemObject = interaction.short_enemy.gameObject;       // 가장 가까운 오브젝트 

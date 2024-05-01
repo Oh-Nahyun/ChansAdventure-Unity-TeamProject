@@ -71,7 +71,7 @@ public class Weapon : MonoBehaviour
     PlayerController playerController;
     PlayerinputActions inputActions;
     Animator animator;
-    //Player player;
+    Player player;
     Sword sword;
     Bow bow;
     Arrow arrow;
@@ -83,7 +83,7 @@ public class Weapon : MonoBehaviour
         playerController = GetComponent<PlayerController>();
         inputActions = new PlayerinputActions();
         animator = GetComponent<Animator>();
-        //player = GetComponent<Player>();
+        player = GetComponent<Player>();
         sword = GetComponentInChildren<Sword>();
         bow = GetComponentInChildren<Bow>();
         arrow = GetComponentInChildren<Arrow>();
@@ -129,6 +129,9 @@ public class Weapon : MonoBehaviour
     /// <param name="context"></param>
     private void OnAttackInput(InputAction.CallbackContext context)
     {
+        if (player.SkillRelatedAction.IsPickUp) // 물건을 들고 있을 때 입력 막기
+            return;
+
         animator.SetTrigger(IsAttackHash);
 
         if (currentWeaponMode == WeaponMode.None)
@@ -173,6 +176,9 @@ public class Weapon : MonoBehaviour
     /// <param name="context"></param>
     private void OnChangeInput(InputAction.CallbackContext context)
     {
+        if (player.SkillRelatedAction.IsPickUp) // 물건을 들고 있을 때 입력 막기
+            return;
+
         if (currentWeaponMode == WeaponMode.None)
         {
             // 무기를 들고 있지 않는 경우 => 칼을 들도록 한다.
@@ -260,6 +266,9 @@ public class Weapon : MonoBehaviour
     /// </summary>
     private void OnLoadInput(InputAction.CallbackContext _)
     {
+        if (player.SkillRelatedAction.IsPickUp) // 물건을 들고 있을 때 입력 막기
+            return;
+
         if (IsBowEquip) // 활을 장비하고 있는 경우
         {
             if (!IsArrowEquip)  // 장전된 화살이 없는 경우
@@ -277,6 +286,9 @@ public class Weapon : MonoBehaviour
     /// </summary>
     public void LoadArrowAfter()
     {
+        if (player.SkillRelatedAction.IsPickUp) // 물건을 들고 있을 때 입력 막기
+            return;
+
         if (IsArrowEquip) // 화살이 장전된 상태인 경우
         {
             // Debug.Log($"IsZoomIn : {IsZoomIn}");
