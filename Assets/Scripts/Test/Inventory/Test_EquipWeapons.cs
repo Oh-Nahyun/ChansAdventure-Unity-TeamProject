@@ -22,6 +22,6 @@ public class Test_EquipWeapons : TestBase
 
     protected override void OnTest2(InputAction.CallbackContext context)
     {
-        Factory.Instance.GetItemObject(manager.datas[(uint)ItemCode.Arrow], 10, target.position);
+        Factory.Instance.GetItemObjets(manager.datas[(uint)ItemCode.Arrow], 10, target.position, true);
     }
 }

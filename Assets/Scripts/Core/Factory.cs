@@ -222,9 +222,36 @@ public class Factory : Singleton<Factory>
     /// <returns></returns>
     public GameObject GetItemObject(ItemData itemData, uint count = 1, Vector3? position = null)
     {
-        GameObject obj = itemPool.GetItemObject(itemData, count, position);
+        GameObject obj = itemPool.GetItemObject(itemData, position);
 
         return obj;
+    }
+
+    /// <summary>
+    /// 아이템들을 생성하는 함수
+    /// </summary>
+    /// <param name="itemData">생성할 아이템 데이터</param>
+    /// <param name="count">아이탬 개수</param>
+    /// <param name="position">아이템 위치</param>
+    /// <param name="getNoise">true면 포지션 + 랜덤위치 설정, false면 position에 생성</param>
+    /// <returns></returns>
+    public GameObject[] GetItemObjets(ItemData itemData, uint count = 1, Vector3? position = null, bool getNoise = false)
+    {
+        GameObject[] objs = new GameObject[count];  // 아이템 개수만큼 증가
+        Vector3? itemPosition = Vector3.zero;       // 설정될 아이템 위치
+
+        for(int i = 0; i < objs.Length; i++)
+        {
+            Vector3 noisePosition = Random.onUnitSphere.normalized * 1.5f;  // 구 범위네 랜덤 위치 설정
+            if(getNoise)
+            {
+                itemPosition = position + noisePosition;                    // 아이템 위치 설정
+            }
+
+            objs[i] = itemPool.GetItemObject(itemData, itemPosition);       // 배열에 아이템 저장
+        }
+
+        return objs;    // 아이템풀에 아이템 반환
     }
 
     // Player Weapon Arrow
