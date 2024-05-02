@@ -222,7 +222,9 @@ public class Factory : Singleton<Factory>
     /// <returns></returns>
     public GameObject GetItemObject(ItemData itemData, uint count = 1, Vector3? position = null)
     {
-        return itemPool.GetItemObject(itemData, count, position);
+        GameObject obj = itemPool.GetItemObject(itemData, count, position);
+
+        return obj;
     }
 
     // Player Weapon Arrow
