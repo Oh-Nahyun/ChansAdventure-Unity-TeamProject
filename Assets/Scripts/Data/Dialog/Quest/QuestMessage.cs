@@ -45,7 +45,6 @@ public class QuestMessage : MonoBehaviour
             completeMessage.alpha += Time.deltaTime * alphaChangeSpeed;
             yield return null;
         }
-
     }
 
     IEnumerator SetOffAlphaChange()

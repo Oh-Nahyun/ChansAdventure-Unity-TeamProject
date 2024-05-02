@@ -21,6 +21,9 @@ public class QuestManager : MonoBehaviour
         GenerateData();
     }
 
+    /// <summary>
+    /// Dictionary questList에 퀘스트 Data를 추가하는 함수 (키값 / QuestData(퀘스트 종류, 이름, 내용, 목표))
+    /// </summary>
     private void GenerateData()
     {
         questList.Add(0, new QuestData(QuestData.QuestType.None, "퀘스트 이름", "퀘스트 내용", "퀘스트 목표"));
@@ -71,6 +74,11 @@ public class QuestManager : MonoBehaviour
 
         }
     }
+
+    /// <summary>
+    /// QuestInfoPanel생성을 위한 함수
+    /// </summary>
+    /// <returns></returns>
     private QuestInfoPanel CreateQuestInfoPanel()
     {
         // QuestInfoPanel 프리팹을 Instantiate하여 생성
@@ -80,6 +88,10 @@ public class QuestManager : MonoBehaviour
         return newQuestInfoPanel;
     }
 
+    /// <summary>
+    /// QuestInfoPanel삭제를 위한 함수
+    /// </summary>
+    /// <param name="panel"></param>
     private void DestroyQuestInfoPanel(QuestInfoPanel panel)
     {
         // 리스트에서 제거하고 GameObject를 파괴

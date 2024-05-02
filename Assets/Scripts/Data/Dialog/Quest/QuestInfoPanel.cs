@@ -10,6 +10,8 @@ public class QuestInfoPanel : MonoBehaviour, IPointerClickHandler
     TextMeshProUGUI textQuestName;
     QuestInfoData questInfoData;
 
+    TestNPC test;
+
     public int questId;
     /// <summary>
     /// 퀘스트 이름
@@ -24,10 +26,17 @@ public class QuestInfoPanel : MonoBehaviour, IPointerClickHandler
     /// </summary>
     public string questObjectives;
 
+    
+
     private void Awake()
     {
         textQuestName = GetComponentInChildren<TextMeshProUGUI>();
         questInfoData = FindAnyObjectByType<QuestInfoData>();
+    }
+
+    private void Start()
+    {
+        
     }
 
     private void Update()
@@ -47,7 +56,7 @@ public class QuestInfoPanel : MonoBehaviour, IPointerClickHandler
             case QuestType.None:
                 break;
             case QuestType.Hunt:
-                HuntQuest(1, 10);
+                HuntQuest(0, 10);
                 break;
             case QuestType.GiveItem:
                 GiveItemQuest();
@@ -71,6 +80,8 @@ public class QuestInfoPanel : MonoBehaviour, IPointerClickHandler
     public void HuntQuest(int currentKill, int maxKill)
     {
         int killCount = maxKill - currentKill;
+        questObjectives = $"{questObjectives} 처치 {currentKill}/{maxKill} ";
+
         Debug.Log(killCount);
     }
 
