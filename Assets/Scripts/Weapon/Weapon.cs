@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -77,6 +78,21 @@ public class Weapon : MonoBehaviour
     Arrow arrow;
     ArrowFirePoint arrowFirePoint;
     //PlayerFollowVCam vcam;
+
+    /// <summary>
+    /// 화살이 있는 아이템 슬롯
+    /// </summary>
+    InventorySlot arrowSlot;
+
+    /// <summary>
+    /// 화살개수
+    /// </summary>
+    uint arrowCount = 0;
+
+    /// <summary>
+    /// 화살 프리팹
+    /// </summary>
+    GameObject arrowPrefab;
 
     private void Awake()
     {
@@ -227,6 +243,7 @@ public class Weapon : MonoBehaviour
                 break;
             case WeaponMode.Bow:
                 //ShowWeapon(false, true);
+                UpdateArrow();
                 IsBowEquip = true;
                 break;
         }
@@ -280,7 +297,7 @@ public class Weapon : MonoBehaviour
 
         if (IsBowEquip) // 활을 장비하고 있는 경우
         {
-            if (!IsArrowEquip)  // 장전된 화살이 없는 경우
+            if (!IsArrowEquip && arrowCount > 0)  // 장전된 화살이 없는 경우
             {
                 animator.SetBool(HaveArrowHash, true); // 화살 장전
                 Debug.Log($"화살 장전 완료");
@@ -318,7 +335,9 @@ public class Weapon : MonoBehaviour
     /// </summary>
     public void FireLoadedArrow()
     {
-        arrowFirePoint.FireArrow();
+        //arrowFirePoint.FireArrow();
+        // 화살 개수 소비
+        OnFierArrow();
     }
 
     /// <summary>
@@ -417,7 +436,7 @@ public class Weapon : MonoBehaviour
     //    arrow.CloseArrow();
     //}
 
-    #region Weapon Equip
+    #region Inventory Item Method
     /// <summary>
     /// 아이템 장착시 실행되는 함수 ( 무기 정보를 가진 변수 초기화 함수 )
     /// </summary>
@@ -460,6 +479,51 @@ public class Weapon : MonoBehaviour
             bowWeapon = null;
             bow = null;
         }
+    }
+
+    /// <summary>
+    /// 화살을 발사 할 때 화살 개수를 소모하고 화살을 생성하는 함수
+    /// </summary>
+    void OnFierArrow()
+    {
+        // 해당슬롯에 개수가 부족하면 보충
+        if(arrowCount > 0 && arrowSlot.CurrentItemCount <= 0)
+        {
+            UpdateArrow();
+        }
+
+        arrowCount--;
+        arrowSlot.DiscardItem(1); // 인벤토리에서 화살 개수 소비
+        arrowFirePoint.GetFireArrow(PoolObjectType.Arrow, arrowPrefab); // 화살 Factory에서 생성
+    }
+
+    /// <summary>
+    /// 화살을 들 때 인벤토리에서 사용할 수 있는 화살 개수를 업데이트 하는 함수
+    /// </summary>
+    void UpdateArrow()
+    {
+        Inventory inventory = player.Inventory;
+        uint totalGetItemCount = 0;
+
+        for (uint i = 0; i < inventory.SlotSize; i++)
+        {
+            InventorySlot slot = inventory[i];
+            ItemData_AttackConsumption itemData = slot.SlotItemData as ItemData_AttackConsumption;
+
+            if (itemData != null)
+            {
+                totalGetItemCount += (uint)slot.CurrentItemCount;  // 사용할 수 있는 화살 개수 추가
+                arrowPrefab = itemData.ItemPrefab;  // 화살 프리팹 갱신
+
+                arrowSlot = slot; // 사용하는 슬롯 갱신
+            }
+            else
+            {
+                Debug.Log($"인벤토리에 화살이 존재하지 않습니다.");
+            }
+        }
+
+        arrowCount = totalGetItemCount; // 찾은 화살 개수 갱신
     }
     #endregion
 }
