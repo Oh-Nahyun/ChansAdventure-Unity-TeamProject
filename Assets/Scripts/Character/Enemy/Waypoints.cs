@@ -10,7 +10,7 @@ public class Waypoints : MonoBehaviour
     /// <summary>
     /// 웨이포인트 지점들
     /// </summary>
-    Transform[] children;
+    protected Transform[] children;
 
     /// <summary>
     /// 다음 목적지의 인덱스
@@ -37,7 +37,8 @@ public class Waypoints : MonoBehaviour
     /// </summary>
     public void StepNextWaypoint()
     {
-        index++;
+        index = Random.Range(0, children.Length);
+        //index++;
         index %= children.Length;
     }
 }

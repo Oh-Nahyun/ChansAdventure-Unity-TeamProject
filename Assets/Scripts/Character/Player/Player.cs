@@ -986,7 +986,10 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
 
     public void Defence(float damage)
     {
-        
+        if (IsAlive) // 살아있을 때만 데미지를 받음
+        {
+            Debug.Log("플레이어가 피격 당함");
+        }
     }
     //--------------------------------------------------------------------------------------------------
 #endif
