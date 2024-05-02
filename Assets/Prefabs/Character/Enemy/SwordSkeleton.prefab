@@ -1243,6 +1243,7 @@ GameObject:
   - component: {fileID: 3373954111339415309}
   - component: {fileID: 2088365904718245669}
   - component: {fileID: 247207287198914142}
+  - component: {fileID: 2824087874477392800}
   m_Layer: 12
   m_Name: SwordPoint
   m_TagString: Untagged
@@ -1298,6 +1299,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 282a880ec9695e74090f4f5eab4b6a1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!54 &2824087874477392800
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6056834963434247184}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &6541590915794425210
 GameObject:
   m_ObjectHideFlags: 0
@@ -1616,8 +1644,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waitTime: 1
   invincibleTime: 2
-  walkSpeed: 1
-  runSpeed: 3
+  walkSpeed: 0
+  runSpeed: 0
   waypoints: {fileID: -8054210421774038281, guid: 8f85199086d70e84e9c542b7138b0a44,
     type: 3}
   farSightRange: 10
