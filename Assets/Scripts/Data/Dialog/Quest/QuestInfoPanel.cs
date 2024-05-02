@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -26,25 +27,38 @@ public class QuestInfoPanel : MonoBehaviour, IPointerClickHandler
     /// </summary>
     public string questObjectives;
 
-    
+    private int questCount = 0;
+    private int questMaxCount = 0;
+
+    public Action<int> QuestClearId;
+
+
 
     private void Awake()
     {
         textQuestName = GetComponentInChildren<TextMeshProUGUI>();
         questInfoData = FindAnyObjectByType<QuestInfoData>();
+        test = FindAnyObjectByType<TestNPC>();
+       
     }
 
     private void Start()
     {
-        
+        test.EnemyId += (id) => getEnemyID(id);
+        test.KillEnemy += (count) => 
+        {
+            UpdateQuestProgress(count);
+            UpdateQuestUI();
+        };
     }
 
     private void Update()
     {
         textQuestName.text = questName;
+        
     }
 
-    public void Initialize(QuestType type, int id, string name, string contents, string objectives)
+    public void Initialize(QuestType type, int id, string name, string contents, string objectives, int count)
     {
         questId = id;
         questName = name;
@@ -56,7 +70,7 @@ public class QuestInfoPanel : MonoBehaviour, IPointerClickHandler
             case QuestType.None:
                 break;
             case QuestType.Hunt:
-                HuntQuest(0, 10);
+                HuntQuest(count);
                 break;
             case QuestType.GiveItem:
                 GiveItemQuest();
@@ -77,12 +91,16 @@ public class QuestInfoPanel : MonoBehaviour, IPointerClickHandler
         questInfoData.setQuestList(questName, questContents, questObjectives);
     }
 
-    public void HuntQuest(int currentKill, int maxKill)
+    public void HuntQuest(int maxKill)
     {
-        int killCount = maxKill - currentKill;
-        questObjectives = $"{questObjectives} 처치 {currentKill}/{maxKill} ";
-
-        Debug.Log(killCount);
+        questMaxCount = maxKill;
+        UpdateQuestUI();
+        Debug.Log($"{questCount} 갱신");
+        // 현재 퀘스트 진행 상황을 기준으로 클리어 여부를 확인합니다.
+        if (questCount >= maxKill)
+        {
+            QuestClear();
+        }
     }
 
     public void GiveItemQuest()
@@ -95,5 +113,23 @@ public class QuestInfoPanel : MonoBehaviour, IPointerClickHandler
         // Clear dungeon quest logic
     }
 
+    public void UpdateQuestProgress(int currentKill)
+    {
+        this.questCount = currentKill;
+    }
+    void UpdateQuestUI()
+    {
+        questObjectives = $"처치 {questCount}/{questMaxCount} ";
+    }
+
+    private void QuestClear()
+    {
+        QuestClearId?.Invoke(questId);
+    }
+
+    private void getEnemyID(int EnemyId)
+    {
+        
+    }
 
 }

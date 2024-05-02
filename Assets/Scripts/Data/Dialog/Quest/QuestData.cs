@@ -27,23 +27,33 @@ public class QuestData
     /// </summary>
     public string questContents;
     /// <summary>
-    /// 퀘스트 목표
+    /// 퀘스트 목표 내용
     /// </summary>
-    public string questObjectives;
-    public int[] npcId;
+    public string questObjectivesText;
 
-    public QuestData(QuestType type, string name, string contents, string objectives)
+    /// <summary>
+    /// 퀘스트 목표 수행 횟수
+    /// </summary>
+    public int questObjectivesCount;
+
+    /// <summary>
+    /// 퀘스트 목표 게임 오브젝트
+    /// </summary>
+    public GameObject questObject;
+
+    public QuestData(QuestType type, string name, string contents, string objectives, int count, GameObject gameObject)
     {
-        QuestInfo(type, name, contents, objectives);
+        QuestInfo(type, name, contents, objectives, count, gameObject);
     }
 
-    public void QuestInfo(QuestType type, string name, string contents, string objectives)
+    public void QuestInfo(QuestType type, string name, string contents, string objectives, int count, GameObject gameObject)
     {
         questName = name;
         questContents = contents;
-        questObjectives = objectives;
-
+        questObjectivesText = objectives;
         questType = type;
+        questObjectivesCount = count;
+        questObject = gameObject;
     }
 
   
