@@ -106,7 +106,7 @@ public class InventorySlot
     {
         int overCount = 0;
         // 넘친다면?
-        SlotItemData = ItemDataManager.Instance.datas[code];
+        SlotItemData = GameManager.Instance.ItemDataManager.datas[code];
         CurrentItemCount += count;  // add item
 
         if (CurrentItemCount > SlotItemData.maxCount)

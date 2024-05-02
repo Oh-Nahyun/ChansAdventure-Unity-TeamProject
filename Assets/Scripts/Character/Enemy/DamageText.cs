@@ -6,36 +6,36 @@ using UnityEngine;
 public class DamageText : RecycleObject
 {
     /// <summary>
-    /// ÀÌµ¿ º¯È­ ³ªÅ¸³»´Â Ä¿ºê
+    /// ì´ë™ ë³€í™” ë‚˜íƒ€ë‚´ëŠ” ì»¤ë¸Œ
     /// </summary>
     public AnimationCurve movement;
 
     /// <summary>
-    /// Åõ¸í Á¤µµ¿Í Å©±â º¯È­¸¦ ³ªÅ¸³»´Â Ä¿ºê
+    /// íˆ¬ëª… ì •ë„ì™€ í¬ê¸° ë³€í™”ë¥¼ ë‚˜íƒ€ë‚´ëŠ” ì»¤ë¸Œ
     /// </summary>
     public AnimationCurve fade;
 
     /// <summary>
-    /// ÃÖ´ë·Î ¿Ã¶ó°¡´Â Á¤µµ(ÃÖ´ë³ôÀÌ = baseHeight + maxHeight)
+    /// ìµœëŒ€ë¡œ ì˜¬ë¼ê°€ëŠ” ì •ë„(ìµœëŒ€ë†’ì´ = baseHeight + maxHeight)
     /// </summary>
     public float maxHeight = 1.5f;
 
     /// <summary>
-    /// ÀüÃ¼ Àç»ı ½Ã°£
+    /// ì „ì²´ ì¬ìƒ ì‹œê°„
     /// </summary>
     public float duration = 1.0f;
 
     /// <summary>
-    /// ÇöÀç ÁøÇà ½Ã°£
+    /// í˜„ì¬ ì§„í–‰ ì‹œê°„
     /// </summary>
     float elapsedTime = 0.0f;
 
     /// <summary>
-    /// ±âº» ³ôÀÌ(»ı¼º µÇ¾úÀ» ¶§ÀÇ ³ôÀÌ)
+    /// ê¸°ë³¸ ë†’ì´(ìƒì„± ë˜ì—ˆì„ ë•Œì˜ ë†’ì´)
     /// </summary>
     float baseHeight = 0.0f;
 
-    // ÄÄÆ÷³ÍÆ®
+    // ì»´í¬ë„ŒíŠ¸
     TextMeshPro damageText;
 
     private void Awake()
@@ -47,41 +47,41 @@ public class DamageText : RecycleObject
     {
         base.OnEnable();
 
-        // °¢Á¾ ÃÊ±âÈ­
-        elapsedTime = 0.0f;                 // ÁøÇà½Ã°£ ÃÊ±âÈ­
-        damageText.color = Color.white;     // »ö»ó ÃÊ±âÈ­
-        transform.localScale = Vector3.one; // ½ºÄ³ÀÏ ÃÊ±âÈ­
-        baseHeight = transform.position.y;  // ±âº» ³ôÀÌ ¼³Á¤
+        // ê°ì¢… ì´ˆê¸°í™”
+        elapsedTime = 0.0f;                 // ì§„í–‰ì‹œê°„ ì´ˆê¸°í™”
+        damageText.color = Color.white;     // ìƒ‰ìƒ ì´ˆê¸°í™”
+        transform.localScale = Vector3.one; // ìŠ¤ìºì¼ ì´ˆê¸°í™”
+        baseHeight = transform.position.y;  // ê¸°ë³¸ ë†’ì´ ì„¤ì •
     }
 
     private void Update()
     {
-        elapsedTime += Time.deltaTime;              // ½Ã°£ ´©ÀûÇÏ°í
-        float timeRatio = elapsedTime / duration;   // ½Ã°£ ÁøÇàÀ² °è»ê
+        elapsedTime += Time.deltaTime;              // ì‹œê°„ ëˆ„ì í•˜ê³ 
+        float timeRatio = elapsedTime / duration;   // ì‹œê°„ ì§„í–‰ìœ¨ ê³„ì‚°
 
-        float curveMove = movement.Evaluate(timeRatio);             // Ä¿ºê¿¡¼­ ³ôÀÌ Á¤µµ °¡Á®¿À±â
-        float currentHeight = baseHeight + maxHeight * curveMove;   // »õ ³ôÀÌ °è»ê
-        transform.position = new Vector3(transform.position.x, currentHeight, transform.position.z);    // »õ ³ôÀÌ ÁöÁ¤
+        float curveMove = movement.Evaluate(timeRatio);             // ì»¤ë¸Œì—ì„œ ë†’ì´ ì •ë„ ê°€ì ¸ì˜¤ê¸°
+        float currentHeight = baseHeight + maxHeight * curveMove;   // ìƒˆ ë†’ì´ ê³„ì‚°
+        transform.position = new Vector3(transform.position.x, currentHeight, transform.position.z);    // ìƒˆ ë†’ì´ ì§€ì •
 
-        float curveAlpha = fade.Evaluate(timeRatio);        // Ä¿ºê¿¡¼­ Åõ¸íµµ ¹× ½ºÄ³ÀÏ °ª °¡Á®¿À±â
-        damageText.color = new Color(1, 1, 1, curveAlpha);  // »ö»ó ¼³Á¤
-        transform.localScale = new(curveAlpha, curveAlpha, curveAlpha); // ½ºÄÉÀÏ ¼³Á¤
+        float curveAlpha = fade.Evaluate(timeRatio);        // ì»¤ë¸Œì—ì„œ íˆ¬ëª…ë„ ë° ìŠ¤ìºì¼ ê°’ ê°€ì ¸ì˜¤ê¸°
+        damageText.color = new Color(1, 1, 1, curveAlpha);  // ìƒ‰ìƒ ì„¤ì •
+        transform.localScale = new(curveAlpha, curveAlpha, curveAlpha); // ìŠ¤ì¼€ì¼ ì„¤ì •
 
-        if (elapsedTime > duration)        // ÁøÇà½Ã°£ÀÌ ´ÙµÇ¸é
+        if (elapsedTime > duration)        // ì§„í–‰ì‹œê°„ì´ ë‹¤ë˜ë©´
         {
-            gameObject.SetActive(false);    // ½º½º·Î ºñÈ°¼ºÈ­
+            gameObject.SetActive(false);    // ìŠ¤ìŠ¤ë¡œ ë¹„í™œì„±í™”
         }
     }
 
     private void LateUpdate()
     {
-        transform.rotation = Camera.main.transform.rotation;    // ºôº¸µå·Î ¸¸µé±â
+        transform.rotation = Camera.main.transform.rotation;    // ë¹Œë³´ë“œë¡œ ë§Œë“¤ê¸°
     }
 
     /// <summary>
-    /// Ãâ·ÂµÉ ¼ıÀÚ ¼³Á¤
+    /// ì¶œë ¥ë  ìˆ«ì ì„¤ì •
     /// </summary>
-    /// <param name="damage">Ãâ·ÂµÉ µ¥¹ÌÁö</param>
+    /// <param name="damage">ì¶œë ¥ë  ë°ë¯¸ì§€</param>
     public void SetDamage(int damage)
     {
         damageText.text = damage.ToString();

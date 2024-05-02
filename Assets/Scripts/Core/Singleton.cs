@@ -88,6 +88,10 @@ public class Singleton<T> : MonoBehaviour where T : Component
         {
             OnPreInitialize();
         }
+        if(mode != LoadSceneMode.Additive)
+        {
+            OnAdditiveInitiallize();
+        }
         if(mode != LoadSceneMode.Additive)  // additive가 아닐때만 실행
         {
             OnInitialize();
@@ -107,6 +111,14 @@ public class Singleton<T> : MonoBehaviour where T : Component
     /// </summary>
     protected virtual void OnInitialize()
     {
+    }
+
+    /// <summary>
+    /// Additive 모드로 Scene을 로드했을 때 호출되는 함수
+    /// </summary>
+    protected virtual void OnAdditiveInitiallize()
+    {
+
     }
 
 

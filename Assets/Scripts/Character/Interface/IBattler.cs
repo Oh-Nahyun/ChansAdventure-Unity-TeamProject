@@ -26,13 +26,16 @@ public interface IBattler
     Action<int> onHit { get; set; }
 
     /// <summary>
-    /// 공격 함수
+    /// 기본 공격 함수
     /// </summary>
     /// <param name="target">내가 공격할 대상</param>
-    void Attack(IBattler target);
+    /// <param name="isWeakPoint">약점인지 아닌지 확인용(true이면 약점, false이면 약점아님</param>
+    void Attack(IBattler target, bool isWeakPoint = false);
+
+    
 
     /// <summary>
-    /// 방어 함수
+    /// 기본 방어 함수
     /// </summary>
     /// <param name="damage">내가 받은 데미지</param>
     void Defence(float damage);

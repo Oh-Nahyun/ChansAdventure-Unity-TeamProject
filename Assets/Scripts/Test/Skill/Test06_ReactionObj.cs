@@ -10,13 +10,13 @@ public class Test06_ReactionObj : TestBase
 
     protected override void OnTest1(InputAction.CallbackContext context)
     {
-        obj.PickUp(transform);
-        obj.Throw(3.0f, transform);
+        obj.TryPickUp(transform);
+        obj.TryThrow(3.0f, transform);
     }
 
     protected override void OnTest2(InputAction.CallbackContext context)
     {
-        obj.HitReaction(10);
+        obj.TryHit(10);
     }
 
 

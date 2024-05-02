@@ -22,24 +22,14 @@ public class Weapon : MonoBehaviour
     WeaponMode currentWeaponMode = WeaponMode.None;
 
     /// <summary>
-    /// 캐릭터의 오른손
-    /// </summary>
-    //Transform rightHand;
-
-    /// <summary>
-    /// 캐릭터의 오른손
-    /// </summary>
-    //Transform leftHand;
-
-    /// <summary>
     /// [무기1] 칼
     /// </summary>
-    Transform swordWeapon;
+    public Transform swordWeapon;
 
     /// <summary>
     /// [무기2-1] 활
     /// </summary>
-    Transform bowWeapon;
+    public Transform bowWeapon;
 
     /// <summary>
     /// [무기2-2] 화살
@@ -61,6 +51,13 @@ public class Weapon : MonoBehaviour
     /// </summary>
     public bool IsZoomIn = false;
 
+    // 애니메이션 클립의 리소스 경로
+    public string clipPath_None = "PlayerAnimations/N_Attack";
+    public string clipPath_Sword1 = "PlayerAnimations/S_Attack1";
+    public string clipPath_Sword2 = "PlayerAnimations/S_Attack2";
+    public string clipPath_SwordSheath2 = "PlayerAnimations/S_Sheath2";
+    readonly string clipPath_Bow = "PlayerAnimations/B_Attack";
+
     // 애니메이터용 해시값
     readonly int IsAttackHash = Animator.StringToHash("IsAttack");
     readonly int IsSwordHash = Animator.StringToHash("IsSword");
@@ -71,27 +68,27 @@ public class Weapon : MonoBehaviour
     readonly int ZoomInHash = Animator.StringToHash("ZoomIn");
 
     // 컴포넌트들
+    PlayerController playerController;
     PlayerinputActions inputActions;
     Animator animator;
     Player player;
     Sword sword;
     Bow bow;
     Arrow arrow;
-    PlayerFollowVCam vcam;
-
-    PlayerController playerContoller;
+    ArrowFirePoint arrowFirePoint;
+    //PlayerFollowVCam vcam;
 
     private void Awake()
     {
+        playerController = GetComponent<PlayerController>();
         inputActions = new PlayerinputActions();
         animator = GetComponent<Animator>();
         player = GetComponent<Player>();
         sword = GetComponentInChildren<Sword>();
         bow = GetComponentInChildren<Bow>();
         arrow = GetComponentInChildren<Arrow>();
-        vcam = FindAnyObjectByType<PlayerFollowVCam>();
-
-        playerContoller = GetComponent<PlayerController>();
+        arrowFirePoint = GetComponentInChildren<ArrowFirePoint>();
+        //vcam = FindAnyObjectByType<PlayerFollowVCam>();
     }
 
     private void Start()
@@ -132,17 +129,18 @@ public class Weapon : MonoBehaviour
     /// <param name="context"></param>
     private void OnAttackInput(InputAction.CallbackContext context)
     {
+        if (player.SkillRelatedAction.IsPickUp) // 물건을 들고 있을 때 입력 막기
+            return;
+
         animator.SetTrigger(IsAttackHash);
 
         if (currentWeaponMode == WeaponMode.None)
         {
             animator.SetBool(UseWeaponHash, false);
-            IsBowEquip = false;
 
             // 공격할 동안 Player의 이동이 불가하도록 설정
             StopAllCoroutines();
-            //StartCoroutine(player.StopInput());
-            StartCoroutine(playerContoller.StopInput());
+            StartCoroutine(playerController.StopInput(clipPath_None));
         }
         else // 무기 모드가 Sword 또는 Bow인 경우
         {
@@ -151,34 +149,23 @@ public class Weapon : MonoBehaviour
             if (currentWeaponMode == WeaponMode.Sword)
             {
                 animator.SetTrigger(IsSwordHash);
-                IsBowEquip = false;
 
                 // 공격할 동안 Player의 이동이 불가하도록 설정
                 StopAllCoroutines();
-                //StartCoroutine(player.StopInput());
-                StartCoroutine(playerContoller.StopInput());
-
-                ////////// CriticalHit 설정하기
+                StartCoroutine(playerController.StopInput(clipPath_SwordSheath2));
             }
             else if (currentWeaponMode == WeaponMode.Bow)
             {
                 animator.SetTrigger(IsBowHash);
 
-                if (IsArrowEquip == false)
+                if (!IsArrowEquip)
                 {
                     animator.SetBool(HaveArrowHash, false);
 
                     // 공격할 동안 Player의 이동이 불가하도록 설정
                     StopAllCoroutines();
-                    //StartCoroutine(player.StopInput());
-                    StartCoroutine(playerContoller.StopInput());
+                    StartCoroutine(playerController.StopInput(clipPath_Bow));
                 }
-                //else
-                //{
-                //    LoadArrowAfter(); // 화살이 장전된 후 작업
-                //}
-                
-                IsBowEquip = true;
             }
         }
     }
@@ -189,6 +176,9 @@ public class Weapon : MonoBehaviour
     /// <param name="context"></param>
     private void OnChangeInput(InputAction.CallbackContext context)
     {
+        if (player.SkillRelatedAction.IsPickUp) // 물건을 들고 있을 때 입력 막기
+            return;
+
         if (currentWeaponMode == WeaponMode.None)
         {
             // 무기를 들고 있지 않는 경우 => 칼을 들도록 한다.
@@ -214,19 +204,21 @@ public class Weapon : MonoBehaviour
     /// <summary>
     /// 무기 모드에 따라 보여줄 무기이 변경되는 함수
     /// </summary>
-    /// <param name="mode"></param>
     private void ChangeWeapon(WeaponMode mode)
     {
         switch (mode)
         {
             case WeaponMode.None:
                 ShowWeapon(false, false);
+                IsBowEquip = false;
                 break;
             case WeaponMode.Sword:
                 ShowWeapon(true, false);
+                IsBowEquip = false;
                 break;
             case WeaponMode.Bow:
                 ShowWeapon(false, true);
+                IsBowEquip = true;
                 break;
         }
     }
@@ -274,33 +266,50 @@ public class Weapon : MonoBehaviour
     /// </summary>
     private void OnLoadInput(InputAction.CallbackContext _)
     {
-        Debug.Log($"IsArrowEquip : {IsArrowEquip}");
-        if (IsArrowEquip == false)  // 장전된 화살이 없는 경우
-        {
-            animator.SetBool(HaveArrowHash, true); // 화살 장전
-        }
+        if (player.SkillRelatedAction.IsPickUp) // 물건을 들고 있을 때 입력 막기
+            return;
 
-        IsArrowEquip = true; // 화살이 장전됐다고 변수 설정
-        Debug.Log($"IsArrowEquip : {IsArrowEquip}");
+        if (IsBowEquip) // 활을 장비하고 있는 경우
+        {
+            if (!IsArrowEquip)  // 장전된 화살이 없는 경우
+            {
+                animator.SetBool(HaveArrowHash, true); // 화살 장전
+                Debug.Log($"화살 장전 완료");
+            }
+
+            IsArrowEquip = true; // 화살이 장전되어있다고 변수 설정
+        }
     }
 
     /// <summary>
-    /// 화살이 장전된 후 화살 관련 변수 설정을 위한 함수
+    /// 화살이 장전된 후 작업(화살 관련 변수 설정)을 위한 함수
     /// </summary>
     public void LoadArrowAfter()
     {
-        if (IsArrowEquip == true) // 화살이 장전된 상태인 경우
-        {
-            animator.SetBool(ZoomInHash, IsZoomIn); // 카메라 줌 설정
-            Debug.Log($"IsZoomIn : {IsZoomIn}");
+        if (player.SkillRelatedAction.IsPickUp) // 물건을 들고 있을 때 입력 막기
+            return;
 
-            if (IsZoomIn == false) // 카메라 줌아웃인 경우 ( = 화살을 쐈다.)
+        if (IsArrowEquip) // 화살이 장전된 상태인 경우
+        {
+            // Debug.Log($"IsZoomIn : {IsZoomIn}");
+            animator.SetBool(ZoomInHash, IsZoomIn); // 카메라 줌 설정
+
+            if (!IsZoomIn) // 카메라 줌아웃인 경우 ( = 화살을 쐈다.)
             {
                 // 장전되었던 화살 사용 표시
                 animator.SetBool(HaveArrowHash, false);
                 IsArrowEquip = false;
+                // Debug.Log($"IsArrowEquip : {IsArrowEquip}");
             }
         }
+    }
+
+    /// <summary>
+    /// 장전된 화살을 발사하는 함수 (Animation 설정용)
+    /// </summary>
+    public void FireLoadedArrow()
+    {
+        arrowFirePoint.FireArrow();
     }
 
     /// <summary>

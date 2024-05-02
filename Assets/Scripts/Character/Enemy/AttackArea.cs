@@ -3,30 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
 /// <summary>
-/// °ø°İÀ» 2¹ø ¸Â´Â ¹ö±× ¼öÁ¤À» À§ÇØ ÇÊ¼ö
+/// ê³µê²©ì„ 2ë²ˆ ë§ëŠ” ë²„ê·¸ìˆ˜ì •ì„ ìœ„í•´ í•„ìˆ˜
 /// </summary>
 public class AttackArea : MonoBehaviour
 {
     /// <summary>
-    /// ÇÃ·¹ÀÌ¾î°¡ µé¾î¿ÔÀ» ¶§ ½ÇÇàµÇ´Â µ¨¸®°ÔÀÌÆ®
+    /// í”Œë ˆì´ì–´ê°€ ë“¤ì–´ì™”ì„ ë•Œ ì‹¤í–‰ë˜ëŠ” ë¸ë¦¬ê²Œì´íŠ¸
     /// </summary>
     public Action<IBattler> onPlayerIn;
 
     /// <summary>
-    /// ÇÃ·¹ÀÌ¾î°¡ ³ª°¬À» ¶§ ½ÇÇàµÇ´Â µ¨¸®°ÔÀÌÆ®
+    /// í”Œë ˆì´ì–´ê°€ ë‚˜ê°”ì„ ë•Œ ì‹¤í–‰ë˜ëŠ” ë¸ë¦¬ê²Œì´íŠ¸
     /// </summary>
     public Action<IBattler> onPlayerOut;
 
     /// <summary>
-    /// °ø°İ ¹üÀ§¸¦ °áÁ¤ÇÏ´Â ÄÃ¶óÀÌ´õ
+    /// ê³µê²© ë²”ìœ„ë¥¼ ê²°ì •í•˜ëŠ” ì»¬ë¼ì´ë”
     /// </summary>
-    public SphereCollider attackArea;   // ½ÇÇàÀü¿¡µµ ±âÁî¸ğ·Î Ç¥½ÃÇÏ±â À§ÇØ publicÀ¸·Î ¼³Á¤ÇÑ ÈÄ ÀÎ½ºÆÑÅÍ Ã¢¿¡¼­ ÁöÁ¤
+    public SphereCollider attackArea;   // ì‹¤í–‰ì „ì—ë„ ê¸°ì¦ˆëª¨ë¡œ í‘œì‹œí•˜ê¸° ìœ„í•´ publicìœ¼ë¡œ ì„¤ì •í•œ í›„ ì¸ìŠ¤íŒ©í„° ì°½ì—ì„œ ì§€ì •
 
     private void Awake()
     {
@@ -35,11 +34,11 @@ public class AttackArea : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // ÇÃ·¹ÀÌ¾î°¡ µé¾î¿ÔÀ¸¸é
+        // í”Œë ˆì´ì–´ê°€ ë“¤ì–´ì™”ìœ¼ë©´
         if (other.CompareTag("Player"))
         {
             IBattler target = other.GetComponent<IBattler>();
-            onPlayerIn?.Invoke(target);     // ÇÃ·¹ÀÌ¾î°¡ µé¾î¿ÔÀ½À» ¾Ë¸²
+            onPlayerIn?.Invoke(target);     // í”Œë ˆì´ì–´ê°€ ë“¤ì–´ì™”ìŒì„ ì•Œë¦¼
         }
     }
 
@@ -48,7 +47,7 @@ public class AttackArea : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             IBattler target = other.GetComponent<IBattler>();
-            onPlayerOut?.Invoke(target);    // ÇÃ·¹ÀÌ¾î°¡ ³ª°¬À½À» ¾Ë¸²
+            onPlayerOut?.Invoke(target);    // í”Œë ˆì´ì–´ê°€ ë‚˜ê°”ìŒì„ ì•Œë¦¼
         }
     }
 
@@ -58,7 +57,7 @@ public class AttackArea : MonoBehaviour
         if (attackArea != null)
         {
             Handles.color = Color.red;
-            Handles.DrawWireDisc(transform.position, transform.up, attackArea.radius, 5);   // °ø°İ ¹üÀ§ ±×¸®±â
+            Handles.DrawWireDisc(transform.position, transform.up, attackArea.radius, 5);   // ê³µê²© ë²”ìœ„ ê·¸ë¦¬ê¸°
         }
     }
 #endif
