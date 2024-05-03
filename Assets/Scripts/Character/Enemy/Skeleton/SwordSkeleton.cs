@@ -493,7 +493,7 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
     public void Attack(IBattler target, bool isWeakPoint)
     {
         animator.SetTrigger("Attack");      // 애니메이션 재생
-        target.Defence(AttackPower);        // 공격 대상에게 데미지 전달
+        //target.Defence(AttackPower);        // 공격 대상에게 데미지 전달
         attackCoolTime = attackInterval;    // 쿨타임 초기화
     }
 
@@ -577,33 +577,33 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
         }
     }
 
-    ///// <summary>
-    ///// 무기 콜라이더 켜는 함수
-    ///// </summary>
-    //private void WeaponBladeEnable()
-    //{
-    //    if (swordCollider != null)
-    //    {
-    //        swordCollider.enabled = true;
-    //    }
+    /// <summary>
+    /// 무기 콜라이더 켜는 함수
+    /// </summary>
+    private void WeaponBladeEnable()
+    {
+        if (swordCollider != null)
+        {
+            swordCollider.enabled = true;
+        }
 
-    //    // onWeaponBladeEnabe 켜라고 신호보내기
-    //    onWeaponBladeEnabe?.Invoke(true);
-    //}
+        // onWeaponBladeEnabe 켜라고 신호보내기
+        onWeaponBladeEnabe?.Invoke(true);
+    }
 
-    ///// <summary>
-    ///// 무기 콜라이더 끄는 함수
-    ///// </summary>
-    //private void WeaponBladeDisable()
-    //{
-    //    if (swordCollider != null)
-    //    {
-    //        swordCollider.enabled = false;
-    //    }
+    /// <summary>
+    /// 무기 콜라이더 끄는 함수
+    /// </summary>
+    private void WeaponBladeDisable()
+    {
+        if (swordCollider != null)
+        {
+            swordCollider.enabled = false;
+        }
 
-    //    // onWeaponBladeEnabe 끄라고 신호보내기
-    //    onWeaponBladeEnabe?.Invoke(false);
-    //}
+        // onWeaponBladeEnabe 끄라고 신호보내기
+        onWeaponBladeEnabe?.Invoke(false);
+    }
 
 
     void PlayerDie()
@@ -646,6 +646,8 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
         weakPoint.gameObject.layer = LayerMask.NameToLayer("HitPoint"); // 약점 오브젝트의 레이어를 HitPoint로 바꾸기
         bodyPoint.gameObject.layer = LayerMask.NameToLayer("HitPoint"); // 몸체 오브젝트의 레이어를 HitPoint로 바꾸기
     }
+
+    
 
 #if UNITY_EDITOR
 

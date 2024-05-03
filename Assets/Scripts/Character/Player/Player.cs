@@ -366,9 +366,11 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// </summary>
     public float AttackPower => attackPower;
 
-    public float DefencePower => throw new NotImplementedException();
+    public float defencePower = 0;
 
-    public Action<int> onHit { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public float DefencePower => defencePower;
+
+    public Action<int> onHit { get; set; }
 
     /// <summary>
     /// 해당 오브젝트의 인벤토리
@@ -986,10 +988,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
 
     public void Defence(float damage)
     {
-        if (IsAlive) // 살아있을 때만 데미지를 받음
-        {
-            Debug.Log("플레이어가 피격 당함");
-        }
+        Debug.Log("플레이어가 피격 당함");
     }
     //--------------------------------------------------------------------------------------------------
 #endif

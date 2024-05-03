@@ -74,7 +74,7 @@ public class Test_SwordSkeleton : EnemyBase
             animator.SetTrigger(Attack_Hash);
 
             // ���� ����̵� Ȱ��ȭ
-            WeaponBladeEnable_Old();
+            //WeaponBladeEnable_Old();
 
             // ���� ��ٿ� ����
             canAttack = false;
@@ -208,26 +208,26 @@ public class Test_SwordSkeleton : EnemyBase
     }
 
     // ���� ����̵� Ȱ��ȭ �޼���
-    private void WeaponBladeEnable_Old()
-    {
-        if (swordCollider != null)
-        {
-            swordCollider.enabled = true;
-        }
+    //private void WeaponBladeEnable_Old()
+    //{
+    //    if (swordCollider != null)
+    //    {
+    //        swordCollider.enabled = true;
+    //    }
 
-        // onWeaponBladeEnabe ��������Ʈ ȣ��
-        onWeaponBladeEnabe?.Invoke(true);
-    }
+    //    // onWeaponBladeEnabe ��������Ʈ ȣ��
+    //    onWeaponBladeEnabe?.Invoke(true);
+    //}
 
-    // ���� ����̵� ��Ȱ��ȭ �޼���
-    private void WeaponBladeDisable_Old()
-    {
-        if (swordCollider != null)
-        {
-            swordCollider.enabled = false;
-        }
+    //// ���� ����̵� ��Ȱ��ȭ �޼���
+    //private void WeaponBladeDisable_Old()
+    //{
+    //    if (swordCollider != null)
+    //    {
+    //        swordCollider.enabled = false;
+    //    }
 
-        // onWeaponBladeEnabe ��������Ʈ ȣ��
-        onWeaponBladeEnabe?.Invoke(false);
-    }
+    //    // onWeaponBladeEnabe ��������Ʈ ȣ��
+    //    onWeaponBladeEnabe?.Invoke(false);
+    //}
 }

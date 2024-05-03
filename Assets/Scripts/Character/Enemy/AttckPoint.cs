@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,60 +7,34 @@ public class AttackPoint : RecycleObject
 {
     SwordSkeleton skeleton;
     NightmareDragon NightmareDragon;
+    
 
     private void Awake()
     {
-        skeleton = GetComponentInParent<SwordSkeleton>(true);   // 플레이어 찾기
+        skeleton = GetComponentInParent<SwordSkeleton>();   // 플레이어 찾기
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("BodyPoint"))
+        if (other.CompareTag("AttackPoint"))
         {
             // 몸 공격
-            IBattler target = other.GetComponent<IBattler>();
+            Player target = GameManager.Instance.Player;
             if (target != null)
             {
-                skeleton.Attack(target, false);
-
+                target.Defence(skeleton.AttackPower);        // 공격 대상에게 데미지 전달
             }
         }
-        else if (other.CompareTag("WeakPoint"))
-        {
-            // 약점 공격
-            IBattler target = other.GetComponent<IBattler>();
-            if (target != null)
-            {
-                skeleton.Attack(target, true);
-            }
-        }
+        //else if (other.CompareTag("Player"))
+        //{
+        //    // 약점 공격
+        //    Player target = GameManager.Instance.Player;
+        //    if (target != null)
+        //    {
+        //        target.Defence(skeleton.AttackPower);        // 공격 대상에게 데미지 전달
+        //    }
+        //}
     }
 
-    ///// <summary>
-    ///// 무기 콜라이더 켜는 함수
-    ///// </summary>
-    //private void WeaponBladeEnable()
-    //{
-    //    if (swordCollider != null)
-    //    {
-    //        swordCollider.enabled = true;
-    //    }
-
-    //    // onWeaponBladeEnabe 켜라고 신호보내기
-    //    onWeaponBladeEnabe?.Invoke(true);
-    //}
-
-    ///// <summary>
-    ///// 무기 콜라이더 끄는 함수
-    ///// </summary>
-    //private void WeaponBladeDisable()
-    //{
-    //    if (swordCollider != null)
-    //    {
-    //        swordCollider.enabled = false;
-    //    }
-
-    //    // onWeaponBladeEnabe 끄라고 신호보내기
-    //    onWeaponBladeEnabe?.Invoke(false);
-    //}
+    
 }
