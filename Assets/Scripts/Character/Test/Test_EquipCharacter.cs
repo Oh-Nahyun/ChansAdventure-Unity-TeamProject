@@ -60,6 +60,15 @@ public class Test_EquipCharacter : MonoBehaviour, IEquipTarget, IHealth
 
     Inventory inventory;
 
+    public Inventory Inventory
+    {
+        get => inventory;
+        set
+        {
+            inventory = value;
+        }
+    }
+
     PlayerinputActions input;
 
     Interaction interaction;
