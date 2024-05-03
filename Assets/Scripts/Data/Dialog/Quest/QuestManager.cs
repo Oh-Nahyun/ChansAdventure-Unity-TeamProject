@@ -22,14 +22,14 @@ public class QuestManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Dictionary questList에 퀘스트 Data를 추가하는 함수 (키값 / QuestData(퀘스트 종류, 이름, 내용, 목표))
+    /// Dictionary questList에 퀘스트 Data를 추가하는 함수 (키값 / QuestData(퀘스트 종류, 이름, 내용, 목표 ID))
     /// </summary>
     private void GenerateData()
     {
-        questList.Add(0, new QuestData(QuestData.QuestType.None, "퀘스트 이름", "퀘스트 내용", "퀘스트 목표", 1, gameObject));
-        questList.Add(10, new QuestData(QuestData.QuestType.Hunt, "퀘스트 사냥", "퀘스트 내용 사냥", "퀘스트 목표 10마리", 10, gameObject));
-        questList.Add(20, new QuestData(QuestData.QuestType.GiveItem, "퀘스트 아이템 기부", "퀘스트 내용 아이템 기부", "퀘스트 목표 10개", 10, gameObject));
-        questList.Add(30, new QuestData(QuestData.QuestType.ClearDungeon, "퀘스트 던전 클리어", "퀘스트 내용 던전 클리어", "퀘스트 목표 던전", 1, gameObject));
+        questList.Add(0, new QuestData(QuestData.QuestType.None, "퀘스트 이름", "퀘스트 내용", "퀘스트 목표", 1, 0));
+        questList.Add(10, new QuestData(QuestData.QuestType.Hunt, "퀘스트 사냥", "퀘스트 내용 사냥", "퀘스트 목표 10마리", 10, 1));
+        questList.Add(20, new QuestData(QuestData.QuestType.GiveItem, "퀘스트 아이템 기부", "퀘스트 내용 아이템 기부", "퀘스트 목표 10개", 10, 100));
+        questList.Add(30, new QuestData(QuestData.QuestType.ClearDungeon, "퀘스트 던전 클리어", "퀘스트 내용 던전 클리어", "퀘스트 목표 던전", 1, 0));
     }
 
     /// <summary>
@@ -55,7 +55,7 @@ public class QuestManager : MonoBehaviour
                 {
                     // QuestInfoPanel 동적 생성 및 초기화
                     QuestInfoPanel newQuestInfoPanel = CreateQuestInfoPanel();
-                    newQuestInfoPanel.Initialize(questData.questType , id, questData.questName, questData.questContents, questData.questObjectivesText, questData.questObjectivesCount);
+                    newQuestInfoPanel.Initialize(questData.questType , id, questData.questName, questData.questContents, questData.questObjectivesText, questData.questObjectivesCount, questData.questObjectID);
 
                     // 생성된 QuestInfoPanel을 리스트에 추가
                     questInfoPanels.Add(newQuestInfoPanel);

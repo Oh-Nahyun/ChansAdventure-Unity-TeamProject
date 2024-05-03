@@ -60,12 +60,16 @@ public class TextInteraction : MonoBehaviour
         }
     }
 
-    public void TextActive(bool t)
+    /// <summary>
+    /// TextInteraction오브젝트를 OnOff관리를 하기 위한
+    /// </summary>
+    /// <param name="OnOff">ture = On</param>
+    public void TextActive(bool OnOff)
     {
         if (textBox.TalkingEnd || textBoxItem.Talking)
         {
             gameObject.SetActive(false);
-        }else if (t)
+        }else if (OnOff)
         {
             gameObject.SetActive(true);
         }

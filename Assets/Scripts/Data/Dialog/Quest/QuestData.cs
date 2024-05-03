@@ -37,23 +37,23 @@ public class QuestData
     public int questObjectivesCount;
 
     /// <summary>
-    /// 퀘스트 목표 게임 오브젝트
+    /// 퀘스트 목표 게임 오브젝트 ID
     /// </summary>
-    public GameObject questObject;
+    public int questObjectID;
 
-    public QuestData(QuestType type, string name, string contents, string objectives, int count, GameObject gameObject)
+    public QuestData(QuestType type, string name, string contents, string objectives, int count, int gameObject)
     {
         QuestInfo(type, name, contents, objectives, count, gameObject);
     }
 
-    public void QuestInfo(QuestType type, string name, string contents, string objectives, int count, GameObject gameObject)
+    public void QuestInfo(QuestType type, string name, string contents, string objectives, int count, int gameObject)
     {
         questName = name;
         questContents = contents;
         questObjectivesText = objectives;
         questType = type;
         questObjectivesCount = count;
-        questObject = gameObject;
+        questObjectID = gameObject;
     }
 
   

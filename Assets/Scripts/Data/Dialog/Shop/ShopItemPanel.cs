@@ -94,6 +94,10 @@ public class ShopItemPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         }
     }
 
+    /// <summary>
+    /// 상점 패널을 클릭했을 때 실항할 함수
+    /// </summary>
+    /// <param name="eventData"></param>
     public void OnPointerClick(PointerEventData eventData)
     {
         if (inventory.Gold >= itemData.price)
@@ -118,6 +122,9 @@ public class ShopItemPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         }
     }
 
+    /// <summary>
+    /// 재고와 잔액에 따라 상점UI를 변화시키는 함수
+    /// </summary>
     private void SetShopItemText()
     {
         if (inventory == null)

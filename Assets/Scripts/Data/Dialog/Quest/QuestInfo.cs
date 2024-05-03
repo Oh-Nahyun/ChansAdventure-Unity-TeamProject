@@ -26,7 +26,9 @@ public class QuestInfo : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-
+    /// <summary>
+    /// 퀘스트 창을 켜고 끄는 함수
+    /// </summary>
     public void OnQuestInfo()
     {
         if (!onInfo)

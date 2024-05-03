@@ -32,10 +32,14 @@ public class NPC_Trader : NPCBase
         openShopinfo();
     }
 
+    /// <summary>
+    /// 상인과 대화시 실행될 함수
+    /// </summary>
     public void openShopinfo()
     {
         if(id == 4011)
         {
+            // 구매 열기
             shop.gameObject.SetActive(true);
             shop.CanvasGroup.alpha = 1;
             if (!textBox.TalkingEnd)
@@ -44,6 +48,7 @@ public class NPC_Trader : NPCBase
             }
         }else if (id == 4012)
         {
+            // 판매 열기
             if (!textBox.TalkingEnd)
             {
                 id = 4010;
@@ -51,6 +56,7 @@ public class NPC_Trader : NPCBase
         }
         else
         {
+            // 나가기
             if (!textBox.TalkingEnd)
             {
                 id = 4010;
