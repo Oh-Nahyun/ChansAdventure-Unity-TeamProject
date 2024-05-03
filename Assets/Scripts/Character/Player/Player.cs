@@ -405,6 +405,16 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// </summary>
     bool isOpenInventoryPanel = false;
 
+    /// <summary>
+    /// UI가 열려있는지 확인하는 변수
+    /// </summary>
+    bool isOpenedAnyUIPanel = false;
+
+    /// <summary>
+    /// UI가 열려있는지 확인하는 프로퍼티
+    /// </summary>
+    public bool IsOpenedAnyUIPanel => isOpenedAnyUIPanel;
+
     #endregion
 
     #region PlayerInteraction Values
@@ -503,6 +513,9 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// <param name="isMove">check press button ( wasd )</param>
     void OnMove(Vector2 input, bool isMove)
     {
+        if (IsOpenedAnyUIPanel)
+            return;
+
         // 입력 방향 저장
         inputDirection.x = input.x;
         inputDirection.y = 0;
@@ -553,6 +566,12 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// <param name="isLookingAround">true : , false : No input Value</param>
     void OnLookAround(Vector2 lookInput, bool isLookingAround)
     {
+        if (IsOpenedAnyUIPanel) // UI 열렸을 때
+        {
+            isLook = false;     // 카메라 움직임 비활성화
+            return;
+        }
+
         if (isLookingAround)
         {
             isLook = true;
@@ -632,7 +651,8 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// </summary>
     private void OnJump(bool isJump)
     {
-        if (SkillRelatedAction.IsPickUp) // 물건을 들고 있을 때 입력 막기
+        if (SkillRelatedAction.IsPickUp // 물건을 들고 있을 때 입력 막기
+            || IsOpenedAnyUIPanel)
             return;
 
         if (isJump)
@@ -833,7 +853,8 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         if (isOpenMapPanel) // 다른 UI가 열려있으면 무시
             return;
 
-        if(!isOpenInventoryPanel) // 인벤토리 패널 활성화
+
+        if (!isOpenInventoryPanel) // 인벤토리 패널 활성화
         {
             GameManager.Instance.ItemDataManager.InventoryUI.ShowInventory();
 
@@ -850,6 +871,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
             isOpenInventoryPanel = false;
         }    
 
+        isOpenedAnyUIPanel = isOpenInventoryPanel;
         GameManager.Instance.ItemDataManager.CharaterRenderCameraPoint.transform.eulerAngles = new Vector3(0, 180f, 0); // RenderTexture 플레이어 위치 초기화
     }
 
@@ -967,6 +989,8 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
 
             isOpenMapPanel = false;
         }
+
+        isOpenedAnyUIPanel = IsOpenMapPanel;
     }
 
     /// <summary>

@@ -47,7 +47,6 @@ public class InventorySlotUI : SlotUI_Base, IBeginDragHandler, IDragHandler, IEn
         if (obj != null)
         {
             PointerEventData.InputButton buttonValue = eventData.button; // 무슨 클릭인지 확인하는 enum값
-            //Debug.Log($"value : {buttonValue}");
 
             if(buttonValue == PointerEventData.InputButton.Left) // 왼쪽 클릭
             {

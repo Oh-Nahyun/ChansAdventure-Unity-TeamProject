@@ -149,7 +149,8 @@ public class Weapon : MonoBehaviour
     /// <param name="context"></param>
     private void OnAttackInput(InputAction.CallbackContext context)
     {
-        if (player.SkillRelatedAction.IsPickUp) // 물건을 들고 있을 때 입력 막기
+        if (player.SkillRelatedAction.IsPickUp // 물건을 들고 있을 때 입력 막기
+            || player.IsOpenedAnyUIPanel)   
             return;
 
         animator.SetTrigger(IsAttackHash);
