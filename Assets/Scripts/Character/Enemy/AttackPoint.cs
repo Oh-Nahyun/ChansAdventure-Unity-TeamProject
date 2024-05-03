@@ -6,12 +6,13 @@ using UnityEngine;
 public class AttackPoint : RecycleObject
 {
     SwordSkeleton skeleton;
-    NightmareDragon NightmareDragon;
+    NightmareDragon nightmareDragon;
     
 
     private void Awake()
     {
         skeleton = GetComponentInParent<SwordSkeleton>();   // 플레이어 찾기
+        nightmareDragon = GetComponentInParent<NightmareDragon>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -22,7 +23,14 @@ public class AttackPoint : RecycleObject
             Player target = GameManager.Instance.Player;
             if (target != null)
             {
-                target.Defence(skeleton.AttackPower);        // 공격 대상에게 데미지 전달
+                if(nightmareDragon != null)
+                {
+                    target.Defence(nightmareDragon.AttackPower);
+                }
+                else
+                {
+                    target.Defence(skeleton.AttackPower);        // 공격 대상에게 데미지 전달
+                }
             }
         }
         //else if (other.CompareTag("Player"))
