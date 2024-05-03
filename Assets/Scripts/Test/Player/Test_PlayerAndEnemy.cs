@@ -6,11 +6,15 @@ using UnityEngine.InputSystem;
 public class Test_PlayerAndEnemy : TestBase
 {
     public float damage = 10;
+
     Player player;
+
+    HeartCheckUI heartCheckUI;
 
     private void Start()
     {
         player = GameManager.Instance.Player;
+        heartCheckUI = FindAnyObjectByType<HeartCheckUI>();
     }
 
     protected override void OnTest1(InputAction.CallbackContext context)
@@ -22,5 +26,11 @@ public class Test_PlayerAndEnemy : TestBase
     {
         player.Defence(damage);
         Debug.Log($"Player's HP : {player.HP}");
+    }
+
+    protected override void OnTest3(InputAction.CallbackContext context)
+    {
+        heartCheckUI.PlusHeart();
+        Debug.Log("하트 이미지 배열 크기 증가 완료");
     }
 }
