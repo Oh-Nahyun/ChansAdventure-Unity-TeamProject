@@ -391,9 +391,19 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     public Inventory Inventory => inventory;
 
     /// <summary>
-    /// 인벤토리가 열렸는지 확인하는 변수
+    /// 맵 패널 활성화 여부 ( true : 열려있음 , false 닫혀있음 )
     /// </summary>
-    bool isInventoryOpen;
+    bool isOpenMapPanel = false;
+
+    /// <summary>
+    /// 맵 패널 활성화 여부를 접근하기 위한 프로퍼티 
+    /// </summary>
+    public bool IsOpenMapPanel => isOpenMapPanel;
+
+    /// <summary>
+    /// 인벤토리 패널 활성화 여부 ( true : 열려있음, false 닫혀있음)
+    /// </summary>
+    bool isOpenInventoryPanel = false;
 
     #endregion
 
@@ -407,12 +417,9 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     #endregion
 
     #region Etc Values
-    /// <summary>
-    /// LargeMap을 열었는지 확인하는 변수
-    /// </summary>
-    bool isOpenedLargeMap = false;
 
-    public bool IsOpenedLargeMap => isOpenedLargeMap;
+
+
 
     #endregion
 
@@ -823,22 +830,27 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// </summary>
     private void OnInventoryShow()
     {
-        if (IsOpenedLargeMap)
+        if (isOpenMapPanel) // 다른 UI가 열려있으면 무시
             return;
-        else
-        {
-            isInventoryOpen = GameManager.Instance.ItemDataManager.InventoryUI.ShowInventory();
-            GameManager.Instance.ItemDataManager.CharaterRenderCameraPoint.transform.eulerAngles = new Vector3(0, 180f, 0); // RenderTexture 플레이어 위치 초기화
 
-            if(isInventoryOpen)
-            {
-                GameManager.Instance.MapManager.CloseMiniMapUI();
-            }
-            else
-            {
-                GameManager.Instance.MapManager.OpenMiniMapUI();
-            }
-        }        
+        if(!isOpenInventoryPanel) // 인벤토리 패널 활성화
+        {
+            GameManager.Instance.ItemDataManager.InventoryUI.ShowInventory();
+
+            GameManager.Instance.MapManager.CloseMapUI();
+            GameManager.Instance.MapManager.CloseMiniMapUI();
+
+            isOpenInventoryPanel = true;
+        }
+        else // 인벤토리 패널 비활성화
+        {
+            GameManager.Instance.ItemDataManager.InventoryUI.CloseInventory();
+
+            GameManager.Instance.MapManager.OpenMiniMapUI();
+            isOpenInventoryPanel = false;
+        }    
+
+        GameManager.Instance.ItemDataManager.CharaterRenderCameraPoint.transform.eulerAngles = new Vector3(0, 180f, 0); // RenderTexture 플레이어 위치 초기화
     }
 
     #endregion
@@ -934,20 +946,26 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
 
     void OnMapShow()
     {
-        if(isInventoryOpen)
+        if (isOpenInventoryPanel) // 다른 UI가 열려있으면 무시
             return;
 
-        // 임시 온오프
-        if (isOpenedLargeMap == false)
+        // Large Map Panel 활성화, MiniMap 비활성화
+        if (!isOpenMapPanel)
         {
             GameManager.Instance.MapManager.OpenMapUI();
-            isOpenedLargeMap = true;
+            GameManager.Instance.MapManager.CloseMiniMapUI();
+
+            GameManager.Instance.ItemDataManager.InventoryUI.CloseInventory();
+
+            isOpenMapPanel = true;
         }
-        else if (isOpenedLargeMap == true)
+        else // Large Map Panel 비활성화, MiniMap 활성화
         {
             GameManager.Instance.MapManager.SetCameraPosition(transform.position);
             GameManager.Instance.MapManager.CloseMapUI();
-            isOpenedLargeMap = false;
+            GameManager.Instance.MapManager.OpenMiniMapUI();
+
+            isOpenMapPanel = false;
         }
     }
 
@@ -969,17 +987,6 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     #endregion
 
 #if UNITY_EDITOR
-
-    /// <summary>
-    /// Player 임의로 아이템 부여하는 함수 ( 빌드 할 때는 없어짐 ) 
-    /// </summary>
-    void Test_AddItem()
-    {
-        inventory.AddSlotItem((uint)ItemCode.Hammer);
-        inventory.AddSlotItem((uint)ItemCode.Sword);
-        inventory.AddSlotItem((uint)ItemCode.HP_portion, 3);
-        inventory.AddSlotItem((uint)ItemCode.Coin);
-    }
 
     //IBatter 인터페이스 상속 --------------------------------------------------------------------------------------------------
     public float weakPointAttack = 1.2f;

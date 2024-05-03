@@ -52,16 +52,41 @@ public class InventoryUI : MonoBehaviour
     /// </summary>
     InventorySelectedMenuUI selectedMenuUI;
 
-
-
     CanvasGroup canvasGroup;
 
+    /// <summary>
+    /// 그래그가 시작되면 실행하는 델리게이트
+    /// </summary>
     public Action<uint> onSlotDragBegin;
+
+    /// <summary>
+    /// 드래그가 끝나면 실행하는 델리게이트
+    /// </summary>
     public Action<GameObject> onSlotDragEnd;
+
+    /// <summary>
+    /// 드래그가 실패하면 실행하는 델리게이트
+    /// </summary>
     public Action onSlotDragEndFail;
+
+    /// <summary>
+    /// 슬롯에 마우스 포인터를 올리면 실행되는 델리게이트 ( 아이템 정보를 불러온다 )
+    /// </summary>
     public Action<uint> onShowDetail;
+
+    /// <summary>
+    /// 슬롯에 마우스 포인터가 벗어나면 실행하는 델리게이트 ( 아이템 정보창을 닫는다 )
+    /// </summary>
     public Action onCloseDetail;
+
+    /// <summary>
+    /// 아이템 슬롯을 왼쪽 클릭할 때 실행하는 델리게이트
+    /// </summary>
     public Action<uint> onLeftClickItem;
+    
+    /// <summary>
+    /// 아이템 슬롯을 오른쪽 클릭할 때 실행하는 델리게이트
+    /// </summary>
     public Action<uint, Vector2> onRightClickItem;
 
     /// <summary>
@@ -130,11 +155,13 @@ public class InventoryUI : MonoBehaviour
 
         if (Inventory[index].SlotItemData != null)
         {
+            // index번의 슬롯 내용 임시 저장
             uint targetSlotIndex = index;
             uint targetSlotItemCode = (uint)Inventory[index].SlotItemData.itemCode;
             int targetItemSlotCount = Inventory[index].CurrentItemCount;
             bool targetIsEquip = Inventory[index].IsEquip;
 
+            // tempSlot에 드래그를 시작한 슬롯의 아이템 데이터 저장
             tempSlotUI.OpenTempSlot();
 
             Inventory.AccessTempSlot(targetSlotIndex, targetSlotItemCode, targetItemSlotCount);
@@ -271,9 +298,10 @@ public class InventoryUI : MonoBehaviour
     /// <param name="index">보여줄려는 아이템 슬롯 인덱스</param>
     private void OnShowDetail(uint index)
     {
-        if (isOpenedMenuPanel)
+        if (isOpenedMenuPanel)  // 메뉴 패널이 열려있으면 무시
             return;
 
+        // 아이템 데이터가 있으면 아이템 정보 보여주기
         if (Inventory[index].SlotItemData != null)
         {
             string name = Inventory[index].SlotItemData.itemName;
@@ -294,12 +322,12 @@ public class InventoryUI : MonoBehaviour
         bool isEquip = Inventory[index].SlotItemData is IEquipable; // 장비 아이템이면 true 아니면 false
         if (isEquip)    // 클릭한 슬롯 아이템이 장비이면
         {
-            EquipItem(index);
+            EquipItem(index);   // 아이템 장비
         }
         bool isConsumalbe = Inventory[index].SlotItemData is IConsumable; // 회복 아이템이면 true 아니면 false
         if(isConsumalbe)
         {
-            ConsumItem(index);
+            ConsumItem(index);  // 아이템 소비
         }
     }
 
@@ -312,6 +340,8 @@ public class InventoryUI : MonoBehaviour
         isOpenedMenuPanel = true;
 
         // 버튼 이벤트 부여 index번 슬롯에 대한 내용 
+
+        // 아이템 나누기
         selectedMenuUI.OnDividButtonClick = () =>
         {
             if (Inventory[index].CurrentItemCount <= 1)
@@ -326,6 +356,7 @@ public class InventoryUI : MonoBehaviour
             isOpenedMenuPanel = false;
         };
 
+        // 아이템 드랍
         selectedMenuUI.OnDropButtonClick = () =>
         {
             DropItem(index);
@@ -428,9 +459,13 @@ public class InventoryUI : MonoBehaviour
         consumable.Consum(Inventory.Owner, Inventory[index]);
     }
 
+    /// <summary>
+    /// 인벤토리에서 아이템을 드랍하는 함수
+    /// </summary>
+    /// <param name="index"></param>
     private void DropItem(uint index)
     {
-        if(!Inventory[index].IsEquip)
+        if(!Inventory[index].IsEquip)   // 만약 아이템이 장착상태면 무시
         {
             Inventory.DropItem(index);
         }            
@@ -448,28 +483,25 @@ public class InventoryUI : MonoBehaviour
     /// <summary>
     /// 인벤토리 UI를 여는 함수
     /// </summary>
-    /// <returns>UI 활성화 true, 아니면 false</returns>
-    public bool ShowInventory()
+    public void ShowInventory()
     {
-        bool result = false;
-        if(canvasGroup.alpha == 1) // 비활성화
-        {
-            canvasGroup.alpha = 0;
-            canvasGroup.interactable = false;
-            canvasGroup.blocksRaycasts = false;
-        }
-        else if(canvasGroup.alpha < 1)// 활성화
-        {
-            canvasGroup.alpha = 1;
-            canvasGroup.interactable = true;
-            canvasGroup.blocksRaycasts = true;
-
-            result = true;
-        }
+        canvasGroup.alpha = 1;
+        canvasGroup.interactable = true;
+        canvasGroup.blocksRaycasts = true;
 
         RefreshInventoryUI();
+    }
 
-        return result;
+    /// <summary>
+    /// 인벤토리 UI를 닫는 함수
+    /// </summary>
+    public void CloseInventory()
+    {
+        canvasGroup.alpha = 0;
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
+
+        RefreshInventoryUI();
     }
 
     /// <summary>

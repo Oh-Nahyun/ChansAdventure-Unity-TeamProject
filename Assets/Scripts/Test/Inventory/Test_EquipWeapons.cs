@@ -16,8 +16,8 @@ public class Test_EquipWeapons : TestBase
 
     protected override void OnTest1(InputAction.CallbackContext context)
     {
-        Factory.Instance.GetItemObject(manager.datas[(uint)ItemCode.Bow], 1, target.position);
-        Factory.Instance.GetItemObject(manager.datas[(uint)ItemCode.Sword], 1, target.position);
+        Factory.Instance.GetItemObject(manager.datas[(uint)ItemCode.Bow], target.position);
+        Factory.Instance.GetItemObject(manager.datas[(uint)ItemCode.Sword], target.position);
     }
 
     protected override void OnTest2(InputAction.CallbackContext context)

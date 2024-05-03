@@ -214,13 +214,13 @@ public class Factory : Singleton<Factory>
 
     // Inventory Branch
     /// <summary>
-    /// Factory에서 아이템을 생성하는 함수
+    /// Factory에서 아이템 1개 생성하는 함수
     /// </summary>
     /// <param name="slot">소환할 아이템 슬롯</param>
     /// <param name="count">소환할 아이템 개수</param>
     /// <param name="position">소환할 위치</param>
     /// <returns></returns>
-    public GameObject GetItemObject(ItemData itemData, uint count = 1, Vector3? position = null)
+    public GameObject GetItemObject(ItemData itemData, Vector3? position = null)
     {
         GameObject obj = itemPool.GetItemObject(itemData, position);
 

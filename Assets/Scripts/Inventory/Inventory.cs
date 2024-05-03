@@ -76,6 +76,9 @@ public class Inventory
         }
     }
 
+    /// <summary>
+    /// 골드량이 변경됬을 때 실행되는 프로퍼티
+    /// </summary>
     public Action<uint> onInventoryGoldChange;
 
     /// <summary>
@@ -133,7 +136,7 @@ public class Inventory
 
             if (overCount > 0) // 넘친 아이템이 존재한다면
             {
-                // 재탐색 후 넣기
+                //  재탐색 후 넣기
                 uint slotIndex = FindSlot(code);
 
                 if (slotIndex >= maxSlot_size)
@@ -164,7 +167,7 @@ public class Inventory
 
         slots[index].DiscardItem(count);
     }
-    
+
     /// <summary>
     /// 가장 빠른번호의 비어있는 슬롯을 찾아주는 함수
     /// </summary>
@@ -178,9 +181,8 @@ public class Inventory
                 break;
             else if (slot.SlotItemData.itemCode == (ItemCode)code &&        // 매개변수 아이템 코드와 동일하고 
                      slot.CurrentItemCount < slot.SlotItemData.maxCount)    // 해당 슬롯의 아이템 개수가 최대치보다 낮다면 반환
-                break;
 
-            index++;
+                index++;
         }
 
 
@@ -200,7 +202,7 @@ public class Inventory
             return;
         }
 
-        uint tempIndex = slots[indexA].SlotIndex;   // 슬롯 인덱스        
+        uint tempIndex = slots[indexA].SlotIndex;   // 슬롯 인덱스          
         ItemData tempItemdata = slots[indexA].SlotItemData; // 아이템 데이터        
         int tempItemCount = slots[indexA].CurrentItemCount; // 슬롯이 가진 아이템 개수
 
@@ -292,14 +294,14 @@ public class Inventory
             if (slot.Item1 == null) break;  // 정렬된 내용을 다 옮겼으면 break;
             slots[index].ClearItem();       // 슬롯 내용 정리 후
             slots[index].AssignItem((uint)slot.Item1.itemCode, (int)slot.Item2, out _);    // 복사한 내용을 슬롯에 설정 ( item1 : ItemDatam , item2 : CurrentItemCount )
-            
+
             index++;
         }
 
         tempSortList.Clear();   // 임시 리스트 제거
 
         // 재배치후 불필요한 슬롯 데이터 제거
-        for(int i = index; i < SlotSize; i++)
+        for (int i = index; i < SlotSize; i++)
         {
             slots[i].ClearItem(); 
         }
@@ -364,9 +366,8 @@ public class Inventory
     {
         //GameObject dropItem = UnityEngine.Object.Instantiate(slots[index].SlotItemData.ItemPrefab, Owner.transform);
         ItemData dropItemData = slots[index].SlotItemData;
-        uint itemCount = 1;
 
-        GameObject dropItem = Factory.Instance.GetItemObject(dropItemData, itemCount, Owner.transform.position + Vector3.up * 0.5f); // Factory에서 아이템 소환
+        GameObject dropItem = Factory.Instance.GetItemObject(dropItemData, Owner.transform.position + Vector3.up * 0.5f); // Factory占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙환
 
         dropItem.name = $"{slots[index].SlotItemData.itemName}";    // 아이템 이름 변경
         //dropItem.transform.SetParent(null);

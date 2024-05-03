@@ -41,8 +41,10 @@ public class InventoryDividUI : MonoBehaviour
             dividCount = Mathf.Clamp(value, 1, (int)slider.maxValue);
         }
     }
-
-    public Action<InventorySlot, int> onDivid; // 나눌 때 실행하는 델리게이트
+    /// <summary>
+    /// 나눌 때 실행하는 델리게이트
+    /// </summary>
+    public Action<InventorySlot, int> onDivid; 
 
     void Awake()
     {
@@ -54,6 +56,7 @@ public class InventoryDividUI : MonoBehaviour
         inputField = child.GetComponent<TMP_InputField>();
         inputField.onValueChanged.AddListener((text) =>
         {
+            // 인풋 필드에 나눌 아이템 갱신
             if (int.TryParse(text, out int value))
             {
                 DividCount = value;
