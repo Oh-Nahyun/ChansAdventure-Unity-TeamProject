@@ -435,14 +435,7 @@ public class InventoryUI : MonoBehaviour
 
                 if (equipedItem != null)  // 장착할 해당 부위에 아이템이 있다
                 {
-                    for(uint i = 0; i < inventory.SlotSize; i++)    // 모든 슬롯 체크
-                    {
-                        ItemData_Equipment data = Inventory[i].SlotItemData as ItemData_Equipment;
-                        if(data != null) // 해당 장착부위가 있는 장비다
-                        {
-                            Inventory[i].IsEquip = false;
-                        }
-                    }
+                    Inventory[equipedItem.SlotIndex].IsEquip = false; // 장착한 아이템 슬롯 장착해제
                 }
 
                 equipable.EquipItem(Inventory.Owner, Inventory[index]); // 아이템 장착                

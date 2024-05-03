@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -256,8 +257,14 @@ public class Weapon : MonoBehaviour
     /// <param name="isShow">true면 보여주고, false면 안보여준다.</param>
     public void ShowWeapon(bool isSwordShow = false, bool isBowShow = false)
     {
-        if(swordWeapon != null) swordWeapon.gameObject.SetActive(isSwordShow);
-        if(bowWeapon != null) bowWeapon.gameObject.SetActive(isBowShow);
+        if (swordWeapon != null)
+        {
+            swordWeapon.gameObject.SetActive(isSwordShow);
+        }
+        if(bowWeapon != null)
+        {
+            bowWeapon.gameObject.SetActive(isBowShow);
+        }
     }
 
     /// <summary>
@@ -447,14 +454,15 @@ public class Weapon : MonoBehaviour
         // 장착한 아이템이 검이면
         if(partIndex == (int)EquipPart.Hand_R)
         {
-            swordWeapon = player.partPosition[0].GetChild(0);
+            swordWeapon = player.partPosition[partIndex].GetChild(0);
+
             sword = swordWeapon.GetComponent<Sword>();
         }
 
         // 장착한 아이템이 활이면
-        if(partIndex == (int)EquipPart.Hand_L)
+        if (partIndex == (int)EquipPart.Hand_L)
         {
-            bowWeapon = player.partPosition[1].GetChild(0);
+            bowWeapon = player.partPosition[partIndex].GetChild(0);
             bow = bowWeapon.GetComponent<Bow>();
         }
 
@@ -470,15 +478,15 @@ public class Weapon : MonoBehaviour
         // 장착해제한 아이템이 검이면
         if (partIndex == (int)EquipPart.Hand_R)
         {
-            swordWeapon = null;
             sword = null;
+            swordWeapon = null;
         }
 
         // 장착해제한 아이템이 활이면
         if (partIndex == (int)EquipPart.Hand_L)
         {
-            bowWeapon = null;
             bow = null;
+            bowWeapon = null;
         }
     }
 

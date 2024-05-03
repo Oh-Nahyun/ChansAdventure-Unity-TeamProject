@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Windows;
@@ -305,7 +307,10 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         get => equipPart;
         set
         {
-            equipPart = value;
+            if(equipPart != value)
+            {
+                equipPart = value;
+            }
         }
     }
 
@@ -820,19 +825,18 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     {
         if (EquipPart[(int)part] != null) // 장착한 아이템이 있으면
         {
-            // false
             CharacterUnequipItem(part); // 장착했던 아이템 파괴
-
             Instantiate(equipment, partPosition[(int)part]); // 아이템 오브젝트 생성
+            
             EquipPart[(int)part] = slot;    // 장착부위에 아이템 정보 저장
         }
         else // 장착한 아이템이 없으면
         {
-            EquipPart[(int)part] = slot;
             Instantiate(equipment, partPosition[(int)part]); // 아이템 오브젝트 생성
+            EquipPart[(int)part] = slot;
         }
 
-        OnEquipWeaponItem?.Invoke((int)part); // 아이템 장착을 알림
+        OnEquipWeaponItem?.Invoke((int)part);
     }
 
     /// <summary>
@@ -841,8 +845,12 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// <param name="part"></param>
     public void CharacterUnequipItem(EquipPart part)
     {
+        GameObject obj = partPosition[(int)part].GetChild(0).gameObject; // 아이템 파괴전 파괴할 오브젝트 활성화
+        obj.SetActive(true);
+        DestroyImmediate(obj);
+
         OnUnEquipWeaponItem?.Invoke((int)part);
-        Destroy(partPosition[(int)part].GetChild(0).gameObject);    // 아이템 오브젝트 파괴
+        //Destroy(partPosition[(int)part].GetChild(0).gameObject);        // 아이템 오브젝트 파괴
     }
 
     /// <summary>
