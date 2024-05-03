@@ -49,7 +49,6 @@ public class GameManager : Singleton<GameManager>
 
     public void NextTalk()
     {
-
         onNextTalk?.Invoke();
     }
 
