@@ -9,7 +9,7 @@ public class InventorySlotUI : SlotUI_Base, IBeginDragHandler, IDragHandler, IEn
 {
     InventoryUI inventoryUI;
 
-    void Start()
+    void Start()    
     {
         inventoryUI = GameManager.Instance.ItemDataManager.InventoryUI;
     }

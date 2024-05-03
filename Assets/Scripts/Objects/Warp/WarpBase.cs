@@ -6,9 +6,11 @@ public class WarpBase : NPCBase
 {
     Interaction interaction;
 
-    public Transform warpPoint; // 워프할 위치
-    public Transform player; // 워프할 위치
-    public bool warpReady;
+    /// <summary>
+    /// 워프할 위치
+    /// </summary>
+    public Transform warpPoint;
+    public Transform player;
 
     protected override void Awake()
     {
@@ -17,6 +19,9 @@ public class WarpBase : NPCBase
         player = interaction.gameObject.transform;
     }
 
+    /// <summary>
+    /// 플레이어를 워프시키는 함수
+    /// </summary>
     public void WarpToWarpPoint()
     {
         if (warpPoint != null)
