@@ -5,6 +5,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+public enum DividPanelType
+{
+    Divid = 0, // Default
+    Drop,
+}
+
 public class InventoryDividUI : MonoBehaviour
 {
     CanvasGroup canvasGroup;
@@ -18,6 +24,11 @@ public class InventoryDividUI : MonoBehaviour
     Button cancelBtn;
 
     InventorySlot targetSlot = null; // 나누기를 수행할 슬롯 
+
+    /// <summary>
+    /// 현재 패널상태 ( 패널 상태에 따라 확인버튼이 실행하는 함수가 달라진다 , DividPanelType 참조 )
+    /// </summary>
+    public DividPanelType dividPanelType;
 
     /// <summary>
     /// 최소값
@@ -41,10 +52,16 @@ public class InventoryDividUI : MonoBehaviour
             dividCount = Mathf.Clamp(value, 1, (int)slider.maxValue);
         }
     }
+
     /// <summary>
     /// 나눌 때 실행하는 델리게이트
     /// </summary>
-    public Action<InventorySlot, int> onDivid; 
+    public Action<InventorySlot, int> onDivid;
+
+    /// <summary>
+    /// 아이템 드랍할 때 실행하는 델리게이트 ( 여러개 드랍하기 위한 델리게이트 )
+    /// </summary>
+    public Action<InventorySlot, int> onDrop;
 
     void Awake()
     {
@@ -102,7 +119,8 @@ public class InventoryDividUI : MonoBehaviour
         okBtn.onClick.AddListener(() =>
         {
             // 확인 버튼 ( 아이템 나누기 )
-            onDivid?.Invoke(targetSlot, DividCount);
+            //onDivid?.Invoke(targetSlot, DividCount);
+            CheckPanelType(dividPanelType);
             DividUIClose();
         });
 
@@ -151,8 +169,9 @@ public class InventoryDividUI : MonoBehaviour
     /// <summary>
     /// Divid UI 보이게 하는 함수
     /// </summary>
-    public void DividUIOpen()
+    public void DividUIOpen(DividPanelType type)
     {
+        dividPanelType = type;
         canvasGroup.alpha = 1;
     }
     
@@ -162,5 +181,22 @@ public class InventoryDividUI : MonoBehaviour
     public void DividUIClose()
     {
         canvasGroup.alpha = 0;
+    }
+
+    /// <summary>
+    /// 현재 열린 패널이 무엇을 하기 위한 패널인지 타입을 확인하는 함수 ( 확인 버튼에서 실행할 델리게이트가 변경된다. )
+    /// </summary>
+    /// <param name="type">divid 패널 타입 </param>
+    void CheckPanelType(DividPanelType type)
+    {
+        switch(type)
+        {
+            case DividPanelType.Divid:
+                onDivid?.Invoke(targetSlot, dividCount);
+                break;
+            case DividPanelType.Drop:
+                onDrop?.Invoke(targetSlot, dividCount);
+                break;
+        }
     }
 }

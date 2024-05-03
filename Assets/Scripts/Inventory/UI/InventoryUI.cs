@@ -122,6 +122,7 @@ public class InventoryUI : MonoBehaviour
         onLeftClickItem += OnLeftClickItem;
         onRightClickItem += OnRightClickItem;
         dividUI.onDivid += DividItem;
+        dividUI.onDrop += OnDropItem;
         sortUI.onSortItem += OnSortItem;
 
         Inventory.onInventoryGoldChange += goldUI.onGoldChange; // Iventory의 골드량이 수정될 때 goldUI도 수정되게 함수 추가
@@ -349,8 +350,8 @@ public class InventoryUI : MonoBehaviour
                 Debug.Log($"[{Inventory[index].SlotItemData.itemName}]은 아이템이 [{Inventory[index].CurrentItemCount}]개 있습니다.");
                 return;
             }
-            dividUI.InitializeValue(Inventory[index], 1, (int)Inventory[index].CurrentItemCount - 1);
-            dividUI.DividUIOpen();
+            dividUI.InitializeValue(Inventory[index], 1, (int)Inventory[index].CurrentItemCount - 1); // 패널 초기화
+            dividUI.DividUIOpen(DividPanelType.Divid);
 
             selectedMenuUI.HideMenu();
             isOpenedMenuPanel = false;
@@ -359,13 +360,20 @@ public class InventoryUI : MonoBehaviour
         // 아이템 드랍
         selectedMenuUI.OnDropButtonClick = () =>
         {
-            DropItem(index);
+            //DropItem(index);
+            dividUI.InitializeValue(Inventory[index], 1, (int)Inventory[index].CurrentItemCount); // 패널 초기화
+            dividUI.DividUIOpen(DividPanelType.Drop);
             selectedMenuUI.HideMenu();
             isOpenedMenuPanel = false;
         };
 
         selectedMenuUI.SetPosition(position);
         selectedMenuUI.ShowMenu(); // 매뉴 보여주기
+    }
+
+    private void OnDropItem(InventorySlot slot, int count)
+    {
+        DropItem(slot.SlotIndex, count);
     }
 
     /// <summary>
@@ -463,11 +471,19 @@ public class InventoryUI : MonoBehaviour
     /// 인벤토리에서 아이템을 드랍하는 함수
     /// </summary>
     /// <param name="index"></param>
-    private void DropItem(uint index)
+    private void DropItem(uint index, int count)
     {
         if(!Inventory[index].IsEquip)   // 만약 아이템이 장착상태면 무시
         {
-            Inventory.DropItem(index);
+            for(int i = 0; i < count; i++)
+            {
+                if (Inventory[index].CurrentItemCount <= 0) // 아이템 개수 확인 ( 0개면 아이템 X)
+                {
+                    Debug.Log("버릴 아이템 데이터가 존재하지 않습니다.");
+                }
+
+                Inventory.DropItem(index); // 아이템 드랍
+            }
         }            
     }
 

@@ -181,6 +181,7 @@ public class Inventory
                 break;
             else if (slot.SlotItemData.itemCode == (ItemCode)code &&        // 매개변수 아이템 코드와 동일하고 
                      slot.CurrentItemCount < slot.SlotItemData.maxCount)    // 해당 슬롯의 아이템 개수가 최대치보다 낮다면 반환
+                break;
 
                 index++;
         }
