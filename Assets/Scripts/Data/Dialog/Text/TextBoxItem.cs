@@ -151,7 +151,7 @@ public class TextBoxItem : MonoBehaviour
 
                 if (inventory == null)
                 {
-                    inventory = player.Inventory;
+                    //inventory = player.Inventory;
                 }
                 inventory.AddSlotItem((uint)Chestdata.scriptableObject.itemCode, Chestdata.itemCount);
             }
