@@ -448,11 +448,13 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         controller.onMapOpen += OnMapShow;
 
         // inventory
-        inventory = new Inventory(this.gameObject, 16);
-        GameManager.Instance.ItemDataManager.InventoryUI.InitializeInventoryUI(inventory); // 인벤 UI 초기화
-        EquipPart = new InventorySlot[partCount]; // EquipPart 배열 초기화
+        if(inventory == null)
+        {
+            inventory = new Inventory(this.gameObject, 16);
+            GameManager.Instance.ItemDataManager.InventoryUI.InitializeInventoryUI(inventory); // 인벤 UI 초기화
+            EquipPart = new InventorySlot[partCount]; // EquipPart 배열 초기화
+        }
 
-        Test_AddItem();
     }
 
     private void Update()
@@ -830,6 +832,16 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         }        
     }
 
+    /// <summary>
+    /// 인벤토리 데이터를 받는 함수
+    /// </summary>
+    /// <param name="invenData">받을 인벤토리 데이터</param>
+    public void GetInventoryData(Inventory invenData)
+    {
+        inventory = invenData;
+    }
+
+
     #endregion
 
     #region Player IHealth Method
@@ -962,7 +974,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// <summary>
     /// Player 임의로 아이템 부여하는 함수 ( 빌드 할 때는 없어짐 ) 
     /// </summary>
-    void Test_AddItem()
+    public void Test_AddItem()
     {
         inventory.AddSlotItem((uint)ItemCode.Hammer);
         inventory.AddSlotItem((uint)ItemCode.Sword);
