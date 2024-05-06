@@ -378,7 +378,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// <summary>
     /// 오브젝트 인벤토리 접근을 위한 프로퍼티
     /// </summary>
-    public Inventory PlayerInventory => inventory;
+    public Inventory Inventory => inventory;
 
     /// <summary>
     /// 인벤토리가 열렸는지 확인하는 변수
