@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -86,6 +87,40 @@ public class GameManager : Singleton<GameManager>
 
     InventorySlot[] savedEquipParts;
 
+    SaveHandler saveHandler;
+    public SaveHandler SaveHandler
+    {
+        get
+        {
+            if (saveHandler == null)
+            {
+                SaveHandler hendler = FindAnyObjectByType<SaveHandler>();
+                saveHandler = hendler;
+            }
+
+            return saveHandler;
+        }
+        set => saveHandler = value;
+    }
+
+    MenuPanel menuPanel;
+
+    public MenuPanel MenuPanel
+    {
+        get
+        {
+            if(menuPanel == null)
+            {
+                MenuPanel menu = FindAnyObjectByType<MenuPanel>();
+                menuPanel = menu;
+            }
+
+            return menuPanel;
+        }
+        set => menuPanel = value;
+    }
+
+
     protected override void OnPreInitialize()
     {
         base.OnPreInitialize();
@@ -96,10 +131,15 @@ public class GameManager : Singleton<GameManager>
 
     protected override void OnInitialize()
     {
-        if (isLoading)
+        if (isLoading) // 로딩중일 때 실행
+        {
+            OnLoadInitiallize();
             return;
+        }
 
-        if(player == null) player = FindAnyObjectByType<Player>();
+        SpawnPlayerAfterLoadScene();
+
+        if (player == null) player = FindAnyObjectByType<Player>();
 
         weapon = FindAnyObjectByType<Weapon>();
         cameraManager = GetComponent<CameraManager>();
@@ -120,10 +160,8 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    protected override void OnAdditiveInitiallize()
+    protected void OnLoadInitiallize()
     {
-        SpawnPlayerAfterLoadScene();
-
         weapon = FindAnyObjectByType<Weapon>();
         cameraManager = GetComponent<CameraManager>();
         itemDataManager = GetComponent<ItemDataManager>();

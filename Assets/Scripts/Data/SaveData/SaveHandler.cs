@@ -4,24 +4,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 /// <summary>
 /// 플레이어의 정보를 저장하는 클래스
 /// </summary>
 public class SaveHandler : MonoBehaviour
 {
+    // 컴포넌트 ================================================================
     CanvasGroup canvasGroup;
 
     /// <summary>
     /// 세이브 데이터 슬롯들
     /// </summary>
-    SaveDataSlot[] saveSlots;
+    public SaveDataSlot[] saveSlots;
 
     /// <summary>
     /// 세이브 데이터 슬롯 접근 프로퍼티
     /// </summary>
     public SaveDataSlot[] SaveSlots => saveSlots;
 
+    // 슬롯데이터 ===============================================================
     /// <summary>
     /// 씬 데이터
     /// </summary>
@@ -39,38 +42,32 @@ public class SaveHandler : MonoBehaviour
     /// </summary>
     const int DATA_SIZE = 5;
 
-    /// <summary>
-    /// 저장할 세이브 칸 인덱스 번호
-    /// </summary>
-    public int saveIndex = 0;
-
-    /// <summary>
-    /// 로드할 세이브 칸 인덱스번호
-    /// </summary>
-    public int loadIndex = 0;
-
     // Delegates
     public Action<int> onClickSaveSlot;
     public Action<int> onClickLoadSlot;
 
     private void Start()
     {
+        canvasGroup = GetComponent<CanvasGroup>();
+
         SceneDatas = new int[DATA_SIZE];
         playerDatas = new PlayerData[DATA_SIZE];
         saveSlots = new SaveDataSlot[DATA_SIZE];
-        for(int i = 0; i < saveSlots.Length; i++)
+
+        Transform child = transform.GetChild(0); // slots
+        for (int i = 0; i < saveSlots.Length; i++)
         {
-            Transform child = transform.GetChild(i);
-            saveSlots[i] = child.GetComponent<SaveDataSlot>();
+            Transform slot = child.GetChild(i);
+            saveSlots[i] = slot.GetComponent<SaveDataSlot>();
+            saveSlots[i].InitializeComponent();
             SaveSlots[i].SlotInitialize(i);
         }
 
         onClickSaveSlot += SavePlayerData;
         onClickLoadSlot += LoadPlayerData;
 
-        canvasGroup = GetComponent<CanvasGroup>();
+        RefreshSaveData();
 
-        LoadJsonFile();
         player = GameManager.Instance.Player;
     }
 
@@ -87,9 +84,9 @@ public class SaveHandler : MonoBehaviour
     }
 
     /// <summary>
-    /// 저장된 데이터(Json파일)를 불러오는 함수 
+    /// 저장된 데이터(Json파일)를 불러와서 갱신하는 함수 
     /// </summary>
-    void LoadJsonFile()
+    void RefreshSaveData()
     {
         // Json 파일 불러오기
         string path = $"{Application.dataPath}/Save/";
@@ -111,11 +108,11 @@ public class SaveHandler : MonoBehaviour
         {
             if (SceneDatas[i] == 0) // 씬 데이터가 없다 == 세이브 데이터가 존재하지 않는다.
             {
-                SaveSlots[i].CheckSave(true);
+                SaveSlots[i].CheckSave(true, SceneDatas[i]);
             }
             else
             {
-                SaveSlots[i].CheckSave(false);
+                SaveSlots[i].CheckSave(false, SceneDatas[i]);
             }
         }
     }
@@ -162,6 +159,7 @@ public class SaveHandler : MonoBehaviour
         string fullPath = $"{path}Save.json";               // 전제 경로 만들기
         System.IO.File.WriteAllText(fullPath, jsonText);    // 파일로 저장
 
+        RefreshSaveData();
         Debug.Log("Player Data convert complete");
     }
 
@@ -216,7 +214,7 @@ public class SaveHandler : MonoBehaviour
     /// </summary>
     public void CloseSavePanel()
     {
-        canvasGroup.alpha = 1;
+        canvasGroup.alpha = 0;
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
     }

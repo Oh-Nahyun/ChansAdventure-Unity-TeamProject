@@ -380,11 +380,6 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// </summary>
     public Inventory Inventory => inventory;
 
-    /// <summary>
-    /// 인벤토리가 열렸는지 확인하는 변수
-    /// </summary>
-    bool isInventoryOpen;
-
     #endregion
 
     #region PlayerInteraction Values
@@ -397,12 +392,8 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     #endregion
 
     #region Etc Values
-    /// <summary>
-    /// LargeMap을 열었는지 확인하는 변수
-    /// </summary>
-    bool isOpenedLargeMap = false;
 
-    public bool IsOpenedLargeMap => isOpenedLargeMap;
+    bool isAnyUIPanelOpened = false;
 
     #endregion
 
@@ -446,6 +437,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         controller.onInteraction += OnGetItem;
         controller.onInventoryOpen += OnInventoryShow;
         controller.onMapOpen += OnMapShow;
+        controller.onMenuOpen += OnOpenMenuPanel;
 
         // inventory
         if(inventory == null)
@@ -454,7 +446,6 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
             GameManager.Instance.ItemDataManager.InventoryUI.InitializeInventoryUI(inventory); // 인벤 UI 초기화
             EquipPart = new InventorySlot[partCount]; // EquipPart 배열 초기화
         }
-
     }
 
     private void Update()
@@ -812,24 +803,9 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// <summary>
     /// 인벤토리 키 ( I Key )를 눌렀을 때 실행되는 함수
     /// </summary>
-    private void OnInventoryShow()
+    public void OnInventoryShow()
     {
-        if (IsOpenedLargeMap)
-            return;
-        else
-        {
-            isInventoryOpen = GameManager.Instance.ItemDataManager.InventoryUI.ShowInventory();
-            GameManager.Instance.ItemDataManager.CharaterRenderCameraPoint.transform.eulerAngles = new Vector3(0, 180f, 0); // RenderTexture 플레이어 위치 초기화
-
-            if(isInventoryOpen)
-            {
-                GameManager.Instance.MapManager.CloseMiniMapUI();
-            }
-            else
-            {
-                GameManager.Instance.MapManager.OpenMiniMapUI();
-            }
-        }        
+        GameManager.Instance.MenuPanel.ShowMenu((MenuState)1);
     }
 
     /// <summary>
@@ -933,23 +909,14 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
 
     #region Etc Method
 
-    void OnMapShow()
+    public void OnMapShow()
     {
-        if(isInventoryOpen)
-            return;
+        GameManager.Instance.MenuPanel.ShowMenu((MenuState)2);
+    }
 
-        // 임시 온오프
-        if (isOpenedLargeMap == false)
-        {
-            GameManager.Instance.MapManager.OpenMapUI();
-            isOpenedLargeMap = true;
-        }
-        else if (isOpenedLargeMap == true)
-        {
-            GameManager.Instance.MapManager.SetCameraPosition(transform.position);
-            GameManager.Instance.MapManager.CloseMapUI();
-            isOpenedLargeMap = false;
-        }
+    void OnOpenMenuPanel()
+    {
+        GameManager.Instance.MenuPanel.ShowMenu((MenuState)0);
     }
 
     /// <summary>

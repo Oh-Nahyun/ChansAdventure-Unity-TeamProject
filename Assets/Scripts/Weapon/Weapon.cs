@@ -95,8 +95,8 @@ public class Weapon : MonoBehaviour
     {
         //rightHand = GameObject.Find("Character1_RightHand").transform;
         //leftHand = GameObject.Find("Character1_LeftHand").transform;
-        swordWeapon = GameObject.FindWithTag("Sword").transform;
-        bowWeapon = GameObject.FindWithTag("Bow").transform;
+        //swordWeapon = GameObject.FindWithTag("Sword").transform;
+        //bowWeapon = GameObject.FindWithTag("Bow").transform;
         //arrowWeapon = GameObject.FindWithTag("Arrow").transform;
         ShowWeapon(false, false);
         //arrowWeapon.gameObject.SetActive(false);

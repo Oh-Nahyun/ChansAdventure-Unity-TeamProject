@@ -63,6 +63,11 @@ public class MapManager : MonoBehaviour
     /// </summary>
     const float mapCameraY = 100f;
 
+    /// <summary>
+    /// 맵 UI를 열였는지 확인하는 변수
+    /// </summary>
+    public bool IsOpenedLargeMap = false;
+
     public void InitalizeMapUI()
     {
         largeMapPanelUI = FindObjectOfType<MapPanelUI>();

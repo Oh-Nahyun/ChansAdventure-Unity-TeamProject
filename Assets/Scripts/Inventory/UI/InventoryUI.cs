@@ -448,28 +448,25 @@ public class InventoryUI : MonoBehaviour
     /// <summary>
     /// 인벤토리 UI를 여는 함수
     /// </summary>
-    /// <returns>UI 활성화 true, 아니면 false</returns>
-    public bool ShowInventory()
+    public void ShowInventory()
     {
-        bool result = false;
-        if(canvasGroup.alpha == 1) // 비활성화
-        {
-            canvasGroup.alpha = 0;
-            canvasGroup.interactable = false;
-            canvasGroup.blocksRaycasts = false;
-        }
-        else if(canvasGroup.alpha < 1)// 활성화
-        {
-            canvasGroup.alpha = 1;
-            canvasGroup.interactable = true;
-            canvasGroup.blocksRaycasts = true;
-
-            result = true;
-        }
+        canvasGroup.alpha = 1;
+        canvasGroup.interactable = true;
+        canvasGroup.blocksRaycasts = true;
 
         RefreshInventoryUI();
+    }
 
-        return result;
+    /// <summary>
+    /// 인벤토리를 닫는 함수
+    /// </summary>
+    public void CloseInventory()
+    {
+        canvasGroup.alpha = 0;
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
+
+        RefreshInventoryUI();
     }
 
     /// <summary>
