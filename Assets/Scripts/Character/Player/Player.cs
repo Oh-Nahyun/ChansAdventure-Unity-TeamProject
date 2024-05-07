@@ -50,6 +50,11 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     public float runSpeed = 7.0f;
 
     /// <summary>
+    /// 모든 기력 소진으로 느려진 속도
+    /// </summary>
+    public float slowSpeed = 1.5f;
+
+    /// <summary>
     /// 현재 속도
     /// </summary>
     public float currentSpeed = 0.0f;
@@ -228,7 +233,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     readonly int IsSlideHash = Animator.StringToHash("IsSlide");
     readonly int SpeedHash = Animator.StringToHash("Speed");
     const float AnimatorStopSpeed = 0.0f;
-    const float AnimatorSlowSpeed = 0.05f;
+    const float AnimatorSlowSpeed = 0.15f;
     const float AnimatorWalkSpeed = 0.3f;
     const float AnimatorRunSpeed = 1.0f;
     readonly int DieHash = Animator.StringToHash("IsDie");
@@ -255,17 +260,15 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         get => hp;
         set
         {
-            if (IsAlive)
+            if (IsAlive) // 살아있을 때만 HP 변화
             {
-                hp = value;
+                hp = Mathf.Clamp(value, 0, MaxHP);  // 최소 ~ 최대 사이로 숫자 유지
+                onHealthChange?.Invoke(hp);         // 델리게이트로 HP 변화 알림
 
-                if (hp <= 0.0f)
+                if (hp <= 0.0f)                     // HP가 0 이하인 경우
                 {
-                    Die();
+                    Die();                          // 사망 처리
                 }
-
-                hp = Mathf.Clamp(value, 0, MaxHP);
-                onHealthChange?.Invoke(hp);
             }
         }
     }
@@ -342,18 +345,17 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         get => stamina;
         set
         {
-            if (IsEnergetic)
+            if (IsEnergetic) // 기력이 있을 때만 Stamina 변화
             {
-                stamina = value;
+                stamina = Mathf.Clamp(value, 0, MaxStamina);            // 최소 ~ 최대 사이로 숫자 유지
+                onStaminaChange?.Invoke(stamina);                       // 델리게이트로 Stamina 변화 알림
 
-                if (stamina <= 0.0f)
+                if (stamina <= 0.0f)                                    // Stamina가 0 이하인 경우
                 {
-                    SpendAllStamina();
-                    DecreaseSpeedForChargingStamina();
+                    SpendAllStamina();                                  // Stamina가 없는 경우 처리
+                    StartCoroutine(DecreaseSpeedForChargingStamina());  // Stamina 충전 코루틴
+                    //CurrentMoveMode = MoveMode.Walk;                    // Walk 모드로 변경
                 }
-
-                stamina = Mathf.Clamp(value, 0, MaxStamina);
-                onStaminaChange?.Invoke(stamina);
             }
         }
     }
@@ -519,35 +521,28 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         // 플레이어 상태에 따른 스태미너 변경
         if (isMoving && CurrentMoveMode == MoveMode.Run)
         {
-            // 스태미너 UI 활성화
-            staminaCheckUI.gameObject.SetActive(true);
+            staminaCheckUI.gameObject.SetActive(true);          // 스태미너 UI 활성화
 
             // 플레이어가 Run 모드로 움직이고 있는 경우
-            Stamina -= spendStaminaTime * Time.deltaTime; // Stamina 감소
+            // (스태미너가 모두 소진되지 않은 경우에만 스태미너를 감소시킴)
+            if (Stamina > 0)
+                Stamina -= spendStaminaTime * Time.deltaTime;   // Stamina 감소
         }
         else
         {
-            // 스태미너 UI 활성화
-            staminaCheckUI.gameObject.SetActive(true);
+            staminaCheckUI.gameObject.SetActive(true);          // 스태미너 UI 활성화
 
             // 플레이어가 움직이지 않거나, Walk 모드인 경우
-            Stamina += spendStaminaTime * Time.deltaTime; // Stamina 증가
+            // (스태미너가 최대치가 아닌 경우에만 스태미너를 증가시킴)
+            if (Stamina < MaxStamina)
+                Stamina += spendStaminaTime * Time.deltaTime;   // Stamina 증가
 
             // 스태미너가 다 찬 경우
-            if (Stamina == MaxStamina)
-            {
-                // 스태미너 UI 비활성화
-                staminaCheckUI.gameObject.SetActive(false);
-            }
+            if (Stamina >= MaxStamina)
+                staminaCheckUI.gameObject.SetActive(false);     // 스태미너 UI 비활성화
         }
 
-        // 스태미너 전부 소진했을 경우
-        //onSpendAllStamina += () =>
-        //{
-        //    Stamina += spendStaminaTime * Time.deltaTime; // Stamina 증가
-        //};
-
-        Debug.Log($"Player's Stamina : {Stamina}");
+        // Debug.Log($"Player's Stamina : {Stamina}");
     }
 
     private void FixedUpdate()
@@ -995,14 +990,13 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     // Stamina =========================================================================================
 
     // 애니메이션 클립의 리소스 경로
-    private string clipPath_SpendAllStamina = "PlayerAnimations/Reflesh";
+    //private string clipPath_SpendAllStamina = "PlayerAnimations/Reflesh";
 
     /// <summary>
     /// 기력을 모두 소진했을 경우 처리용 함수
     /// </summary>
     public void SpendAllStamina()
     {
-        Stamina = 0.0f;                             // 스태미나 수치 초기화
         animator.SetTrigger(SpendAllStaminaHash);   // 애니메이션 재생
         onSpendAllStamina?.Invoke();                // 스태미나 모두 사용했다고 알림
         Debug.Log("플레이어 스테미너 모두 사용");
@@ -1013,14 +1007,31 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// </summary>
     /// <param name="waitingTime">기력이 채워지는 시간</param>
     /// <returns></returns>
-    private IEnumerator DecreaseSpeedForChargingStamina()
+    IEnumerator DecreaseSpeedForChargingStamina()
     {
-        float waitingTime = controller.GetAnimationLegth(clipPath_SpendAllStamina);    // 애니메이션 클립 로드
+        //float timeElapsed = 0.0f;
+        //float waitingTime = controller.GetAnimationLegth(clipPath_SpendAllStamina); // 애니메이션 클립 로드
 
-        animator.SetFloat(SpeedHash, AnimatorSlowSpeed);    // Slow Speed 설정
-        yield return new WaitForSeconds(waitingTime);       // 애니메이션 길이만큼 딜레이
-        animator.SetFloat(SpeedHash, AnimatorWalkSpeed);    // Walk Speed 설정
-        CurrentMoveMode = MoveMode.Walk;                    // Walk 모드로 변경
+        //while (timeElapsed < waitingTime)                       // 애니메이션 길이만큼 시간 투자
+        //{
+        //    timeElapsed += Time.deltaTime;                      // timeElapsed 갱신
+        //    animator.SetFloat(SpeedHash, AnimatorSlowSpeed);    // Slow Speed 설정
+        //    yield return null;
+        //}
+        CurrentMoveMode = MoveMode.Walk;
+
+        while (stamina < MaxStamina)
+        {
+            stamina += spendStaminaTime * Time.deltaTime;       // Stamina 증가
+
+            currentSpeed = slowSpeed;
+            animator.SetFloat(SpeedHash, AnimatorSlowSpeed);    // Slow Speed 설정
+
+            yield return null;
+        }
+
+        currentSpeed = walkSpeed;
+        animator.SetFloat(SpeedHash, AnimatorWalkSpeed);        // Walk Speed 설정
     }
 
     // IBatter 인터페이스 상속 --------------------------------------------------------------------------------------------------

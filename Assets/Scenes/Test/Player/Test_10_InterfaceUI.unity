@@ -2353,6 +2353,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 85372248}
     m_Modifications:
+    - target: {fileID: 1416841634701438942, guid: 05c759fddb6ce4d39b9f10db9be5ae33,
+        type: 3}
+      propertyPath: m_Name
+      value: Stamina_OutSide_B
+      objectReference: {fileID: 0}
     - target: {fileID: 3766639219236691023, guid: 05c759fddb6ce4d39b9f10db9be5ae33,
         type: 3}
       propertyPath: m_Pivot.x
@@ -2463,10 +2468,20 @@ PrefabInstance:
       propertyPath: m_FillAmount
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4777613807593718935, guid: 05c759fddb6ce4d39b9f10db9be5ae33,
+        type: 3}
+      propertyPath: m_Name
+      value: Stamina_Inside_B
+      objectReference: {fileID: 0}
     - target: {fileID: 7642743436026549906, guid: 05c759fddb6ce4d39b9f10db9be5ae33,
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8596091148646756110, guid: 05c759fddb6ce4d39b9f10db9be5ae33,
+        type: 3}
+      propertyPath: m_FillAmount
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
