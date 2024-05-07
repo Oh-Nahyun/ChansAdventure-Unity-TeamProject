@@ -11,7 +11,7 @@ namespace UnityChan
 	public class ThirdPersonCamera : MonoBehaviour
 	{
 		public float smooth = 3f;		// カメラモーションのスムーズ化用変数
-		Transform standardPos;			// the usual position for the camera, specified by a transform in the game
+		Transform standardPos;			// the usual position for the mainCamera, specified by a transform in the game
 		Transform frontPos;			// Front Camera locater
 		Transform jumpPos;			// Jump Camera locater
 	
@@ -45,7 +45,7 @@ namespace UnityChan
 				// Change Jump Camera
 				setCameraPositionJumpView ();
 			} else {	
-				// return the camera to standard position and direction
+				// return the mainCamera to standard position and direction
 				setCameraPositionNormalView ();
 			}
 		}
@@ -53,11 +53,11 @@ namespace UnityChan
 		void setCameraPositionNormalView ()
 		{
 			if (bQuickSwitch == false) {
-				// the camera to standard position and direction
+				// the mainCamera to standard position and direction
 				transform.position = Vector3.Lerp (transform.position, standardPos.position, Time.fixedDeltaTime * smooth);	
 				transform.forward = Vector3.Lerp (transform.forward, standardPos.forward, Time.fixedDeltaTime * smooth);
 			} else {
-				// the camera to standard position and direction / Quick Change
+				// the mainCamera to standard position and direction / Quick Change
 				transform.position = standardPos.position;	
 				transform.forward = standardPos.forward;
 				bQuickSwitch = false;

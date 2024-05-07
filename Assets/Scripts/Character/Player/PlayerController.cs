@@ -29,10 +29,16 @@ public class PlayerController : MonoBehaviour
     // 컴포넌트
     Weapon weapon;
 
+    TextBox textBox;
+    TextBoxItem textBoxItem;
+
     void Awake()
     {
         playerInputAction = new PlayerinputActions();
         weapon = GetComponent<Weapon>();
+
+        textBox = FindAnyObjectByType<TextBox>();
+        textBoxItem = FindAnyObjectByType<TextBoxItem>();
     }
 
     void OnEnable()
@@ -105,6 +111,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void OnMoveInput(InputAction.CallbackContext context)
     {
+        if(!textBox.TalkingEnd && !textBoxItem.Talking)
         onMove?.Invoke(context.ReadValue<Vector2>(), !context.canceled);
     }
 
@@ -121,15 +128,17 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void OnLookInput(InputAction.CallbackContext context)
     {
-        if (weapon.IsZoomIn)
-        {
-            // 카메라가 줌을 당길 경우 => 카메라 회전 중지
-            onLook?.Invoke(context.ReadValue<Vector2>(), !context.performed);
-        }
-        else
-        {
-            // 그 외의 경우 => 주변 시야 확인 가능
-            onLook?.Invoke(context.ReadValue<Vector2>(), context.performed);
+        if (!textBox.TalkingEnd && !textBoxItem.Talking) {
+            if (weapon.IsZoomIn)
+            {
+                // 카메라가 줌을 당길 경우 => 카메라 회전 중지
+                onLook?.Invoke(context.ReadValue<Vector2>(), !context.performed);
+            }
+            else
+            {
+                // 그 외의 경우 => 주변 시야 확인 가능
+                onLook?.Invoke(context.ReadValue<Vector2>(), context.performed);
+            }
         }
     }
 

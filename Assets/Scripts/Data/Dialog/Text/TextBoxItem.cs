@@ -6,10 +6,7 @@ using UnityEngine.UI;
 
 public class TextBoxItem : MonoBehaviour
 {
-    /// <summary>
-    /// 플레이어
-    /// </summary>
-    Test_EquipCharacter player;
+    Player player;
 
     public float alphaChangeSpeed = 5.0f;
     TextMeshProUGUI talkText;
@@ -63,7 +60,7 @@ public class TextBoxItem : MonoBehaviour
         // TextBoxManager에 대한 참조 가져오기
         textBoxManager = FindObjectOfType<TextBoxManager>();
         
-        player = FindAnyObjectByType<Test_EquipCharacter>();
+        player = FindAnyObjectByType<Player>();
     }
 
     private void Start()
@@ -151,7 +148,7 @@ public class TextBoxItem : MonoBehaviour
 
                 if (inventory == null)
                 {
-                    //inventory = player.Inventory;
+                    inventory = player.PlayerInventory;
                 }
                 inventory.AddSlotItem((uint)Chestdata.scriptableObject.itemCode, Chestdata.itemCount);
             }

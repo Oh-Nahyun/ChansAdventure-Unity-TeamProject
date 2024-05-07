@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,10 +10,21 @@ public class TextBoxManager : MonoBehaviour
     /// </summary>
     Dictionary<int, string[]> talkData;
 
+    public Action<bool> isTalkAction;
+
+    TextBox textBox;
+    TextBoxItem textBoxItem;
+
     private void Awake()
     {
         talkData = new Dictionary<int, string[]>();
         GenerateData();
+    }
+
+    private void Start()
+    {
+        textBox = FindAnyObjectByType<TextBox>();
+        textBoxItem = FindAnyObjectByType<TextBoxItem>();
     }
 
     /// <summary>
@@ -86,6 +98,11 @@ public class TextBoxManager : MonoBehaviour
             //Debug.LogError("해당 ID에 대한 대화 데이터를 찾을 수 없습니다: " + id);
             return null;
         }
+    }
+
+    private void TalkingAction()
+    {
+        //if(textBox.)
     }
 
 }

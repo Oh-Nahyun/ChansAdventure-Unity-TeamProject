@@ -19,7 +19,7 @@ public class ShopItemPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     Inventory inventory;
 
-    Test_EquipCharacter player;
+    Player player;
 
     bool buyItem = false;
 
@@ -47,7 +47,7 @@ public class ShopItemPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         itemPriceText = child.GetComponent<TextMeshProUGUI>();
         shopItemData = FindAnyObjectByType<ShopItemData>();
 
-        player = FindAnyObjectByType<Test_EquipCharacter>();
+        player = FindAnyObjectByType<Player>();
         selectBox = FindAnyObjectByType<SelectBox>();
     }
 
@@ -129,7 +129,7 @@ public class ShopItemPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     {
         if (inventory == null)
         {
-            //inventory = player.Inventory;
+            inventory = player.PlayerInventory;
         }
 
         if (inventory.Gold >= itemData.price)
