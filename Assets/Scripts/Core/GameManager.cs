@@ -100,6 +100,7 @@ public class GameManager : Singleton<GameManager>
             return;
 
         if(player == null) player = FindAnyObjectByType<Player>();
+
         weapon = FindAnyObjectByType<Weapon>();
         cameraManager = GetComponent<CameraManager>();
         itemDataManager = GetComponent<ItemDataManager>();
@@ -109,7 +110,7 @@ public class GameManager : Singleton<GameManager>
 
         mapManager.InitalizeMapUI();
 
-        if (savedInventory != null)
+        if (savedInventory != null) // 저장한 인벤토리가 존재하면 인벤토리 내용 복사
         {
             ItemDataManager.InventoryUI.InitializeInventoryUI(savedInventory);  // 플레이어 인벤토리 UI 초기화
             savedInventory = null;                                              // 저장한 인벤토리 데이터 제거
