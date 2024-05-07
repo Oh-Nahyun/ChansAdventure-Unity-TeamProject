@@ -38,7 +38,7 @@ public struct PlayerData
     public Vector3 rotation;
 
     /// <summary>
-    /// 플레이어 인벤토리 - 저장할려는 플레이어 인벤토리 접근용
+    /// 플레이어 인벤토리 - 플레이어 인벤토리 저장용
     /// </summary>
     Inventory inventory;
 
