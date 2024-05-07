@@ -15,6 +15,8 @@ public class TextBoxManager : MonoBehaviour
     TextBox textBox;
     TextBoxItem textBoxItem;
 
+    public GameObject[] setActiveObjs;
+
     private void Awake()
     {
         talkData = new Dictionary<int, string[]>();
@@ -25,6 +27,11 @@ public class TextBoxManager : MonoBehaviour
     {
         textBox = FindAnyObjectByType<TextBox>();
         textBoxItem = FindAnyObjectByType<TextBoxItem>();
+    }
+
+    private void Update()
+    {
+        TalkingAction();
     }
 
     /// <summary>
@@ -102,7 +109,22 @@ public class TextBoxManager : MonoBehaviour
 
     private void TalkingAction()
     {
-        //if(textBox.)
+        if(!textBox.TalkingEnd && !textBoxItem.Talking)
+        {
+            isTalkAction?.Invoke(false);
+            for(int i = 0; i < setActiveObjs.Length; i++)
+            {
+                setActiveObjs[i].gameObject.SetActive(true);
+            }
+        }
+        else
+        {
+            isTalkAction?.Invoke(true);
+            for (int i = 0; i < setActiveObjs.Length; i++)
+            {
+                setActiveObjs[i].gameObject.SetActive(false);
+            }
+        }
     }
 
 }

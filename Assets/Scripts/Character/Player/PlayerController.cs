@@ -28,17 +28,18 @@ public class PlayerController : MonoBehaviour
 
     // 컴포넌트
     Weapon weapon;
-
-    TextBox textBox;
-    TextBoxItem textBoxItem;
+    TextBoxManager textBoxManager;
 
     void Awake()
     {
         playerInputAction = new PlayerinputActions();
         weapon = GetComponent<Weapon>();
+        textBoxManager = FindAnyObjectByType<TextBoxManager>();
+    }
 
-        textBox = FindAnyObjectByType<TextBox>();
-        textBoxItem = FindAnyObjectByType<TextBoxItem>();
+    void Start()
+    {
+        textBoxManager.isTalkAction += (talk) => IsTalk(talk);
     }
 
     void OnEnable()
@@ -111,8 +112,14 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void OnMoveInput(InputAction.CallbackContext context)
     {
-        if(!textBox.TalkingEnd && !textBoxItem.Talking)
-        onMove?.Invoke(context.ReadValue<Vector2>(), !context.canceled);
+        if (isTalk)
+        {
+            onMove?.Invoke(new Vector2(0,0), false);
+        }
+        else
+        {
+            onMove?.Invoke(context.ReadValue<Vector2>(), !context.canceled);
+        }
     }
 
     /// <summary>
@@ -128,17 +135,15 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void OnLookInput(InputAction.CallbackContext context)
     {
-        if (!textBox.TalkingEnd && !textBoxItem.Talking) {
-            if (weapon.IsZoomIn)
-            {
-                // 카메라가 줌을 당길 경우 => 카메라 회전 중지
-                onLook?.Invoke(context.ReadValue<Vector2>(), !context.performed);
-            }
-            else
-            {
-                // 그 외의 경우 => 주변 시야 확인 가능
-                onLook?.Invoke(context.ReadValue<Vector2>(), context.performed);
-            }
+        if (weapon.IsZoomIn || isTalk)
+        {
+            // 카메라가 줌을 당길 경우 => 카메라 회전 중지
+            onLook?.Invoke(context.ReadValue<Vector2>(), !context.performed);
+        }
+        else
+        {
+            // 그 외의 경우 => 주변 시야 확인 가능
+            onLook?.Invoke(context.ReadValue<Vector2>(), context.performed);
         }
     }
 
@@ -147,7 +152,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void OnJumpInput(InputAction.CallbackContext context)
     {
-        if (weapon.IsZoomIn)
+        if (weapon.IsZoomIn || isTalk)
         {
             // 카메라가 줌을 당길 경우 => 점프 불가능
             onJump?.Invoke(!context.performed);
@@ -163,7 +168,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void OnSlideInput(InputAction.CallbackContext context)
     {
-        if (weapon.IsZoomIn)
+        if (weapon.IsZoomIn || isTalk)
         {
             // 카메라가 줌을 당길 경우 => 슬라이드 불가능
             onSlide?.Invoke(!context.performed);
@@ -259,4 +264,17 @@ public class PlayerController : MonoBehaviour
             return -1.0f;
         }
     }
+    
+    bool isTalk = false;
+
+    /// <summary>
+    /// 대화중임을 확인하는 함수
+    /// </summary>
+    /// <param name="talk">true면 대화중</param>
+    /// <returns></returns>
+    void IsTalk(bool talk)
+    {
+        isTalk = talk;
+    }
+
 }
