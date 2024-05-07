@@ -7,12 +7,24 @@ public class AttackPoint : RecycleObject
 {
     SwordSkeleton skeleton;
     NightmareDragon nightmareDragon;
+
+    BoxCollider attackCollider;
     
 
     private void Awake()
     {
         skeleton = GetComponentInParent<SwordSkeleton>();   // 플레이어 찾기
         nightmareDragon = GetComponentInParent<NightmareDragon>();
+        attackCollider = GetComponent<BoxCollider>();
+    }
+
+    /// <summary>
+    /// 공격 충돌영역을 켜고 끄는 함수
+    /// </summary>
+    /// <param name="isEnable"></param>
+    public void BladeVolumeEnable(bool isEnable)
+    {
+        attackCollider.enabled = isEnable;
     }
 
     private void OnTriggerEnter(Collider other)

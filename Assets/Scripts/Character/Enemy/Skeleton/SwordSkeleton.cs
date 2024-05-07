@@ -254,9 +254,10 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
     // 무기, 약점, 몸체 콜라이더 
     CapsuleCollider bodyCollider;   // 몸체 콜라이더
     SphereCollider weakCollider;    // 머리 콜라이더
-    BoxCollider swordCollider;      // 무기 콜라이더
+    //BoxCollider swordCollider;      // 무기 콜라이더
 
     EnemyHealthBar hpBar;           // 적 체력바 스크립트
+    AttackPoint attackPoint;        // 공격 포인트 스크립트
 
     // 무기, 약점, 몸체 컴포넌트를 찾기위한 게임 오브젝트
     GameObject bodyPoint;       // 몸통 포인트 게임 오브젝트
@@ -276,8 +277,8 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
         weakPoint = GameObject.Find("WeakPoint").gameObject;
         weakCollider = weakPoint.GetComponent<SphereCollider>();
 
-        weaponPoint = GameObject.Find("SwordPoint").gameObject;
-        swordCollider = weaponPoint.GetComponent<BoxCollider>();
+        //weaponPoint = GameObject.Find("SwordPoint").gameObject;
+        //swordCollider = weaponPoint.GetComponent<BoxCollider>();
 
 
         Transform child = transform.GetChild(3);
@@ -286,7 +287,8 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
         child = transform.GetChild(4);
         AttackArea attackArea = child.GetComponent<AttackArea>();
 
-        
+        onWeaponBladeEnabe = attackPoint.BladeVolumeEnable;
+
         attackArea.onPlayerIn += (target) =>
         {
             // 플레이어가 들어온 상태에서
@@ -408,6 +410,7 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
             Quaternion.LookRotation(attackTarget.transform.position - transform.position), 0.1f);
         if (attackCoolTime < 0)
         {
+            animator.SetTrigger("Attack");      // 애니메이션 재생
             Attack(attackTarget, false);
         }
     }
@@ -492,8 +495,8 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
     /// <param name="target">공격 대상</param>
     public void Attack(IBattler target, bool isWeakPoint)
     {
-        animator.SetTrigger("Attack");      // 애니메이션 재생
-        //target.Defence(AttackPower);        // 공격 대상에게 데미지 전달
+        
+        target.Defence(AttackPower);        // 공격 대상에게 데미지 전달
         attackCoolTime = attackInterval;    // 쿨타임 초기화
     }
 
@@ -582,11 +585,6 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
     /// </summary>
     private void WeaponBladeEnable()
     {
-        if (swordCollider != null)
-        {
-            swordCollider.enabled = true;
-        }
-
         // onWeaponBladeEnabe 켜라고 신호보내기
         onWeaponBladeEnabe?.Invoke(true);
     }
@@ -596,11 +594,6 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
     /// </summary>
     private void WeaponBladeDisable()
     {
-        if (swordCollider != null)
-        {
-            swordCollider.enabled = false;
-        }
-
         // onWeaponBladeEnabe 끄라고 신호보내기
         onWeaponBladeEnabe?.Invoke(false);
     }

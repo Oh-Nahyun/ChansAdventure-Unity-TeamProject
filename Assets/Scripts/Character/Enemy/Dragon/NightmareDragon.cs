@@ -291,6 +291,7 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
     NavMeshAgent agent;
     Rigidbody rigid;
     EnemyHealthBar hpBar;           // 적 체력바 스크립트
+    AttackPoint attackPoint;        // 공격 포인트 스크립트
 
     // 콜라이더들
     BoxCollider weakCollider;       // 머리 콜라이더
@@ -340,6 +341,7 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
         child = transform.GetChild(3);
         AttackArea attackArea = child.GetComponent<AttackArea>();
 
+        onWeaponBladeEnabe = attackPoint.BladeVolumeEnable;
 
         attackArea.onPlayerIn += (target) =>
         {
@@ -739,34 +741,24 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
         }
     }
 
-    ///// <summary>
-    ///// 콜라이더 켜는 함수
-    ///// </summary>
-    //private void WeaponBladeEnable()
-    //{
-    //    if (rightHandCollider != null)
-    //    {
-    //        rightHandCollider.enabled = true;
-    //    }
+    /// <summary>
+    /// 콜라이더 켜는 함수
+    /// </summary>
+    private void WeaponBladeEnable()
+    {
+        // onWeaponBladeEnabe 켜라고 신호보내기
+        onWeaponBladeEnabe?.Invoke(true);
+    }
 
-    //    // onWeaponBladeEnabe 켜라고 신호보내기
-    //    onWeaponBladeEnabe?.Invoke(true);
-    //}
-
-    ///// <summary>
-    ///// 콜라이더 끄는 함수
-    ///// </summary>
-    //private void WeaponBladeDisable()
-    //{
-    //    if (rightHandCollider != null)
-    //    {
-    //        rightHandCollider.enabled = false;
-    //    }
-
-    //    // onWeaponBladeEnabe 끄라고 신호보내기
-    //    onWeaponBladeEnabe?.Invoke(false);
-    //      // 드래곤 공격은 머리 박치기, 오른손 휘두르기, 물기
-    //}
+    /// <summary>
+    /// 콜라이더 끄는 함수
+    /// </summary>
+    private void WeaponBladeDisable()
+    {
+        // onWeaponBladeEnabe 끄라고 신호보내기
+        onWeaponBladeEnabe?.Invoke(false);
+        // 드래곤 공격은 머리 박치기, 오른손 휘두르기, 물기
+    }
 
 
     void PlayerDie()
