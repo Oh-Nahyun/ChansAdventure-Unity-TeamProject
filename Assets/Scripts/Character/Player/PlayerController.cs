@@ -237,7 +237,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     /// <param name="clipPath">애니메이션 클립의 리소스 경로</param>
     /// <returns>애니메이션 재생 시간</returns>
-    float GetAnimationLegth(string clipPath)
+    public float GetAnimationLegth(string clipPath)
     {
         AnimationClip clip = Resources.Load<AnimationClip>(clipPath);
         if (clip != null)

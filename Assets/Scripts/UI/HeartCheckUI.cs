@@ -76,6 +76,7 @@ public class HeartCheckUI : MonoBehaviour
     /// <summary>
     /// 하트 총 개수를 증가시켜주는 함수
     /// (사당 스크립트에서 델리게이트로 퀘스트 클리어할 때마다 알릴 예정)
+    /// (4개를 모아 하트로 변환해줄 때 사용하는 함수)
     /// </summary>
     public void PlusHeart()
     {
