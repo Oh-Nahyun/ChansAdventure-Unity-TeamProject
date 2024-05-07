@@ -277,7 +277,7 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
         weakPoint = GameObject.Find("WeakPoint").gameObject;
         weakCollider = weakPoint.GetComponent<SphereCollider>();
 
-        //weaponPoint = GameObject.Find("SwordPoint").gameObject;
+        weaponPoint = GameObject.Find("SwordPoint").gameObject;
         //swordCollider = weaponPoint.GetComponent<BoxCollider>();
 
 
@@ -287,7 +287,7 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
         child = transform.GetChild(4);
         AttackArea attackArea = child.GetComponent<AttackArea>();
 
-        onWeaponBladeEnabe = attackPoint.BladeVolumeEnable;
+        
 
         attackArea.onPlayerIn += (target) =>
         {
@@ -321,6 +321,9 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
         rigid.isKinematic = true;           // 키네마틱을 꺼서 물리가 적용되게 만들기
         rigid.drag = Mathf.Infinity;        // 무한대로 되어 있던 마찰력을 낮춰서 떨어질 수 있게 하기
         HP = maxHP;                         // HP 최대로
+
+        attackPoint = weaponPoint.GetComponent<AttackPoint>();
+        onWeaponBladeEnabe = attackPoint.BladeVolumeEnable;
 
         Player player = GameManager.Instance.Player;
         if (player != null)
@@ -495,7 +498,6 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
     /// <param name="target">공격 대상</param>
     public void Attack(IBattler target, bool isWeakPoint)
     {
-        
         target.Defence(AttackPower);        // 공격 대상에게 데미지 전달
         attackCoolTime = attackInterval;    // 쿨타임 초기화
     }

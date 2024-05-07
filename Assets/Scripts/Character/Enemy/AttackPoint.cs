@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackPoint : RecycleObject
+public class AttackPoint : MonoBehaviour
 {
     SwordSkeleton skeleton;
     NightmareDragon nightmareDragon;
@@ -32,7 +32,7 @@ public class AttackPoint : RecycleObject
         if (other.CompareTag("AttackPoint"))
         {
             // 몸 공격
-            Player target = GameManager.Instance.Player;
+            IBattler target = other.GetComponent<IBattler>();
             if (target != null)
             {
                 if(nightmareDragon != null)
@@ -41,7 +41,7 @@ public class AttackPoint : RecycleObject
                 }
                 else
                 {
-                    target.Defence(skeleton.AttackPower);        // 공격 대상에게 데미지 전달
+                    skeleton.Attack(target, false);        
                 }
             }
         }

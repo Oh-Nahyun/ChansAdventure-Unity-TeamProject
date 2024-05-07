@@ -291,7 +291,7 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
     NavMeshAgent agent;
     Rigidbody rigid;
     EnemyHealthBar hpBar;           // 적 체력바 스크립트
-    AttackPoint attackPoint;        // 공격 포인트 스크립트
+    AttackPoint[] attackPoint;        // 공격 포인트 스크립트
 
     // 콜라이더들
     BoxCollider weakCollider;       // 머리 콜라이더
@@ -308,6 +308,9 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
     GameObject rightArmPoint;   // 오른쪽 팔 포인트 게임 오브젝트
     GameObject leftHandPoint;   // 왼쪽 손 포인트 게임 오브젝트
     GameObject rightHandPoint;  // 오른쪽 손 포인트 게임 오브젝트
+    GameObject Dragon_Head_AttackPoint;  // 오른쪽 손 포인트 게임 오브젝트
+    GameObject Dragon_Hand_AttackPoint;  // 오른쪽 손 포인트 게임 오브젝트
+    
 
 
     private void Awake()
@@ -334,6 +337,9 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
         rightHandPoint = GameObject.Find("R_HandPoint").gameObject;
         rightHandCollider = rightHandPoint.GetComponent<BoxCollider>();
 
+        Dragon_Head_AttackPoint = GameObject.Find("Dragon_Head_AttackPoint").gameObject;
+        Dragon_Hand_AttackPoint = GameObject.Find("R_Hand_AttackPoint").gameObject;
+
 
         Transform child = transform.GetChild(2);
         hpBar = child.GetComponent<EnemyHealthBar>();
@@ -341,7 +347,8 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
         child = transform.GetChild(3);
         AttackArea attackArea = child.GetComponent<AttackArea>();
 
-        onWeaponBladeEnabe = attackPoint.BladeVolumeEnable;
+        attackPoint = new AttackPoint[2];
+
 
         attackArea.onPlayerIn += (target) =>
         {
@@ -376,6 +383,8 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
         rigid.drag = Mathf.Infinity;        // 무한대로 되어 있던 마찰력을 낮춰서 떨어질 수 있게 하기
         HP = maxHP;                         // HP 최대로
 
+        
+
         Player player = GameManager.Instance.Player;
         if (player != null)
         {
@@ -405,6 +414,18 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
         agent.enabled = true;               // agent가 활성화 되어 있으면 항상 네브메시 위에 있음
 
         base.OnDisable();
+    }
+
+    private void Start()
+    {
+        
+        // attackPoint[0] = 머리쪽 AttackPoint
+        attackPoint[0] = Dragon_Head_AttackPoint.GetComponent<AttackPoint>();
+        onWeaponBladeEnabe = attackPoint[0].BladeVolumeEnable;
+        // attackPoint[2] = 오른손 AttackPoint
+        attackPoint[1] = Dragon_Hand_AttackPoint.GetComponent<AttackPoint>();
+        onWeaponBladeEnabe = attackPoint[1].BladeVolumeEnable;
+
     }
 
     void Update()

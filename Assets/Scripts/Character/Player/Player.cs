@@ -989,6 +989,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     public void Defence(float damage)
     {
         Debug.Log("플레이어가 피격 당함");
+        // 플레이엉 무적 만들어야됨
     }
     //--------------------------------------------------------------------------------------------------
 #endif
