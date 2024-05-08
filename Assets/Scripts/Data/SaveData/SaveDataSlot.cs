@@ -78,7 +78,8 @@ public class SaveDataSlot : MonoBehaviour, IPointerClickHandler
         else
         {
             saveName.text = $"SaveData {saveIndex}";
-            saveDesc.text = $"{SceneManager.GetSceneByBuildIndex(sceneNumber).name}";
+            string sceneName = System.IO.Path.GetFileNameWithoutExtension(UnityEngine.SceneManagement.SceneUtility.GetScenePathByBuildIndex(sceneNumber));
+            saveDesc.text = $"{sceneName}";
         }
     }
 }
