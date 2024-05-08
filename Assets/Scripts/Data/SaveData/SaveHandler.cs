@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -45,11 +46,8 @@ public class SaveHandler : MonoBehaviour
     // Delegates
     public Action<int> onClickSaveSlot;
     public Action<int> onClickLoadSlot;
-
     private void Start()
     {
-        canvasGroup = GetComponent<CanvasGroup>();
-
         SceneDatas = new int[DATA_SIZE];
         playerDatas = new PlayerData[DATA_SIZE];
         saveSlots = new SaveDataSlot[DATA_SIZE];
@@ -69,6 +67,16 @@ public class SaveHandler : MonoBehaviour
         RefreshSaveData();
 
         player = GameManager.Instance.Player;
+    }
+
+    void OnEnable()
+    {
+        canvasGroup = gameObject.GetComponent<CanvasGroup>();        
+    }
+
+    void OnDestroy()
+    {
+        canvasGroup = null;
     }
 
     /// <summary>
@@ -188,15 +196,14 @@ public class SaveHandler : MonoBehaviour
                 int itemCount = playerDatas[loadIndex].itemDataClass[i].count;            // 아이템 개수
 
                 player.Inventory.AddSlotItem(itemCode, itemCount, (uint)i);
-                //inventory[(uint)i].AssignItem(itemCode, itemCount, out int over);
             }
         }
 
-        CloseSavePanel();
+        //CloseSavePanel();
 
         // 씬 불러오기
         string sceneName = System.IO.Path.GetFileNameWithoutExtension(UnityEngine.SceneManagement.SceneUtility.GetScenePathByBuildIndex(SceneDatas[loadIndex])); // 저장한 씬 인덱스로 씬 저장
-        GameManager.Instance.ChangeToTargetScene(sceneName, player.gameObject);
+        GameManager.Instance.ChangeToTargetScene(sceneName, GameManager.Instance.Player.gameObject);
     }
 
     /// <summary>
@@ -214,6 +221,7 @@ public class SaveHandler : MonoBehaviour
     /// </summary>
     public void CloseSavePanel()
     {
+        if (canvasGroup == null) Debug.Log($"접근하는 캠버스가 NULL입니다");
         canvasGroup.alpha = 0;
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;

@@ -393,7 +393,12 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
 
     #region Etc Values
 
+    /// <summary>
+    /// UI 패널이 열렸는지 확인하는 변수
+    /// </summary>
     bool isAnyUIPanelOpened = false;
+
+    MenuPanel menuPanel;
 
     #endregion
 
@@ -414,6 +419,11 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         skillRelatedAction = GetComponent<PlayerSkillRelatedAction>();
 
         cameraRoot = FindAnyObjectByType<PlayerLookVCam>().gameObject;
+    }
+
+    void OnEnable()
+    {
+        menuPanel = FindAnyObjectByType<MenuPanel>();
     }
 
     void Start()
@@ -805,7 +815,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// </summary>
     public void OnInventoryShow()
     {
-        GameManager.Instance.MenuPanel.ShowMenu((MenuState)1);
+        menuPanel.ShowMenu((MenuState)1);
     }
 
     /// <summary>
@@ -908,15 +918,14 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     }
 
     #region Etc Method
-
     public void OnMapShow()
     {
-        GameManager.Instance.MenuPanel.ShowMenu((MenuState)2);
+        menuPanel.ShowMenu((MenuState)2);
     }
 
     void OnOpenMenuPanel()
     {
-        GameManager.Instance.MenuPanel.ShowMenu((MenuState)0);
+        menuPanel.ShowMenu((MenuState)0);
     }
 
     /// <summary>

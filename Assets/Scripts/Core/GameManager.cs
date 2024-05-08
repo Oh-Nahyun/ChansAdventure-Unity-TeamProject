@@ -86,41 +86,6 @@ public class GameManager : Singleton<GameManager>
     Inventory savedInventory;
 
     InventorySlot[] savedEquipParts;
-
-    SaveHandler saveHandler;
-    public SaveHandler SaveHandler
-    {
-        get
-        {
-            if (saveHandler == null)
-            {
-                SaveHandler hendler = FindAnyObjectByType<SaveHandler>();
-                saveHandler = hendler;
-            }
-
-            return saveHandler;
-        }
-        set => saveHandler = value;
-    }
-
-    MenuPanel menuPanel;
-
-    public MenuPanel MenuPanel
-    {
-        get
-        {
-            if(menuPanel == null)
-            {
-                MenuPanel menu = FindAnyObjectByType<MenuPanel>();
-                menuPanel = menu;
-            }
-
-            return menuPanel;
-        }
-        set => menuPanel = value;
-    }
-
-
     protected override void OnPreInitialize()
     {
         base.OnPreInitialize();
@@ -140,7 +105,6 @@ public class GameManager : Singleton<GameManager>
         SpawnPlayerAfterLoadScene();
 
         if (player == null) player = FindAnyObjectByType<Player>();
-
         weapon = FindAnyObjectByType<Weapon>();
         cameraManager = GetComponent<CameraManager>();
         itemDataManager = GetComponent<ItemDataManager>();
@@ -160,18 +124,6 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    protected void OnLoadInitiallize()
-    {
-        weapon = FindAnyObjectByType<Weapon>();
-        cameraManager = GetComponent<CameraManager>();
-        itemDataManager = GetComponent<ItemDataManager>();
-        mapManager = GetComponent<MapManager>();
-
-        itemDataManager.InitializeItemDataUI();
-
-        mapManager.InitalizeMapUI();
-    }
-
     #region Loading Function
     /// <summary>
     /// 씬을 변경할 때 실행하는 함수
@@ -187,6 +139,21 @@ public class GameManager : Singleton<GameManager>
         loadPlayerGameObject.SetActive(false);
 
         TargetSceneName = SceneName;
+    }
+
+    /// <summary>
+    /// 로딩할 때 실행하는 초기화 함수
+    /// </summary>
+    protected void OnLoadInitiallize()
+    {
+        weapon = FindAnyObjectByType<Weapon>();
+        cameraManager = GetComponent<CameraManager>();
+        itemDataManager = GetComponent<ItemDataManager>();
+        mapManager = GetComponent<MapManager>();
+
+        itemDataManager.InitializeItemDataUI();
+
+        mapManager.InitalizeMapUI();
     }
 
     /// <summary>

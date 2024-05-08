@@ -18,26 +18,14 @@ public enum MenuState
 public class MenuPanel : MonoBehaviour
 {
     CanvasGroup canvasGroup;
-    CanvasGroup Canvus
-    {
-        get
-        {
-            if(canvasGroup == null)
-            {
-                this.gameObject.AddComponent<CanvasGroup>();
-                CanvasGroup cg = GetComponent<CanvasGroup>();
-                canvasGroup = cg;
-            }
-            return canvasGroup;
-        }
-        set => canvasGroup = value;
-    }
     
     TextMeshProUGUI currnetPanelName;
     TextMeshProUGUI prePanelName;
     TextMeshProUGUI nextPanelName;
     
     PlayerinputActions inputActions;
+
+    SaveHandler saveHandler;
 
     /// <summary>
     /// 현재 패널 상태
@@ -87,8 +75,6 @@ public class MenuPanel : MonoBehaviour
 
     private void Awake()
     {
-        canvasGroup = GetComponent<CanvasGroup>();
-
         Transform topPanel = transform.GetChild(0);
         Transform child = topPanel.transform.GetChild(0);
         currnetPanelName = child.GetComponent<TextMeshProUGUI>();
@@ -98,6 +84,25 @@ public class MenuPanel : MonoBehaviour
         nextPanelName = child.GetComponent<TextMeshProUGUI>();
 
         inputActions = new PlayerinputActions();
+    }
+
+    void OnEnable()
+    {
+        canvasGroup = gameObject.GetComponent<CanvasGroup>();
+        saveHandler = FindAnyObjectByType<SaveHandler>();
+    }
+
+    void OnDisable() // 비활성화 되면 인풋 제거
+    {
+        inputActions.UI.PrePanel.performed -= OnLeftArrow;
+        inputActions.UI.NextPanel.performed -= OnRightArrow;
+        inputActions.UI.Close.performed -= OnClose;
+        inputActions.UI.Disable();
+    }
+
+    void OnDestroy()
+    {
+        canvasGroup = null;
     }
 
     private void OnRightArrow(InputAction.CallbackContext context)
@@ -126,17 +131,14 @@ public class MenuPanel : MonoBehaviour
 
     private void OnClose(InputAction.CallbackContext context)
     {
-        if(Canvus.alpha == 1) // 매뉴 열려있을 때만 작동
-        {
-            CloseMenu();
-        }
+        CloseMenu();
     }
 
     public void ShowNormal()
     {
         GameManager.Instance.ItemDataManager.InventoryUI.CloseInventory();
         GameManager.Instance.MapManager.CloseMapUI();
-        GameManager.Instance.SaveHandler.CloseSavePanel(); // 세이브 패널 닫기
+        saveHandler.CloseSavePanel(); // 세이브 패널 닫기
 
         GameManager.Instance.MapManager.CloseMiniMapUI();
     }
@@ -149,7 +151,7 @@ public class MenuPanel : MonoBehaviour
         GameManager.Instance.ItemDataManager.InventoryUI.ShowInventory();
         GameManager.Instance.ItemDataManager.CharaterRenderCameraPoint.transform.eulerAngles = new Vector3(0, 180f, 0); // RenderTexture 플레이어 위치 초기화
         GameManager.Instance.MapManager.CloseMapUI();
-        GameManager.Instance.SaveHandler.CloseSavePanel(); // 세이브 패널 닫기
+        saveHandler.CloseSavePanel(); // 세이브 패널 닫기
 
         GameManager.Instance.MapManager.CloseMiniMapUI();
     }
@@ -161,7 +163,7 @@ public class MenuPanel : MonoBehaviour
     {
         GameManager.Instance.ItemDataManager.InventoryUI.CloseInventory();
         GameManager.Instance.MapManager.OpenMapUI();
-        GameManager.Instance.SaveHandler.CloseSavePanel(); // 세이브 패널 닫기
+        saveHandler.CloseSavePanel(); // 세이브 패널 닫기
 
         GameManager.Instance.MapManager.CloseMiniMapUI();
     }
@@ -173,7 +175,7 @@ public class MenuPanel : MonoBehaviour
     {
         GameManager.Instance.ItemDataManager.InventoryUI.CloseInventory();
         GameManager.Instance.MapManager.CloseMapUI();
-        GameManager.Instance.SaveHandler.ShowSavePanel(); // 세이브 패널 열기
+        saveHandler.ShowSavePanel(); // 세이브 패널 열기
 
         GameManager.Instance.MapManager.CloseMiniMapUI();
     }
@@ -184,9 +186,9 @@ public class MenuPanel : MonoBehaviour
     public void ShowMenu(MenuState setState)
     {
         State = setState;
-        Canvus.alpha = 1;
-        Canvus.interactable = true;
-        Canvus.blocksRaycasts = true;
+        canvasGroup.alpha = 1;
+        canvasGroup.interactable = true;
+        canvasGroup.blocksRaycasts = true;
 
         inputActions.UI.Enable();
         inputActions.UI.PrePanel.performed += OnLeftArrow;
@@ -204,9 +206,9 @@ public class MenuPanel : MonoBehaviour
     /// </summary>
     public void CloseMenu()
     {
-        Canvus.alpha = 0;
-        Canvus.interactable = false;
-        Canvus.blocksRaycasts = false;
+        canvasGroup.alpha = 0;
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
 
         inputActions.UI.PrePanel.performed -= OnLeftArrow;
         inputActions.UI.NextPanel.performed -= OnRightArrow;

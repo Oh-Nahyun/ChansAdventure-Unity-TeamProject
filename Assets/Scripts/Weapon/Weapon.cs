@@ -229,8 +229,8 @@ public class Weapon : MonoBehaviour
     /// <param name="isShow">true면 보여주고, false면 안보여준다.</param>
     public void ShowWeapon(bool isSwordShow = false, bool isBowShow = false)
     {
-        swordWeapon.gameObject.SetActive(isSwordShow);
-        bowWeapon.gameObject.SetActive(isBowShow);
+        //swordWeapon.gameObject.SetActive(isSwordShow);
+        //bowWeapon.gameObject.SetActive(isBowShow);
     }
 
     /// <summary>
