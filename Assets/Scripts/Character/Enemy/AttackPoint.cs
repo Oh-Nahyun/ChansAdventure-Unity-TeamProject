@@ -29,19 +29,23 @@ public class AttackPoint : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("AttackPoint"))
+        Debug.Log(other.tag);
+        if (other.CompareTag("Player"))
         {
+            // 오른손 콜라이더만 활성화됨 수정 필요
             // 몸 공격
             IBattler target = other.GetComponent<IBattler>();
             if (target != null)
             {
                 if(nightmareDragon != null)
                 {
-                    target.Defence(nightmareDragon.AttackPower);
+                    nightmareDragon.Attack(target, false);
+                    Debug.Log($"{target}AttackPoint_Dargon");
                 }
-                else
+                else if(skeleton != null)
                 {
-                    skeleton.Attack(target, false);        
+                    skeleton.Attack(target, false);
+                    Debug.Log($"{target}AttackPoint_Skeleton");
                 }
             }
         }
@@ -55,6 +59,4 @@ public class AttackPoint : MonoBehaviour
         //    }
         //}
     }
-
-    
 }

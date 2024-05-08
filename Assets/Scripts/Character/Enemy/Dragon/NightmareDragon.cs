@@ -249,17 +249,17 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
     /// <summary>
     /// 물기 공격 애니메이션 시간
     /// </summary>
-    private const float BasicAttackDuration = 1.2f;
+    private const float BasicAttackDuration = 1.3f;
 
     /// <summary>
     /// 박치기 공격 애니메이션 시간
     /// </summary>
-    private const float HornAttackDuration = 2.167f;
+    private const float HornAttackDuration = 2.2f;
 
     /// <summary>
     /// 앞발 휘두르기 공격 애니메이션 시간
     /// </summary>
-    private const float ClawAttackDuration = 3.333f;
+    private const float ClawAttackDuration = 3.4f;
 
     /// <summary>
     /// 단일 물기 공격 확률
@@ -383,7 +383,12 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
         rigid.drag = Mathf.Infinity;        // 무한대로 되어 있던 마찰력을 낮춰서 떨어질 수 있게 하기
         HP = maxHP;                         // HP 최대로
 
-        
+        // attackPoint[0] = 머리쪽 AttackPoint
+        attackPoint[0] = Dragon_Head_AttackPoint.GetComponent<AttackPoint>();
+        onWeaponBladeEnabe = attackPoint[0].BladeVolumeEnable;
+        // attackPoint[2] = 오른손 AttackPoint
+        attackPoint[1] = Dragon_Hand_AttackPoint.GetComponent<AttackPoint>();
+        onWeaponBladeEnabe = attackPoint[1].BladeVolumeEnable;
 
         Player player = GameManager.Instance.Player;
         if (player != null)
@@ -414,18 +419,6 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
         agent.enabled = true;               // agent가 활성화 되어 있으면 항상 네브메시 위에 있음
 
         base.OnDisable();
-    }
-
-    private void Start()
-    {
-        
-        // attackPoint[0] = 머리쪽 AttackPoint
-        attackPoint[0] = Dragon_Head_AttackPoint.GetComponent<AttackPoint>();
-        onWeaponBladeEnabe = attackPoint[0].BladeVolumeEnable;
-        // attackPoint[2] = 오른손 AttackPoint
-        attackPoint[1] = Dragon_Hand_AttackPoint.GetComponent<AttackPoint>();
-        onWeaponBladeEnabe = attackPoint[1].BladeVolumeEnable;
-
     }
 
     void Update()
@@ -493,7 +486,11 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
             Quaternion.LookRotation(attackTarget.transform.position - transform.position), 0.1f);
         if (attackCoolTime < 0 && !isAttacking)
         {
-            Attack(attackTarget, false);
+            StartCoroutine(PerformAttack()); // 공격 코루틴 실행
+            //if (attackPoint[0].AttackEnter || attackPoint[1].AttackEnter)
+            //{
+            //    Attack(attackTarget, false);
+            //}
         }
     }
 
@@ -580,13 +577,23 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
     /// <param name="target">공격 대상</param>
     public void Attack(IBattler target, bool isWeakPoint)
     {
-        StartCoroutine(PerformAttack(target)); // 공격 코루틴 실행
+        if (isClawAttack)
+        {
+            Debug.Log($"{target}강력 공격 맞음");
+            target.Defence(AttackPower * 1.2f);
+        }
+        else
+        {
+            Debug.Log($"{target}기본 공격 맞음");
+            target.Defence(AttackPower);
+        }
+        //StartCoroutine(PerformAttack(target)); // 공격 코루틴 실행
     }
 
     // AttackBasic, AttackHorn, AttackClaw 이름의 Trigger형으로 각각 연결되어 있음
     // BasicAttack, HornAttack, ClawAttack 애니메이션 시간 각각 1.2f, 2.167f, 3.333f
     
-    private IEnumerator PerformAttack(IBattler target)
+    private IEnumerator PerformAttack()
     {
         isAttacking = true; // 공격 중
         float rand = UnityEngine.Random.value;  // 랜덤 값 가져오기
@@ -594,19 +601,19 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
         if (rand < BasicAttackProbability)
         {
             Debug.Log("단일");
-            PerformBasicAttack(target);
+            PerformBasicAttack();
             yield return new WaitForSeconds(BasicAttackDuration);
         }
         else if (rand < BasicAttackProbability + HornAttackProbability)
         {
             Debug.Log("단일");
-            PerformHornAttack(target);
+            PerformHornAttack();
             yield return new WaitForSeconds(HornAttackDuration);
         }
         else if (rand < BasicAttackProbability + HornAttackProbability + ClawAttackProbability)
         {
             Debug.Log("단일");
-            PerformClawAttack(target);
+            PerformClawAttack();
             yield return new WaitForSeconds(ClawAttackDuration);
         }
         else
@@ -617,31 +624,31 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
             if (comboRandomValue < ComboProbability)
             {
                 // 물기 물기 휘두르기
-                PerformBasicAttack(target);
+                PerformBasicAttack();
                 yield return new WaitForSeconds(BasicAttackDuration);
-                PerformBasicAttack(target);
+                PerformBasicAttack();
                 yield return new WaitForSeconds(BasicAttackDuration);
-                PerformClawAttack(target);
+                PerformClawAttack();
                 yield return new WaitForSeconds(ClawAttackDuration);
             }
             else if (comboRandomValue < ComboProbability * 2)
             {
                 // 박치기 박치기 휘두르기
-                PerformHornAttack(target);
+                PerformHornAttack();
                 yield return new WaitForSeconds(HornAttackDuration);
-                PerformHornAttack(target);
+                PerformHornAttack();
                 yield return new WaitForSeconds(HornAttackDuration);
-                PerformClawAttack(target);
+                PerformClawAttack();
                 yield return new WaitForSeconds(ClawAttackDuration);
             }
             else
             {
                 // 박치기 물기 휘두르기
-                PerformHornAttack(target);
+                PerformHornAttack();
                 yield return new WaitForSeconds(HornAttackDuration);
-                PerformBasicAttack(target);
+                PerformBasicAttack();
                 yield return new WaitForSeconds(BasicAttackDuration);
-                PerformClawAttack(target);
+                PerformClawAttack();
                 yield return new WaitForSeconds(ClawAttackDuration);
             }
         }
@@ -655,9 +662,10 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
     /// 물기 공격 실행 함수
     /// </summary>
     /// <param name="target">공격 대상</param>
-    private void PerformBasicAttack(IBattler target)
+    private void PerformBasicAttack()
     {
-        target.Defence(AttackPower);
+        isClawAttack = false;
+        //target.Defence(AttackPower);
         animator.SetTrigger("AttackBasic");
     }
 
@@ -665,19 +673,22 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
     /// 박치기 공격 실행 함수
     /// </summary>
     /// <param name="target">공격 대상</param>
-    private void PerformHornAttack(IBattler target)
+    private void PerformHornAttack()
     {
-        target.Defence(AttackPower);
+        isClawAttack = false;
+        //target.Defence(AttackPower);
         animator.SetTrigger("AttackHorn");
     }
 
+    bool isClawAttack = false;
     /// <summary>
     /// 앞발 휘두르기 공격 실행 함수
     /// </summary>
     /// <param name="target">공격 대상</param>
-    private void PerformClawAttack(IBattler target)
+    private void PerformClawAttack()
     {
-        target.Defence(AttackPower * 1.2f); // 앞발 휘두르기 공격은 데미지 증가
+        isClawAttack = true;
+        //target.Defence(AttackPower * 1.2f); // 앞발 휘두르기 공격은 데미지 증가
         animator.SetTrigger("AttackClaw");
     }
 

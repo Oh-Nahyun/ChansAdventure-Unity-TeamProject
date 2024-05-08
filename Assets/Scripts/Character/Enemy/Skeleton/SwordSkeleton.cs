@@ -414,7 +414,10 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
         if (attackCoolTime < 0)
         {
             animator.SetTrigger("Attack");      // 애니메이션 재생
-            Attack(attackTarget, false);
+            //if(attackPoint.AttackEnter)
+            //{
+            //    Attack(attackTarget, false);
+            //}
         }
     }
 
