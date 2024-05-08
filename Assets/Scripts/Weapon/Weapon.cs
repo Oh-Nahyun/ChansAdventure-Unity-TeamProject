@@ -222,7 +222,13 @@ public class Weapon : MonoBehaviour
         {
             // 활을 무기로 사용하고 있던 경우 => 무기를 넣도록 한다.
             currentWeaponMode = WeaponMode.None;
-            Debug.Log("WeaponMode_Change : Bow >> None");
+            Debug.Log("WeaponMode_Change : Bow(Sword) >> None");
+        }
+        else if(currentWeaponMode == WeaponMode.None // 맨손에서 활 장착 ( 칼없을 때 )
+            && player.EquipPart[1] != null && player.EquipPart[0] == null)
+        {
+            currentWeaponMode = WeaponMode.Bow;
+            Debug.Log("WeaponMode_Change : None >> Bow");
         }
 
         ChangeWeapon(currentWeaponMode);
@@ -236,15 +242,15 @@ public class Weapon : MonoBehaviour
         switch (mode)
         {
             case WeaponMode.None:
-                //ShowWeapon(false, false);
+                ShowWeapon(false, false);
                 IsBowEquip = false;
                 break;
             case WeaponMode.Sword:
-                //ShowWeapon(true, false);
+                ShowWeapon(true, false);
                 IsBowEquip = false;
                 break;
             case WeaponMode.Bow:
-                //ShowWeapon(false, true);
+                ShowWeapon(false, true);
                 UpdateArrow();
                 IsBowEquip = true;
                 break;
