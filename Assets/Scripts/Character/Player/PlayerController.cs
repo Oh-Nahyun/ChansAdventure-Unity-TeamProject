@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 using static UnityEngine.InputSystem.InputAction;
 
 /// <summary>
@@ -25,21 +26,20 @@ public class PlayerController : MonoBehaviour
     public Action onInteraction;
     public Action onInventoryOpen;
     public Action onMapOpen;
+    public Action onOpenQuest;
 
     // 컴포넌트
     Weapon weapon;
-    TextBoxManager textBoxManager;
 
     void Awake()
     {
         playerInputAction = new PlayerinputActions();
         weapon = GetComponent<Weapon>();
-        textBoxManager = FindAnyObjectByType<TextBoxManager>();
     }
 
     void Start()
     {
-        textBoxManager.isTalkAction += (talk) => IsTalk(talk);
+        GameManager.Instance.TextBoxManager.isTalkAction += (talk) => IsTalk(talk);
     }
 
     void OnEnable()
@@ -62,12 +62,18 @@ public class PlayerController : MonoBehaviour
         // Map
         playerInputAction.Player.Open_Map.performed += OnOpenMap;
 
+        // Quest
+        playerInputAction.Player.Open_Quest.performed += OnOpenQuest;
+
         //playerInputAction.Player.ActiveSkillMode.performed += OnSkillModeChange;
     }
 
     void OnDisable()
     {
         //playerInputAction.Player.ActiveSkillMode.performed -= OnSkillModeChange;
+
+        // Quest
+        playerInputAction.Player.Open_Quest.performed -= OnOpenQuest;
 
         // Map
         playerInputAction.Player.Open_Map.performed -= OnOpenMap;
@@ -84,6 +90,7 @@ public class PlayerController : MonoBehaviour
         playerInputAction.Player.LookAround.performed -= OnLookInput;
         playerInputAction.Player.Move.canceled -= OnMoveInput;
         playerInputAction.Player.Move.performed -= OnMoveInput;
+
 
         playerInputAction.Player.Disable();
     }
@@ -209,6 +216,15 @@ public class PlayerController : MonoBehaviour
         onMapOpen?.Invoke();
     }
 
+    /// <summary>
+    /// 퀘스트창 키는 함수 ( L key )
+    /// </summary>
+    /// <param name="context"></param>
+    private void OnOpenQuest(InputAction.CallbackContext context)
+    {
+        onOpenQuest?.Invoke();
+    }
+
     #endregion
 
     /// <summary>
@@ -264,7 +280,7 @@ public class PlayerController : MonoBehaviour
             return -1.0f;
         }
     }
-    
+
     bool isTalk = false;
 
     /// <summary>

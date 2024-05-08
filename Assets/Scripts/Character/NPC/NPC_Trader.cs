@@ -14,7 +14,7 @@ public class NPC_Trader : NPCBase
     public string selectButtonText1_2;
     public string selectButtonText1_3;
 
-    bool isSellClose = true;
+    public bool isSellClose = true;
 
 
     protected override void Awake()
@@ -33,7 +33,6 @@ public class NPC_Trader : NPCBase
         base.Start();
         playerInventory = player.PlayerInventory;
         GameManager.Instance.ItemDataManager.SellPanelUI.GetTarget(playerInventory);
-        //shop.gameObject.SetActive(false);
         sellPanelUI.onCloseButton += sellPanelUIClose;
     }
 

@@ -14,10 +14,12 @@ public class QuestManager : MonoBehaviour
     public GameObject questInfoPanelPrefab; // QuestInfoPanel 프리팹
     public Transform questInfoPanelParent;  // QuestInfoPanel이 생성될 부모 Transform
 
+    public QuestInfo questInfo;
 
     private void Awake()
     {
         questMessage = FindObjectOfType<QuestMessage>();
+        questInfo = FindObjectOfType<QuestInfo>();
         GenerateData();
     }
 
@@ -97,5 +99,11 @@ public class QuestManager : MonoBehaviour
         // 리스트에서 제거하고 GameObject를 파괴
         questInfoPanels.Remove(panel);
         Destroy(panel.gameObject);
+    }
+
+    public void OpenQuest()
+    {
+        questInfo.gameObject.SetActive(true);
+        questInfo.OnQuestInfo();
     }
 }

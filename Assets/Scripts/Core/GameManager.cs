@@ -38,6 +38,15 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     public MapManager MapManager => mapManager;
 
+    /// <summary>
+    /// questManager 접근을 위한 프로퍼티
+    /// </summary>
+    QuestManager questManager;
+    public QuestManager QuestManager => questManager;
+
+    TextBoxManager textBoxManager;
+    public TextBoxManager TextBoxManager => textBoxManager;
+
     public CameraManager Cam
     {
         get
@@ -98,6 +107,8 @@ public class GameManager : Singleton<GameManager>
         itemDataManager.InitializeItemDataUI();
 
         mapManager.InitalizeMapUI();
+        questManager = FindAnyObjectByType<QuestManager>();
+        textBoxManager = FindAnyObjectByType<TextBoxManager>();
     }
 
     protected override void OnAdditiveInitiallize()
@@ -112,6 +123,8 @@ public class GameManager : Singleton<GameManager>
         itemDataManager.InitializeItemDataUI();
 
         mapManager.InitalizeMapUI();
+        questManager = FindAnyObjectByType<QuestManager>();
+        textBoxManager = FindAnyObjectByType<TextBoxManager>();
     }
 
     #region Loading Function

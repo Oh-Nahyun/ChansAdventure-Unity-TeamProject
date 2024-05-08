@@ -394,6 +394,8 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// </summary>
     Interaction interaction;
 
+    public bool isTalk = false;
+
     #endregion
 
     #region Etc Values
@@ -446,12 +448,13 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         controller.onInteraction += OnGetItem;
         controller.onInventoryOpen += OnInventoryShow;
         controller.onMapOpen += OnMapShow;
+        controller.onOpenQuest += OnQusetShow;
 
         // inventory
         inventory = new Inventory(this.gameObject, 16);
         GameManager.Instance.ItemDataManager.InventoryUI.InitializeInventoryUI(inventory); // 인벤 UI 초기화
         EquipPart = new InventorySlot[partCount]; // EquipPart 배열 초기화
-
+        GameManager.Instance.TextBoxManager.isTalkAction += (talk) => IsTalk(talk);
         Test_AddItem();
     }
 
@@ -938,6 +941,21 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
             GameManager.Instance.MapManager.CloseMapUI();
             isOpenedLargeMap = false;
         }
+    }
+
+    void OnQusetShow()
+    {
+        GameManager.Instance.QuestManager.OpenQuest();
+    }
+
+    /// <summary>
+    /// 대화중임을 확인하는 함수
+    /// </summary>
+    /// <param name="talk">true면 대화중</param>
+    /// <returns></returns>
+    void IsTalk(bool talk)
+    {
+        isTalk = talk;
     }
 
     /// <summary>
