@@ -25,6 +25,11 @@ public class SaveHandler : MonoBehaviour
     /// </summary>
     public SaveDataSlot[] SaveSlots => saveSlots;
 
+    /// <summary>
+    /// 세이브, 로드 확인창
+    /// </summary>
+    SaveCheckUI saveCheckUI;
+
     // 슬롯데이터 ===============================================================
     /// <summary>
     /// 씬 데이터
@@ -43,9 +48,16 @@ public class SaveHandler : MonoBehaviour
     /// </summary>
     const int DATA_SIZE = 5;
 
-    // Delegates
+    /// <summary>
+    /// 슬롯을 왼쪽 클릭했을 때 실행하는 델리게이트
+    /// </summary>
     public Action<int> onClickSaveSlot;
+
+    /// <summary>
+    /// 슬롯을 오른쪽 클릭했을 때 실행하는 델리게이트
+    /// </summary>
     public Action<int> onClickLoadSlot;
+
     private void Start()
     {
         SceneDatas = new int[DATA_SIZE];
@@ -61,12 +73,19 @@ public class SaveHandler : MonoBehaviour
             SaveSlots[i].SlotInitialize(i);
         }
 
-        onClickSaveSlot += SavePlayerData;
-        onClickLoadSlot += LoadPlayerData;
-
         RefreshSaveData();
 
         player = GameManager.Instance.Player;
+
+        // Check UI =====================================
+        child = transform.GetChild(1);
+        saveCheckUI = child.GetComponent<SaveCheckUI>();
+
+        saveCheckUI.onSave += SavePlayerData;
+        saveCheckUI.onLoad += LoadPlayerData;
+
+        onClickSaveSlot += saveCheckUI.ShowSaveCheck;
+        onClickLoadSlot += saveCheckUI.ShowLoadCheck;
     }
 
     void OnEnable()

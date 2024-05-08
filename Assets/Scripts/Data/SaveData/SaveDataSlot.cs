@@ -5,8 +5,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public class SaveDataSlot : MonoBehaviour, IPointerClickHandler
+public class SaveDataSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     SaveHandler handler;
 
@@ -26,6 +27,11 @@ public class SaveDataSlot : MonoBehaviour, IPointerClickHandler
     TextMeshProUGUI saveDesc;
 
     /// <summary>
+    /// 화살표 이미지
+    /// </summary>
+    Image arrowImg;
+
+    /// <summary>
     /// 슬롯을 초기화 하는 함수
     /// </summary>
     public void InitializeComponent()
@@ -35,6 +41,10 @@ public class SaveDataSlot : MonoBehaviour, IPointerClickHandler
         saveName = child.GetComponent<TextMeshProUGUI>();
         child = transform.GetChild(2);
         saveDesc = child.GetComponent<TextMeshProUGUI>();
+        child = transform.GetChild(3);
+        arrowImg = child.GetComponent<Image>();
+
+        arrowImg.gameObject.SetActive(false);
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -52,6 +62,16 @@ public class SaveDataSlot : MonoBehaviour, IPointerClickHandler
             Debug.Log($"{saveIndex}번 로드함");
             handler.onClickLoadSlot?.Invoke(saveIndex);
         }
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        arrowImg.gameObject.SetActive(true);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        arrowImg.gameObject.SetActive(false);
     }
 
     /// <summary>
