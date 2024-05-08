@@ -14,45 +14,45 @@ public class EnemySpawner : Waypoints
     public EnemyType enemyType = EnemyType.SwordSkeleton;
 
     /// <summary>
-    /// ½ºÆù °£°İ
+    /// ìŠ¤í° ê°„ê²©
     /// </summary>
     public float interval = 1.0f;
 
     /// <summary>
-    /// ¸¶Áö¸· ½ºÆù¿¡¼­ Áö³­ ½Ã°£
+    /// ë§ˆì§€ë§‰ ìŠ¤í°ì—ì„œ ì§€ë‚œ ì‹œê°„
     /// </summary>
     float elapsedTime = 0.0f;
 
     /// <summary>
-    /// ½ºÆ÷³Ê¿¡¼­ µ¿½Ã¿¡ ÃÖ´ë·Î À¯Áö°¡´ÉÇÑ ÀûÀÇ ¼ö
+    /// ìŠ¤í¬ë„ˆì—ì„œ ë™ì‹œì— ìµœëŒ€ë¡œ ìœ ì§€ê°€ëŠ¥í•œ ì ì˜ ìˆ˜
     /// </summary>
     public int capacity = 3;
 
     /// <summary>
-    /// ÇöÀç ½ºÆùµÈ ÀûÀÇ ¼ö
+    /// í˜„ì¬ ìŠ¤í°ëœ ì ì˜ ìˆ˜
     /// </summary>
     int count = 0;
 
 
     private void Update()
     {
-        if (count < capacity)            // Ä³ÆÛ½ÃÆ¼ È®ÀÎÇÏ°í
+        if (count < capacity)            // ìºí¼ì‹œí‹° í™•ì¸í•˜ê³ 
         {
             elapsedTime += Time.deltaTime;
-            if (elapsedTime > interval)  // ÀÎÅÍ¹ú È®ÀÎ
+            if (elapsedTime > interval)  // ì¸í„°ë²Œ í™•ì¸
             {
-                Spawn();                // µÑ ´Ù Åë°ú°¡ µÇ¸é ½ºÆù
+                Spawn();                // ë‘˜ ë‹¤ í†µê³¼ê°€ ë˜ë©´ ìŠ¤í°
                 elapsedTime = 0.0f;
             }
         }
     }
 
     /// <summary>
-    /// ÀûÀ» ÇÑ¸¶¸® ½ºÆùÇÏ´Â ÇÔ¼ö
+    /// ì ì„ í•œë§ˆë¦¬ ìŠ¤í°í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
     void Spawn()
     {
-        // Àû ÇÏ³ª ½ºÆù(waypointµé Áß ·£´ıÀ¸·Î ÇÏ³ª¸¦ ¼±ÅÃÇØ¼­ »ı¼º)
+        // ì  í•˜ë‚˜ ìŠ¤í°(waypointë“¤ ì¤‘ ëœë¤ìœ¼ë¡œ í•˜ë‚˜ë¥¼ ì„ íƒí•´ì„œ ìƒì„±)
 
         int randPos = Random.Range(0, children.Length);
         float randRot = Random.Range(0, 360.0f);

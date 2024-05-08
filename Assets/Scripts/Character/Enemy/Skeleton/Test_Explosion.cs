@@ -20,8 +20,8 @@ public class Test_Explosion : TestBase
 
         rb.AddForce (dir * 5, ForceMode.Impulse);
     }
-    // ÇÁ¸®ÆÕ¿¡ ÄÝ¶óÀÌ´õ ³Ö°í(¾È¶³¾îÁö±âÀ§ÇØ)
-    // ¸®Áöµå ¹Ùµð¿¡ Å°³×¸¶Æ½ ÄÑ±â(Áß·Â ¹Þ±âÀ§ÇØ)
-    // Darg°ª ¼öÁ¤ ÇÏ±â (Áß·Â ¶§¹®¿¡ ¼³Á¤)
-    // freeze rotation(¼³Á¤ÇÏ±â)
+    // í”„ë¦¬íŒ¹ì— ì½œë¼ì´ë” ë„£ê³ (ì•ˆë–¨ì–´ì§€ê¸°ìœ„í•´)
+    // ë¦¬ì§€ë“œ ë°”ë””ì— í‚¤ë„¤ë§ˆí‹± ì¼œê¸°(ì¤‘ë ¥ ë°›ê¸°ìœ„í•´)
+    // Dargê°’ ìˆ˜ì • í•˜ê¸° (ì¤‘ë ¥ ë•Œë¬¸ì— ì„¤ì •)
+    // freeze rotation(ì„¤ì •í•˜ê¸°)
 }

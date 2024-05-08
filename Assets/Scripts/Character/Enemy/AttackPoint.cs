@@ -13,13 +13,13 @@ public class AttackPoint : MonoBehaviour
 
     private void Awake()
     {
-        skeleton = GetComponentInParent<SwordSkeleton>();   // ÇÃ·¹ÀÌ¾î Ã£±â
+        skeleton = GetComponentInParent<SwordSkeleton>();   // í”Œë ˆì´ì–´ ì°¾ê¸°
         nightmareDragon = GetComponentInParent<NightmareDragon>();
         attackCollider = GetComponent<BoxCollider>();
     }
 
     /// <summary>
-    /// °ø°İ Ãæµ¹¿µ¿ªÀ» ÄÑ°í ²ô´Â ÇÔ¼ö
+    /// ê³µê²© ì¶©ëŒì˜ì—­ì„ ì¼œê³  ë„ëŠ” í•¨ìˆ˜
     /// </summary>
     /// <param name="isEnable"></param>
     public void BladeVolumeEnable(bool isEnable)
@@ -31,7 +31,7 @@ public class AttackPoint : MonoBehaviour
     {
         if (other.CompareTag("AttackPoint"))
         {
-            // ¸ö °ø°İ
+            // ëª¸ ê³µê²©
             IBattler target = other.GetComponent<IBattler>();
             if (target != null)
             {
@@ -47,11 +47,11 @@ public class AttackPoint : MonoBehaviour
         }
         //else if (other.CompareTag("Player"))
         //{
-        //    // ¾àÁ¡ °ø°İ
+        //    // ì•½ì  ê³µê²©
         //    Player target = GameManager.Instance.Player;
         //    if (target != null)
         //    {
-        //        target.Defence(skeleton.AttackPower);        // °ø°İ ´ë»ó¿¡°Ô µ¥¹ÌÁö Àü´Ş
+        //        target.Defence(skeleton.AttackPower);        // ê³µê²© ëŒ€ìƒì—ê²Œ ë°ë¯¸ì§€ ì „ë‹¬
         //    }
         //}
     }
