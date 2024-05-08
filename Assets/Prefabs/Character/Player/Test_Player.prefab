@@ -9016,6 +9016,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1911849753672133655}
     m_Modifications:
+    - target: {fileID: 1235881777629241047, guid: 7e4dfc72767ae0c4ab9418376aa3d8a5,
+        type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 320
+      objectReference: {fileID: 0}
     - target: {fileID: 1713299446282642033, guid: 7e4dfc72767ae0c4ab9418376aa3d8a5,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9095,6 +9100,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1911849753672133655}
     m_Modifications:
+    - target: {fileID: 1450024971307518663, guid: 5e07d5f18d8bd8c4f9fa932d063a7ad2,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5cc624d476ad4c94e8c85d335dbb45fe,
+        type: 3}
+    - target: {fileID: 1450024971307518663, guid: 5e07d5f18d8bd8c4f9fa932d063a7ad2,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1450024971307518663, guid: 5e07d5f18d8bd8c4f9fa932d063a7ad2,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5184635088110738891, guid: 5e07d5f18d8bd8c4f9fa932d063a7ad2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9108,7 +9129,7 @@ PrefabInstance:
     - target: {fileID: 5184635088110738891, guid: 5e07d5f18d8bd8c4f9fa932d063a7ad2,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5184635088110738891, guid: 5e07d5f18d8bd8c4f9fa932d063a7ad2,
         type: 3}

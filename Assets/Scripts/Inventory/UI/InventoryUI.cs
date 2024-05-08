@@ -177,7 +177,7 @@ public class InventoryUI : MonoBehaviour
     /// <param name="index">아이템을 넣을 인벤토리 슬롯 인덱스</param>
     private void OnSlotDragEnd(GameObject slotObj)
     {
-        if (isOpenedMenuPanel)
+        if (isOpenedMenuPanel || !tempSlotUI.IsOpen)
             return;
 
         if (slotObj == null) // 드래그 종료 시점에 감지되는 슬롯이 없다.
@@ -420,9 +420,9 @@ public class InventoryUI : MonoBehaviour
         bool isEquip = Inventory[index].IsEquip;
         if (equipable != null)
         {
-            if (isEquip) // 장착이 되어있으면 장착해제
+            if (isEquip) // 선택한 아이템이 장착이 되어있으면 장착해제
             {
-                equipable.UnEquipItem(Inventory.Owner, Inventory[index]);
+                equipable.UnEquipItem(Inventory.Owner);
                 Inventory[index].IsEquip = false;
             }
             else if (!isEquip) // 장착이 안되있으면 장착
@@ -430,20 +430,31 @@ public class InventoryUI : MonoBehaviour
                 IEquipTarget equipTarget = Inventory.Owner.GetComponent<IEquipTarget>();    // 인벤토리를 가진 오브젝트의 IEquipTarget
                 ItemData_Equipment itemData = Inventory[index].SlotItemData as ItemData_Equipment;  // 장착하려는 아이템 데이터
 
-                int partInedex = (int)itemData.equipPart;   // 장착할려는 장비 위치 인덱스
-                InventorySlot equipedItem = equipTarget.EquipPart[partInedex];
+                /*// 장착부위에 아이템을 확인하는 주석
+                  //int partInedex = (int)itemData.equipPart;   // 장착할려는 장비 위치 인덱스
+                  InventorySlot equipedItem = equipTarget.EquipPart[partInedex];
+                  if (equipedItem != null)  // 장착할 해당 부위에 아이템이 있다
+                  {
+                      Inventory[equipedItem.SlotIndex].IsEquip = false; // 장착한 아이템 슬롯 장착해제
+                  }*/
 
-                if (equipedItem != null)  // 장착할 해당 부위에 아이템이 있다
+                // 0 오른쪽손, 1 왼손 장착부위확인
+                for(int i = 0; i <= (int)EquipPart.Hand_L; i++)
                 {
-                    Inventory[equipedItem.SlotIndex].IsEquip = false; // 장착한 아이템 슬롯 장착해제
+                    if (equipTarget.EquipPart[i] != null) // 두 장착부위에 아이템이 있다.
+                    {
+                        uint equipIndex = equipTarget.EquipPart[i].SlotIndex; // 장착부위의 인벤토리 슬롯 인덱스
+                        inventory[equipIndex].IsEquip = false;  // 아이템 장착해제 ( UI )
+
+                        IEquipable equipedItem = Inventory[equipIndex].SlotItemData as IEquipable; // 장착부위의 장착 인터페이스 접근
+                        equipedItem.UnEquipItem(Inventory.Owner); // 장착된 캐릭터의 아이템 장착해제
+                    }
                 }
 
-                equipable.EquipItem(Inventory.Owner, Inventory[index]); // 아이템 장착                
-                Inventory[index].IsEquip = true;
+                equipable.EquipItem(Inventory.Owner, Inventory[index]); // 슬롯 아이템 장착                
+                Inventory[index].IsEquip = true;                        // 아이템 장착 ( UI )
             }
         }
-
-        //showEquip();
     }
 
     /// <summary>

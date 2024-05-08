@@ -8,7 +8,7 @@ public class TempSlotUI : SlotUI_Base
     /// <summary>
     /// 임시 슬롯 UI창이 열렸는지 확인하는 프로퍼티 ( true : 열려있음 , false : 닫혀있음 )
     /// </summary>
-    bool IsOpen => transform.localScale == Vector3.one;
+    public bool IsOpen => transform.localScale == Vector3.one;
     void Start()
     {
         CloseTempSlot();    

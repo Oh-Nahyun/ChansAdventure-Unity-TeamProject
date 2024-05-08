@@ -845,7 +845,19 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// <param name="part"></param>
     public void CharacterUnequipItem(EquipPart part)
     {
+        if (EquipPart[(int)part] == null)
+        {
+            Debug.Log("장착한 아이템정보가 존재하지 않습니다.");
+        }
+
         GameObject obj = partPosition[(int)part].GetChild(0).gameObject; // 아이템 파괴전 파괴할 오브젝트 활성화
+
+        if (obj == null)
+        {
+            Debug.Log("아이템이 없습니다");
+            return;
+        }
+
         obj.SetActive(true);
         DestroyImmediate(obj);
 

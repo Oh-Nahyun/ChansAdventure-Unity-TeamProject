@@ -451,22 +451,23 @@ public class Weapon : MonoBehaviour
     /// <param name="partIndex">장착부위 인덱스</param>
     void OnEquipWeapon(int partIndex)
     {
-        // 장착한 아이템이 검이면
         if(partIndex == (int)EquipPart.Hand_R)
         {
             swordWeapon = player.partPosition[partIndex].GetChild(0);
-
             sword = swordWeapon.GetComponent<Sword>();
+
+            currentWeaponMode = WeaponMode.Sword;
+            ShowWeapon(true, false);   
         }
 
-        // 장착한 아이템이 활이면
         if (partIndex == (int)EquipPart.Hand_L)
         {
             bowWeapon = player.partPosition[partIndex].GetChild(0);
             bow = bowWeapon.GetComponent<Bow>();
-        }
 
-        ShowWeapon(false, false);
+            currentWeaponMode = WeaponMode.Bow;
+            ShowWeapon(false, true);   
+        }
     }
 
     /// <summary>
