@@ -282,10 +282,10 @@ public class Inventory
                 break;
         }
 
-        List<(ItemData, int)> sortedData = new List<(ItemData, int)>((int)SlotSize); // 정렬한 내용 복사
+        List<(ItemData, int, bool)> sortedData = new List<(ItemData, int, bool)>((int)SlotSize); // 정렬한 내용 복사
         foreach (var slot in tempSortList)
         {
-            sortedData.Add((slot.SlotItemData, slot.CurrentItemCount));       // 정렬 내용 복사
+            sortedData.Add((slot.SlotItemData, slot.CurrentItemCount, slot.IsEquip));       // 정렬 내용 복사
         }
 
         int index = 0;
@@ -295,10 +295,21 @@ public class Inventory
             if (slot.Item1 == null) break;  // 정렬된 내용을 다 옮겼으면 break;
             slots[index].ClearItem();       // 슬롯 내용 정리 후
             slots[index].AssignItem((uint)slot.Item1.itemCode, (int)slot.Item2, out _);    // 복사한 내용을 슬롯에 설정 ( item1 : ItemDatam , item2 : CurrentItemCount )
+            slots[index].IsEquip = slot.Item3;  // 인벤토리 슬롯 장착 정보 갱신
 
+            // Owner 장착 정보 갱신
+            if (slots[index].IsEquip)
+            {
+                // 장착부위 찾기
+                ItemData_Equipment item = slots[index].SlotItemData as ItemData_Equipment;
+                int equipPart = (int)item.equipPart;
+
+                // 장착 아이템 정보 갱신
+                IEquipTarget target = Owner.gameObject.GetComponent<IEquipTarget>();
+                target.EquipPart[equipPart] = slots[index];
+            }
             index++;
         }
-
         tempSortList.Clear();   // 임시 리스트 제거
 
         // 재배치후 불필요한 슬롯 데이터 제거
