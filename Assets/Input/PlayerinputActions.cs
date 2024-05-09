@@ -349,7 +349,7 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Change"",
+                    ""name"": ""Sword Mode"",
                     ""type"": ""Button"",
                     ""id"": ""df5ab539-e7c0-4a08-861f-41ffd1348f22"",
                     ""expectedControlType"": ""Button"",
@@ -358,9 +358,18 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Load"",
+                    ""name"": ""Bow Mode"",
                     ""type"": ""Button"",
                     ""id"": ""3e057eaf-1de1-46f8-b70b-c7ace608bcd4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Normal Mode"",
+                    ""type"": ""Button"",
+                    ""id"": ""ca5dd82f-42b8-4591-9d6b-880e53250c8a"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -386,7 +395,7 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Change"",
+                    ""action"": ""Sword Mode"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -397,7 +406,18 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KM"",
-                    ""action"": ""Load"",
+                    ""action"": ""Bow Mode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6d0f5d2a-e7fe-4630-94f6-dde7d237cace"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KM"",
+                    ""action"": ""Normal Mode"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -717,8 +737,9 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         // Weapon
         m_Weapon = asset.FindActionMap("Weapon", throwIfNotFound: true);
         m_Weapon_Attack = m_Weapon.FindAction("Attack", throwIfNotFound: true);
-        m_Weapon_Change = m_Weapon.FindAction("Change", throwIfNotFound: true);
-        m_Weapon_Load = m_Weapon.FindAction("Load", throwIfNotFound: true);
+        m_Weapon_SwordMode = m_Weapon.FindAction("Sword Mode", throwIfNotFound: true);
+        m_Weapon_BowMode = m_Weapon.FindAction("Bow Mode", throwIfNotFound: true);
+        m_Weapon_NormalMode = m_Weapon.FindAction("Normal Mode", throwIfNotFound: true);
         // Skill
         m_Skill = asset.FindActionMap("Skill", throwIfNotFound: true);
         m_Skill_LeftClick = m_Skill.FindAction("LeftClick", throwIfNotFound: true);
@@ -940,15 +961,17 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Weapon;
     private List<IWeaponActions> m_WeaponActionsCallbackInterfaces = new List<IWeaponActions>();
     private readonly InputAction m_Weapon_Attack;
-    private readonly InputAction m_Weapon_Change;
-    private readonly InputAction m_Weapon_Load;
+    private readonly InputAction m_Weapon_SwordMode;
+    private readonly InputAction m_Weapon_BowMode;
+    private readonly InputAction m_Weapon_NormalMode;
     public struct WeaponActions
     {
         private @PlayerinputActions m_Wrapper;
         public WeaponActions(@PlayerinputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Attack => m_Wrapper.m_Weapon_Attack;
-        public InputAction @Change => m_Wrapper.m_Weapon_Change;
-        public InputAction @Load => m_Wrapper.m_Weapon_Load;
+        public InputAction @SwordMode => m_Wrapper.m_Weapon_SwordMode;
+        public InputAction @BowMode => m_Wrapper.m_Weapon_BowMode;
+        public InputAction @NormalMode => m_Wrapper.m_Weapon_NormalMode;
         public InputActionMap Get() { return m_Wrapper.m_Weapon; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -961,12 +984,15 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
             @Attack.started += instance.OnAttack;
             @Attack.performed += instance.OnAttack;
             @Attack.canceled += instance.OnAttack;
-            @Change.started += instance.OnChange;
-            @Change.performed += instance.OnChange;
-            @Change.canceled += instance.OnChange;
-            @Load.started += instance.OnLoad;
-            @Load.performed += instance.OnLoad;
-            @Load.canceled += instance.OnLoad;
+            @SwordMode.started += instance.OnSwordMode;
+            @SwordMode.performed += instance.OnSwordMode;
+            @SwordMode.canceled += instance.OnSwordMode;
+            @BowMode.started += instance.OnBowMode;
+            @BowMode.performed += instance.OnBowMode;
+            @BowMode.canceled += instance.OnBowMode;
+            @NormalMode.started += instance.OnNormalMode;
+            @NormalMode.performed += instance.OnNormalMode;
+            @NormalMode.canceled += instance.OnNormalMode;
         }
 
         private void UnregisterCallbacks(IWeaponActions instance)
@@ -974,12 +1000,15 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
             @Attack.started -= instance.OnAttack;
             @Attack.performed -= instance.OnAttack;
             @Attack.canceled -= instance.OnAttack;
-            @Change.started -= instance.OnChange;
-            @Change.performed -= instance.OnChange;
-            @Change.canceled -= instance.OnChange;
-            @Load.started -= instance.OnLoad;
-            @Load.performed -= instance.OnLoad;
-            @Load.canceled -= instance.OnLoad;
+            @SwordMode.started -= instance.OnSwordMode;
+            @SwordMode.performed -= instance.OnSwordMode;
+            @SwordMode.canceled -= instance.OnSwordMode;
+            @BowMode.started -= instance.OnBowMode;
+            @BowMode.performed -= instance.OnBowMode;
+            @BowMode.canceled -= instance.OnBowMode;
+            @NormalMode.started -= instance.OnNormalMode;
+            @NormalMode.performed -= instance.OnNormalMode;
+            @NormalMode.canceled -= instance.OnNormalMode;
         }
 
         public void RemoveCallbacks(IWeaponActions instance)
@@ -1205,8 +1234,9 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
     public interface IWeaponActions
     {
         void OnAttack(InputAction.CallbackContext context);
-        void OnChange(InputAction.CallbackContext context);
-        void OnLoad(InputAction.CallbackContext context);
+        void OnSwordMode(InputAction.CallbackContext context);
+        void OnBowMode(InputAction.CallbackContext context);
+        void OnNormalMode(InputAction.CallbackContext context);
     }
     public interface ISkillActions
     {

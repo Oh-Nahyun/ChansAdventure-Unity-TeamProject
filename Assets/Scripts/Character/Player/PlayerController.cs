@@ -15,7 +15,8 @@ public class PlayerController : MonoBehaviour
 
     // movment delegate
     public Action<Vector2, bool> onMove;
-    public Action onMoveModeChange;
+    public Action onMoveRunMode;
+    public Action onMoveWalkMode;
     public Action<Vector2, bool> onLook;
     public Action<bool> onJump;
     public Action<bool> onSlide;
@@ -46,7 +47,8 @@ public class PlayerController : MonoBehaviour
         playerInputAction.Player.LookAround.canceled += OnLookInput;
         playerInputAction.Player.Jump.performed += OnJumpInput;
         playerInputAction.Player.Slide.performed += OnSlideInput;
-        playerInputAction.Player.MoveModeChange.performed += OnMoveModeChangeInput;
+        playerInputAction.Player.MoveModeChange.performed += OnMoveRunModeInput;
+        playerInputAction.Player.MoveModeChange.canceled += OnMoveWalkModeInput;
 
         // Player Inventory
         playerInputAction.Player.Open_Inventory.performed += OnOpenInventory;
@@ -70,7 +72,8 @@ public class PlayerController : MonoBehaviour
         playerInputAction.Player.Get_Item.performed -= OnGetItem;
 
         // Player Movement
-        playerInputAction.Player.MoveModeChange.performed -= OnMoveModeChangeInput;
+        playerInputAction.Player.MoveModeChange.canceled -= OnMoveWalkModeInput;
+        playerInputAction.Player.MoveModeChange.performed -= OnMoveRunModeInput;
         playerInputAction.Player.Slide.performed -= OnSlideInput;
         playerInputAction.Player.Jump.performed -= OnJumpInput;
         playerInputAction.Player.LookAround.canceled -= OnLookInput;
@@ -109,11 +112,19 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// 이동 모드 변경 함수
+    /// 달리기 모드 함수
     /// </summary>
-    private void OnMoveModeChangeInput(CallbackContext _)
+    private void OnMoveRunModeInput(CallbackContext _)
     {
-        onMoveModeChange?.Invoke();
+        onMoveRunMode?.Invoke();
+    }
+
+    /// <summary>
+    /// 걷기 모드 함수
+    /// </summary>
+    private void OnMoveWalkModeInput(CallbackContext _)
+    {
+        onMoveWalkMode?.Invoke();
     }
 
     /// <summary>

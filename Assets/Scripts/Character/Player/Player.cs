@@ -496,7 +496,8 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
 
         // controller
         controller.onMove += OnMove;
-        controller.onMoveModeChange += OnMoveModeChange;
+        controller.onMoveRunMode += OnMoveRunMode;
+        controller.onMoveWalkMode += OnMoveWalkMode;
         controller.onLook += OnLookAround;
         controller.onSlide += OnSlide;
         controller.onJump += OnJump;
@@ -553,6 +554,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         {
             // 카메라가 줌을 당긴 경우
             transform.rotation = Quaternion.Slerp(transform.rotation, followCamY, 0.0f);    // 회전을 적용하지 않는다.
+            targetRotation = transform.rotation;
         }
         else
         {
@@ -596,12 +598,34 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
             isMoving = false;
             currentSpeed = 0.0f; // 정지
             animator.SetFloat(SpeedHash, AnimatorStopSpeed);
+
+            if (weapon.CheckWeaponMode() == 1) // 무기 모드가 칼일 때
+                weapon.ShowWeapon(true, false);
+            else if (weapon.CheckWeaponMode() == 2) // 무기 모드가 활일 때
+                weapon.ShowWeapon(false, true);
         }
+    }
+
+    /// <summary>
+    /// 달리기 모드 처리용 함수
+    /// </summary>
+    private void OnMoveRunMode()
+    {
+        CurrentMoveMode = MoveMode.Run;
+    }
+
+    /// <summary>
+    /// 걷기 모드 처리용 함수
+    /// </summary>
+    private void OnMoveWalkMode()
+    {
+        CurrentMoveMode = MoveMode.Walk;
     }
 
     /// <summary>
     /// 이동 모드 변경 함수
     /// </summary>
+    /*
     private void OnMoveModeChange()
     {
         if (CurrentMoveMode == MoveMode.Walk)
@@ -613,6 +637,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
             CurrentMoveMode = MoveMode.Walk;
         }
     }
+    */
 
     /// <summary>
     /// Check Look Around
@@ -639,6 +664,9 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// <param name="mode">MoveMode</param>
     void MoveSpeedChange(MoveMode mode)
     {
+        // 이동 중에는 무기 비활성화
+        weapon.ShowWeapon(false, false);
+
         // 이동 모드에 따라 속도와 애니메이션 변경
         switch (mode)
         {

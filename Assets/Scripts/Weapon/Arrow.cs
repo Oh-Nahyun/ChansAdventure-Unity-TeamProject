@@ -40,9 +40,9 @@ public class Arrow : RecycleObject
     protected override void OnEnable()
     {
         base.OnEnable();
-        StartCoroutine(LifeOver(lifeTime));         // 수명 설정
-        rigid.angularVelocity = Vector3.zero;       // 이전의 회전력 제거
-        rigid.velocity = transform.up * arrowSpeed * arrowRange; // 발사 방향과 속도 설정
+        StartCoroutine(LifeOver(lifeTime));                         // 수명 설정
+        rigid.angularVelocity = Vector3.zero;                       // 이전의 회전력 제거
+        rigid.velocity = player.transform.forward * arrowSpeed * arrowRange;    // 발사 방향과 속도 설정 // transform.up
     }
 
     private void OnCollisionEnter(Collision collision)
