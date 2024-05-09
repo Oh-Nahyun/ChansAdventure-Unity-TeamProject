@@ -44,4 +44,11 @@ public class Test_PlayerAndEnemy : TestBase
         staminaCheckUI.PlusStamina();
         Debug.Log("스태미나 총량 증가 완료");
     }
+
+    protected override void OnTest5(InputAction.CallbackContext context)
+    {
+        //player.Defence(25 + 3); // DefencePower = 3.0f
+        player.Defence(79 + 3);
+        Debug.Log($"Player's HP : {player.HP}");
+    }
 }

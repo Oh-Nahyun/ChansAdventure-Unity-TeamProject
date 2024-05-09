@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,7 +11,7 @@ public class HeartCheckUI : MonoBehaviour
     /// <summary>
     /// 하트가 채워진 갯수
     /// </summary>
-    int filledHeart;
+    int filledHeart = 0;
 
     /// <summary>
     /// 플레이어의 하트 총 개수 (기본 3개)
@@ -18,33 +19,41 @@ public class HeartCheckUI : MonoBehaviour
     int numOfHearts = 3;
 
     /// <summary>
+    /// 하트 오브젝트 배열
+    /// </summary>
+    public GameObject[] Hearts;
+
+    /// <summary>
     /// 하트 이미지 배열
     /// </summary>
-    public Image[] hearts;
-
-    /// <summary>
-    /// 체력이 있을 때의 스프라이트
-    /// </summary>
-    public Sprite fullHeart;
-
-    /// <summary>
-    /// 체력이 없을 때의 스프라이트
-    /// </summary>
-    public Sprite emptyHeart;
-
-    /// <summary>
-    /// 플레이어
-    /// </summary>
-    Player player;
+    Image[] heartImages;
 
     /// <summary>
     /// 기본 하트 프리팹
     /// </summary>
     public GameObject heartPrefab;
 
+    /// <summary>
+    /// 플레이어
+    /// </summary>
+    Player player;
+
     private void Awake()
     {
         player = GameManager.Instance.Player;
+    }
+
+    private void Start()
+    {
+        // 배열 초기화
+        Array.Resize(ref heartImages, Hearts.Length);
+
+        // 하트 이미지 배열 채우기
+        for (int i = 0; i < Hearts.Length; i++)
+        {
+            Transform child = Hearts[i].transform.GetChild(1);
+            heartImages[i] = child.GetComponent<Image>();
+        }
     }
 
     private void Update()
@@ -57,19 +66,49 @@ public class HeartCheckUI : MonoBehaviour
     /// </summary>
     private void PrintHearts()
     {
-        numOfHearts = hearts.Length;                                                    // 하트 이미지 배열 크기 = 하트의 총 개수
-        filledHeart = Mathf.RoundToInt(player.HP * numOfHearts * (1 / player.MaxHP));   // 하트 중 채워진 하트 개수 = (int)(플레이어 체력 * 총 개수 * (1 / 플레이어 최대 체력))
+        // 하트 수 초기화
+        numOfHearts = heartImages.Length;                                               // 하트 이미지 배열 크기 = 하트의 총 개수
+        filledHeart = Mathf.CeilToInt(player.HP * numOfHearts * (1 / player.MaxHP));    // 하트 중 채워진 하트 개수 = (올림 이후 정수화)(플레이어 체력 * 총 개수 * (1 / 플레이어 최대 체력))
 
-        // 0 ~ 하트가 채워진 개수까지 : 빨간색 하트 스프라이트 적용
-        for (int i = 0; i < filledHeart; i++)
+        // 하트 UI 설정
+        if (filledHeart < 1)
         {
-            hearts[i].sprite = fullHeart;
+            // 체력이 0인 경우
+            for (int i = filledHeart; i < numOfHearts; i++)
+            {
+                heartImages[i].fillAmount = 0.0f;
+            }
         }
-
-        // 하트가 채워진 개수 다음 ~ 하트의 총 개수까지 : 검은색 하트 스프라이트 적용
-        for (int i = filledHeart; i < numOfHearts; i++)
+        else
         {
-            hearts[i].sprite = emptyHeart;
+            // 0 ~ (채워진 하트 - 1)까지 : 빨간색 하트 스프라이트
+            for (int i = 0; i < filledHeart - 1; i++)
+            {
+                heartImages[i].fillAmount = 1.0f;
+            }
+
+            // 채워진 하트 중 가장 마지막 하트
+            int finalHealth = (int)player.HP % 100; // 마지막 하트 체력 (100으로 나눈 나머지)
+            for (int i = 1; i < 5; i++)
+            {
+                if (25 * (i - 1) < finalHealth && finalHealth < 25 * i + 1)
+                {
+                    heartImages[filledHeart - 1].fillAmount = 0.25f * i;
+                }
+                else if (finalHealth < 1) // 나머지가 0인 경우
+                {
+                    heartImages[filledHeart - 1].fillAmount = 1.0f;
+                }
+            }
+
+            // 하트가 채워진 개수 다음 ~ 하트의 총 개수까지 : 검은색 하트 스프라이트
+            if (filledHeart < numOfHearts)
+            {
+                for (int i = filledHeart; i < numOfHearts; i++)
+                {
+                    heartImages[i].fillAmount = 0.0f;
+                }
+            }
         }
     }
 
@@ -80,16 +119,17 @@ public class HeartCheckUI : MonoBehaviour
     /// </summary>
     public void PlusHeart()
     {
-        int newSize = hearts.Length + 1;        // 증가된 배열 크기
-        Array.Resize(ref hearts, newSize);      // 배열 크기 증가
+        int newSize = heartImages.Length + 1;   // 증가된 배열 크기
+        Array.Resize(ref heartImages, newSize); // 배열 크기 증가
         Instantiate(heartPrefab, transform);    // 프리팹 추가
 
         // 이미지 배열에 추가
         Transform child = transform.GetChild(newSize - 1);
-        hearts[newSize - 1] = child.GetComponent<Image>();
+        child = child.transform.GetChild(1);
+        heartImages[newSize - 1] = child.GetComponent<Image>();
 
         // 플레이어 체력 설정
-        player.MaxHP = hearts.Length * 100.0f;  // 플레이어의 최대 체력 증가
-        player.HP = player.MaxHP;               // 함수가 실행될 때, 플레이어의 체력 채우기
+        player.MaxHP = heartImages.Length * 100.0f; // 플레이어의 최대 체력 증가
+        player.HP = player.MaxHP;                   // 함수가 실행될 때, 플레이어의 체력 채우기
     }
 }

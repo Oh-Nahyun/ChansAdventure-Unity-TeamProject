@@ -330,6 +330,11 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         }
     }
 
+    /// <summary>
+    /// 플레이어가 받은 최종 데미지
+    /// </summary>
+    public float finalDamage;
+
     // Stamina ===================================================================================
 
     /// <summary>
@@ -1097,7 +1102,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
             GetHit(); // 애니메이션 재생
 
             // 최종 데미지
-            float finalDamage = Mathf.Max(0, damage - DefencePower);
+            finalDamage = Mathf.Max(0, damage - DefencePower);
             HP -= finalDamage;
 
             onHit?.Invoke(Mathf.RoundToInt(finalDamage));
