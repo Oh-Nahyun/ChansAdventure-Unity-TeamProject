@@ -31,6 +31,11 @@ public class PlayerFollowVCam : MonoBehaviour
     /// </summary>
     Transform cameraRoot;
 
+    /// <summary>
+    /// 화살 조준 UI
+    /// </summary>
+    Transform arrowAimUI;
+
     // 컴포넌트들
     Player player;
     Weapon weapon;
@@ -45,6 +50,8 @@ public class PlayerFollowVCam : MonoBehaviour
         follow = vcam.GetCinemachineComponent<Cinemachine3rdPersonFollow>();
         lookAtPosition = GameObject.FindWithTag("LookAtPosition").transform;
         cameraRoot = GameObject.FindWithTag("CameraRoot").transform;
+        arrowAimUI = GameObject.FindWithTag("ArrowAimUI").transform;
+        arrowAimUI.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -103,6 +110,7 @@ public class PlayerFollowVCam : MonoBehaviour
                 follow.Damping = new Vector3(0.0f, 0.0f, 0.0f); // 카메라 Damping 제거
                 vcam.LookAt = lookAtPosition;                   // 카메라 목표물 설정
                 weapon.IsZoomIn = true;                         // 활이 조금이라도 당겨지면 ZoomIn이 true가 된다.
+                arrowAimUI.gameObject.SetActive(true);
                 weapon.LoadArrowAfter();
             }
             else
@@ -111,6 +119,7 @@ public class PlayerFollowVCam : MonoBehaviour
                 follow.Damping = new Vector3(0.1f, 0.5f, 0.3f); // 카메라 Damping 생성
                 vcam.LookAt = null;                             // 카메라 목표물 초기화
                 weapon.IsZoomIn = false;                        // ZoomOut 표시
+                arrowAimUI.gameObject.SetActive(false);
                 weapon.LoadArrowAfter();
             }
 
