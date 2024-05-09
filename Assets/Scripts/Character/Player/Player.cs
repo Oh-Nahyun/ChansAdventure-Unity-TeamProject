@@ -397,6 +397,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// UI 패널이 열렸는지 확인하는 변수
     /// </summary>
     bool isAnyUIPanelOpened = false;
+    public bool IsAnyUIPanelOpened => isAnyUIPanelOpened;
 
     MenuPanel menuPanel;
 
@@ -816,6 +817,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     public void OnInventoryShow()
     {
         menuPanel.ShowMenu((MenuState)1);
+        isAnyUIPanelOpened = true;
     }
 
     /// <summary>
@@ -921,11 +923,14 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     public void OnMapShow()
     {
         menuPanel.ShowMenu((MenuState)2);
+        isAnyUIPanelOpened = true;
+
     }
 
     void OnOpenMenuPanel()
     {
         menuPanel.ShowMenu((MenuState)0);
+        isAnyUIPanelOpened = true;
     }
 
     /// <summary>
