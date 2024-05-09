@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -88,10 +86,7 @@ public class Singleton<T> : MonoBehaviour where T : Component
         {
             OnPreInitialize();
         }
-        if(mode != LoadSceneMode.Additive)
-        {
-            OnAdditiveInitiallize();
-        }
+
         if(mode != LoadSceneMode.Additive)  // additive가 아닐때만 실행
         {
             OnInitialize();
@@ -112,15 +107,6 @@ public class Singleton<T> : MonoBehaviour where T : Component
     protected virtual void OnInitialize()
     {
     }
-
-    /// <summary>
-    /// Additive 모드로 Scene을 로드했을 때 호출되는 함수
-    /// </summary>
-    protected virtual void OnAdditiveInitiallize()
-    {
-
-    }
-
 
     private void OnApplicationQuit()
     {

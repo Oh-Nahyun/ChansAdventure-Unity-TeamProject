@@ -10,27 +10,27 @@ public class PlayerMapController : MonoBehaviour
     LineRenderer playerLineRenderer;
 
     /// <summary>
-    /// LinerendererÀÇ ÃÖ´ë Á¤Á¡ °³¼ö
+    /// Linerendererì˜ ìµœëŒ€ ì •ì  ê°œìˆ˜
     /// </summary>
     public int lineMaxCount = 10;
 
     /// <summary>
-    /// LineRendererÀÇ YÁÂÇ¥ °ª
+    /// LineRendererì˜ Yì¢Œí‘œ ê°’
     /// </summary>
     public float lineY = 50f;
 
     /// <summary>
-    /// LineRenderereÀÇ ³ĞÀÌ 
+    /// LineRenderereì˜ ë„“ì´ 
     /// </summary>
     public float LineWidth = 5f;
 
     /// <summary>
-    /// LineRendererÀ» À§Ä¡¼³Á¤À» ÇÏ±âÀ§ÇÑ ÇÃ·¹ÀÌ¾î À§Ä¡ º¤ÅÍ
+    /// LineRendererì„ ìœ„ì¹˜ì„¤ì •ì„ í•˜ê¸°ìœ„í•œ í”Œë ˆì´ì–´ ìœ„ì¹˜ ë²¡í„°
     /// </summary>
     public Vector3 playerPos;
 
     /// <summary>
-    /// LineRendererÀÇ ÀÌÀü À§Ä¡ °ª
+    /// LineRendererì˜ ì´ì „ ìœ„ì¹˜ ê°’
     /// </summary>
     public Vector3 prePos;
 
@@ -50,18 +50,18 @@ public class PlayerMapController : MonoBehaviour
     }
 
     /// <summary>
-    /// ÇÃ·¹ÀÌ¾î¸¦ µû¶ó´Ù´Ï´Â Map Camera À§Ä¡ ¼³Á¤ ÇÔ¼ö
+    /// í”Œë ˆì´ì–´ë¥¼ ë”°ë¼ë‹¤ë‹ˆëŠ” Map Camera ìœ„ì¹˜ ì„¤ì • í•¨ìˆ˜
     /// </summary>
     void FollowMapCam()
     {
-        if (GameManager.Instance.Player.IsOpenMapPanel == false)
+        if(!GameManager.Instance.MapManager.IsOpenedLargeMap)
         {
             GameManager.Instance.MapManager.SetCameraPosition(playerPos);
         }
     }
 
     /// <summary>
-    /// PlayerMapController º¯¼ö ÃÊ±âÈ­ ÇÔ¼ö
+    /// PlayerMapController ë³€ìˆ˜ ì´ˆê¸°í™” í•¨ìˆ˜
     /// </summary>
     void Initialize()
     {
@@ -72,38 +72,38 @@ public class PlayerMapController : MonoBehaviour
     }
 
     /// <summary>
-    /// LineRenderer ÃÊ±âÈ­
+    /// LineRenderer ì´ˆê¸°í™”
     /// </summary>
     private void InitLine()
     {
-        // »çÀÌÁî ÃÊ±âÈ­
+        // ì‚¬ì´ì¦ˆ ì´ˆê¸°í™”
         playerLineRenderer.positionCount = 0;
 
-        // LineRenderer ³ĞÀÌ ¼³Á¤
+        // LineRenderer ë„“ì´ ì„¤ì •
         playerLineRenderer.startWidth = LineWidth;
         playerLineRenderer.endWidth = LineWidth;
     }
 
     /// <summary>
-    /// LinerendererÀ» ±×¸®´Â ÇÔ¼ö
+    /// Linerendererì„ ê·¸ë¦¬ëŠ” í•¨ìˆ˜
     /// </summary>
     void DrawLine()
     {
-        //playerPos = new Vector3(Mathf.FloorToInt(transform.position.x), lineY, Mathf.FloorToInt(transform.position.z));   // Line Position À§Ä¡
-        playerPos = new Vector3(transform.position.x, lineY, transform.position.z);   // Line Position À§Ä¡
+        //playerPos = new Vector3(Mathf.FloorToInt(transform.position.x), lineY, Mathf.FloorToInt(transform.position.z));   // Line Position ìœ„ì¹˜
+        playerPos = new Vector3(transform.position.x, lineY, transform.position.z);   // Line Position ìœ„ì¹˜
 
-        if (playerLineRenderer.positionCount == 0) // ÃÖÃÊ ÁöÁ¡ ( °Å¸®¸¦ ÃøÁ¤ÇÒ ÀÌÀü °ªÀÌ ¾ø±â ¶§¹®¿¡ )
+        if (playerLineRenderer.positionCount == 0) // ìµœì´ˆ ì§€ì  ( ê±°ë¦¬ë¥¼ ì¸¡ì •í•  ì´ì „ ê°’ì´ ì—†ê¸° ë•Œë¬¸ì— )
         {
             AddLine(playerPos);
-            prePos = playerPos;                                                 // ÀÌÀü À§Ä¡°ª ÀúÀå
+            prePos = playerPos;                                                 // ì´ì „ ìœ„ì¹˜ê°’ ì €ì¥
 
-            //linePrefab.positionCount++;                                         // size Áõ°¡
+            //linePrefab.positionCount++;                                         // size ì¦ê°€
         }
         else
         {
-            float betweenVertex = (playerPos - prePos).sqrMagnitude;    // °Å¸®
-            float maxLength = 5f;                                       // °¢ VertexÀÇ ÃÖ´ë °Å¸®
-            if (betweenVertex > maxLength * maxLength)                  // betweenVertexº¸´Ù °Å¸®°¡ Å©´Ù
+            float betweenVertex = (playerPos - prePos).sqrMagnitude;    // ê±°ë¦¬
+            float maxLength = 5f;                                       // ê° Vertexì˜ ìµœëŒ€ ê±°ë¦¬
+            if (betweenVertex > maxLength * maxLength)                  // betweenVertexë³´ë‹¤ ê±°ë¦¬ê°€ í¬ë‹¤
             {
                 if (playerLineRenderer.positionCount > 10)
                 {
@@ -113,25 +113,25 @@ public class PlayerMapController : MonoBehaviour
                 }
 
                 AddLine(playerPos);
-                prePos = playerPos; // ÀÌÀü À§Ä¡°ª ÀúÀå
+                prePos = playerPos; // ì´ì „ ìœ„ì¹˜ê°’ ì €ì¥
             }
         }
     }
 
     /// <summary>
-    /// ¶óÀÎÀ» Ãß°¡ ÇÏ´Â ÇÔ¼ö
+    /// ë¼ì¸ì„ ì¶”ê°€ í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <param name="linePosition">Ãß°¡ÇÒ ¶óÀÎ À§Ä¡</param>
+    /// <param name="linePosition">ì¶”ê°€í•  ë¼ì¸ ìœ„ì¹˜</param>
     void AddLine(Vector3 linePosition)
     {
         playerLineRenderer.positionCount++;
-        playerLineRenderer.SetPosition(playerLineRenderer.positionCount - 1, linePosition);    // »õ·Î¿î LineRenderer À§Ä¡ ¼³Á¤
+        playerLineRenderer.SetPosition(playerLineRenderer.positionCount - 1, linePosition);    // ìƒˆë¡œìš´ LineRenderer ìœ„ì¹˜ ì„¤ì •
     }
 
     /// <summary>
-    /// ¶óÀÎ °³¼ö°¡ ÃÖ´ë °³¼ö(lineMaxCount)¿¡ µµ´ŞÇÏ¸é ÃÊ±âÈ­ ÇÏ´Â ÇÔ¼ö
+    /// ë¼ì¸ ê°œìˆ˜ê°€ ìµœëŒ€ ê°œìˆ˜(lineMaxCount)ì— ë„ë‹¬í•˜ë©´ ì´ˆê¸°í™” í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <param name="lineCount">Ã¼Å©ÇÒ ¶óÀÎ ¼ö</param>
+    /// <param name="lineCount">ì²´í¬í•  ë¼ì¸ ìˆ˜</param>
     void ResetLines(int lineCount)
     {
         if (lineCount > lineMaxCount)

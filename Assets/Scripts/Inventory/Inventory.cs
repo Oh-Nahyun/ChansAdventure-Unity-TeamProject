@@ -404,6 +404,15 @@ public class Inventory
         Gold -= price;
     }
 
+    /// <summary>
+    /// 인벤토리 오너 설정하는 함수
+    /// </summary>
+    /// <param name="owerObj">인벤토리 오너 오브젝트</param>
+    public void SetOwner(GameObject owerObj)
+    {
+        owner = owerObj;
+    }
+
 #if UNITY_EDITOR
 
     /// <summary>

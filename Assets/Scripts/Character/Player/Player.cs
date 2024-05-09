@@ -432,10 +432,13 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     #endregion
 
     #region Etc Values
+    /// <summary>
+    /// UI 패널이 열렸는지 확인하는 변수
+    /// </summary>
+    bool isAnyUIPanelOpened = false;
+    public bool IsAnyUIPanelOpened => isAnyUIPanelOpened;
 
-
-
-
+    MenuPanel menuPanel;
     #endregion
 
     // 함수 ==========================================================================================================================
@@ -455,6 +458,11 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         skillRelatedAction = GetComponent<PlayerSkillRelatedAction>();
 
         cameraRoot = FindAnyObjectByType<PlayerLookVCam>().gameObject;
+    }
+
+    void OnEnable()
+    {
+        menuPanel = FindAnyObjectByType<MenuPanel>();
     }
 
     void Start()
@@ -478,6 +486,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         controller.onInteraction += OnGetItem;
         controller.onInventoryOpen += OnInventoryShow;
         controller.onMapOpen += OnMapShow;
+        controller.onMenuOpen += OnOpenMenuPanel;
 
         // inventory
         inventory = new Inventory(this.gameObject, 16);
@@ -868,32 +877,21 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// <summary>
     /// 인벤토리 키 ( I Key )를 눌렀을 때 실행되는 함수
     /// </summary>
-    private void OnInventoryShow()
+    public void OnInventoryShow()
     {
-        if (isOpenMapPanel) // 다른 UI가 열려있으면 무시
-            return;
-
-
-        if (!isOpenInventoryPanel) // 인벤토리 패널 활성화
-        {
-            GameManager.Instance.ItemDataManager.InventoryUI.ShowInventory();
-
-            GameManager.Instance.MapManager.CloseMapUI();
-            GameManager.Instance.MapManager.CloseMiniMapUI();
-
-            isOpenInventoryPanel = true;
-        }
-        else // 인벤토리 패널 비활성화
-        {
-            GameManager.Instance.ItemDataManager.InventoryUI.CloseInventory();
-
-            GameManager.Instance.MapManager.OpenMiniMapUI();
-            isOpenInventoryPanel = false;
-        }    
-
-        isOpenedAnyUIPanel = isOpenInventoryPanel;
-        GameManager.Instance.ItemDataManager.CharaterRenderCameraPoint.transform.eulerAngles = new Vector3(0, 180f, 0); // RenderTexture 플레이어 위치 초기화
+        menuPanel.ShowMenu((MenuState)1);
+        isAnyUIPanelOpened = true;
     }
+
+    /// <summary>
+    /// 인벤토리 데이터를 받는 함수
+    /// </summary>
+    /// <param name="invenData">받을 인벤토리 데이터</param>
+    public void GetInventoryData(Inventory invenData)
+    {
+        inventory = invenData;
+    }
+
 
     #endregion
 
@@ -985,32 +983,17 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     }
 
     #region Etc Method
-
-    void OnMapShow()
+    public void OnMapShow()
     {
-        if (isOpenInventoryPanel) // 다른 UI가 열려있으면 무시
-            return;
+        menuPanel.ShowMenu((MenuState)2);
+        isAnyUIPanelOpened = true;
 
-        // Large Map Panel 활성화, MiniMap 비활성화
-        if (!isOpenMapPanel)
-        {
-            GameManager.Instance.MapManager.OpenMapUI();
-            GameManager.Instance.MapManager.CloseMiniMapUI();
+    }
 
-            GameManager.Instance.ItemDataManager.InventoryUI.CloseInventory();
-
-            isOpenMapPanel = true;
-        }
-        else // Large Map Panel 비활성화, MiniMap 활성화
-        {
-            GameManager.Instance.MapManager.SetCameraPosition(transform.position);
-            GameManager.Instance.MapManager.CloseMapUI();
-            GameManager.Instance.MapManager.OpenMiniMapUI();
-
-            isOpenMapPanel = false;
-        }
-
-        isOpenedAnyUIPanel = IsOpenMapPanel;
+    void OnOpenMenuPanel()
+    {
+        menuPanel.ShowMenu((MenuState)0);
+        isAnyUIPanelOpened = true;
     }
 
     /// <summary>
@@ -1031,7 +1014,17 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     #endregion
 
 #if UNITY_EDITOR
-
+    /// <summary>
+    /// Player 임의로 아이템 부여하는 함수 ( 빌드 할 때는 없어짐 ) 
+    /// </summary>
+    public void Test_AddItem()
+    {
+        inventory.AddSlotItem((uint)ItemCode.Hammer);
+        inventory.AddSlotItem((uint)ItemCode.Sword);
+        inventory.AddSlotItem((uint)ItemCode.HP_portion, 3);
+        inventory.AddSlotItem((uint)ItemCode.Coin);
+    }
+    
     //IBatter 인터페이스 상속 --------------------------------------------------------------------------------------------------
     public float weakPointAttack = 1.2f;
     public void Attack(IBattler target, bool isWeakPoint = false)
