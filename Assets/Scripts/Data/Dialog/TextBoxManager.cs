@@ -76,7 +76,10 @@ public class TextBoxManager : MonoBehaviour
         talkData.Add(2000, new string[] { "가나다라마바사  아자차카타파하  가나다라마바사  아자차카타파하  가나다라마바사  아자차카타파하" });
 
         // 시민
-        talkData.Add(3000, new string[] { "날씨가 참 좋구나..." });
+        talkData.Add(3000, new string[] { "내 부탁좀 들어줄래?" });
+        talkData.Add(3001, new string[] { "아직" });
+        talkData.Add(3002, new string[] { "완료" });
+        talkData.Add(3003, new string[] { "날씨가 참 좋구나..." });
 
         // 상인
         talkData.Add(4000, new string[] { "어서옵쇼!!" });

@@ -14,7 +14,7 @@ public class NPC_Trader : NPCBase
     public string selectButtonText1_2;
     public string selectButtonText1_3;
 
-    public bool isSellClose = true;
+    bool isSellClose = true;
 
 
     protected override void Awake()
@@ -31,8 +31,7 @@ public class NPC_Trader : NPCBase
     protected override void Start()
     {
         base.Start();
-        playerInventory = player.PlayerInventory;
-        GameManager.Instance.ItemDataManager.SellPanelUI.GetTarget(playerInventory);
+        getInventory();
         sellPanelUI.onCloseButton += sellPanelUIClose;
     }
 
@@ -58,13 +57,14 @@ public class NPC_Trader : NPCBase
             }
         }else if (id == 4012)
         {
+            getInventory();
             GameManager.Instance.ItemDataManager.SellPanelUI.OpenSellUI();
             // 판매 열기
             if (!textBox.TalkingEnd || !isSellClose)
-            {
-                GameManager.Instance.ItemDataManager.SellPanelUI.CloseSellUI();
+            {   
                 id = 4010;
                 isSellClose = true;
+                GameManager.Instance.ItemDataManager.SellPanelUI.CloseSellUI();
             }
         }
         else
@@ -80,6 +80,12 @@ public class NPC_Trader : NPCBase
     void sellPanelUIClose()
     {
         isSellClose = false;
+    }
+
+    void getInventory()
+    {
+        playerInventory = player.PlayerInventory;
+        GameManager.Instance.ItemDataManager.SellPanelUI.GetTarget(playerInventory);
     }
 
 

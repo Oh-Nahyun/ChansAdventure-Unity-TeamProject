@@ -24,6 +24,8 @@ public class NPCBase : MonoBehaviour
 
     protected Inventory inventory;
 
+    private QuestInfoPanel questInfoPanel;
+
     public int id = 0;
     public string nameNPC = "";
     public bool selectId = false;
@@ -40,6 +42,7 @@ public class NPCBase : MonoBehaviour
         textBoxManager = FindObjectOfType<TextBoxManager>();
         textViweName = GetComponentInChildren<TextMeshPro>(true);
         questManager = FindObjectOfType<QuestManager>();
+        questInfoPanel = FindObjectOfType<QuestInfoPanel>();
     }
 
     protected virtual void Start()
@@ -53,6 +56,8 @@ public class NPCBase : MonoBehaviour
         {
             TalkNext();
         };
+        // questInfoPanel.QuestClearId += (id) => IsQusetClear(id);
+
         animator = GetComponent<Animator>();
     }
 
@@ -63,6 +68,7 @@ public class NPCBase : MonoBehaviour
         {
             SetAnimation();
         }
+        TalkData();
     }
 
     void SetAnimation()
@@ -108,9 +114,9 @@ public class NPCBase : MonoBehaviour
         int ones = id % 10; // 1의 자리
         if (tens != 0 && ones == 0)
         {
-           
+
             selectId = true;
-            
+
         }
         else
         {
@@ -162,5 +168,38 @@ public class NPCBase : MonoBehaviour
             textViweName.gameObject.SetActive(false);
 
         }
+    }
+
+    /// <summary>
+    /// 각종 대화를 관리해줄 함수
+    /// </summary>
+    private void TalkData()
+    {
+        switch (id)
+        {
+            // id 3xxx 허드슨
+            case 3000:
+                if (!isTalk)
+                {
+                    questManager.GetQuestTalkIndex(10, false);
+                    id = 3001;
+                }
+                break;
+            case 3001:
+                break;
+            case 3002:
+                if (!isTalk)
+                {
+                    questManager.GetQuestTalkIndex(10, false);
+                    id = 3003;
+                }
+                break;
+
+        }
+    }
+
+    private void IsQusetClear(int id)
+    {
+        Debug.Log(id);
     }
 }

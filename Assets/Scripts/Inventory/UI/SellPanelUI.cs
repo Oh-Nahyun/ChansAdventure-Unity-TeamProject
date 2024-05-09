@@ -104,6 +104,12 @@ public class SellPanelUI : MonoBehaviour
         sellCheckUI.onConformSell += OnConformSellItem;      
     }
 
+    private void Start()
+    {
+        CloseSellUI();
+
+    }
+
     /// <summary>
     /// 아이템 정보를 불러와서 출력하는 함수
     /// </summary>
@@ -135,11 +141,6 @@ public class SellPanelUI : MonoBehaviour
     /// </summary>
     public void OpenSellUI()
     {
-        if (targetInventory == null)
-        {
-            Debug.Log($"targetInventory가 없습니다.");
-            return;
-        }
         gameObject.SetActive(true);
         SetSlot();
         isFirst = false;
@@ -151,6 +152,7 @@ public class SellPanelUI : MonoBehaviour
     /// </summary>
     public void CloseSellUI()
     {
+        
         canvasGroup.alpha = 0f;
         //targetInventory = null;
         isProcess = false;

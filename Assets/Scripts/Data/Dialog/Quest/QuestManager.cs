@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class QuestManager : MonoBehaviour
+public class QuestManager : Singleton<QuestManager>
 {
     private Dictionary<int, QuestData> questList = new Dictionary<int, QuestData>();
 
@@ -16,7 +16,10 @@ public class QuestManager : MonoBehaviour
 
     public QuestInfo questInfo;
 
-    private void Awake()
+    public List<int> onQuestID;
+    public List<int> clearQuestID;
+
+    protected override void OnInitialize()
     {
         questMessage = FindObjectOfType<QuestMessage>();
         questInfo = FindObjectOfType<QuestInfo>();
@@ -45,8 +48,7 @@ public class QuestManager : MonoBehaviour
         {
             QuestData questData = questList[id];
             questMessage.OnQuestMessage(questData.questName, complete);
-
-            
+          
             if (!complete)
             {
 
