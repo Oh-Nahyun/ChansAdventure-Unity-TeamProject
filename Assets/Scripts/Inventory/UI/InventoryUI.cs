@@ -52,16 +52,41 @@ public class InventoryUI : MonoBehaviour
     /// </summary>
     InventorySelectedMenuUI selectedMenuUI;
 
-
-
     CanvasGroup canvasGroup;
 
+    /// <summary>
+    /// 그래그가 시작되면 실행하는 델리게이트
+    /// </summary>
     public Action<uint> onSlotDragBegin;
+
+    /// <summary>
+    /// 드래그가 끝나면 실행하는 델리게이트
+    /// </summary>
     public Action<GameObject> onSlotDragEnd;
+
+    /// <summary>
+    /// 드래그가 실패하면 실행하는 델리게이트
+    /// </summary>
     public Action onSlotDragEndFail;
+
+    /// <summary>
+    /// 슬롯에 마우스 포인터를 올리면 실행되는 델리게이트 ( 아이템 정보를 불러온다 )
+    /// </summary>
     public Action<uint> onShowDetail;
+
+    /// <summary>
+    /// 슬롯에 마우스 포인터가 벗어나면 실행하는 델리게이트 ( 아이템 정보창을 닫는다 )
+    /// </summary>
     public Action onCloseDetail;
+
+    /// <summary>
+    /// 아이템 슬롯을 왼쪽 클릭할 때 실행하는 델리게이트
+    /// </summary>
     public Action<uint> onLeftClickItem;
+    
+    /// <summary>
+    /// 아이템 슬롯을 오른쪽 클릭할 때 실행하는 델리게이트
+    /// </summary>
     public Action<uint, Vector2> onRightClickItem;
 
     /// <summary>
@@ -97,6 +122,7 @@ public class InventoryUI : MonoBehaviour
         onLeftClickItem += OnLeftClickItem;
         onRightClickItem += OnRightClickItem;
         dividUI.onDivid += DividItem;
+        dividUI.onDrop += OnDropItem;
         sortUI.onSortItem += OnSortItem;
 
         Inventory.onInventoryGoldChange += goldUI.onGoldChange; // Iventory의 골드량이 수정될 때 goldUI도 수정되게 함수 추가
@@ -130,11 +156,13 @@ public class InventoryUI : MonoBehaviour
 
         if (Inventory[index].SlotItemData != null)
         {
+            // index번의 슬롯 내용 임시 저장
             uint targetSlotIndex = index;
             uint targetSlotItemCode = (uint)Inventory[index].SlotItemData.itemCode;
             int targetItemSlotCount = Inventory[index].CurrentItemCount;
             bool targetIsEquip = Inventory[index].IsEquip;
 
+            // tempSlot에 드래그를 시작한 슬롯의 아이템 데이터 저장
             tempSlotUI.OpenTempSlot();
 
             Inventory.AccessTempSlot(targetSlotIndex, targetSlotItemCode, targetItemSlotCount);
@@ -149,7 +177,7 @@ public class InventoryUI : MonoBehaviour
     /// <param name="index">아이템을 넣을 인벤토리 슬롯 인덱스</param>
     private void OnSlotDragEnd(GameObject slotObj)
     {
-        if (isOpenedMenuPanel)
+        if (isOpenedMenuPanel || !tempSlotUI.IsOpen)
             return;
 
         if (slotObj == null) // 드래그 종료 시점에 감지되는 슬롯이 없다.
@@ -271,9 +299,10 @@ public class InventoryUI : MonoBehaviour
     /// <param name="index">보여줄려는 아이템 슬롯 인덱스</param>
     private void OnShowDetail(uint index)
     {
-        if (isOpenedMenuPanel)
+        if (isOpenedMenuPanel)  // 메뉴 패널이 열려있으면 무시
             return;
 
+        // 아이템 데이터가 있으면 아이템 정보 보여주기
         if (Inventory[index].SlotItemData != null)
         {
             string name = Inventory[index].SlotItemData.itemName;
@@ -294,12 +323,12 @@ public class InventoryUI : MonoBehaviour
         bool isEquip = Inventory[index].SlotItemData is IEquipable; // 장비 아이템이면 true 아니면 false
         if (isEquip)    // 클릭한 슬롯 아이템이 장비이면
         {
-            EquipItem(index);
+            EquipItem(index);   // 아이템 장비
         }
         bool isConsumalbe = Inventory[index].SlotItemData is IConsumable; // 회복 아이템이면 true 아니면 false
         if(isConsumalbe)
         {
-            ConsumItem(index);
+            ConsumItem(index);  // 아이템 소비
         }
     }
 
@@ -312,6 +341,8 @@ public class InventoryUI : MonoBehaviour
         isOpenedMenuPanel = true;
 
         // 버튼 이벤트 부여 index번 슬롯에 대한 내용 
+
+        // 아이템 나누기
         selectedMenuUI.OnDividButtonClick = () =>
         {
             if (Inventory[index].CurrentItemCount <= 1)
@@ -319,22 +350,30 @@ public class InventoryUI : MonoBehaviour
                 Debug.Log($"[{Inventory[index].SlotItemData.itemName}]은 아이템이 [{Inventory[index].CurrentItemCount}]개 있습니다.");
                 return;
             }
-            dividUI.InitializeValue(Inventory[index], 1, (int)Inventory[index].CurrentItemCount - 1);
-            dividUI.DividUIOpen();
+            dividUI.InitializeValue(Inventory[index], 1, (int)Inventory[index].CurrentItemCount - 1); // 패널 초기화
+            dividUI.DividUIOpen(DividPanelType.Divid);
 
             selectedMenuUI.HideMenu();
             isOpenedMenuPanel = false;
         };
 
+        // 아이템 드랍
         selectedMenuUI.OnDropButtonClick = () =>
         {
-            DropItem(index);
+            //DropItem(index);
+            dividUI.InitializeValue(Inventory[index], 1, (int)Inventory[index].CurrentItemCount); // 패널 초기화
+            dividUI.DividUIOpen(DividPanelType.Drop);
             selectedMenuUI.HideMenu();
             isOpenedMenuPanel = false;
         };
 
         selectedMenuUI.SetPosition(position);
         selectedMenuUI.ShowMenu(); // 매뉴 보여주기
+    }
+
+    private void OnDropItem(InventorySlot slot, int count)
+    {
+        DropItem(slot.SlotIndex, count);
     }
 
     /// <summary>
@@ -381,9 +420,9 @@ public class InventoryUI : MonoBehaviour
         bool isEquip = Inventory[index].IsEquip;
         if (equipable != null)
         {
-            if (isEquip) // 장착이 되어있으면 장착해제
+            if (isEquip) // 선택한 아이템이 장착이 되어있으면 장착해제
             {
-                equipable.UnEquipItem(Inventory.Owner, Inventory[index]);
+                equipable.UnEquipItem(Inventory.Owner);
                 Inventory[index].IsEquip = false;
             }
             else if (!isEquip) // 장착이 안되있으면 장착
@@ -391,27 +430,31 @@ public class InventoryUI : MonoBehaviour
                 IEquipTarget equipTarget = Inventory.Owner.GetComponent<IEquipTarget>();    // 인벤토리를 가진 오브젝트의 IEquipTarget
                 ItemData_Equipment itemData = Inventory[index].SlotItemData as ItemData_Equipment;  // 장착하려는 아이템 데이터
 
-                int partInedex = (int)itemData.equipPart;   // 장착할려는 장비 위치 인덱스
-                InventorySlot equipedItem = equipTarget.EquipPart[partInedex];
+                /*// 장착부위에 아이템을 확인하는 주석
+                  //int partInedex = (int)itemData.equipPart;   // 장착할려는 장비 위치 인덱스
+                  InventorySlot equipedItem = equipTarget.EquipPart[partInedex];
+                  if (equipedItem != null)  // 장착할 해당 부위에 아이템이 있다
+                  {
+                      Inventory[equipedItem.SlotIndex].IsEquip = false; // 장착한 아이템 슬롯 장착해제
+                  }*/
 
-                if (equipedItem != null)  // 장착할 해당 부위에 아이템이 있다
+                // 0 오른쪽손, 1 왼손 장착부위확인
+                for(int i = 0; i <= (int)EquipPart.Hand_L; i++)
                 {
-                    for(uint i = 0; i < inventory.SlotSize; i++)    // 모든 슬롯 체크
+                    if (equipTarget.EquipPart[i] != null) // 두 장착부위에 아이템이 있다.
                     {
-                        ItemData_Equipment data = Inventory[i].SlotItemData as ItemData_Equipment;
-                        if(data != null) // 해당 장착부위가 있는 장비다
-                        {
-                            Inventory[i].IsEquip = false;
-                        }
+                        uint equipIndex = equipTarget.EquipPart[i].SlotIndex; // 장착부위의 인벤토리 슬롯 인덱스
+                        inventory[equipIndex].IsEquip = false;  // 아이템 장착해제 ( UI )
+
+                        IEquipable equipedItem = Inventory[equipIndex].SlotItemData as IEquipable; // 장착부위의 장착 인터페이스 접근
+                        equipedItem.UnEquipItem(Inventory.Owner); // 장착된 캐릭터의 아이템 장착해제
                     }
                 }
 
-                equipable.EquipItem(Inventory.Owner, Inventory[index]); // 아이템 장착                
-                Inventory[index].IsEquip = true;
+                equipable.EquipItem(Inventory.Owner, Inventory[index]); // 슬롯 아이템 장착                
+                Inventory[index].IsEquip = true;                        // 아이템 장착 ( UI )
             }
         }
-
-        //showEquip();
     }
 
     /// <summary>
@@ -428,11 +471,23 @@ public class InventoryUI : MonoBehaviour
         consumable.Consum(Inventory.Owner, Inventory[index]);
     }
 
-    private void DropItem(uint index)
+    /// <summary>
+    /// 인벤토리에서 아이템을 드랍하는 함수
+    /// </summary>
+    /// <param name="index"></param>
+    private void DropItem(uint index, int count)
     {
-        if(!Inventory[index].IsEquip)
+        if(!Inventory[index].IsEquip)   // 만약 아이템이 장착상태면 무시
         {
-            Inventory.DropItem(index);
+            for(int i = 0; i < count; i++)
+            {
+                if (Inventory[index].CurrentItemCount <= 0) // 아이템 개수 확인 ( 0개면 아이템 X)
+                {
+                    Debug.Log("버릴 아이템 데이터가 존재하지 않습니다.");
+                }
+
+                Inventory.DropItem(index); // 아이템 드랍
+            }
         }            
     }
 
@@ -448,28 +503,25 @@ public class InventoryUI : MonoBehaviour
     /// <summary>
     /// 인벤토리 UI를 여는 함수
     /// </summary>
-    /// <returns>UI 활성화 true, 아니면 false</returns>
-    public bool ShowInventory()
+    public void ShowInventory()
     {
-        bool result = false;
-        if(canvasGroup.alpha == 1) // 비활성화
-        {
-            canvasGroup.alpha = 0;
-            canvasGroup.interactable = false;
-            canvasGroup.blocksRaycasts = false;
-        }
-        else if(canvasGroup.alpha < 1)// 활성화
-        {
-            canvasGroup.alpha = 1;
-            canvasGroup.interactable = true;
-            canvasGroup.blocksRaycasts = true;
-
-            result = true;
-        }
+        canvasGroup.alpha = 1;
+        canvasGroup.interactable = true;
+        canvasGroup.blocksRaycasts = true;
 
         RefreshInventoryUI();
+    }
 
-        return result;
+    /// <summary>
+    /// 인벤토리 UI를 닫는 함수
+    /// </summary>
+    public void CloseInventory()
+    {
+        canvasGroup.alpha = 0;
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
+
+        RefreshInventoryUI();
     }
 
     /// <summary>

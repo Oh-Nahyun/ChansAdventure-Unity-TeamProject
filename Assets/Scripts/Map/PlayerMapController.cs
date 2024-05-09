@@ -54,7 +54,7 @@ public class PlayerMapController : MonoBehaviour
     /// </summary>
     void FollowMapCam()
     {
-        if (GameManager.Instance.Player.IsOpenedLargeMap == false)
+        if (GameManager.Instance.Player.IsOpenMapPanel == false)
         {
             GameManager.Instance.MapManager.SetCameraPosition(playerPos);
         }

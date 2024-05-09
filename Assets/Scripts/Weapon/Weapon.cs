@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -78,6 +80,21 @@ public class Weapon : MonoBehaviour
     ArrowFirePoint arrowFirePoint;
     //PlayerFollowVCam vcam;
 
+    /// <summary>
+    /// 화살이 있는 아이템 슬롯
+    /// </summary>
+    InventorySlot arrowSlot;
+
+    /// <summary>
+    /// 화살개수
+    /// </summary>
+    uint arrowCount = 0;
+
+    /// <summary>
+    /// 화살 프리팹
+    /// </summary>
+    GameObject arrowPrefab;
+
     private void Awake()
     {
         playerController = GetComponent<PlayerController>();
@@ -95,12 +112,16 @@ public class Weapon : MonoBehaviour
     {
         //rightHand = GameObject.Find("Character1_RightHand").transform;
         //leftHand = GameObject.Find("Character1_LeftHand").transform;
-        swordWeapon = GameObject.FindWithTag("Sword").transform;
-        bowWeapon = GameObject.FindWithTag("Bow").transform;
         //arrowWeapon = GameObject.FindWithTag("Arrow").transform;
-        ShowWeapon(false, false);
         //arrowWeapon.gameObject.SetActive(false);
         //arrow.CloseArrow();
+
+        //swordWeapon = GameObject.FindWithTag("Sword").transform; // 아이템 장착을 위한 주석처리
+        //bowWeapon = GameObject.FindWithTag("Bow").transform; // 아이템 장착을 위한 주석처리
+        //ShowWeapon(false, false); // 아이템 장착을 위한 주석처리
+
+        player.OnEquipWeaponItem += OnEquipWeapon;
+        player.OnUnEquipWeaponItem += OnUnEquipWeapon;
     }
 
     private void OnEnable()
@@ -129,7 +150,8 @@ public class Weapon : MonoBehaviour
     /// <param name="context"></param>
     private void OnAttackInput(InputAction.CallbackContext context)
     {
-        if (player.SkillRelatedAction.IsPickUp) // 물건을 들고 있을 때 입력 막기
+        if (player.SkillRelatedAction.IsPickUp // 물건을 들고 있을 때 입력 막기
+            || player.IsOpenedAnyUIPanel)   
             return;
 
         animator.SetTrigger(IsAttackHash);
@@ -179,23 +201,34 @@ public class Weapon : MonoBehaviour
         if (player.SkillRelatedAction.IsPickUp) // 물건을 들고 있을 때 입력 막기
             return;
 
-        if (currentWeaponMode == WeaponMode.None)
+        if (currentWeaponMode == WeaponMode.None
+            && player.EquipPart[0] != null) // 현재 오른손에 무기가 있으면 아이템 장착
         {
             // 무기를 들고 있지 않는 경우 => 칼을 들도록 한다.
             currentWeaponMode = WeaponMode.Sword;
+            ShowWeapon(true, false);
             Debug.Log("WeaponMode_Change : None >> Sword");
         }
-        else if (currentWeaponMode == WeaponMode.Sword)
+        else if (currentWeaponMode == WeaponMode.Sword
+            && player.EquipPart[1] != null) // 현재 왼손에 무기가 있으면 아이템 장착
         {
             // 칼을 무기로 사용하고 있던 경우 => 활을 들도록 한다.
             currentWeaponMode = WeaponMode.Bow;
+            ShowWeapon(false, true);
             Debug.Log("WeaponMode_Change : Sword >> Bow");
         }
-        else if (currentWeaponMode == WeaponMode.Bow)
+        else if (currentWeaponMode == WeaponMode.Bow
+              || currentWeaponMode == WeaponMode.Sword) // 무기를 장착하고 있으면 해제한다
         {
             // 활을 무기로 사용하고 있던 경우 => 무기를 넣도록 한다.
             currentWeaponMode = WeaponMode.None;
-            Debug.Log("WeaponMode_Change : Bow >> None");
+            Debug.Log("WeaponMode_Change : Bow(Sword) >> None");
+        }
+        else if(currentWeaponMode == WeaponMode.None // 맨손에서 활 장착 ( 칼없을 때 )
+            && player.EquipPart[1] != null && player.EquipPart[0] == null)
+        {
+            currentWeaponMode = WeaponMode.Bow;
+            Debug.Log("WeaponMode_Change : None >> Bow");
         }
 
         ChangeWeapon(currentWeaponMode);
@@ -218,6 +251,7 @@ public class Weapon : MonoBehaviour
                 break;
             case WeaponMode.Bow:
                 ShowWeapon(false, true);
+                UpdateArrow();
                 IsBowEquip = true;
                 break;
         }
@@ -229,8 +263,14 @@ public class Weapon : MonoBehaviour
     /// <param name="isShow">true면 보여주고, false면 안보여준다.</param>
     public void ShowWeapon(bool isSwordShow = false, bool isBowShow = false)
     {
-        swordWeapon.gameObject.SetActive(isSwordShow);
-        bowWeapon.gameObject.SetActive(isBowShow);
+        if (swordWeapon != null)
+        {
+            swordWeapon.gameObject.SetActive(isSwordShow);
+        }
+        if(bowWeapon != null)
+        {
+            bowWeapon.gameObject.SetActive(isBowShow);
+        }
     }
 
     /// <summary>
@@ -271,7 +311,7 @@ public class Weapon : MonoBehaviour
 
         if (IsBowEquip) // 활을 장비하고 있는 경우
         {
-            if (!IsArrowEquip)  // 장전된 화살이 없는 경우
+            if (!IsArrowEquip && arrowCount > 0)  // 장전된 화살이 없는 경우
             {
                 animator.SetBool(HaveArrowHash, true); // 화살 장전
                 Debug.Log($"화살 장전 완료");
@@ -309,7 +349,9 @@ public class Weapon : MonoBehaviour
     /// </summary>
     public void FireLoadedArrow()
     {
-        arrowFirePoint.FireArrow();
+        //arrowFirePoint.FireArrow();
+        // 화살 개수 소비
+        OnFierArrow();
     }
 
     /// <summary>
@@ -407,5 +449,97 @@ public class Weapon : MonoBehaviour
     //{
     //    arrow.CloseArrow();
     //}
-}
 
+    #region Inventory Item Method
+    /// <summary>
+    /// 아이템 장착시 실행되는 함수 ( 무기 정보를 가진 변수 초기화 함수 )
+    /// </summary>
+    /// <param name="partIndex">장착부위 인덱스</param>
+    void OnEquipWeapon(int partIndex)
+    {
+        if(partIndex == (int)EquipPart.Hand_R)
+        {
+            swordWeapon = player.partPosition[partIndex].GetChild(0);
+            sword = swordWeapon.GetComponent<Sword>();
+
+            currentWeaponMode = WeaponMode.Sword;
+            ShowWeapon(true, false);   
+        }
+
+        if (partIndex == (int)EquipPart.Hand_L)
+        {
+            bowWeapon = player.partPosition[partIndex].GetChild(0);
+            bow = bowWeapon.GetComponent<Bow>();
+
+            currentWeaponMode = WeaponMode.Bow;
+            ShowWeapon(false, true);   
+        }
+    }
+
+    /// <summary>
+    /// 장비 장착이 해제됬을 때 실행하는 함수
+    /// </summary>
+    /// <param name="partIndex">장비 부위 인덱스</param>
+    void OnUnEquipWeapon(int partIndex)
+    {
+        // 장착해제한 아이템이 검이면
+        if (partIndex == (int)EquipPart.Hand_R)
+        {
+            sword = null;
+            swordWeapon = null;
+        }
+
+        // 장착해제한 아이템이 활이면
+        if (partIndex == (int)EquipPart.Hand_L)
+        {
+            bow = null;
+            bowWeapon = null;
+        }
+    }
+
+    /// <summary>
+    /// 화살을 발사 할 때 화살 개수를 소모하고 화살을 생성하는 함수
+    /// </summary>
+    void OnFierArrow()
+    {
+        // 해당슬롯에 개수가 부족하면 보충
+        if(arrowCount > 0 && arrowSlot.CurrentItemCount <= 0)
+        {
+            UpdateArrow();
+        }
+
+        arrowCount--;
+        arrowSlot.DiscardItem(1); // 인벤토리에서 화살 개수 소비
+        arrowFirePoint.GetFireArrow(PoolObjectType.Arrow, arrowPrefab); // 화살 Factory에서 생성
+    }
+
+    /// <summary>
+    /// 화살을 들 때 인벤토리에서 사용할 수 있는 화살 개수를 업데이트 하는 함수
+    /// </summary>
+    void UpdateArrow()
+    {
+        Inventory inventory = player.Inventory;
+        uint totalGetItemCount = 0;
+
+        for (uint i = 0; i < inventory.SlotSize; i++)
+        {
+            InventorySlot slot = inventory[i];
+            ItemData_AttackConsumption itemData = slot.SlotItemData as ItemData_AttackConsumption;
+
+            if (itemData != null)
+            {
+                totalGetItemCount += (uint)slot.CurrentItemCount;  // 사용할 수 있는 화살 개수 추가
+                arrowPrefab = itemData.ItemPrefab;  // 화살 프리팹 갱신
+
+                arrowSlot = slot; // 사용하는 슬롯 갱신
+            }
+            else
+            {
+                Debug.Log($"인벤토리에 화살이 존재하지 않습니다.");
+            }
+        }
+
+        arrowCount = totalGetItemCount; // 찾은 화살 개수 갱신
+    }
+    #endregion
+}
