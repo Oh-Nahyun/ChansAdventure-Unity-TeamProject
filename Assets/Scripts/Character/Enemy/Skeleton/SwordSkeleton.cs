@@ -271,23 +271,39 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
         agent = GetComponent<NavMeshAgent>();
         rigid = GetComponent<Rigidbody>();
 
-        bodyPoint = GameObject.Find("BodyPoint").gameObject;
-        bodyCollider = bodyPoint.GetComponent<CapsuleCollider>();
-
-        weakPoint = GameObject.Find("WeakPoint").gameObject;
-        weakCollider = weakPoint.GetComponent<SphereCollider>();
-
-        weaponPoint = GameObject.Find("SwordPoint").gameObject;
-        //swordCollider = weaponPoint.GetComponent<BoxCollider>();
-
-
         Transform child = transform.GetChild(3);
         hpBar = child.GetComponent<EnemyHealthBar>();
 
         child = transform.GetChild(4);
         AttackArea attackArea = child.GetComponent<AttackArea>();
 
-        
+        // 무기 오브젝트 찾기 transform-0-2-0
+        child = transform.GetChild(0);
+        child = child.GetChild(2);
+        child = child.GetChild(0);
+        weaponPoint = child.gameObject;
+        //weaponPoint = GameObject.Find("SwordPoint").gameObject;
+
+        // 몸체 부위 오브젝트 찾기 transform-0-1-1
+        child = transform.GetChild(0);
+        child = child.GetChild(1);
+        child = child.GetChild(1);
+        bodyPoint = child.gameObject;
+        bodyCollider = bodyPoint.GetComponent<CapsuleCollider>();
+        //bodyPoint = GameObject.Find("BodyPoint").gameObject;
+
+        //약점 부위 오브젝트 찾기 transform-0-1-0-2-0-0-1
+        child = transform.GetChild(0);
+        child = child.GetChild(1);
+        child = child.GetChild(0);
+        child = child.GetChild(2);
+        child = child.GetChild(0);
+        child = child.GetChild(0);
+        child = child.GetChild(1);
+        weaponPoint = child.gameObject;
+        weakCollider = weakPoint.GetComponent<SphereCollider>();
+        //weakPoint = GameObject.Find("WeakPoint").gameObject;
+
 
         attackArea.onPlayerIn += (target) =>
         {
@@ -415,10 +431,6 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
         {
             animator.SetTrigger("Attack");      // 애니메이션 재생
             attackCoolTime = attackInterval;    // 쿨타임 초기화
-            //if(attackPoint.AttackEnter)
-            //{
-            //    Attack(attackTarget, false);
-            //}
         }
     }
 
@@ -521,7 +533,7 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
             onHit?.Invoke(Mathf.RoundToInt(final));
 
             StartCoroutine(InvinvibleMode());
-            
+            // 폭탄 공격시 데미지 받기
         }
     }
 
@@ -581,7 +593,7 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
             if (item.dropRatio > UnityEngine.Random.value) // 확률 체크하고
             {
                 uint count = (uint)UnityEngine.Random.Range(0, item.dropCount) + 1;     // 개수 결정
-                //Factory.Instance.GetItemObject(GameManager.Instance.ItemDataManager[ItemCode.Coin], transform.position); // 실제 생성 // 펙토리 스크립트에 아이템 생성함수 작성해야됨
+                // 실제 생성 // 펙토리 스크립트에 아이템 생성함수 작성해야됨
             }
         }
     }
@@ -591,7 +603,6 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
     /// </summary>
     private void WeaponBladeEnable()
     {
-        // onWeaponBladeEnabe 켜라고 신호보내기
         onWeaponBladeEnabe?.Invoke(true);
     }
 
@@ -600,7 +611,6 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
     /// </summary>
     private void WeaponBladeDisable()
     {
-        // onWeaponBladeEnabe 끄라고 신호보내기
         onWeaponBladeEnabe?.Invoke(false);
     }
 
@@ -669,32 +679,6 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
 
         Handles.DrawWireDisc(transform.position, transform.up, nearSightRange);         // 근거리 시야 범위 그리기
     }
-
-
-    //public void Test_DropItems(int testCount)
-    //{
-    //    uint[] types = new uint[dropItems.Length];
-    //    uint[] total = new uint[dropItems.Length];
-
-    //    for (int i = 0; i < testCount; i++)
-    //    {
-    //        int index = 0;
-    //        foreach (var item in dropItems)
-    //        {
-    //            if (item.dropRatio > UnityEngine.Random.value)
-    //            {
-    //                uint count = (uint)UnityEngine.Random.Range(0, item.dropCount) + 1;
-    //                //Factory.Instance.MakeItems(item.code, count, transform.position, true);
-    //                types[index]++;
-    //                total[index] += count;
-    //            }
-    //            index++;
-    //        }
-    //    }
-
-    //    Debug.Log($"1st : {types[0]}번 드랍, {total[0]}개 드랍");
-    //    Debug.Log($"2nd : {types[1]}번 드랍, {total[1]}개 드랍");
-    //}
 
 #endif
 }

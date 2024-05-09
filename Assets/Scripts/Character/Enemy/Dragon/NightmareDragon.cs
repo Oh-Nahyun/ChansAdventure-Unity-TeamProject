@@ -224,11 +224,6 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
     public Action<int> onHit { get; set; }
 
     /// <summary>
-    /// 무기 컬라이더 켜고 끄는 신호를 보내는 델리게이트
-    /// </summary>
-    //public Action<bool> onWeaponBladeEnabe;
-
-    /// <summary>
     /// 상태별 업데이트 함수가 저장될 델리게이트(함수 저장용)
     /// </summary>
     Action onStateUpdate;
@@ -319,28 +314,6 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
         agent = GetComponent<NavMeshAgent>();
         rigid = GetComponent<Rigidbody>();
 
-        bodyPoint = GameObject.Find("DragonBodyPoint").gameObject;
-        bodyCollider = bodyPoint.GetComponent<BoxCollider>();
-
-        weakPoint = GameObject.Find("DragonWeakPoint").gameObject;
-        weakCollider = weakPoint.GetComponent<BoxCollider>();
-
-        leftArmPoint = GameObject.Find("L_ArmPoint").gameObject;
-        leftArmCollider = leftArmPoint.GetComponent<BoxCollider>();
-
-        rightArmPoint = GameObject.Find("L_HandPoint").gameObject;
-        rightArmCollider = rightArmPoint.GetComponent<BoxCollider>();
-
-        leftHandPoint = GameObject.Find("R_ArmPoint").gameObject;
-        leftHandCollider = leftHandPoint.GetComponent<BoxCollider>();
-
-        rightHandPoint = GameObject.Find("R_HandPoint").gameObject;
-        rightHandCollider = rightHandPoint.GetComponent<BoxCollider>();
-
-        Dragon_Head_AttackPoint = GameObject.Find("Dragon_Head_AttackPoint").gameObject;
-        Dragon_Hand_AttackPoint = GameObject.Find("R_Hand_AttackPoint").gameObject;
-
-
         Transform child = transform.GetChild(2);
         hpBar = child.GetComponent<EnemyHealthBar>();
 
@@ -348,6 +321,66 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
         AttackArea attackArea = child.GetComponent<AttackArea>();
 
         attackPoint = new AttackPoint[2];
+
+        // 몸통 오브젝트 찾기 transform-1-4
+        child = transform.GetChild(1);
+        child = child.GetChild(4);
+        bodyPoint = child.gameObject;
+        bodyCollider = bodyPoint.GetComponent<BoxCollider>();
+        //bodyPoint = GameObject.Find("DragonBodyPoint").gameObject;
+
+        // 머리 오브젝트 찾기 transform-1-2-0-0-1-0-1
+        child = transform.GetChild(1);
+        child = child.GetChild(2);
+        child = child.GetChild(0);
+        child = child.GetChild(0);
+        child = child.GetChild(1);
+        child = child.GetChild(0);
+        child = child.GetChild(1);
+        weakPoint = child.gameObject;
+        weakCollider = weakPoint.GetComponent<BoxCollider>();
+        //weakPoint = GameObject.Find("DragonWeakPoint").gameObject;
+
+        // 왼쪽 팔 오브젝트 찾기 transform-1-2-0-0-4-0-2
+        child = transform.GetChild(1);
+        child = child.GetChild(2);
+        child = child.GetChild(0);
+        child = child.GetChild(0);
+        child = child.GetChild(4);
+        child = child.GetChild(0);
+        child = child.GetChild(2);
+        leftArmPoint = child.gameObject;
+        leftArmCollider = leftArmPoint.GetComponent<BoxCollider>();
+        //leftArmPoint = GameObject.Find("L_ArmPoint").gameObject;
+
+        // 오른쪽 팔 오브젝트 찾기 transform-1-2-0-0-3-0-2
+        child = transform.GetChild(1);
+        child = child.GetChild(2);
+        child = child.GetChild(0);
+        child = child.GetChild(0);
+        child = child.GetChild(3);
+        child = child.GetChild(0);
+        child = child.GetChild(2);
+        rightArmPoint = child.gameObject;
+        rightArmCollider = rightArmPoint.GetComponent<BoxCollider>();
+        //rightArmPoint = GameObject.Find("L_HandPoint").gameObject;
+
+        // 왼쪽 손 오브젝트 찾기 transform-1-2-0-0-4-0-1-0-3
+        leftHandPoint = GameObject.Find("R_ArmPoint").gameObject;
+        leftHandCollider = leftHandPoint.GetComponent<BoxCollider>();
+
+        // 오른쪽 손 오브젝트 찾기 transform-1-2-0-0-3-0-1-0-3
+        rightHandPoint = GameObject.Find("R_HandPoint").gameObject;
+        rightHandCollider = rightHandPoint.GetComponent<BoxCollider>();
+
+        // 머리쪽 공격 오브젝트 찾기 transform-1-2-0-0-1-0-2
+        Dragon_Head_AttackPoint = GameObject.Find("Dragon_Head_AttackPoint").gameObject;
+
+        // 오른쪽 손 공격 오브젝트 찾기 transform-1-2-0-0-3-0-1-0-4
+        Dragon_Hand_AttackPoint = GameObject.Find("R_Hand_AttackPoint").gameObject;
+
+
+        
 
 
         attackArea.onPlayerIn += (target) =>
@@ -385,11 +418,9 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
 
         // attackPoint[0] = 머리쪽 AttackPoint
         attackPoint[0] = Dragon_Head_AttackPoint.GetComponent<AttackPoint>();
-        //onWeaponBladeEnabe = attackPoint[0].BladeVolumeEnable;
 
         // attackPoint[2] = 오른손 AttackPoint
         attackPoint[1] = Dragon_Hand_AttackPoint.GetComponent<AttackPoint>();
-        //onWeaponBladeEnabe = attackPoint[1].BladeVolumeEnable;
         
 
         Player player = GameManager.Instance.Player;
@@ -489,10 +520,6 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
         if (attackCoolTime < 0 && !isAttacking)
         {
             StartCoroutine(PerformAttack()); // 공격 코루틴 실행
-            //if (attackPoint[0].AttackEnter || attackPoint[1].AttackEnter)
-            //{
-            //    Attack(attackTarget, false);
-            //}
         }
     }
 
@@ -589,7 +616,6 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
             Debug.Log($"{target}기본 공격 맞음");
             target.Defence(AttackPower);
         }
-        //StartCoroutine(PerformAttack(target)); // 공격 코루틴 실행
     }
 
     // AttackBasic, AttackHorn, AttackClaw 이름의 Trigger형으로 각각 연결되어 있음
@@ -711,6 +737,7 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
             onHit?.Invoke(Mathf.RoundToInt(final));
 
             StartCoroutine(InvinvibleMode());
+            // 폭탄 공격시 데미지 받기
         }
     }
 
@@ -735,6 +762,10 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
         // 컬라이더 비활성화
         bodyCollider.enabled = false;
         weakCollider.enabled = false;
+        leftArmCollider.enabled = false;
+        rightArmCollider.enabled = false;
+        leftHandCollider.enabled = false;
+        rightHandCollider.enabled = false;
 
         // HP바 안보이게 만들기
         hpBar.gameObject.SetActive(false);
@@ -753,7 +784,7 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
         rigid.drag = 10.0f;                     // 무한대로 되어 있던 마찰력을 낮춰서 떨어질 수 있게 하기
 
         // 충분히 바닥아래로 내려갈때까지 대기
-        yield return new WaitForSeconds(2.0f);  // 2초면 다 떨어질 것이다.
+        yield return new WaitForSeconds(3.0f);  // 3초면 다 떨어질 것이다.
 
         // 적 풀로 되돌리기
         gameObject.SetActive(false);    // 즉시 적 풀로 되돌리기
@@ -770,7 +801,7 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
             if (item.dropRatio > UnityEngine.Random.value) // 확률 체크하고
             {
                 uint count = (uint)UnityEngine.Random.Range(0, item.dropCount) + 1;     // 개수 결정
-                //Factory.Instance.MakeItems(item.code, count, transform.position, true); // 실제 생성
+                // 실제 생성 // 펙토리 스크립트에 아이템 생성함수 작성해야됨
             }
         }
     }
@@ -780,8 +811,6 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
     /// </summary>
     private void HeadEnable()
     {
-        // onWeaponBladeEnabe 켜라고 신호보내기
-        //onWeaponBladeEnabe?.Invoke(true);
         attackPoint[0].BladeVolumeEnable(true);
     }
 
@@ -790,9 +819,7 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
     /// </summary>
     private void HeadDisable()
     {
-        // onWeaponBladeEnabe 끄라고 신호보내기
         attackPoint[0].BladeVolumeEnable(false);
-        //onWeaponBladeEnabe?.Invoke(false);
         // 드래곤 공격은 머리 박치기, 오른손 휘두르기, 물기
     }
 
@@ -801,8 +828,6 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
     /// </summary>
     private void HandEnable()
     {
-        // onWeaponBladeEnabe 켜라고 신호보내기
-        //onWeaponBladeEnabe?.Invoke(true);
         attackPoint[1].BladeVolumeEnable(true);
     }
 
@@ -811,9 +836,7 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
     /// </summary>
     private void HandDisable()
     {
-        // onWeaponBladeEnabe 끄라고 신호보내기
         attackPoint[1].BladeVolumeEnable(false);
-        //onWeaponBladeEnabe?.Invoke(false);
         // 드래곤 공격은 머리 박치기, 오른손 휘두르기, 물기
     }
 
@@ -840,8 +863,12 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
     IEnumerator InvinvibleMode()
     {
         // 플레이어 무기에 맞으면 레이어 바꾸기(머리 맞고 몸통까지 연속으로 맞는거 방지)
-        weakPoint.gameObject.layer = LayerMask.NameToLayer("Invincible"); // 약점 오브젝트의 레이어를 Invincible로 바꾸기
         bodyPoint.gameObject.layer = LayerMask.NameToLayer("Invincible"); // 몸체 오브젝트의 레이어를 Invincible로 바꾸기
+        weakPoint.gameObject.layer = LayerMask.NameToLayer("Invincible"); // 약점 오브젝트의 레이어를 Invincible로 바꾸기
+        leftArmPoint.gameObject.layer = LayerMask.NameToLayer("Invincible"); // 몸체 오브젝트의 레이어를 Invincible로 바꾸기
+        rightArmPoint.gameObject.layer = LayerMask.NameToLayer("Invincible"); // 몸체 오브젝트의 레이어를 Invincible로 바꾸기
+        leftHandPoint.gameObject.layer = LayerMask.NameToLayer("Invincible"); // 몸체 오브젝트의 레이어를 Invincible로 바꾸기
+        rightHandPoint.gameObject.layer = LayerMask.NameToLayer("Invincible"); // 몸체 오브젝트의 레이어를 Invincible로 바꾸기
 
         float timeElapsed = 0.0f;
         while (timeElapsed < invincibleTime) // Invincible 무적시간 동안만
@@ -852,8 +879,12 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
         }
 
         // 2�ʰ� ������
-        weakPoint.gameObject.layer = LayerMask.NameToLayer("HitPoint"); // 약점 오브젝트의 레이어를 HitPoint로 바꾸기
         bodyPoint.gameObject.layer = LayerMask.NameToLayer("HitPoint"); // 몸체 오브젝트의 레이어를 HitPoint로 바꾸기
+        weakPoint.gameObject.layer = LayerMask.NameToLayer("HitPoint"); // 약점 오브젝트의 레이어를 HitPoint로 바꾸기
+        leftArmPoint.gameObject.layer = LayerMask.NameToLayer("HitPoint"); // 몸체 오브젝트의 레이어를 HitPoint로 바꾸기
+        rightArmPoint.gameObject.layer = LayerMask.NameToLayer("HitPoint"); // 몸체 오브젝트의 레이어를 HitPoint로 바꾸기
+        leftHandPoint.gameObject.layer = LayerMask.NameToLayer("HitPoint"); // 몸체 오브젝트의 레이어를 HitPoint로 바꾸기
+        rightHandPoint.gameObject.layer = LayerMask.NameToLayer("HitPoint"); // 몸체 오브젝트의 레이어를 HitPoint로 바꾸기
     }
 
 #if UNITY_EDITOR
@@ -877,31 +908,6 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
 
         Handles.DrawWireDisc(transform.position, transform.up, nearSightRange);         // 근거리 시야 범위 그리기
     }
-
-    //public void Test_DropItems(int testCount)
-    //{
-    //    uint[] types = new uint[dropItems.Length];
-    //    uint[] total = new uint[dropItems.Length];
-
-    //    for (int i = 0; i < testCount; i++)
-    //    {
-    //        int index = 0;
-    //        foreach (var item in dropItems)
-    //        {
-    //            if (item.dropRatio > UnityEngine.Random.value)
-    //            {
-    //                uint count = (uint)UnityEngine.Random.Range(0, item.dropCount) + 1;
-    //                //Factory.Instance.MakeItems(item.code, count, transform.position, true);
-    //                types[index]++;
-    //                total[index] += count;
-    //            }
-    //            index++;
-    //        }
-    //    }
-
-    //    Debug.Log($"1st : {types[0]}번 드랍, {total[0]}개 드랍");
-    //    Debug.Log($"2nd : {types[1]}번 드랍, {total[1]}개 드랍");
-    //}
 
 #endif
 }

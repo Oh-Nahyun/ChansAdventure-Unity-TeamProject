@@ -41,23 +41,12 @@ public class AttackPoint : MonoBehaviour
                 if(nightmareDragon != null)
                 {
                     nightmareDragon.Attack(target, false);
-                    //Debug.Log($"{target}AttackPoint_Dargon");
                 }
                 else if(skeleton != null)
                 {
                     skeleton.Attack(target, false);
-                    //Debug.Log($"{target}AttackPoint_Skeleton");
                 }
             }
         }
-        //else if (other.CompareTag("Player"))
-        //{
-        //    // 약점 공격
-        //    Player target = GameManager.Instance.Player;
-        //    if (target != null)
-        //    {
-        //        target.Defence(skeleton.AttackPower);        // 공격 대상에게 데미지 전달
-        //    }
-        //}
     }
 }
