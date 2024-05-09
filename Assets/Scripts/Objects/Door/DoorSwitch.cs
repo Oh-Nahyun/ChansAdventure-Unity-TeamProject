@@ -1,18 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class DoorSwitch : MonoBehaviour
+public class DoorSwitch : DoorBase
 {
-    // Start is called before the first frame update
-    void Start()
+    readonly int IsOpenHash = Animator.StringToHash("Open");
+
+    protected override void Awake()
     {
-        
+        isLock = true;
+        base.Awake();
     }
 
-    // Update is called once per frame
-    void Update()
+    /// <summary>
+    /// 문 열림 처리함수
+    /// </summary>
+    public new void OpenDoor()
     {
-        
+        if (otherObject)
+        {
+            open = !open;
+            animator.SetBool(IsOpenHash, open);
+        }
     }
 }

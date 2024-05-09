@@ -172,12 +172,12 @@ public class GameManager : Singleton<GameManager>
         if (!isNPC)
         {
             onTalkNPC?.Invoke();
-            Debug.Log("ï¿½ï¿½È£ï¿½Û¿ï¿½ Å° ï¿½ï¿½ï¿½ï¿½");
+            Debug.Log("»óÈ£ÀÛ¿ë Å° ´©¸§");
         }
         else
         {
             onTalkObj?.Invoke();
-            Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½È­");
+            Debug.Log("¿ÀºêÁ§Æ®¿Í ´ëÈ­");
         }
     }
 

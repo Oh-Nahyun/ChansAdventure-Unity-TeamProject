@@ -15,7 +15,7 @@ public class InventoryUI : MonoBehaviour
     /// <summary>
     /// 인벤토리 접근용 프로퍼티
     /// </summary>
-    Inventory Inventory => inventory;
+    public Inventory Inventory => inventory;
 
     /// <summary>
     /// UI slots
