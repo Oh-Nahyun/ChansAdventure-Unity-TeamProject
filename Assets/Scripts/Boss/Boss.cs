@@ -292,7 +292,8 @@ public class Boss : MonoBehaviour, IBattler, IHealth
 
     public void OnFireBall()
     {
-        Instantiate(fireBallPrefab, fireBallSpawnPosition, transform.rotation);
+        //Instantiate(fireBallPrefab, fireBallSpawnPosition, transform.rotation);
+        Factory.Instance.GetFireBall(fireBallSpawnPosition);
     }
 
     public void OnClowArea()

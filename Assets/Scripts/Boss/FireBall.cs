@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FireBall : ReactionObject
+public class FireBall : RecycleObject
 {
     float speed = 30.0f;
 

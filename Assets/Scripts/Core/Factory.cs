@@ -35,6 +35,7 @@ public class Factory : Singleton<Factory>
     DamageTextPool damageTextPool;
     ItemPool itemPool;
     NightmareDragonPool nightmareDragonPool;
+    FireBallPool fireballPool;
 
     ArrowPool arrowPool;
 
@@ -60,6 +61,9 @@ public class Factory : Singleton<Factory>
         if (damageTextPool != null) damageTextPool.Initialize();
         nightmareDragonPool = GetComponentInChildren<NightmareDragonPool>();
         if(nightmareDragonPool != null) nightmareDragonPool.Initialize();
+
+        fireballPool = GetComponentInChildren<FireBallPool>();
+        if (fireballPool != null) fireballPool.Initialize();
 
         // Inventory Branch
         itemPool = GetComponentInChildren<ItemPool>();
@@ -245,5 +249,14 @@ public class Factory : Singleton<Factory>
         }
 
         return result;
+    }
+
+    public FireBall GetFireBall()
+    {
+        return fireballPool.GetObject();
+    }
+    public FireBall GetFireBall(Vector3 position, float angle = 0.0f)
+    {
+        return fireballPool.GetObject(position, angle * Vector3.forward);
     }
 }
