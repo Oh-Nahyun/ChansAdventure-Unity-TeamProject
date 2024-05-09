@@ -16,6 +16,7 @@ public class AttackPoint : MonoBehaviour
         skeleton = GetComponentInParent<SwordSkeleton>();   // 플레이어 찾기
         nightmareDragon = GetComponentInParent<NightmareDragon>();
         attackCollider = GetComponent<BoxCollider>();
+        attackCollider.enabled = false;
     }
 
     /// <summary>
@@ -40,12 +41,12 @@ public class AttackPoint : MonoBehaviour
                 if(nightmareDragon != null)
                 {
                     nightmareDragon.Attack(target, false);
-                    Debug.Log($"{target}AttackPoint_Dargon");
+                    //Debug.Log($"{target}AttackPoint_Dargon");
                 }
                 else if(skeleton != null)
                 {
                     skeleton.Attack(target, false);
-                    Debug.Log($"{target}AttackPoint_Skeleton");
+                    //Debug.Log($"{target}AttackPoint_Skeleton");
                 }
             }
         }

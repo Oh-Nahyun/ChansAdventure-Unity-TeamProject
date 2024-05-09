@@ -414,6 +414,7 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
         if (attackCoolTime < 0)
         {
             animator.SetTrigger("Attack");      // 애니메이션 재생
+            attackCoolTime = attackInterval;    // 쿨타임 초기화
             //if(attackPoint.AttackEnter)
             //{
             //    Attack(attackTarget, false);
@@ -502,7 +503,7 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
     public void Attack(IBattler target, bool isWeakPoint)
     {
         target.Defence(AttackPower);        // 공격 대상에게 데미지 전달
-        attackCoolTime = attackInterval;    // 쿨타임 초기화
+        
     }
 
     /// <summary>

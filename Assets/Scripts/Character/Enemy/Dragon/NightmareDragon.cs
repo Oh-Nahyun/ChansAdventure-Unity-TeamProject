@@ -226,7 +226,7 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
     /// <summary>
     /// 무기 컬라이더 켜고 끄는 신호를 보내는 델리게이트
     /// </summary>
-    public Action<bool> onWeaponBladeEnabe;
+    //public Action<bool> onWeaponBladeEnabe;
 
     /// <summary>
     /// 상태별 업데이트 함수가 저장될 델리게이트(함수 저장용)
@@ -385,10 +385,12 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
 
         // attackPoint[0] = 머리쪽 AttackPoint
         attackPoint[0] = Dragon_Head_AttackPoint.GetComponent<AttackPoint>();
-        onWeaponBladeEnabe = attackPoint[0].BladeVolumeEnable;
+        //onWeaponBladeEnabe = attackPoint[0].BladeVolumeEnable;
+
         // attackPoint[2] = 오른손 AttackPoint
         attackPoint[1] = Dragon_Hand_AttackPoint.GetComponent<AttackPoint>();
-        onWeaponBladeEnabe = attackPoint[1].BladeVolumeEnable;
+        //onWeaponBladeEnabe = attackPoint[1].BladeVolumeEnable;
+        
 
         Player player = GameManager.Instance.Player;
         if (player != null)
@@ -776,19 +778,42 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
     /// <summary>
     /// 콜라이더 켜는 함수
     /// </summary>
-    private void WeaponBladeEnable()
+    private void HeadEnable()
     {
         // onWeaponBladeEnabe 켜라고 신호보내기
-        onWeaponBladeEnabe?.Invoke(true);
+        //onWeaponBladeEnabe?.Invoke(true);
+        attackPoint[0].BladeVolumeEnable(true);
     }
 
     /// <summary>
     /// 콜라이더 끄는 함수
     /// </summary>
-    private void WeaponBladeDisable()
+    private void HeadDisable()
     {
         // onWeaponBladeEnabe 끄라고 신호보내기
-        onWeaponBladeEnabe?.Invoke(false);
+        attackPoint[0].BladeVolumeEnable(false);
+        //onWeaponBladeEnabe?.Invoke(false);
+        // 드래곤 공격은 머리 박치기, 오른손 휘두르기, 물기
+    }
+
+    /// <summary>
+    /// 콜라이더 켜는 함수
+    /// </summary>
+    private void HandEnable()
+    {
+        // onWeaponBladeEnabe 켜라고 신호보내기
+        //onWeaponBladeEnabe?.Invoke(true);
+        attackPoint[1].BladeVolumeEnable(true);
+    }
+
+    /// <summary>
+    /// 콜라이더 끄는 함수
+    /// </summary>
+    private void HandDisable()
+    {
+        // onWeaponBladeEnabe 끄라고 신호보내기
+        attackPoint[1].BladeVolumeEnable(false);
+        //onWeaponBladeEnabe?.Invoke(false);
         // 드래곤 공격은 머리 박치기, 오른손 휘두르기, 물기
     }
 
