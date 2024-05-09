@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Windows;
@@ -305,9 +307,22 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         get => equipPart;
         set
         {
-            equipPart = value;
+            if(equipPart != value)
+            {
+                equipPart = value;
+            }
         }
     }
+
+    /// <summary>
+    /// 인벤토리에서 아이템 장착시 실행되는 델리게이트
+    /// </summary>
+    public Action<int> OnEquipWeaponItem;
+
+    /// <summary>
+    /// 인벤토리에서 아이템 장착해제시 실행되는 델리게이트
+    /// </summary>
+    public Action<int> OnUnEquipWeaponItem;
 
     // Stamina ===================================================================================
 
@@ -380,6 +395,31 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// </summary>
     public Inventory Inventory => inventory;
 
+    /// <summary>
+    /// 맵 패널 활성화 여부 ( true : 열려있음 , false 닫혀있음 )
+    /// </summary>
+    bool isOpenMapPanel = false;
+
+    /// <summary>
+    /// 맵 패널 활성화 여부를 접근하기 위한 프로퍼티 
+    /// </summary>
+    public bool IsOpenMapPanel => isOpenMapPanel;
+
+    /// <summary>
+    /// 인벤토리 패널 활성화 여부 ( true : 열려있음, false 닫혀있음)
+    /// </summary>
+    bool isOpenInventoryPanel = false;
+
+    /// <summary>
+    /// UI가 열려있는지 확인하는 변수
+    /// </summary>
+    bool isOpenedAnyUIPanel = false;
+
+    /// <summary>
+    /// UI가 열려있는지 확인하는 프로퍼티
+    /// </summary>
+    public bool IsOpenedAnyUIPanel => isOpenedAnyUIPanel;
+
     #endregion
 
     #region PlayerInteraction Values
@@ -392,7 +432,6 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     #endregion
 
     #region Etc Values
-
     /// <summary>
     /// UI 패널이 열렸는지 확인하는 변수
     /// </summary>
@@ -400,7 +439,6 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     public bool IsAnyUIPanelOpened => isAnyUIPanelOpened;
 
     MenuPanel menuPanel;
-
     #endregion
 
     // 함수 ==========================================================================================================================
@@ -451,12 +489,9 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         controller.onMenuOpen += OnOpenMenuPanel;
 
         // inventory
-        if(inventory == null)
-        {
-            inventory = new Inventory(this.gameObject, 16);
-            GameManager.Instance.ItemDataManager.InventoryUI.InitializeInventoryUI(inventory); // 인벤 UI 초기화
-            EquipPart = new InventorySlot[partCount]; // EquipPart 배열 초기화
-        }
+        inventory = new Inventory(this.gameObject, 16);
+        GameManager.Instance.ItemDataManager.InventoryUI.InitializeInventoryUI(inventory); // 인벤 UI 초기화
+        EquipPart = new InventorySlot[partCount]; // EquipPart 배열 초기화
     }
 
     private void Update()
@@ -492,6 +527,9 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// <param name="isMove">check press button ( wasd )</param>
     void OnMove(Vector2 input, bool isMove)
     {
+        if (IsOpenedAnyUIPanel)
+            return;
+
         // 입력 방향 저장
         inputDirection.x = input.x;
         inputDirection.y = 0;
@@ -542,6 +580,12 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// <param name="isLookingAround">true : , false : No input Value</param>
     void OnLookAround(Vector2 lookInput, bool isLookingAround)
     {
+        if (IsOpenedAnyUIPanel) // UI 열렸을 때
+        {
+            isLook = false;     // 카메라 움직임 비활성화
+            return;
+        }
+
         if (isLookingAround)
         {
             isLook = true;
@@ -621,7 +665,8 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// </summary>
     private void OnJump(bool isJump)
     {
-        if (SkillRelatedAction.IsPickUp) // 물건을 들고 있을 때 입력 막기
+        if (SkillRelatedAction.IsPickUp // 물건을 들고 있을 때 입력 막기
+            || IsOpenedAnyUIPanel)
             return;
 
         if (isJump)
@@ -789,17 +834,18 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     {
         if (EquipPart[(int)part] != null) // 장착한 아이템이 있으면
         {
-            // false
             CharacterUnequipItem(part); // 장착했던 아이템 파괴
-
             Instantiate(equipment, partPosition[(int)part]); // 아이템 오브젝트 생성
+            
             EquipPart[(int)part] = slot;    // 장착부위에 아이템 정보 저장
         }
         else // 장착한 아이템이 없으면
         {
-            EquipPart[(int)part] = slot;
             Instantiate(equipment, partPosition[(int)part]); // 아이템 오브젝트 생성
+            EquipPart[(int)part] = slot;
         }
+
+        OnEquipWeaponItem?.Invoke((int)part);
     }
 
     /// <summary>
@@ -808,7 +854,24 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// <param name="part"></param>
     public void CharacterUnequipItem(EquipPart part)
     {
-        Destroy(partPosition[(int)part].GetChild(0).gameObject);    // 아이템 오브젝트 파괴
+        if (EquipPart[(int)part] == null)
+        {
+            Debug.Log("장착한 아이템정보가 존재하지 않습니다.");
+        }
+
+        GameObject obj = partPosition[(int)part].GetChild(0).gameObject; // 아이템 파괴전 파괴할 오브젝트 활성화
+
+        if (obj == null)
+        {
+            Debug.Log("아이템이 없습니다");
+            return;
+        }
+
+        obj.SetActive(true);
+        DestroyImmediate(obj);
+
+        OnUnEquipWeaponItem?.Invoke((int)part);
+        //Destroy(partPosition[(int)part].GetChild(0).gameObject);        // 아이템 오브젝트 파괴
     }
 
     /// <summary>
@@ -951,7 +1014,6 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     #endregion
 
 #if UNITY_EDITOR
-
     /// <summary>
     /// Player 임의로 아이템 부여하는 함수 ( 빌드 할 때는 없어짐 ) 
     /// </summary>
@@ -962,7 +1024,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         inventory.AddSlotItem((uint)ItemCode.HP_portion, 3);
         inventory.AddSlotItem((uint)ItemCode.Coin);
     }
-
+    
     //IBatter 인터페이스 상속 --------------------------------------------------------------------------------------------------
     public float weakPointAttack = 1.2f;
     public void Attack(IBattler target, bool isWeakPoint = false)
