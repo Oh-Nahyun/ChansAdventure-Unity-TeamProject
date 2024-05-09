@@ -1,9 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
@@ -139,7 +136,7 @@ public class Boss : MonoBehaviour, IBattler, IHealth
         set
         {
             hp = value;
-            if(State!= BossState.Dead)
+            if(State != BossState.Dead)
             {
                 Die();
             }
@@ -169,7 +166,7 @@ public class Boss : MonoBehaviour, IBattler, IHealth
     /// </summary>
     public void Die()
     {
-
+        Debug.Log($"{gameObject.name} 사망");
     }
 
     /// <summary>
@@ -226,8 +223,6 @@ public class Boss : MonoBehaviour, IBattler, IHealth
 
     }
 
-
-
     /// <summary>
     /// 기본 방어 함수
     /// </summary>
@@ -236,8 +231,6 @@ public class Boss : MonoBehaviour, IBattler, IHealth
     {
 
     }
-
-
 
     IEnumerator MoveRandomDirection()
     {
