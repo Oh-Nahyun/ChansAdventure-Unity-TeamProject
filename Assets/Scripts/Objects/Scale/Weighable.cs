@@ -4,5 +4,17 @@ using UnityEngine;
 
 public class Weighable : MonoBehaviour
 {
-    public float weigh;   
+    Rigidbody rb;
+    public float weigh;
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
+
+    private void Start()
+    {
+        weigh = rb.mass;
+    }
+
 }

@@ -145,6 +145,16 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Open_Quest"",
+                    ""type"": ""Button"",
+                    ""id"": ""d98c0f3e-dce1-4550-9913-efaa1469a52d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+
                     ""name"": ""Open_Menu"",
                     ""type"": ""Button"",
                     ""id"": ""a6a4a307-edce-4efd-84c7-098a1874d874"",
@@ -343,6 +353,17 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
+                    ""name"": """",
+                    ""id"": ""4b512deb-6fda-4137-b8df-9397a82bd827"",
+                    ""path"": ""<Keyboard>/l"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KM"",
+                    ""action"": ""Open_Quest"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                    },
+                    {
                     ""name"": """",
                     ""id"": ""517f5c83-7451-4211-89f1-70161e71f452"",
                     ""path"": ""<Keyboard>/escape"",
@@ -794,7 +815,9 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         m_Player_Open_Inventory = m_Player.FindAction("Open_Inventory", throwIfNotFound: true);
         m_Player_Get_Item = m_Player.FindAction("Get_Item", throwIfNotFound: true);
         m_Player_Open_Map = m_Player.FindAction("Open_Map", throwIfNotFound: true);
+        m_Player_Open_Quest = m_Player.FindAction("Open_Quest", throwIfNotFound: true);
         m_Player_Open_Menu = m_Player.FindAction("Open_Menu", throwIfNotFound: true);
+
         // Weapon
         m_Weapon = asset.FindActionMap("Weapon", throwIfNotFound: true);
         m_Weapon_Attack = m_Weapon.FindAction("Attack", throwIfNotFound: true);
@@ -894,7 +917,10 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Open_Inventory;
     private readonly InputAction m_Player_Get_Item;
     private readonly InputAction m_Player_Open_Map;
+
+    private readonly InputAction m_Player_Open_Quest;
     private readonly InputAction m_Player_Open_Menu;
+
     public struct PlayerActions
     {
         private @PlayerinputActions m_Wrapper;
@@ -912,7 +938,10 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         public InputAction @Open_Inventory => m_Wrapper.m_Player_Open_Inventory;
         public InputAction @Get_Item => m_Wrapper.m_Player_Get_Item;
         public InputAction @Open_Map => m_Wrapper.m_Player_Open_Map;
+
+        public InputAction @Open_Quest => m_Wrapper.m_Player_Open_Quest;
         public InputAction @Open_Menu => m_Wrapper.m_Player_Open_Menu;
+
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -961,9 +990,15 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
             @Open_Map.started += instance.OnOpen_Map;
             @Open_Map.performed += instance.OnOpen_Map;
             @Open_Map.canceled += instance.OnOpen_Map;
+
+            @Open_Quest.started += instance.OnOpen_Quest;
+            @Open_Quest.performed += instance.OnOpen_Quest;
+            @Open_Quest.canceled += instance.OnOpen_Quest;
+
             @Open_Menu.started += instance.OnOpen_Menu;
             @Open_Menu.performed += instance.OnOpen_Menu;
             @Open_Menu.canceled += instance.OnOpen_Menu;
+
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1007,9 +1042,15 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
             @Open_Map.started -= instance.OnOpen_Map;
             @Open_Map.performed -= instance.OnOpen_Map;
             @Open_Map.canceled -= instance.OnOpen_Map;
+
+            @Open_Quest.started -= instance.OnOpen_Quest;
+            @Open_Quest.performed -= instance.OnOpen_Quest;
+            @Open_Quest.canceled -= instance.OnOpen_Quest;
+
             @Open_Menu.started -= instance.OnOpen_Menu;
             @Open_Menu.performed -= instance.OnOpen_Menu;
             @Open_Menu.canceled -= instance.OnOpen_Menu;
+
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1317,7 +1358,10 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         void OnOpen_Inventory(InputAction.CallbackContext context);
         void OnGet_Item(InputAction.CallbackContext context);
         void OnOpen_Map(InputAction.CallbackContext context);
+
+        void OnOpen_Quest(InputAction.CallbackContext context);
         void OnOpen_Menu(InputAction.CallbackContext context);
+
     }
     public interface IWeaponActions
     {

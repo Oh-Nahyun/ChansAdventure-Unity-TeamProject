@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class QuestManager : MonoBehaviour
+public class QuestManager : Singleton<QuestManager>
 {
     private Dictionary<int, QuestData> questList = new Dictionary<int, QuestData>();
 
@@ -14,10 +14,15 @@ public class QuestManager : MonoBehaviour
     public GameObject questInfoPanelPrefab; // QuestInfoPanel 프리팹
     public Transform questInfoPanelParent;  // QuestInfoPanel이 생성될 부모 Transform
 
+    public QuestInfo questInfo;
 
-    private void Awake()
+    public List<int> onQuestID;
+    public List<int> clearQuestID;
+
+    protected override void OnInitialize()
     {
         questMessage = FindObjectOfType<QuestMessage>();
+        questInfo = FindObjectOfType<QuestInfo>();
         GenerateData();
     }
 
@@ -43,8 +48,7 @@ public class QuestManager : MonoBehaviour
         {
             QuestData questData = questList[id];
             questMessage.OnQuestMessage(questData.questName, complete);
-
-            
+          
             if (!complete)
             {
 
@@ -97,5 +101,11 @@ public class QuestManager : MonoBehaviour
         // 리스트에서 제거하고 GameObject를 파괴
         questInfoPanels.Remove(panel);
         Destroy(panel.gameObject);
+    }
+
+    public void OpenQuest()
+    {
+        questInfo.gameObject.SetActive(true);
+        questInfo.OnQuestInfo();
     }
 }

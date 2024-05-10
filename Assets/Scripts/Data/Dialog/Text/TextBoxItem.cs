@@ -6,10 +6,7 @@ using UnityEngine.UI;
 
 public class TextBoxItem : MonoBehaviour
 {
-    /// <summary>
-    /// 플레이어
-    /// </summary>
-    Test_EquipCharacter player;
+    Player player;
 
     public float alphaChangeSpeed = 5.0f;
     TextMeshProUGUI talkText;
@@ -21,6 +18,7 @@ public class TextBoxItem : MonoBehaviour
     public GameObject scanObject;
     Animator animator;
     Animator endImageAnimator;
+    PlayerController controller;
 
     Interaction interaction;
     public string talkString;
@@ -63,7 +61,9 @@ public class TextBoxItem : MonoBehaviour
         // TextBoxManager에 대한 참조 가져오기
         textBoxManager = FindObjectOfType<TextBoxManager>();
         
-        player = FindAnyObjectByType<Test_EquipCharacter>();
+        player = FindAnyObjectByType<Player>();
+
+        controller = FindAnyObjectByType<PlayerController>();
     }
 
     private void Start()
@@ -73,7 +73,7 @@ public class TextBoxItem : MonoBehaviour
         canvasGroup.blocksRaycasts = false;
         endImageAnimator.speed = 0.0f;
 
-        GameManager.Instance.onTalkNPC += () =>
+        controller.onInteraction += () =>
         {
             if (scanObject != null)
             {
@@ -151,7 +151,7 @@ public class TextBoxItem : MonoBehaviour
 
                 if (inventory == null)
                 {
-                    //inventory = player.Inventory;
+                    inventory = player.PlayerInventory;
                 }
                 inventory.AddSlotItem((uint)Chestdata.scriptableObject.itemCode, Chestdata.itemCount);
             }

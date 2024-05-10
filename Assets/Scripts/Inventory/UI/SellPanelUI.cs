@@ -82,6 +82,8 @@ public class SellPanelUI : MonoBehaviour
     public Action onCloseDetail;
     public Action<uint> onShowCheckPanel;
 
+    public Action onCloseButton;
+
     private void Awake()
     {
         canvasGroup = GetComponent<CanvasGroup>();
@@ -91,7 +93,7 @@ public class SellPanelUI : MonoBehaviour
         closeButton = transform.GetChild(4).GetComponent<Button>();
         closeButton.onClick.AddListener(() =>
         {
-            CloseSellUI();
+            onCloseButton?.Invoke();
         });
 
         onShowDetail += OnShowDetail;
@@ -100,6 +102,12 @@ public class SellPanelUI : MonoBehaviour
         sellCountUI.onSell += OnSellCheck;
         sellCountUI.onCloseSellCount += OnSellClose;
         sellCheckUI.onConformSell += OnConformSellItem;      
+    }
+
+    private void Start()
+    {
+        CloseSellUI();
+
     }
 
     /// <summary>
@@ -133,12 +141,7 @@ public class SellPanelUI : MonoBehaviour
     /// </summary>
     public void OpenSellUI()
     {
-        if (targetInventory == null)
-        {
-            Debug.Log($"targetInventory가 없습니다.");
-            return;
-        }
-
+        gameObject.SetActive(true);
         SetSlot();
         isFirst = false;
         canvasGroup.alpha = 1f;
@@ -149,9 +152,11 @@ public class SellPanelUI : MonoBehaviour
     /// </summary>
     public void CloseSellUI()
     {
+        
         canvasGroup.alpha = 0f;
-        targetInventory = null;
+        //targetInventory = null;
         isProcess = false;
+        gameObject.SetActive(false);
     }
 
     /// <summary>

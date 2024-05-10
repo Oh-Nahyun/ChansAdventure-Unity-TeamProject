@@ -39,6 +39,15 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     public MapManager MapManager => mapManager;
 
+    /// <summary>
+    /// questManager ������ ���� ������Ƽ
+    /// </summary>
+    QuestManager questManager;
+    public QuestManager QuestManager => questManager;
+
+    TextBoxManager textBoxManager;
+    public TextBoxManager TextBoxManager => textBoxManager;
+
     public CameraManager Cam
     {
         get
@@ -102,6 +111,21 @@ public class GameManager : Singleton<GameManager>
             return;
         }
 
+        player = FindAnyObjectByType<Player>();
+        weapon = FindAnyObjectByType<Weapon>();
+        cameraManager = GetComponent<CameraManager>();
+        itemDataManager = GetComponent<ItemDataManager>();
+        mapManager = GetComponent<MapManager>();
+
+        itemDataManager.InitializeItemDataUI();
+
+        mapManager.InitalizeMapUI();
+        questManager = FindAnyObjectByType<QuestManager>();
+        textBoxManager = FindAnyObjectByType<TextBoxManager>();
+    }
+
+    protected override void OnAdditiveInitiallize()
+    {
         SpawnPlayerAfterLoadScene();
 
         if (player == null) player = FindAnyObjectByType<Player>();
@@ -113,6 +137,8 @@ public class GameManager : Singleton<GameManager>
         itemDataManager.InitializeItemDataUI();
 
         mapManager.InitalizeMapUI();
+        questManager = FindAnyObjectByType<QuestManager>();
+        textBoxManager = FindAnyObjectByType<TextBoxManager>();
 
         if (savedInventory != null) // 저장한 인벤토리가 존재하면 인벤토리 내용 복사
         {

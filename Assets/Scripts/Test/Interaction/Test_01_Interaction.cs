@@ -6,6 +6,11 @@ using UnityEngine.InputSystem;
 
 public class Test_01_Interaction : TestBase
 {
+    Player player;
+    private void Start()
+    {
+        player = FindAnyObjectByType<Player>();
+    }
 
     protected override void OnTest1(InputAction.CallbackContext context)
     {
@@ -18,7 +23,7 @@ public class Test_01_Interaction : TestBase
 
     protected override void OnTest3(InputAction.CallbackContext context)
     {
-        //quest.OnQuestInfo();
+        player.transform.position = new Vector3(0,0,0);
     }
 
 #if UNITY_EDITOR

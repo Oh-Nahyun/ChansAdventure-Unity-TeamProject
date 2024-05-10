@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,10 +10,28 @@ public class TextBoxManager : MonoBehaviour
     /// </summary>
     Dictionary<int, string[]> talkData;
 
+    public Action<bool> isTalkAction;
+
+    TextBox textBox;
+    TextBoxItem textBoxItem;
+
+    public GameObject[] setActiveObjs;
+
     private void Awake()
     {
         talkData = new Dictionary<int, string[]>();
         GenerateData();
+    }
+
+    private void Start()
+    {
+        textBox = FindAnyObjectByType<TextBox>();
+        textBoxItem = FindAnyObjectByType<TextBoxItem>();
+    }
+
+    private void Update()
+    {
+        TalkingAction();
     }
 
     /// <summary>
@@ -57,7 +76,10 @@ public class TextBoxManager : MonoBehaviour
         talkData.Add(2000, new string[] { "가나다라마바사  아자차카타파하  가나다라마바사  아자차카타파하  가나다라마바사  아자차카타파하" });
 
         // 시민
-        talkData.Add(3000, new string[] { "날씨가 참 좋구나..." });
+        talkData.Add(3000, new string[] { "내 부탁좀 들어줄래?" });
+        talkData.Add(3001, new string[] { "아직" });
+        talkData.Add(3002, new string[] { "완료" });
+        talkData.Add(3003, new string[] { "날씨가 참 좋구나..." });
 
         // 상인
         talkData.Add(4000, new string[] { "어서옵쇼!!" });
@@ -85,6 +107,26 @@ public class TextBoxManager : MonoBehaviour
         {
             //Debug.LogError("해당 ID에 대한 대화 데이터를 찾을 수 없습니다: " + id);
             return null;
+        }
+    }
+
+    private void TalkingAction()
+    {
+        if(!textBox.TalkingEnd && !textBoxItem.Talking)
+        {
+            isTalkAction?.Invoke(false);
+            for(int i = 0; i < setActiveObjs.Length; i++)
+            {
+                setActiveObjs[i].gameObject.SetActive(true);
+            }
+        }
+        else
+        {
+            isTalkAction?.Invoke(true);
+            for (int i = 0; i < setActiveObjs.Length; i++)
+            {
+                setActiveObjs[i].gameObject.SetActive(false);
+            }
         }
     }
 

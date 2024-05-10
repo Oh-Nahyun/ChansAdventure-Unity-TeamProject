@@ -27,7 +27,7 @@ public class AN_HeroController : MonoBehaviour
 
     void Update()
     {
-        // camera rotation
+        // mainCamera rotation
         float xmouse = Input.GetAxis("Mouse X") * Time.deltaTime * Sensitivity;
         float ymouse = Input.GetAxis("Mouse Y") * Time.deltaTime * Sensitivity;
         transform.Rotate(Vector3.up * xmouse);

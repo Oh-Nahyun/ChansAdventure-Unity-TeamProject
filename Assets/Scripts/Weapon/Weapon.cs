@@ -80,6 +80,9 @@ public class Weapon : MonoBehaviour
     ArrowFirePoint arrowFirePoint;
     //PlayerFollowVCam vcam;
 
+
+    GameManager gameManager;
+
     /// <summary>
     /// 화살이 있는 아이템 슬롯
     /// </summary>
@@ -94,6 +97,7 @@ public class Weapon : MonoBehaviour
     /// 화살 프리팹
     /// </summary>
     GameObject arrowPrefab;
+
 
     private void Awake()
     {
@@ -152,7 +156,7 @@ public class Weapon : MonoBehaviour
     /// <param name="context"></param>
     private void OnAttackInput(InputAction.CallbackContext context)
     {
-        if (player.SkillRelatedAction.IsPickUp || player.IsAnyUIPanelOpened) // 물건을 들고 있을 때 입력 막기
+        if (player.SkillRelatedAction.IsPickUp || player.isTalk || player.IsAnyUIPanelOpened) // 물건을 들고 있거나 대화중일 때 입력 막기
             return;
 
         animator.SetTrigger(IsAttackHash);
@@ -199,7 +203,7 @@ public class Weapon : MonoBehaviour
     /// <param name="context"></param>
     private void OnChangeInput(InputAction.CallbackContext context)
     {
-        if (player.SkillRelatedAction.IsPickUp || player.IsAnyUIPanelOpened) // 물건을 들고 있을 때 입력 막기
+        if (player.SkillRelatedAction.IsPickUp || player.isTalk || player.IsAnyUIPanelOpened) // 물건을 들고 있거나 대화중일 때 입력 막기
             return;
 
         if (currentWeaponMode == WeaponMode.None
@@ -307,7 +311,8 @@ public class Weapon : MonoBehaviour
     /// </summary>
     private void OnLoadInput(InputAction.CallbackContext _)
     {
-        if (player.SkillRelatedAction.IsPickUp || player.IsAnyUIPanelOpened) // 물건을 들고 있을 때 입력 막기
+        if (player.SkillRelatedAction.IsPickUp || player.isTalk || player.IsAnyUIPanelOpened) // 물건을 들고 있거나 대화중일 때 입력 막기
+
             return;
 
         if (IsBowEquip) // 활을 장비하고 있는 경우
@@ -327,7 +332,7 @@ public class Weapon : MonoBehaviour
     /// </summary>
     public void LoadArrowAfter()
     {
-        if (player.SkillRelatedAction.IsPickUp || player.IsAnyUIPanelOpened) // 물건을 들고 있을 때 입력 막기
+        if (player.SkillRelatedAction.IsPickUp || player.isTalk || player.IsAnyUIPanelOpened) // 물건을 들고 있거나 대화중일 때 입력 막기
             return;
 
         if (IsArrowEquip) // 화살이 장전된 상태인 경우

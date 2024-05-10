@@ -10,13 +10,14 @@ public class WarpBase : NPCBase
     /// 워프할 위치
     /// </summary>
     public Transform warpPoint;
-    public Transform player;
+    Player player;
 
     protected override void Awake()
     {
         otherObject = true;
         interaction = FindObjectOfType<Interaction>();
-        player = interaction.gameObject.transform;
+        player = FindAnyObjectByType<Player>();
+        //player = interaction.gameObject.transform;
     }
 
     /// <summary>
@@ -27,8 +28,9 @@ public class WarpBase : NPCBase
         if (warpPoint != null)
         {
             Vector3 warpPosition = warpPoint.position;
-            warpPosition.y += player.transform.parent.position.y;
-            player.transform.parent.position = warpPosition;
+            warpPosition.y += player.transform.position.y + 3;
+            
+            player.transform.position = warpPosition;
         }
     }
 
