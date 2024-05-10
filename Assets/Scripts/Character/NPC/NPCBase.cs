@@ -23,7 +23,7 @@ public class NPCBase : MonoBehaviour
     public Action onQuestCompleted;
 
     protected Inventory inventory;
-
+    private TextBox textBox;
     private QuestInfoPanel questInfoPanel;
 
     public int id = 0;
@@ -156,7 +156,10 @@ public class NPCBase : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            textViweName.gameObject.SetActive(true);
+            if(textViweName != null)
+            {
+                textViweName.gameObject.SetActive(true);
+            }
         }
     }
 
@@ -164,9 +167,10 @@ public class NPCBase : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-
-            textViweName.gameObject.SetActive(false);
-
+            if (textViweName != null)
+            {
+                textViweName.gameObject.SetActive(false);
+            }
         }
     }
 
@@ -179,19 +183,32 @@ public class NPCBase : MonoBehaviour
         {
             // id 3xxx Çãµå½¼
             case 3000:
-                if (!isTalk)
+                if (isTalk)
                 {
-                    questManager.GetQuestTalkIndex(10, false);
-                    id = 3001;
+                    if (!textBox.TalkingEnd)
+                    {
+                        questManager.GetQuestTalkIndex(10, false);
+                        id = 3001;
+                    }
                 }
                 break;
             case 3001:
+                if (isTalk)
+                {
+                    if (!isTalk)
+                    {
+
+                    }
+                }
                 break;
             case 3002:
-                if (!isTalk)
+                if (isTalk)
                 {
-                    questManager.GetQuestTalkIndex(10, false);
-                    id = 3003;
+                    if (!isTalk)
+                    {
+                        questManager.GetQuestTalkIndex(10, false);
+                        id = 3003;
+                    }
                 }
                 break;
 

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4861501934486868975}
   m_Layer: 24
   m_Name: Warp
-  m_TagString: Untagged
+  m_TagString: Warp
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -56,7 +56,6 @@ MonoBehaviour:
   otherObject: 0
   warpPoint: {fileID: 0}
   player: {fileID: 0}
-  warpReady: 0
 --- !u!135 &4861501934486868975
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -72,7 +71,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3

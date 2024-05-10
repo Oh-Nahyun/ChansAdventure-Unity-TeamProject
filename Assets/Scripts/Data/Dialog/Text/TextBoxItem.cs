@@ -18,6 +18,7 @@ public class TextBoxItem : MonoBehaviour
     public GameObject scanObject;
     Animator animator;
     Animator endImageAnimator;
+    PlayerController controller;
 
     Interaction interaction;
     public string talkString;
@@ -61,6 +62,8 @@ public class TextBoxItem : MonoBehaviour
         textBoxManager = FindObjectOfType<TextBoxManager>();
         
         player = FindAnyObjectByType<Player>();
+
+        controller = FindAnyObjectByType<PlayerController>();
     }
 
     private void Start()
@@ -70,7 +73,7 @@ public class TextBoxItem : MonoBehaviour
         canvasGroup.blocksRaycasts = false;
         endImageAnimator.speed = 0.0f;
 
-        GameManager.Instance.onTalkNPC += () =>
+        controller.onInteraction += () =>
         {
             if (scanObject != null)
             {

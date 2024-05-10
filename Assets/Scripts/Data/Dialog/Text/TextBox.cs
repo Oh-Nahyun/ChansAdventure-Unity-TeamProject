@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 using UnityEngine.UI;
 
 
@@ -19,6 +20,7 @@ public class TextBox : MonoBehaviour
 
     TextSelect textSelet;
     Interaction interaction;
+    PlayerController controller;
 
     public string talkString;
     public int talkIndex = 0;
@@ -58,6 +60,8 @@ public class TextBox : MonoBehaviour
         textBoxManager = FindObjectOfType<TextBoxManager>();
         questManager = FindObjectOfType<QuestManager>();
         warpBase = FindObjectOfType<WarpBase>();
+
+        controller = FindAnyObjectByType<PlayerController>();
     }
 
     private void Start()
@@ -65,10 +69,9 @@ public class TextBox : MonoBehaviour
         canvasGroup.alpha = 0.0f;
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
-
         endImageAnimator.speed = 0.0f;
 
-        GameManager.Instance.onTalkNPC += () =>
+        controller.onInteraction += () =>
         {
             if (scanObject != null)
             {
@@ -290,6 +293,7 @@ public class TextBox : MonoBehaviour
         Lever lever = scanObject.GetComponent<Lever>();
         if (warpBase != null)
         {
+            Debug.Log("ฟ๖วม");
             warpBase.WarpToWarpPoint();
         }
 
