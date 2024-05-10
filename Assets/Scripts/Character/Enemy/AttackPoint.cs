@@ -16,7 +16,7 @@ public class AttackPoint : MonoBehaviour
         skeleton = GetComponentInParent<SwordSkeleton>();   // 플레이어 찾기
         nightmareDragon = GetComponentInParent<NightmareDragon>();
         attackCollider = GetComponent<BoxCollider>();
-        attackCollider.enabled = false;
+        attackCollider.enabled = false;        
     }
 
     /// <summary>

@@ -224,11 +224,6 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
     public Action<int> onHit { get; set; }
 
     /// <summary>
-    /// 무기 컬라이더 켜고 끄는 신호를 보내는 델리게이트
-    /// </summary>
-    public Action<bool> onWeaponBladeEnabe;
-
-    /// <summary>
     /// 상태별 업데이트 함수가 저장될 델리게이트(함수 저장용)
     /// </summary>
     Action onStateUpdate;
@@ -282,6 +277,8 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
         child = child.GetChild(2);
         child = child.GetChild(0);
         weaponPoint = child.gameObject;
+        attackPoint = weaponPoint.GetComponent<AttackPoint>();
+
 
         // 몸체(bodyPoint) 부위 오브젝트 찾기 transform-0-1-1
         child = transform.GetChild(0);
@@ -335,8 +332,7 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
         rigid.drag = Mathf.Infinity;        // 무한대로 되어 있던 마찰력을 낮춰서 떨어질 수 있게 하기
         HP = maxHP;                         // HP 최대로
 
-        attackPoint = weaponPoint.GetComponent<AttackPoint>();
-        onWeaponBladeEnabe = attackPoint.BladeVolumeEnable;
+        //attackPoint = weaponPoint.GetComponent<AttackPoint>();
 
         Player player = GameManager.Instance.Player;
         if (player != null)
@@ -600,7 +596,7 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
     /// </summary>
     private void WeaponBladeEnable()
     {
-        onWeaponBladeEnabe?.Invoke(true);
+        attackPoint.BladeVolumeEnable(true);
     }
 
     /// <summary>
@@ -608,7 +604,7 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
     /// </summary>
     private void WeaponBladeDisable()
     {
-        onWeaponBladeEnabe?.Invoke(false);
+        attackPoint.BladeVolumeEnable(false);
     }
 
 
