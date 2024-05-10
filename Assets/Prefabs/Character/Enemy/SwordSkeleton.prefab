@@ -541,7 +541,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5870774990137390821}
   - component: {fileID: 7487209984856664268}
-  m_Layer: 10
+  - component: {fileID: 3943102696053182496}
+  m_Layer: 11
   m_Name: BodyPoint
   m_TagString: BodyPoint
   m_Icon: {fileID: 0}
@@ -586,6 +587,33 @@ CapsuleCollider:
   m_Height: 1.3513087
   m_Direction: 0
   m_Center: {x: 0.09377605, y: 0.07055295, z: -0.0351432}
+--- !u!54 &3943102696053182496
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2817457634577003053}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &3013430000094954414
 GameObject:
   m_ObjectHideFlags: 0
@@ -947,7 +975,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3173572183916016508}
   - component: {fileID: 2234676719061704552}
-  m_Layer: 10
+  - component: {fileID: 597096759437425964}
+  m_Layer: 11
   m_Name: WeakPoint
   m_TagString: WeakPoint
   m_Icon: {fileID: 0}
@@ -990,6 +1019,33 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.17575404
   m_Center: {x: -0.088903524, y: 0.019529106, z: -0.0028743437}
+--- !u!54 &597096759437425964
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5672072441604231965}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &5798847762978674193
 GameObject:
   m_ObjectHideFlags: 0
@@ -1186,6 +1242,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3373954111339415309}
   - component: {fileID: 2088365904718245669}
+  - component: {fileID: 247207287198914142}
   m_Layer: 12
   m_Name: SwordPoint
   m_TagString: Untagged
@@ -1225,10 +1282,22 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 0.16567165, y: 0.2212705, z: 0.8543544}
   m_Center: {x: 0.021513548, y: 0.0017018117, z: 0.5500501}
+--- !u!114 &247207287198914142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6056834963434247184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 282a880ec9695e74090f4f5eab4b6a1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6541590915794425210
 GameObject:
   m_ObjectHideFlags: 0
@@ -1547,8 +1616,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waitTime: 1
   invincibleTime: 2
-  walkSpeed: 1
-  runSpeed: 3
+  walkSpeed: 2
+  runSpeed: 4
   waypoints: {fileID: -8054210421774038281, guid: 8f85199086d70e84e9c542b7138b0a44,
     type: 3}
   farSightRange: 10
@@ -1563,6 +1632,7 @@ MonoBehaviour:
   - code: 7
     dropRatio: 1
     dropCount: 1
+  timeElapsed: 1
 --- !u!1 &8606157925966157816
 GameObject:
   m_ObjectHideFlags: 0
@@ -1895,6 +1965,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 6889361315165134435, guid: 2958af7bbf05d1143950acec5e3b246b,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8586944899660401181, guid: 2958af7bbf05d1143950acec5e3b246b,
         type: 3}

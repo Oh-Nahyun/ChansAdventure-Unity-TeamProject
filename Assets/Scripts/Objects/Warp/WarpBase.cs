@@ -6,24 +6,31 @@ public class WarpBase : NPCBase
 {
     Interaction interaction;
 
-    public Transform warpPoint; // 워프할 위치
-    public Transform player; // 워프할 위치
-    public bool warpReady;
+    /// <summary>
+    /// 워프할 위치
+    /// </summary>
+    public Transform warpPoint;
+    Player player;
 
     protected override void Awake()
     {
         otherObject = true;
         interaction = FindObjectOfType<Interaction>();
-        player = interaction.gameObject.transform;
+        player = FindAnyObjectByType<Player>();
+        //player = interaction.gameObject.transform;
     }
 
+    /// <summary>
+    /// 플레이어를 워프시키는 함수
+    /// </summary>
     public void WarpToWarpPoint()
     {
         if (warpPoint != null)
         {
             Vector3 warpPosition = warpPoint.position;
-            warpPosition.y += player.transform.parent.position.y;
-            player.transform.parent.position = warpPosition;
+            warpPosition.y += player.transform.position.y + 3;
+            
+            player.transform.position = warpPosition;
         }
     }
 

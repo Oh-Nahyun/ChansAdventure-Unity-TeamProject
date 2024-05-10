@@ -17,7 +17,7 @@ using System.Collections;
 	//{
 
 	//	public float animSpeed = 1.5f;				// アニメーション再生速度設定
-	//	public float lookSmoother = 3.0f;			// a smoothing setting for camera motion
+	//	public float lookSmoother = 3.0f;			// a smoothing setting for mainCamera motion
 	//	public bool useCurves = true;				// Mecanimでカーブ調整を使うか設定する
 	//	// このスイッチが入っていないとカーブは使われない
 	//	public float useCurvesHeight = 0.5f;		// カーブ補正の有効高さ（地面をすり抜けやすい時には大きくする）

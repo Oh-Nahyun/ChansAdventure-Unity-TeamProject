@@ -63,7 +63,7 @@ public class Test_EquipCharacter : MonoBehaviour, IEquipTarget, IHealth
     /// <summary>
     /// 인벤토리 접근을 위한 프로퍼티
     /// </summary>
-    public Inventory PlayerInventory => inventory;
+    public Inventory Inventory => inventory;
     
     /// <summary>
     /// 아이템 수집을 위한 클래스

@@ -6,25 +6,31 @@ using UnityEngine.UI;
 
 public class TextBoxItem : MonoBehaviour
 {
-    public float alphaChangeSpeed = 5.0f;
+    Player player;
 
+    public float alphaChangeSpeed = 5.0f;
     TextMeshProUGUI talkText;
     TextMeshProUGUI nameText;
+    TextMeshProUGUI itemCountText;
     CanvasGroup canvasGroup;
     Image endImage;
+    Image itemIcon;
     public GameObject scanObject;
     Animator animator;
     Animator endImageAnimator;
+    PlayerController controller;
 
     Interaction interaction;
-
     public string talkString;
     public int talkIndex = 0;
     public float charPerSeconds = 0.05f;
 
     private bool talking;
+    public bool Talking => talking;
 
     public NPCBase NPCdata;
+    ChestBase Chestdata;
+    Inventory inventory;
     TextBoxManager textBoxManager; // TextBoxManager에 대한 참조
 
     readonly int IsOnTextBoxItemHash = Animator.StringToHash("OnTextBoxItem");
@@ -46,8 +52,18 @@ public class TextBoxItem : MonoBehaviour
 
         interaction = FindObjectOfType<Interaction>();
 
+        child = transform.GetChild(6);
+        itemIcon = child.GetComponent<Image>();
+
+        child = transform.GetChild(7);
+        itemCountText = child.GetComponent<TextMeshProUGUI>();
+
         // TextBoxManager에 대한 참조 가져오기
         textBoxManager = FindObjectOfType<TextBoxManager>();
+        
+        player = FindAnyObjectByType<Player>();
+
+        controller = FindAnyObjectByType<PlayerController>();
     }
 
     private void Start()
@@ -57,14 +73,14 @@ public class TextBoxItem : MonoBehaviour
         canvasGroup.blocksRaycasts = false;
         endImageAnimator.speed = 0.0f;
 
-        GameManager.Instance.onTalkNPC += () =>
+        controller.onInteraction += () =>
         {
             if (scanObject != null)
             {
                 Action();
             }
         };
-        
+
     }
 
     private void Update()
@@ -75,6 +91,9 @@ public class TextBoxItem : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 상호작용 입력시 대상 분별 함수
+    /// </summary>
     public void Action()
     {
         talkText.text = "";
@@ -94,12 +113,16 @@ public class TextBoxItem : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 대화 시작, 진행, 종료 코루틴
+    /// </summary>
+    /// <returns></returns>
     IEnumerator TalkStart()
     {
         if (!talking)
-        {            
+        {
             animator.SetBool(IsOnTextBoxItemHash, true);
-         
+
             canvasGroup.interactable = true;
             canvasGroup.blocksRaycasts = true;
 
@@ -107,10 +130,36 @@ public class TextBoxItem : MonoBehaviour
             endImage.color = new Color(endImage.color.r, endImage.color.g, endImage.color.b, 1f);
 
             Talk(NPCdata.id);
+ 
+            if (NPCdata.isTextObject)
+            {
+                Chestdata = scanObject.GetComponent<ChestBase>();
+                Chestdata.lightParticle.Play();
+                itemIcon.sprite = Chestdata.scriptableObject.itemIcon;
+                nameText.text = $"{Chestdata.scriptableObject.itemName}";
+                talkText.text = $"{Chestdata.scriptableObject.desc}";
+                itemCountText.text = $"X {Chestdata.itemCount}";
 
-            nameText.text = $"{NPCdata.nameNPC}";
-            talkText.text = $"{talkString}";
+                if(Chestdata.itemCount > 1)
+                {
+                    itemCountText.gameObject.SetActive(true);
+                }
+                else
+                {
+                    itemCountText.gameObject.SetActive(false);
+                }
 
+                if (inventory == null)
+                {
+                    inventory = player.Inventory;
+                }
+                inventory.AddSlotItem((uint)Chestdata.scriptableObject.itemCode, Chestdata.itemCount);
+            }
+            else
+            {
+                nameText.text = $"{NPCdata.nameNPC}";
+                talkText.text = $"{talkString}";
+            }
             while (canvasGroup.alpha < 1.0f)
             {
                 canvasGroup.alpha += Time.deltaTime * alphaChangeSpeed;
@@ -118,7 +167,6 @@ public class TextBoxItem : MonoBehaviour
             }
 
             NPCdata.isTalk = true;
-
         }
         else
         {
@@ -126,6 +174,11 @@ public class TextBoxItem : MonoBehaviour
             {
                 canvasGroup.alpha -= Time.deltaTime * alphaChangeSpeed;
                 yield return null;
+            }
+            if (NPCdata.isTextObject)
+            {
+                Chestdata = scanObject.GetComponent<ChestBase>();
+                Chestdata.lightParticle.Stop();
             }
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;
@@ -138,9 +191,14 @@ public class TextBoxItem : MonoBehaviour
             NPCdata.isTalk = false;
             NPCdata.isTextObject = false;
             animator.SetBool(IsOnTextBoxItemHash, false);
+
         }
     }
 
+    /// <summary>
+    /// 다음 대화 내용 불러오는 함수
+    /// </summary>
+    /// <param name="id">대화 대상의 ID</param>
     void Talk(int id)
     {
         talkString = textBoxManager.GetTalkData(id)[talkIndex];

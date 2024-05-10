@@ -20,24 +20,29 @@ public class Sword : MonoBehaviour
     }
 
     // 플레이어가 화살로 적을 공격했을 때 ---------------------------------------------------------------------------
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("BodyPoint"))
+        Debug.Log($"name : {other.gameObject.name} , layer : {other.gameObject.layer}");
+        if(other.gameObject.layer == 11) // 11 : hitpoint layer
         {
-            // 몸에 화살을 맞췄을 경우
-            IBattler target = other.GetComponent<IBattler>();
-            if (target != null)
+            // 닿은 대상이 Enemy인지 체크
+            if (other.CompareTag("BodyPoint"))
             {
-                player.Attack(target, false);
+                // 몸에 칼을 맞췄을 경우
+                IBattler target = other.GetComponentInParent<IBattler>();
+                if (target != null)
+                {
+                    player.Attack(target, false);
+                }
             }
-        }
-        else if (other.CompareTag("WeakPoint"))
-        {
-            // 적에게 화살을 맞췄을 경우
-            IBattler target = other.GetComponent<IBattler>();
-            if (target != null)
+            else if (other.CompareTag("WeakPoint"))
             {
-                player.Attack(target, true);
+                // 적에게 칼을 맞췄을 경우
+                IBattler target = other.GetComponentInParent<IBattler>();
+                if (target != null)
+                {
+                    player.Attack(target, true);
+                }
             }
         }
     }

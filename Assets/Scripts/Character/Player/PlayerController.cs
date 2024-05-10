@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 using static UnityEngine.InputSystem.InputAction;
 
 /// <summary>
@@ -26,6 +27,8 @@ public class PlayerController : MonoBehaviour
     public Action onInteraction;
     public Action onInventoryOpen;
     public Action onMapOpen;
+    public Action onOpenQuest;
+    public Action onMenuOpen;
 
     // 컴포넌트
     Weapon weapon;
@@ -34,6 +37,11 @@ public class PlayerController : MonoBehaviour
     {
         playerInputAction = new PlayerinputActions();
         weapon = GetComponent<Weapon>();
+    }
+
+    void Start()
+    {
+        GameManager.Instance.TextBoxManager.isTalkAction += (talk) => IsTalk(talk);
     }
 
     void OnEnable()
@@ -56,6 +64,10 @@ public class PlayerController : MonoBehaviour
 
         // Map
         playerInputAction.Player.Open_Map.performed += OnOpenMap;
+        // Quest
+        playerInputAction.Player.Open_Quest.performed += OnOpenQuest;
+        // UI
+        playerInputAction.Player.Open_Menu.performed += OnOpenMenu;
 
         //playerInputAction.Player.ActiveSkillMode.performed += OnSkillModeChange;
     }
@@ -63,7 +75,11 @@ public class PlayerController : MonoBehaviour
     void OnDisable()
     {
         //playerInputAction.Player.ActiveSkillMode.performed -= OnSkillModeChange;
-
+    
+        // UI
+        playerInputAction.Player.Open_Menu.performed -= OnOpenMenu;
+        // Quest
+        playerInputAction.Player.Open_Quest.performed -= OnOpenQuest;
         // Map
         playerInputAction.Player.Open_Map.performed -= OnOpenMap;
 
@@ -80,6 +96,7 @@ public class PlayerController : MonoBehaviour
         playerInputAction.Player.LookAround.performed -= OnLookInput;
         playerInputAction.Player.Move.canceled -= OnMoveInput;
         playerInputAction.Player.Move.performed -= OnMoveInput;
+
 
         playerInputAction.Player.Disable();
     }
@@ -108,7 +125,14 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void OnMoveInput(InputAction.CallbackContext context)
     {
-        onMove?.Invoke(context.ReadValue<Vector2>(), !context.canceled);
+        if (isTalk)
+        {
+            onMove?.Invoke(new Vector2(0,0), false);
+        }
+        else
+        {
+            onMove?.Invoke(context.ReadValue<Vector2>(), !context.canceled);
+        }
     }
 
     /// <summary>
@@ -132,7 +156,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void OnLookInput(InputAction.CallbackContext context)
     {
-        if (weapon.IsZoomIn)
+        if (weapon.IsZoomIn || isTalk)
         {
             // 카메라가 줌을 당길 경우 => 카메라 회전 중지
             onLook?.Invoke(context.ReadValue<Vector2>(), !context.performed);
@@ -149,7 +173,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void OnJumpInput(InputAction.CallbackContext context)
     {
-        if (weapon.IsZoomIn)
+        if (weapon.IsZoomIn || isTalk)
         {
             // 카메라가 줌을 당길 경우 => 점프 불가능
             onJump?.Invoke(!context.performed);
@@ -165,7 +189,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void OnSlideInput(InputAction.CallbackContext context)
     {
-        if (weapon.IsZoomIn)
+        if (weapon.IsZoomIn || isTalk)
         {
             // 카메라가 줌을 당길 경우 => 슬라이드 불가능
             onSlide?.Invoke(!context.performed);
@@ -204,6 +228,20 @@ public class PlayerController : MonoBehaviour
     private void OnOpenMap(InputAction.CallbackContext context)
     {
         onMapOpen?.Invoke();
+    }
+
+    /// <summary>
+    /// 퀘스트창 키는 함수 ( L key )
+    /// </summary>
+    /// <param name="context"></param>
+    private void OnOpenQuest(InputAction.CallbackContext context)
+    {
+        onOpenQuest?.Invoke();
+    }
+
+    private void OnOpenMenu(CallbackContext context)
+    {
+        onMenuOpen?.Invoke();
     }
 
     #endregion
@@ -261,4 +299,17 @@ public class PlayerController : MonoBehaviour
             return -1.0f;
         }
     }
+
+    bool isTalk = false;
+
+    /// <summary>
+    /// 대화중임을 확인하는 함수
+    /// </summary>
+    /// <param name="talk">true면 대화중</param>
+    /// <returns></returns>
+    void IsTalk(bool talk)
+    {
+        isTalk = talk;
+    }
+
 }

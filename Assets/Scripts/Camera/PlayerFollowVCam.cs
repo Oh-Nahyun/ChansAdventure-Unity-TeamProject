@@ -52,6 +52,8 @@ public class PlayerFollowVCam : MonoBehaviour
         cameraRoot = GameObject.FindWithTag("CameraRoot").transform;
         arrowAimUI = GameObject.FindWithTag("ArrowAimUI").GetComponent<ArrowAimUI>();
         arrowAimUI.gameObject.SetActive(false);
+
+        vcam.Follow = cameraRoot; // cameraRoot 연결
     }
 
     private void Update()
