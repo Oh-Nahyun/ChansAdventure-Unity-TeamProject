@@ -28,14 +28,14 @@ public class GameManager : Singleton<GameManager>
     ItemDataManager itemDataManager;
 
     /// <summary>
-    /// ¾ÆÀÌÅÛ µ¥ÀÌÅÍ Å¬·¡½º Á¢±ÙÀ» ÇÏ±âÀ§ÇÑ ÇÁ·ÎÆÛÆ¼
+    /// ì•„ì´í…œ ë°ì´í„° ë§¤ë‹ˆì €ì— ì ‘ê·¼í•˜ëŠ” í”„ë¡œí¼í‹°
     /// </summary>
     public ItemDataManager ItemDataManager => itemDataManager;
 
     MapManager mapManager;
 
     /// <summary>
-    /// mapManager Á¢±ÙÀ» À§ÇÑ ÇÁ·ÎÆÛÆ¼
+    /// mapManagerì— ì ‘ê·¼í•˜ëŠ” í”„ë¡œí¼í‹°
     /// </summary>
     public MapManager MapManager => mapManager;
 
@@ -50,17 +50,17 @@ public class GameManager : Singleton<GameManager>
     }
 
     /// <summary>
-    /// ·Îµù ÁßÀÎÁö È®ÀÎÇÏ´Â bool°ª
+    /// ë¡œë”©í•˜ëŠ” ì¤‘ì¸ì§€ í™•ì¸í•˜ëŠ” boolê°’
     /// </summary>
     public bool isLoading;
 
     /// <summary>
-    /// ÀÌµ¿ÇÒ ¾ÀÀÇ ÀÌ¸§
+    /// ì´ë™í•  ì”¬ì˜ ì´ë¦„
     /// </summary>
     string targetSceneName = null;
 
     /// <summary>
-    /// ÀÌµ¿ÇÒ ¾ÀÀÇ ÀÌ¸§À» Á¢±Ù ¹× ¼öÁ¤ÇÏ±â À§ÇÑ ÇÁ·ÎÆÛÆ¼ ( ÀÌ¸§ÀÌ ¹Ù²î¸é ÇØ´ç ¾ÀÀÌ TragetSceneÀÌ µÇ°í ·Îµù¾ÀÀ» È£ÃâÇÑ´Ù. )
+    /// ì´ë™í•  ì”¬ì˜ ì´ë¦„ì„ ì ‘ê·¼ ë° ìˆ˜ì •í•˜ê¸° ìœ„í•œ í”„ë¡œí¼í‹° ( ì´ë¦„ì´ ë°”ë€Œë©´ í•´ë‹¹ ì”¬ì´ TragetSceneì´ ë˜ê³  ë¡œë”©ì”¬ì„ í˜¸ì¶œí•œë‹¤. )
     /// </summary>
     public string TargetSceneName
     {
@@ -76,12 +76,12 @@ public class GameManager : Singleton<GameManager>
     }
 
     /// <summary>
-    /// ÇÃ·¹ÀÌ¾î ¿ÀºêÁ§Æ®¸¦ ÀúÀåÇÒ ÆÄ±« ºÒ°¡´ÉÇÑ ¿ÀºêÁ§Æ® ( ¾À ÀÌµ¿¿ë )
+    /// í”Œë ˆì´ì–´ ì˜¤ë¸Œì íŠ¸ë¥¼ ì €ì¥í•  íŒŒê´´ ë¶ˆê°€ëŠ¥í•œ ì˜¤ë¸Œì íŠ¸ ( ì”¬ ì´ë™ìš© )
     /// </summary>
     public GameObject loadPlayerGameObject;
 
     /// <summary>
-    /// ÇÃ·¹ÀÌ¾î ÀúÀå¿ë ÀÎº¥Åä¸® Å¬·¡½º
+    /// í”Œë ˆì´ì–´ ì €ì¥ìš© ì¸ë²¤í† ë¦¬ í´ë˜ìŠ¤
     /// </summary>
     Inventory savedInventory;
 
@@ -96,7 +96,7 @@ public class GameManager : Singleton<GameManager>
 
     protected override void OnInitialize()
     {
-        if (isLoading) // ·ÎµùÁßÀÏ ¶§ ½ÇÇà
+        if (isLoading) // ë¡œë”©ì¤‘ì¼ ë•Œ ì‹¤í–‰
         {
             OnLoadInitiallize();
             return;
@@ -114,27 +114,27 @@ public class GameManager : Singleton<GameManager>
 
         mapManager.InitalizeMapUI();
 
-        if (savedInventory != null) // ÀúÀåÇÑ ÀÎº¥Åä¸®°¡ Á¸ÀçÇÏ¸é ÀÎº¥Åä¸® ³»¿ë º¹»ç
+        if (savedInventory != null) // ì €ì¥í•œ ì¸ë²¤í† ë¦¬ê°€ ì¡´ì¬í•˜ë©´ ì¸ë²¤í† ë¦¬ ë‚´ìš© ë³µì‚¬
         {
-            ItemDataManager.InventoryUI.InitializeInventoryUI(savedInventory);  // ÇÃ·¹ÀÌ¾î ÀÎº¥Åä¸® UI ÃÊ±âÈ­
-            savedInventory = null;                                              // ÀúÀåÇÑ ÀÎº¥Åä¸® µ¥ÀÌÅÍ Á¦°Å
-            player.Inventory.SetOwner(player.gameObject);                       // ÀÎº¥Åä¸® ¿À³Ê°ª ÃÊ±âÈ­
-            player.EquipPart = savedEquipParts;                                 // ÀåÂøºÎÀ§ Á¤º¸ ÀúÀå
-            savedEquipParts = null;                                             // ÀåÂøºÎÀ§ Á¤º¸ Á¦°Å
+            ItemDataManager.InventoryUI.InitializeInventoryUI(savedInventory);  // í”Œë ˆì´ì–´ ì¸ë²¤í† ë¦¬ UI ì´ˆê¸°í™”
+            savedInventory = null;                                              // ì €ì¥í•œ ì¸ë²¤í† ë¦¬ ë°ì´í„° ì œê±°
+            player.Inventory.SetOwner(player.gameObject);                       // ì¸ë²¤í† ë¦¬ ì˜¤ë„ˆê°’ ì´ˆê¸°í™”
+            player.EquipPart = savedEquipParts;                                 // ì¥ì°©ë¶€ìœ„ ì •ë³´ ì €ì¥
+            savedEquipParts = null;                                             // ì¥ì°©ë¶€ìœ„ ì •ë³´ ì œê±°
         }
     }
 
     #region Loading Function
     /// <summary>
-    /// ¾ÀÀ» º¯°æÇÒ ¶§ ½ÇÇàÇÏ´Â ÇÔ¼ö
+    /// ì”¬ì„ ë³€ê²½í•  ë•Œ ì‹¤í–‰í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <param name="SceneName"> º¯°æÇÒ ¾À ÀÌ¸§</param>
+    /// <param name="SceneName"> ë³€ê²½í•  ì”¬ ì´ë¦„</param>
     public void ChangeToTargetScene(string SceneName, GameObject playerObject)
     {
-        GameObject obj = Instantiate(playerObject, loadPlayerGameObject.transform); // ÇÃ·¹ÀÌ¾î¸¦ ·Îµù ¿ÀºêÁ§Æ®¿¡ º¹Á¦
-        obj.transform.position = Vector3.zero;                                      // ¿ÀºêÁ§Æ® À§Ä¡ ÃÊ±âÈ­
-        savedInventory = playerObject.GetComponent<Player>().Inventory;             // ÀÎº¥Åä¸® ÀúÀå
-        savedEquipParts = playerObject.GetComponent<Player>().EquipPart;            // ÀåÂøºÎÀ§ Á¤º¸ ÀúÀå
+        GameObject obj = Instantiate(playerObject, loadPlayerGameObject.transform); // í”Œë ˆì´ì–´ë¥¼ ë¡œë”© ì˜¤ë¸Œì íŠ¸ì— ë³µì œ
+        obj.transform.position = Vector3.zero;                                      // ì˜¤ë¸Œì íŠ¸ ìœ„ì¹˜ ì´ˆê¸°í™”
+        savedInventory = playerObject.GetComponent<Player>().Inventory;             // ì¸ë²¤í† ë¦¬ ì €ì¥
+        savedEquipParts = playerObject.GetComponent<Player>().EquipPart;            // ì¥ì°©ë¶€ìœ„ ì •ë³´ ì €ì¥
 
         loadPlayerGameObject.SetActive(false);
 
@@ -142,7 +142,7 @@ public class GameManager : Singleton<GameManager>
     }
 
     /// <summary>
-    /// ·ÎµùÇÒ ¶§ ½ÇÇàÇÏ´Â ÃÊ±âÈ­ ÇÔ¼ö
+    /// ë¡œë”©í•  ë•Œ ì‹¤í–‰í•˜ëŠ” ì´ˆê¸°í™” í•¨ìˆ˜
     /// </summary>
     protected void OnLoadInitiallize()
     {
@@ -157,7 +157,7 @@ public class GameManager : Singleton<GameManager>
     }
 
     /// <summary>
-    /// ¾À ·ÎµùÀÌ ³¡³­ ÈÄ ÇÃ·¹ÀÌ¾î ½ºÆùÀ» ½ÇÇàÇÏ´Â ÇÔ¼ö
+    /// ì”¬ ë¡œë”©ì´ ëë‚œ í›„ í”Œë ˆì´ì–´ ìŠ¤í°ì„ ì‹¤í–‰í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
     public void SpawnPlayerAfterLoadScene()
     {
@@ -167,20 +167,20 @@ public class GameManager : Singleton<GameManager>
         if (!isLoading)
         {
             loadPlayerGameObject.SetActive(true);
-            GameObject loadingPlayer = Instantiate(loadPlayerGameObject.transform.GetChild(0).gameObject);  // »õ·Î¿î ¾À¿¡ ÇÃ·¹ÀÌ¾î »ı¼º
+            GameObject loadingPlayer = Instantiate(loadPlayerGameObject.transform.GetChild(0).gameObject);   // ìƒˆë¡œìš´ ì”¬ì— í”Œë ˆì´ì–´ ìƒì„±
             loadingPlayer.name = "Player";
 
             loadingPlayer.transform.position = Vector3.zero;
 
-            Destroy(loadPlayerGameObject.transform.GetChild(0).gameObject); // ÀúÀåµÈ ÇÃ·¹ÀÌ¾î ¿ÀºêÁ§Æ® Á¦°Å
+            Destroy(loadPlayerGameObject.transform.GetChild(0).gameObject); // ì €ì¥ëœ í”Œë ˆì´ì–´ ì˜¤ë¸Œì íŠ¸ ì œê±°
 
-            player = loadingPlayer.GetComponent<Player>();  // ÇÃ·¹ÀÌ¾î ÃÊ±âÈ­
-            player.GetInventoryData(savedInventory);        // ÇÃ·¹ÀÌ¾î ÀÎº¥Åä¸® µ¥ÀÌÅÍ ¹Ş±â
+            player = loadingPlayer.GetComponent<Player>();  // í”Œë ˆì´ì–´ ì´ˆê¸°í™”
+            player.GetInventoryData(savedInventory);        // í”Œë ˆì´ì–´ ì¸ë²¤í† ë¦¬ ë°ì´í„° ë°›ê¸°
         }
     }
 
     /// <summary>
-    /// ¸ÊÀ» ÀÌµ¿ÇÒ ¶§ È£ÃâµÇ´Â ÇÔ¼ö ( ·Îµù¾ÀÀ¸·Î ÀÌµ¿ )
+    /// ë§µì„ ì´ë™í•  ë•Œ í˜¸ì¶œë˜ëŠ” í•¨ìˆ˜ ( ë¡œë”©ì”¬ìœ¼ë¡œ ì´ë™ )
     /// </summary>
     void ChangeToLoadingScene()
     {
@@ -200,12 +200,12 @@ public class GameManager : Singleton<GameManager>
         if (!isNPC)
         {
             onTalkNPC?.Invoke();
-            Debug.Log("»óÈ£ÀÛ¿ë Å° ´©¸§");
+            Debug.Log("ìƒí˜¸ì‘ìš© í‚¤ ëˆ„ë¦„");
         }
         else
         {
             onTalkObj?.Invoke();
-            Debug.Log("¿ÀºêÁ§Æ®¿Í ´ëÈ­");
+            Debug.Log("ì˜¤ë¸Œì íŠ¸ì™€ ëŒ€í™”");
         }
     }
 

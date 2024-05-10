@@ -59,7 +59,7 @@ public class Arrow : RecycleObject
         if (other.CompareTag("BodyPoint"))
         {
             // 몸에 화살을 맞췄을 경우
-            IBattler target = other.GetComponent<IBattler>();
+            IBattler target = other.GetComponentInParent<IBattler>();
             if (target != null)
             {
                 player.Attack(target, false);
@@ -68,7 +68,7 @@ public class Arrow : RecycleObject
         else if (other.CompareTag("WeakPoint"))
         {
             // 적에게 화살을 맞췄을 경우
-            IBattler target = other.GetComponent<IBattler>();
+            IBattler target = other.GetComponentInParent<IBattler>();
             if (target != null)
             {
                 player.Attack(target, true);
