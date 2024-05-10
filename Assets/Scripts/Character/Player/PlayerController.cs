@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
     public Action onInteraction;
     public Action onInventoryOpen;
     public Action onMapOpen;
+    public Action onMenuOpen;
 
     // 컴포넌트
     Weapon weapon;
@@ -55,13 +56,17 @@ public class PlayerController : MonoBehaviour
         // Map
         playerInputAction.Player.Open_Map.performed += OnOpenMap;
 
+        // UI
+        playerInputAction.Player.Open_Menu.performed += OnOpenMenu;
+
         //playerInputAction.Player.ActiveSkillMode.performed += OnSkillModeChange;
     }
 
     void OnDisable()
     {
         //playerInputAction.Player.ActiveSkillMode.performed -= OnSkillModeChange;
-
+        // UI
+        playerInputAction.Player.Open_Menu.performed -= OnOpenMenu;
         // Map
         playerInputAction.Player.Open_Map.performed -= OnOpenMap;
 
@@ -193,6 +198,11 @@ public class PlayerController : MonoBehaviour
     private void OnOpenMap(InputAction.CallbackContext context)
     {
         onMapOpen?.Invoke();
+    }
+
+    private void OnOpenMenu(CallbackContext context)
+    {
+        onMenuOpen?.Invoke();
     }
 
     #endregion

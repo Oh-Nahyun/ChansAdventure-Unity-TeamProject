@@ -85,6 +85,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ba7b0fe23b3826e408c8c533d1d4bca9, type: 2}
   - {fileID: 11400000, guid: 26764ef1ae7ad6a47bf75f6eba901eae, type: 2}
   - {fileID: 11400000, guid: d4ffee2bd0191214ea867cb3133356ac, type: 2}
+  - {fileID: 11400000, guid: 5ca45c1a8b0027a4290f089f99b2b1c9, type: 2}
+  - {fileID: 11400000, guid: dff38b7caa0efcf4681509cffc3735ae, type: 2}
   CharaterRenderCameraPoint: {fileID: 0}
 --- !u!114 &8413078663783774573
 MonoBehaviour:
@@ -100,6 +102,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapSizeX: 100
   mapSizeY: 100
+  IsOpenedLargeMap: 0
 --- !u!1001 &1512909484931155663
 PrefabInstance:
   m_ObjectHideFlags: 0

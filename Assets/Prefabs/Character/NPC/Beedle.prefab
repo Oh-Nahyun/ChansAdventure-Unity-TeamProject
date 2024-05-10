@@ -2269,7 +2269,7 @@ GameObject:
   - component: {fileID: 8892141958642673109}
   m_Layer: 24
   m_Name: Beedle
-  m_TagString: Untagged
+  m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2342,13 +2342,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ddc686319f255c4a885e7e83ac778c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 4000
+  id: 4010
   nameNPC: "\uD14C\uB9AC"
   selectId: 0
   isTalk: 0
   isNPC: 1
   isTextObject: 0
   otherObject: 0
+  selectButtonText1_1: 
+  selectButtonText1_2: 
+  selectButtonText1_3: 
 --- !u!54 &8892141958642673109
 Rigidbody:
   m_ObjectHideFlags: 0
