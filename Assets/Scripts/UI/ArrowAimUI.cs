@@ -6,36 +6,40 @@ using UnityEngine;
 public class ArrowAimUI : MonoBehaviour
 {
     /// <summary>
+    /// 타이머
+    /// </summary>
+    float timer = 0.0f;
+
+    /// <summary>
     /// UI 이동 속도
     /// </summary>
-    float moveSpeed = 2.0f;
+    float moveSpeed = 5.0f;
 
     /// <summary>
-    /// aim01 원래 위치
+    /// 원래 위치
     /// </summary>
-    Vector3 originalPosition01 = new Vector3(-0.09f, 58.85f, 0);
+    Vector3 originalPosition01;
+    Vector3 originalPosition02;
+    Vector3 originalPosition03;
 
     /// <summary>
-    /// aim02 원래 위치
+    /// 타겟 위치까지의 offset 변수
     /// </summary>
-    Vector3 originalPosition02 = new Vector3(53.28f, -26.49f, 0);
+    Vector3 targetOffset01 = new Vector3(0, -1.1f, 0);
+    Vector3 targetOffset02 = new Vector3(-1, 0.5f, 0);
+    Vector3 targetOffset03 = new Vector3(0.9f, 0.47f, 0);
 
     /// <summary>
-    /// aim03 원래 위치
+    /// 보유중인 화살 개수
     /// </summary>
-    Vector3 originalPosition03 = new Vector3(-52.11f, -25.56f, 0);
-
-    /// <summary>
-    /// aim 위치에서 떨어지는 정도
-    /// </summary>
-    Vector3 offset = new Vector3(0, -5, 0);
-
     TextMeshProUGUI arrowCount;
 
+    // 트랜스폼
     Transform aim01;
     Transform aim02;
     Transform aim03;
 
+    // 컴포넌트
     Weapon weapon;
 
     private void Awake()
@@ -45,8 +49,11 @@ public class ArrowAimUI : MonoBehaviour
 
         child = transform.GetChild(1);
         aim01 = child.GetChild(0);
+        originalPosition01 = aim01.position;
         aim02 = child.GetChild(1);
+        originalPosition02 = aim02.position;
         aim03 = child.GetChild(2);
+        originalPosition03 = aim03.position;
 
         weapon = FindAnyObjectByType<Weapon>();
     }
@@ -54,6 +61,7 @@ public class ArrowAimUI : MonoBehaviour
     private void Update()
     {
         arrowCount.text = weapon.arrowCount.ToString(); // 남은 화살 개수 출력
+        timer += Time.deltaTime;                        // 타이머 갱신
         PrintArrowAim();
     }
 
@@ -62,47 +70,47 @@ public class ArrowAimUI : MonoBehaviour
     /// </summary>
     void PrintArrowAim()
     {
-        float timeElapsed = 0.0f;
-        timeElapsed += moveSpeed * Time.deltaTime;
-
         if (weapon.IsZoomIn)
         {
-            Vector3 targetPosition01 = aim01.position + new Vector3(0, -1.1f, 0);
-            aim01.position = Vector3.Lerp(aim01.position, targetPosition01, timeElapsed);
-
-            Vector3 targetPosition02 = aim02.position + new Vector3(-1, 0.5f, 0);
-            aim02.position = Vector3.Lerp(aim02.position, targetPosition02, timeElapsed);
-
-            Vector3 targetPosition03 = aim03.position + new Vector3(0.9f, 0.47f, 0);
-            aim03.position = Vector3.Lerp(aim03.position, targetPosition03, timeElapsed);
+            StopAllCoroutines();
+            StartCoroutine(ZoomInArrowAim());
         }
-        else
+    }
+
+    /// <summary>
+    /// 화살 카메라 줌인 상태일 때, 변하는 ArrowAim UI 코루틴
+    /// </summary>
+    IEnumerator ZoomInArrowAim()
+    {
+        // timeElapsed 초기화
+        float timeElapsed = 0.0f;
+
+        // 일정 시간(3초)이 지나면 더 이상 이동하지 않음
+        while (timer < 3.0f)
         {
-            //////////////////////////////////// 전체 시간 설정 및 원래 위치로 돌아가도록 구현할 것!!
-            aim01.position = originalPosition01;
-            aim02.position = originalPosition02;
-            aim03.position = originalPosition03;
+            // timeElapsed 갱신
+            timeElapsed += moveSpeed * Time.deltaTime;
+
+            // 줌인 상태이면 목표 위치를 향해 이동함
+            aim01.position = Vector3.Lerp(aim01.position, aim01.position + targetOffset01, timeElapsed);
+            aim02.position = Vector3.Lerp(aim02.position, aim02.position + targetOffset02, timeElapsed);
+            aim03.position = Vector3.Lerp(aim03.position, aim03.position + targetOffset03, timeElapsed);
+
+            yield return null;
         }
     }
-}
 
-/*
-/// <summary>
-/// 화살 카메라 상태에 따른 ArrowAim UI 생성 함수
-/// </summary>
-void PrintArrowAim()
-{
-    if (weapon.IsZoomIn)
+    /// <summary>
+    /// 화살 카메라 줌아웃 상태일 때, 원래 위치로 돌아가는 ArrowAim UI 함수
+    /// </summary>
+    public void ZoomOutArrowAim()
     {
-        aim01.position = Vector3.Lerp(originalPosition01, originalPosition01 + new Vector3(0, 26.85f, 0), moveSpeed * Time.deltaTime);
-        aim02.position = Vector3.Lerp(originalPosition02, originalPosition02 + offset, moveSpeed * Time.deltaTime);
-        aim03.position = Vector3.Lerp(originalPosition03, originalPosition03 + offset, moveSpeed * Time.deltaTime);
-    }
-    else
-    {
-        aim01.position = Vector3.Lerp(aim01.position, originalPosition01, moveSpeed * Time.deltaTime);
-        aim02.position = Vector3.Lerp(aim02.position, originalPosition02, moveSpeed * Time.deltaTime);
-        aim03.position = Vector3.Lerp(aim03.position, originalPosition03, moveSpeed * Time.deltaTime);
+        // 타이머 초기화
+        timer = 0.0f;
+
+        // ArrowAim UI 위치 초기화
+        aim01.position = originalPosition01;
+        aim02.position = originalPosition02;
+        aim03.position = originalPosition03;
     }
 }
-*/

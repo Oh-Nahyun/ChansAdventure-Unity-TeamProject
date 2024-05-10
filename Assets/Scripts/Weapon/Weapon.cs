@@ -319,7 +319,7 @@ public class Weapon : MonoBehaviour
             if (!IsArrowEquip)  // 장전된 화살이 없는 경우
             {
                 animator.SetBool(HaveArrowHash, true); // 화살 장전
-                Debug.Log($"화살 장전 완료");
+                // Debug.Log($"화살 장전 완료");
             }
 
             IsArrowEquip = true; // 화살이 장전되어있다고 변수 설정

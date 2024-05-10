@@ -595,6 +595,11 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
 
             // 이동 모드 변경
             MoveSpeedChange(CurrentMoveMode);
+
+            // 카메라 상태에 따른 무기 설정
+            if (weapon.IsZoomIn)
+                weapon.ShowWeapon(false, true);
+
         }
 
         // 입력을 끝낸 상황
@@ -604,6 +609,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
             currentSpeed = 0.0f; // 정지
             animator.SetFloat(SpeedHash, AnimatorStopSpeed);
 
+            // 무기 모드에 따른 무기 설정
             if (weapon.CheckWeaponMode() == 1) // 무기 모드가 칼일 때
                 weapon.ShowWeapon(true, false);
             else if (weapon.CheckWeaponMode() == 2) // 무기 모드가 활일 때
