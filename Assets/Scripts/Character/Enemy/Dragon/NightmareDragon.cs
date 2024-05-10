@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Unity.VisualScripting;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -322,14 +324,13 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
 
         attackPoint = new AttackPoint[2];
 
-        // 몸통 오브젝트 찾기 transform-1-4
+        // 몸통(bodyPoint) 오브젝트 찾기 transform-1-4
         child = transform.GetChild(1);
         child = child.GetChild(4);
         bodyPoint = child.gameObject;
         bodyCollider = bodyPoint.GetComponent<BoxCollider>();
-        //bodyPoint = GameObject.Find("DragonBodyPoint").gameObject;
 
-        // 머리 오브젝트 찾기 transform-1-2-0-0-1-0-1
+        // 머리(weakPoint) 오브젝트 찾기 transform-1-2-0-0-1-0-1
         child = transform.GetChild(1);
         child = child.GetChild(2);
         child = child.GetChild(0);
@@ -339,9 +340,8 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
         child = child.GetChild(1);
         weakPoint = child.gameObject;
         weakCollider = weakPoint.GetComponent<BoxCollider>();
-        //weakPoint = GameObject.Find("DragonWeakPoint").gameObject;
 
-        // 왼쪽 팔 오브젝트 찾기 transform-1-2-0-0-4-0-2
+        // 왼쪽 팔(leftArmPoint) 오브젝트 찾기 transform-1-2-0-0-4-0-2
         child = transform.GetChild(1);
         child = child.GetChild(2);
         child = child.GetChild(0);
@@ -351,9 +351,8 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
         child = child.GetChild(2);
         leftArmPoint = child.gameObject;
         leftArmCollider = leftArmPoint.GetComponent<BoxCollider>();
-        //leftArmPoint = GameObject.Find("L_ArmPoint").gameObject;
 
-        // 오른쪽 팔 오브젝트 찾기 transform-1-2-0-0-3-0-2
+        // 오른쪽 팔(rightArmPoint) 오브젝트 찾기 transform-1-2-0-0-3-0-2
         child = transform.GetChild(1);
         child = child.GetChild(2);
         child = child.GetChild(0);
@@ -363,25 +362,54 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
         child = child.GetChild(2);
         rightArmPoint = child.gameObject;
         rightArmCollider = rightArmPoint.GetComponent<BoxCollider>();
-        //rightArmPoint = GameObject.Find("L_HandPoint").gameObject;
 
-        // 왼쪽 손 오브젝트 찾기 transform-1-2-0-0-4-0-1-0-3
-        leftHandPoint = GameObject.Find("R_ArmPoint").gameObject;
+        // 왼쪽 손(leftHandPoint) 오브젝트 찾기 transform-1-2-0-0-4-0-1-0-3
+        child = transform.GetChild(1);
+        child = child.GetChild(2);
+        child = child.GetChild(0);
+        child = child.GetChild(0);
+        child = child.GetChild(4);
+        child = child.GetChild(0);
+        child = child.GetChild(1);
+        child = child.GetChild(0);
+        child = child.GetChild(3);
+        leftHandPoint = child.gameObject;
         leftHandCollider = leftHandPoint.GetComponent<BoxCollider>();
 
-        // 오른쪽 손 오브젝트 찾기 transform-1-2-0-0-3-0-1-0-3
-        rightHandPoint = GameObject.Find("R_HandPoint").gameObject;
+        // 오른쪽 손(rightHandPoint) 오브젝트 찾기 transform-1-2-0-0-3-0-1-0-3
+        child = transform.GetChild(1);
+        child = child.GetChild(2);
+        child = child.GetChild(0);
+        child = child.GetChild(0);
+        child = child.GetChild(3);
+        child = child.GetChild(0);
+        child = child.GetChild(1);
+        child = child.GetChild(0);
+        child = child.GetChild(3);
+        rightHandPoint = child.gameObject;
         rightHandCollider = rightHandPoint.GetComponent<BoxCollider>();
 
-        // 머리쪽 공격 오브젝트 찾기 transform-1-2-0-0-1-0-2
-        Dragon_Head_AttackPoint = GameObject.Find("Dragon_Head_AttackPoint").gameObject;
+        // 머리쪽 공격(Dragon_Head_AttackPoint) 오브젝트 찾기 transform-1-2-0-0-1-0-2
+        child = transform.GetChild(1);
+        child = child.GetChild(2);
+        child = child.GetChild(0);
+        child = child.GetChild(0);
+        child = child.GetChild(1);
+        child = child.GetChild(0);
+        child = child.GetChild(2);
+        Dragon_Head_AttackPoint = child.gameObject;
 
-        // 오른쪽 손 공격 오브젝트 찾기 transform-1-2-0-0-3-0-1-0-4
-        Dragon_Hand_AttackPoint = GameObject.Find("R_Hand_AttackPoint").gameObject;
-
-
-        
-
+        // 오른쪽 손(Dragon_Hand_AttackPoint) 공격 오브젝트 찾기 transform-1-2-0-0-3-0-1-0-4
+        child = transform.GetChild(1);
+        child = child.GetChild(2);
+        child = child.GetChild(0);
+        child = child.GetChild(0);
+        child = child.GetChild(3);
+        child = child.GetChild(0);
+        child = child.GetChild(1);
+        child = child.GetChild(0);
+        child = child.GetChild(4);
+        Dragon_Hand_AttackPoint = child.gameObject;
 
         attackArea.onPlayerIn += (target) =>
         {

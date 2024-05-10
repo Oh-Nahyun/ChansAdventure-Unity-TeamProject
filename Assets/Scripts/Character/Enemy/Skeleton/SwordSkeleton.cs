@@ -277,22 +277,20 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
         child = transform.GetChild(4);
         AttackArea attackArea = child.GetComponent<AttackArea>();
 
-        // 무기 오브젝트 찾기 transform-0-2-0
+        // 무기(weaponPoint) 오브젝트 찾기 transform-0-2-0
         child = transform.GetChild(0);
         child = child.GetChild(2);
         child = child.GetChild(0);
         weaponPoint = child.gameObject;
-        //weaponPoint = GameObject.Find("SwordPoint").gameObject;
 
-        // 몸체 부위 오브젝트 찾기 transform-0-1-1
+        // 몸체(bodyPoint) 부위 오브젝트 찾기 transform-0-1-1
         child = transform.GetChild(0);
         child = child.GetChild(1);
         child = child.GetChild(1);
         bodyPoint = child.gameObject;
         bodyCollider = bodyPoint.GetComponent<CapsuleCollider>();
-        //bodyPoint = GameObject.Find("BodyPoint").gameObject;
 
-        //약점 부위 오브젝트 찾기 transform-0-1-0-2-0-0-1
+        //약점(weakPoint) 부위 오브젝트 찾기 transform-0-1-0-2-0-0-1
         child = transform.GetChild(0);
         child = child.GetChild(1);
         child = child.GetChild(0);
@@ -300,9 +298,8 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
         child = child.GetChild(0);
         child = child.GetChild(0);
         child = child.GetChild(1);
-        weaponPoint = child.gameObject;
+        weakPoint = child.gameObject;
         weakCollider = weakPoint.GetComponent<SphereCollider>();
-        //weakPoint = GameObject.Find("WeakPoint").gameObject;
 
 
         attackArea.onPlayerIn += (target) =>
