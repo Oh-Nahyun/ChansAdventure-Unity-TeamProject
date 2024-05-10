@@ -226,6 +226,8 @@ public class PlayerController : MonoBehaviour
     private void OnOpenQuest(InputAction.CallbackContext context)
     {
         onOpenQuest?.Invoke();
+    }
+
     private void OnOpenMenu(CallbackContext context)
     {
         onMenuOpen?.Invoke();

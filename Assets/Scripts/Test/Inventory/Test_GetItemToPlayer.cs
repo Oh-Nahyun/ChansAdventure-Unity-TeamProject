@@ -28,7 +28,7 @@ public class Test_GetItemToPlayer : TestBase
         if(other.CompareTag("Player"))
         {
             Test_EquipCharacter playerObj = other.gameObject.GetComponent<Test_EquipCharacter>();
-            Inventory playerInventory = playerObj.PlayerInventory;
+            Inventory playerInventory = playerObj.Inventory;
 
             Debug.Log("Player Inventory Accessed");
             GameManager.Instance.ItemDataManager.SellPanelUI.GetTarget(playerInventory);

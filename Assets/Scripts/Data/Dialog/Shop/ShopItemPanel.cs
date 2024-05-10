@@ -129,7 +129,7 @@ public class ShopItemPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     {
         if (inventory == null)
         {
-            inventory = player.PlayerInventory;
+            inventory = player.Inventory;
         }
 
         if (inventory.Gold >= itemData.price)

@@ -124,32 +124,6 @@ public class GameManager : Singleton<GameManager>
         textBoxManager = FindAnyObjectByType<TextBoxManager>();
     }
 
-    protected override void OnAdditiveInitiallize()
-    {
-        SpawnPlayerAfterLoadScene();
-
-        if (player == null) player = FindAnyObjectByType<Player>();
-        weapon = FindAnyObjectByType<Weapon>();
-        cameraManager = GetComponent<CameraManager>();
-        itemDataManager = GetComponent<ItemDataManager>();
-        mapManager = GetComponent<MapManager>();
-
-        itemDataManager.InitializeItemDataUI();
-
-        mapManager.InitalizeMapUI();
-        questManager = FindAnyObjectByType<QuestManager>();
-        textBoxManager = FindAnyObjectByType<TextBoxManager>();
-
-        if (savedInventory != null) // 저장한 인벤토리가 존재하면 인벤토리 내용 복사
-        {
-            ItemDataManager.InventoryUI.InitializeInventoryUI(savedInventory);  // 플레이어 인벤토리 UI 초기화
-            savedInventory = null;                                              // 저장한 인벤토리 데이터 제거
-            player.Inventory.SetOwner(player.gameObject);                       // 인벤토리 오너값 초기화
-            player.EquipPart = savedEquipParts;                                 // 장착부위 정보 저장
-            savedEquipParts = null;                                             // 장착부위 정보 제거
-        }
-    }
-
     #region Loading Function
     /// <summary>
     /// 씬을 변경할 때 실행하는 함수
