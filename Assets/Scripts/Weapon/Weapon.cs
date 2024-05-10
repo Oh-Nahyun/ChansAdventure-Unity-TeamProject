@@ -80,7 +80,6 @@ public class Weapon : MonoBehaviour
     ArrowFirePoint arrowFirePoint;
     //PlayerFollowVCam vcam;
 
-
     GameManager gameManager;
 
     /// <summary>
@@ -91,13 +90,12 @@ public class Weapon : MonoBehaviour
     /// <summary>
     /// 화살개수
     /// </summary>
-    uint arrowCount = 0;
+    uint arrowCount = 0; // -> public float arrowCount = 0; 
 
     /// <summary>
     /// 화살 프리팹
     /// </summary>
     GameObject arrowPrefab;
-
 
     private void Awake()
     {
@@ -135,16 +133,24 @@ public class Weapon : MonoBehaviour
         inputActions.Weapon.Enable();
         inputActions.Player.Attack.performed += OnAttackInput;
         inputActions.Weapon.Attack.performed += OnAttackInput;
-        inputActions.Weapon.Change.performed += OnChangeInput;
 
-        inputActions.Weapon.Load.performed += OnLoadInput;
+        inputActions.Weapon.NormalMode.performed += OnNormalModeInput;
+        inputActions.Weapon.SwordMode.performed += OnSwordModeInput;
+        inputActions.Weapon.BowMode.performed += OnBowModeInput;
+
+        // inputActions.Weapon.Change.performed += OnChangeInput;
+        // inputActions.Weapon.Load.performed += OnLoadInput;
     }
 
     private void OnDisable()
     {
-        inputActions.Weapon.Load.performed -= OnLoadInput;
+        // inputActions.Weapon.Load.performed -= OnLoadInput;
+        // inputActions.Weapon.Change.performed -= OnChangeInput;
 
-        inputActions.Weapon.Change.performed -= OnChangeInput;
+        inputActions.Weapon.BowMode.performed -= OnBowModeInput;
+        inputActions.Weapon.SwordMode.performed -= OnSwordModeInput;
+        inputActions.Weapon.NormalMode.performed -= OnNormalModeInput;
+
         inputActions.Weapon.Attack.performed -= OnAttackInput;
         inputActions.Player.Attack.performed -= OnAttackInput;
         inputActions.Weapon.Disable();
@@ -176,6 +182,7 @@ public class Weapon : MonoBehaviour
             if (currentWeaponMode == WeaponMode.Sword)
             {
                 animator.SetTrigger(IsSwordHash);
+                ShowWeapon(true, false);
 
                 // 공격할 동안 Player의 이동이 불가하도록 설정
                 StopAllCoroutines();
@@ -184,10 +191,19 @@ public class Weapon : MonoBehaviour
             else if (currentWeaponMode == WeaponMode.Bow)
             {
                 animator.SetTrigger(IsBowHash);
+                ShowWeapon(false, true);
 
-                if (!IsArrowEquip)
+                // 인벤토리에 화살 개수가 0이 아닌 경우 >> 화살 자동 장전 후 공격
+                if (arrowCount != 0) ////////////////////////////////////////////////////////////////////////////////////////////////// [2] 인벤토리 변수로 변경 필수!!!!!!!!!!
+                {
+                    OnLoad();
+                }
+
+                // 인벤토리에 화살 개수가 0이고, 화살 장전이 안되어있는 경우 >> 활 자체 공격
+                if (arrowCount == 0 && !IsArrowEquip) ///////////////////////////////////////////////////////////////////////////////// [3] 인벤토리 변수로 변경 필수!!!!!!!!!!
                 {
                     animator.SetBool(HaveArrowHash, false);
+                    Debug.Log("***** 인벤토리 내 보유하고 있는 화살이 없습니다.");
 
                     // 공격할 동안 Player의 이동이 불가하도록 설정
                     StopAllCoroutines();
@@ -198,10 +214,40 @@ public class Weapon : MonoBehaviour
     }
 
     /// <summary>
+    /// 검 모드 처리용 함수
+    /// </summary>
+    private void OnSwordModeInput(InputAction.CallbackContext _)
+    {
+        currentWeaponMode = WeaponMode.Sword;
+        ChangeWeaponMode(currentWeaponMode);
+        Debug.Log("WeaponMode : Sword");
+    }
+
+    /// <summary>
+    /// 활 모드 처리용 함수
+    /// </summary>
+    private void OnBowModeInput(InputAction.CallbackContext _)
+    {
+        currentWeaponMode = WeaponMode.Bow;
+        ChangeWeaponMode(currentWeaponMode);
+        Debug.Log("WeaponMode : Bow");
+    }
+
+    /// <summary>
+    /// 노멀 모드 처리용 함수
+    /// </summary>
+    private void OnNormalModeInput(InputAction.CallbackContext _)
+    {
+        currentWeaponMode = WeaponMode.None;
+        ChangeWeaponMode(currentWeaponMode);
+        Debug.Log("WeaponMode : None");
+    }
+
+    /// <summary>
     /// 무기 모드를 바꾸는 함수
     /// </summary>
-    /// <param name="context"></param>
-    private void OnChangeInput(InputAction.CallbackContext context)
+    /*
+    private void OnWeaponChange()
     {
         if (player.SkillRelatedAction.IsPickUp || player.isTalk || player.IsAnyUIPanelOpened) // 물건을 들고 있거나 대화중일 때 입력 막기
             return;
@@ -236,13 +282,14 @@ public class Weapon : MonoBehaviour
             Debug.Log("WeaponMode_Change : None >> Bow");
         }
 
-        ChangeWeapon(currentWeaponMode);
+        ChangeWeaponMode(currentWeaponMode);
     }
+    */
 
     /// <summary>
     /// 무기 모드에 따라 보여줄 무기이 변경되는 함수
     /// </summary>
-    private void ChangeWeapon(WeaponMode mode)
+    private void ChangeWeaponMode(WeaponMode mode)
     {
         switch (mode)
         {
@@ -309,7 +356,7 @@ public class Weapon : MonoBehaviour
     /// <summary>
     /// 화살 장전 함수
     /// </summary>
-    private void OnLoadInput(InputAction.CallbackContext _)
+    private void OnLoad()
     {
         if (player.SkillRelatedAction.IsPickUp || player.isTalk || player.IsAnyUIPanelOpened) // 물건을 들고 있거나 대화중일 때 입력 막기
 
@@ -320,7 +367,7 @@ public class Weapon : MonoBehaviour
             if (!IsArrowEquip && arrowCount > 0)  // 장전된 화살이 없는 경우
             {
                 animator.SetBool(HaveArrowHash, true); // 화살 장전
-                Debug.Log($"화살 장전 완료");
+                // Debug.Log($"화살 장전 완료");
             }
 
             IsArrowEquip = true; // 화살이 장전되어있다고 변수 설정

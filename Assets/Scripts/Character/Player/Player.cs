@@ -52,6 +52,11 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     public float runSpeed = 7.0f;
 
     /// <summary>
+    /// 모든 기력 소진으로 느려진 속도
+    /// </summary>
+    public float slowSpeed = 1.5f;
+
+    /// <summary>
     /// 현재 속도
     /// </summary>
     public float currentSpeed = 0.0f;
@@ -230,6 +235,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     readonly int IsSlideHash = Animator.StringToHash("IsSlide");
     readonly int SpeedHash = Animator.StringToHash("Speed");
     const float AnimatorStopSpeed = 0.0f;
+    const float AnimatorSlowSpeed = 0.15f;
     const float AnimatorWalkSpeed = 0.3f;
     const float AnimatorRunSpeed = 1.0f;
     readonly int DieHash = Animator.StringToHash("IsDie");
@@ -246,7 +252,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// <summary>
     /// 오브젝트가 가지고 있는 현재 체력
     /// </summary>
-    public float hp;
+    float hp = 300.0f;
 
     /// <summary>
     /// 체력을 접근하기 위한 프로퍼티
@@ -256,20 +262,35 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         get => hp;
         set
         {
-            hp = Mathf.Clamp(value, 0, MaxHP);
-            onHealthChange?.Invoke(hp);
+            if (IsAlive) // 살아있을 때만 HP 변화
+            {
+                hp = Mathf.Clamp(value, 0, MaxHP);  // 최소 ~ 최대 사이로 숫자 유지
+                onHealthChange?.Invoke(hp);         // 델리게이트로 HP 변화 알림
+
+                if (hp <= 0.0f)                     // HP가 0 이하인 경우
+                {
+                    Die();                          // 사망 처리
+                }
+            }
         }
     }
 
     /// <summary>
     /// 최대 HP
     /// </summary>
-    public float maxHP = 5;
+    float maxHP = 300.0f;
 
     /// <summary>
     /// 최대 HP 접근 프로퍼티
     /// </summary>
-    public float MaxHP => maxHP;
+    public float MaxHP
+    {
+        get => maxHP;
+        set
+        {
+            maxHP = value;
+        }
+    }
 
     int partCount = Enum.GetNames(typeof(EquipPart)).Length;
 
@@ -279,7 +300,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     public Action<float> onHealthChange { get; set; }
 
     /// <summary>
-    /// 캐릭터가 살아있는지 확인하는 프로퍼티 ( 0 초과 : true,)
+    /// 캐릭터가 살아있는지 확인하는 프로퍼티 (0 초과 : true)
     /// </summary>
     public bool IsAlive => HP > 0;
 
@@ -315,6 +336,10 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     }
 
     /// <summary>
+    /// 플레이어가 받은 최종 데미지
+    /// </summary>
+    public float finalDamage;
+    
     /// 인벤토리에서 아이템 장착시 실행되는 델리게이트
     /// </summary>
     public Action<int> OnEquipWeaponItem;
@@ -329,7 +354,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// <summary>
     /// 현재 기력
     /// </summary>
-    public float stamina;
+    float stamina = 100.0f;
 
     /// <summary>
     /// 기력 확인 및 설정용 프로퍼티
@@ -339,20 +364,37 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         get => stamina;
         set
         {
-            hp = Mathf.Clamp(value, 0, MaxStamina);
-            onStaminaChange?.Invoke(stamina);
+            if (IsEnergetic) // 기력이 있을 때만 Stamina 변화
+            {
+                stamina = Mathf.Clamp(value, 0, MaxStamina);            // 최소 ~ 최대 사이로 숫자 유지
+                onStaminaChange?.Invoke(stamina);                       // 델리게이트로 Stamina 변화 알림
+
+                if (stamina <= 0.0f)                                    // Stamina가 0 이하인 경우
+                {
+                    SpendAllStamina();                                  // Stamina가 없는 경우 처리
+                    StartCoroutine(DecreaseSpeedForChargingStamina());  // Stamina 충전 코루틴
+                    //CurrentMoveMode = MoveMode.Walk;                    // Walk 모드로 변경
+                }
+            }
         }
     }
 
     /// <summary>
     /// 최대 기력
     /// </summary>
-    public float maxStamina = 100;
+    float maxStamina = 100.0f;
 
     /// <summary>
     /// 최대 기력 확인용 프로퍼티
     /// </summary>
-    public float MaxStamina => maxStamina;
+    public float MaxStamina
+    {
+        get => maxStamina;
+        set
+        {
+            maxStamina = value;
+        }
+    }
 
     /// <summary>
     /// 기력이 변경될 때마다 실행될 델리게이트용 프로퍼티
@@ -369,24 +411,37 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// </summary>
     public Action onSpendAllStamina { get; set; }
 
+    /// <summary>
+    /// 기력 소모 및 증가 속도
+    /// </summary>
+    public float spendStaminaTime = 10.0f;
+
+    /// <summary>
+    /// 스태미너 UI
+    /// </summary>
+    StaminaCheckUI staminaCheckUI;
+
     // IBattler ====================================================================================
 
-    /// <summary>
-    /// 플레이어의 기본 공격력
-    /// </summary>
-    public float attackPower = 10f;
+    // 플레이어의 공격력과 방어력
+    public float baseAttackPower = 10.0f;
+    public float baseDefencePower = 3.0f;
 
     /// <summary>
-    /// 공격력을 받는 프로퍼티
+    /// 공격력
     /// </summary>
+    public float attackPower = 10.0f;
     public float AttackPower => attackPower;
 
-    public float defencePower = 0;
-
+    /// <summary>
+    /// 방어력
+    /// </summary>
+    public float defencePower = 3.0f;
     public float DefencePower => defencePower;
 
     public Action<int> onHit { get; set; }
 
+    // Inventory ====================================================================================
     /// <summary>
     /// 해당 오브젝트의 인벤토리
     /// </summary>
@@ -456,12 +511,11 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         animator = GetComponent<Animator>();
         weapon = GetComponent<Weapon>();
 
-        interaction = GetComponent<Interaction>();
-
         isJumping = true;
         skillRelatedAction = GetComponent<PlayerSkillRelatedAction>();
-
         cameraRoot = FindAnyObjectByType<PlayerLookVCam>().gameObject;
+        staminaCheckUI = FindAnyObjectByType<StaminaCheckUI>();
+        interaction = GetComponent<Interaction>();
     }
 
     void OnEnable()
@@ -471,6 +525,10 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
 
     void Start()
     {
+        // 기본값 설정
+        attackPower = baseAttackPower;
+        defencePower = baseDefencePower;
+
         // exception
         if (cameraRoot == null)
         {
@@ -483,7 +541,8 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
 
         // controller
         controller.onMove += OnMove;
-        controller.onMoveModeChange += OnMoveModeChange;
+        controller.onMoveRunMode += OnMoveRunMode;
+        controller.onMoveWalkMode += OnMoveWalkMode;
         controller.onLook += OnLookAround;
         controller.onSlide += OnSlide;
         controller.onJump += OnJump;
@@ -498,14 +557,42 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         GameManager.Instance.ItemDataManager.InventoryUI.InitializeInventoryUI(inventory); // 인벤 UI 초기화
         EquipPart = new InventorySlot[partCount]; // EquipPart 배열 초기화
         GameManager.Instance.TextBoxManager.isTalkAction += (talk) => IsTalk(talk);
-        Test_AddItem();
+        //Test_AddItem();
     }
 
     private void Update()
-    {        
+    {
         LookRotation();
         Jump();
         Slide();
+
+        // Stamina -------------------------------------------------------------
+
+        // 플레이어 상태에 따른 스태미너 변경
+        if (isMoving && CurrentMoveMode == MoveMode.Run)
+        {
+            staminaCheckUI.gameObject.SetActive(true);          // 스태미너 UI 활성화
+
+            // 플레이어가 Run 모드로 움직이고 있는 경우
+            // (스태미너가 모두 소진되지 않은 경우에만 스태미너를 감소시킴)
+            if (Stamina > 0)
+                Stamina -= spendStaminaTime * Time.deltaTime;   // Stamina 감소
+        }
+        else
+        {
+            staminaCheckUI.gameObject.SetActive(true);          // 스태미너 UI 활성화
+
+            // 플레이어가 움직이지 않거나, Walk 모드인 경우
+            // (스태미너가 최대치가 아닌 경우에만 스태미너를 증가시킴)
+            if (Stamina < MaxStamina)
+                Stamina += spendStaminaTime * Time.deltaTime;   // Stamina 증가
+
+            // 스태미너가 다 찬 경우
+            if (Stamina >= MaxStamina)
+                staminaCheckUI.gameObject.SetActive(false);     // 스태미너 UI 비활성화
+        }
+
+        // Debug.Log($"Player's Stamina : {Stamina}");
     }
 
     private void FixedUpdate()
@@ -516,6 +603,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         {
             // 카메라가 줌을 당긴 경우
             transform.rotation = Quaternion.Slerp(transform.rotation, followCamY, 0.0f);    // 회전을 적용하지 않는다.
+            targetRotation = transform.rotation;
         }
         else
         {
@@ -554,6 +642,11 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
 
             // 이동 모드 변경
             MoveSpeedChange(CurrentMoveMode);
+
+            // 카메라 상태에 따른 무기 설정
+            if (weapon.IsZoomIn)
+                weapon.ShowWeapon(false, true);
+
         }
 
         // 입력을 끝낸 상황
@@ -562,12 +655,35 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
             isMoving = false;
             currentSpeed = 0.0f; // 정지
             animator.SetFloat(SpeedHash, AnimatorStopSpeed);
+
+            // 무기 모드에 따른 무기 설정
+            if (weapon.CheckWeaponMode() == 1) // 무기 모드가 칼일 때
+                weapon.ShowWeapon(true, false);
+            else if (weapon.CheckWeaponMode() == 2) // 무기 모드가 활일 때
+                weapon.ShowWeapon(false, true);
         }
+    }
+
+    /// <summary>
+    /// 달리기 모드 처리용 함수
+    /// </summary>
+    private void OnMoveRunMode()
+    {
+        CurrentMoveMode = MoveMode.Run;
+    }
+
+    /// <summary>
+    /// 걷기 모드 처리용 함수
+    /// </summary>
+    private void OnMoveWalkMode()
+    {
+        CurrentMoveMode = MoveMode.Walk;
     }
 
     /// <summary>
     /// 이동 모드 변경 함수
     /// </summary>
+    /*
     private void OnMoveModeChange()
     {
         if (CurrentMoveMode == MoveMode.Walk)
@@ -579,6 +695,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
             CurrentMoveMode = MoveMode.Walk;
         }
     }
+    */
 
     /// <summary>
     /// Check Look Around
@@ -611,6 +728,9 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// <param name="mode">MoveMode</param>
     void MoveSpeedChange(MoveMode mode)
     {
+        // 이동 중에는 무기 비활성화
+        weapon.ShowWeapon(false, false);
+
         // 이동 모드에 따라 속도와 애니메이션 변경
         switch (mode)
         {
@@ -917,6 +1037,8 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     public void Die()
     {
         animator.SetTrigger(DieHash);
+        onDie?.Invoke();
+        Debug.Log("플레이어 사망");
     }
 
     /// <summary>
@@ -981,12 +1103,93 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     }
     #endregion
 
+    // Stamina =========================================================================================
+
+    // 애니메이션 클립의 리소스 경로
+    //private string clipPath_SpendAllStamina = "PlayerAnimations/Reflesh";
+
     /// <summary>
     /// 기력을 모두 소진했을 경우 처리용 함수
     /// </summary>
     public void SpendAllStamina()
     {
-        animator.SetTrigger(SpendAllStaminaHash);
+        animator.SetTrigger(SpendAllStaminaHash);   // 애니메이션 재생
+        onSpendAllStamina?.Invoke();                // 스태미나 모두 사용했다고 알림
+        Debug.Log("플레이어 스테미너 모두 사용");
+    }
+
+    /// <summary>
+    /// 기력을 모두 소진하여 일정 시간동안 플레이어의 속도 감소 처리용 코루틴
+    /// </summary>
+    /// <param name="waitingTime">기력이 채워지는 시간</param>
+    /// <returns></returns>
+    IEnumerator DecreaseSpeedForChargingStamina()
+    {
+        //float timeElapsed = 0.0f;
+        //float waitingTime = controller.GetAnimationLegth(clipPath_SpendAllStamina); // 애니메이션 클립 로드
+
+        //while (timeElapsed < waitingTime)                       // 애니메이션 길이만큼 시간 투자
+        //{
+        //    timeElapsed += Time.deltaTime;                      // timeElapsed 갱신
+        //    animator.SetFloat(SpeedHash, AnimatorSlowSpeed);    // Slow Speed 설정
+        //    yield return null;
+        //}
+        CurrentMoveMode = MoveMode.Walk;
+
+        while (stamina < MaxStamina)
+        {
+            stamina += spendStaminaTime * Time.deltaTime;       // Stamina 증가
+
+            currentSpeed = slowSpeed;
+            animator.SetFloat(SpeedHash, AnimatorSlowSpeed);    // Slow Speed 설정
+
+            yield return null;
+        }
+
+        currentSpeed = walkSpeed;
+        animator.SetFloat(SpeedHash, AnimatorWalkSpeed);        // Walk Speed 설정
+    }
+
+    // IBatter 인터페이스 상속 --------------------------------------------------------------------------------------------------
+
+    /// <summary>
+    /// 적의 약점 공격 시 플레이어의 공격력 증가율
+    /// </summary>
+    public float weakPointAttack = 1.2f;
+
+    /// <summary>
+    /// IBatter 공격 함수
+    /// </summary>
+    /// <param name="target">공격 대상</param>
+    /// <param name="isWeakPoint">약점 공격했으면 true, 아니면 false</param>
+    public void Attack(IBattler target, bool isWeakPoint = false)
+    {
+        if (isWeakPoint)
+        {
+            target.Defence(AttackPower * weakPointAttack);
+        }
+        else
+        {
+            target.Defence(AttackPower);
+        }
+    }
+
+    /// <summary>
+    /// IBatter 방어 함수
+    /// </summary>
+    /// <param name="damage">데미지</param>
+    public void Defence(float damage)
+    {
+        if (IsAlive)
+        {
+            GetHit(); // 애니메이션 재생
+
+            // 최종 데미지
+            finalDamage = Mathf.Max(0, damage - DefencePower);
+            HP -= finalDamage;
+
+            onHit?.Invoke(Mathf.RoundToInt(finalDamage));
+        }
     }
 
     #region Etc Method
@@ -1045,8 +1248,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         inventory.AddSlotItem((uint)ItemCode.Sword);
         inventory.AddSlotItem((uint)ItemCode.HP_portion, 3);
         inventory.AddSlotItem((uint)ItemCode.Coin);
-    }
-    
+    }    
     //IBatter 인터페이스 상속 --------------------------------------------------------------------------------------------------
     public float weakPointAttack = 1.2f;
     public void Attack(IBattler target, bool isWeakPoint = false)

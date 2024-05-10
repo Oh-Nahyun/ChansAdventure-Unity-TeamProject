@@ -367,7 +367,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Change",
+                    "name": "Sword Mode",
                     "type": "Button",
                     "id": "df5ab539-e7c0-4a08-861f-41ffd1348f22",
                     "expectedControlType": "Button",
@@ -376,9 +376,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Load",
+                    "name": "Bow Mode",
                     "type": "Button",
                     "id": "3e057eaf-1de1-46f8-b70b-c7ace608bcd4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Normal Mode",
+                    "type": "Button",
+                    "id": "ca5dd82f-42b8-4591-9d6b-880e53250c8a",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -404,7 +413,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Change",
+                    "action": "Sword Mode",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -415,7 +424,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "KM",
-                    "action": "Load",
+                    "action": "Bow Mode",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6d0f5d2a-e7fe-4630-94f6-dde7d237cace",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KM",
+                    "action": "Normal Mode",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
