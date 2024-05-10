@@ -29,14 +29,14 @@ public class ItemData_Equipment : ItemData, IEquipable
     /// <summary>
     /// 아이템 착용 해제할 때 실행하는 함수
     /// </summary>
-    public void UnEquipItem(GameObject owner, InventorySlot slot)
+    public void UnEquipItem(GameObject owner)
     {
         IEquipTarget equipTarget = owner.GetComponent<IEquipTarget>();
 
         if (equipTarget != null)
         {
-            equipTarget.EquipPart[(int)equipPart] = null;
             equipTarget.CharacterUnequipItem(equipPart);
+            equipTarget.EquipPart[(int)equipPart] = null;
         }
     }
 }

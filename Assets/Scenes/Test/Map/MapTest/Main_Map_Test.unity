@@ -724,6 +724,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1789021134245975183, guid: 03e3a0de6a355401a8754d70887c467b,
+        type: 3}
+      propertyPath: CharaterRenderCameraPoint
+      value: 
+      objectReference: {fileID: 574625064}
     - target: {fileID: 4259061661310028882, guid: 03e3a0de6a355401a8754d70887c467b,
         type: 3}
       propertyPath: m_Name
@@ -799,6 +804,12 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6915561619552926597, guid: c119ccd8c0b6e33498301c630a0b324d,
     type: 3}
   m_PrefabInstance: {fileID: 1304393966}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &574625064 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 781883072065832991, guid: 01eee89cde26bf04aa9194d5dd3ca811,
+    type: 3}
+  m_PrefabInstance: {fileID: 2105717412}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &766607882
 PrefabInstance:

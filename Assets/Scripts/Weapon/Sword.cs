@@ -28,7 +28,7 @@ public class Sword : MonoBehaviour
             // 닿은 대상이 Enemy인지 체크
             if (other.CompareTag("BodyPoint"))
             {
-                // 몸에 화살을 맞췄을 경우
+                // 몸에 칼을 맞췄을 경우
                 IBattler target = other.GetComponentInParent<IBattler>();
                 if (target != null)
                 {
@@ -37,7 +37,7 @@ public class Sword : MonoBehaviour
             }
             else if (other.CompareTag("WeakPoint"))
             {
-                // 적에게 화살을 맞췄을 경우
+                // 적에게 칼을 맞췄을 경우
                 IBattler target = other.GetComponentInParent<IBattler>();
                 if (target != null)
                 {

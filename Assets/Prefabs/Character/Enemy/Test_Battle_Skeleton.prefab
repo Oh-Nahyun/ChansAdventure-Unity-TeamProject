@@ -1619,6 +1619,7 @@ MonoBehaviour:
   - code: 7
     dropRatio: 1
     dropCount: 1
+  timeElapsed: 0
 --- !u!1 &8606157925966157816
 GameObject:
   m_ObjectHideFlags: 0
@@ -1955,7 +1956,7 @@ PrefabInstance:
     - target: {fileID: 6889361315165134435, guid: 2958af7bbf05d1143950acec5e3b246b,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6889361315165134435, guid: 2958af7bbf05d1143950acec5e3b246b,
         type: 3}

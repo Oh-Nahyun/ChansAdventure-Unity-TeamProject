@@ -8,12 +8,12 @@ using UnityEngine.InputSystem;
 public class InventoryUI : MonoBehaviour
 {
     /// <summary>
-    /// ÀÎº¥Åä¸®
+    /// ì¸ë²¤í† ë¦¬
     /// </summary>
     Inventory inventory;
 
     /// <summary>
-    /// ÀÎº¥Åä¸® Á¢±Ù¿ë ÇÁ·ÎÆÛÆ¼
+    /// ì¸ë²¤í† ë¦¬ ì ‘ê·¼ìš© í”„ë¡œí¼í‹°
     /// </summary>
     public Inventory Inventory => inventory;
 
@@ -23,67 +23,92 @@ public class InventoryUI : MonoBehaviour
     InventorySlotUI[] slotsUIs;
 
     /// <summary>
-    /// ÀÓ½Ã ½½·Ô UI
+    /// ì„ì‹œ ìŠ¬ë¡¯ UI
     /// </summary>
     TempSlotUI tempSlotUI;
 
     /// <summary>
-    /// ¾ÆÀÌÅÛ Á¤º¸ UI
+    /// ì•„ì´í…œ ì •ë³´ UI
     /// </summary>
     InventoryDetailUI detailUI;
 
     /// <summary>
-    /// ¾ÆÀÌÅÛ ³ª´©±â ÆĞ³Î
+    /// ì•„ì´í…œ ë‚˜ëˆ„ê¸° íŒ¨ë„
     /// </summary>
     InventoryDividUI dividUI;
 
     /// <summary>
-    /// ¾ÆÀÌÅÛ Á¤·Ä UI
+    /// ì•„ì´í…œ ì •ë ¬ UI
     /// </summary>
     InventorySortUI sortUI;
 
     /// <summary>
-    /// ¾ÆÀÌÅÛ °ñµå UI ÆĞ³Î
+    /// ì•„ì´í…œ ê³¨ë“œ UI íŒ¨ë„
     /// </summary>
     InventoryGoldUI goldUI;
 
     /// <summary>
-    /// ¿À¸¥ÂÊ Å¬¸¯ÇÏ¸é ³ª¿À´Â ¾ÆÀÌÅÛ ¸Å´º UI
+    /// ì˜¤ë¥¸ìª½ í´ë¦­í•˜ë©´ ë‚˜ì˜¤ëŠ” ì•„ì´í…œ ë§¤ë‰´ UI
     /// </summary>
     InventorySelectedMenuUI selectedMenuUI;
 
-
-
     CanvasGroup canvasGroup;
 
+    /// <summary>
+    /// ê·¸ë˜ê·¸ê°€ ì‹œì‘ë˜ë©´ ì‹¤í–‰í•˜ëŠ” ë¸ë¦¬ê²Œì´íŠ¸
+    /// </summary>
     public Action<uint> onSlotDragBegin;
+
+    /// <summary>
+    /// ë“œë˜ê·¸ê°€ ëë‚˜ë©´ ì‹¤í–‰í•˜ëŠ” ë¸ë¦¬ê²Œì´íŠ¸
+    /// </summary>
     public Action<GameObject> onSlotDragEnd;
+
+    /// <summary>
+    /// ë“œë˜ê·¸ê°€ ì‹¤íŒ¨í•˜ë©´ ì‹¤í–‰í•˜ëŠ” ë¸ë¦¬ê²Œì´íŠ¸
+    /// </summary>
     public Action onSlotDragEndFail;
+
+    /// <summary>
+    /// ìŠ¬ë¡¯ì— ë§ˆìš°ìŠ¤ í¬ì¸í„°ë¥¼ ì˜¬ë¦¬ë©´ ì‹¤í–‰ë˜ëŠ” ë¸ë¦¬ê²Œì´íŠ¸ ( ì•„ì´í…œ ì •ë³´ë¥¼ ë¶ˆëŸ¬ì˜¨ë‹¤ )
+    /// </summary>
     public Action<uint> onShowDetail;
+
+    /// <summary>
+    /// ìŠ¬ë¡¯ì— ë§ˆìš°ìŠ¤ í¬ì¸í„°ê°€ ë²—ì–´ë‚˜ë©´ ì‹¤í–‰í•˜ëŠ” ë¸ë¦¬ê²Œì´íŠ¸ ( ì•„ì´í…œ ì •ë³´ì°½ì„ ë‹«ëŠ”ë‹¤ )
+    /// </summary>
     public Action onCloseDetail;
+
+    /// <summary>
+    /// ì•„ì´í…œ ìŠ¬ë¡¯ì„ ì™¼ìª½ í´ë¦­í•  ë•Œ ì‹¤í–‰í•˜ëŠ” ë¸ë¦¬ê²Œì´íŠ¸
+    /// </summary>
     public Action<uint> onLeftClickItem;
+    
+    /// <summary>
+    /// ì•„ì´í…œ ìŠ¬ë¡¯ì„ ì˜¤ë¥¸ìª½ í´ë¦­í•  ë•Œ ì‹¤í–‰í•˜ëŠ” ë¸ë¦¬ê²Œì´íŠ¸
+    /// </summary>
     public Action<uint, Vector2> onRightClickItem;
 
     /// <summary>
-    /// ¾ÆÀÌÅÛ »óÈ£ÀÛ¿ë ¸Å´º°¡ ¿­·È´ÂÁö È®ÀÎÇÏ´Â º¯¼ö
+    /// ì•„ì´í…œ ìƒí˜¸ì‘ìš© ë§¤ë‰´ê°€ ì—´ë ¸ëŠ”ì§€ í™•ì¸í•˜ëŠ” ë³€ìˆ˜
     /// </summary>
     private bool isOpenedMenuPanel = false;
 
     /// <summary>
-    /// ÀÎº¥Åä¸® UI¸¦ ÃÊ±âÈ­ÇÏ´Â ÇÔ¼ö
+    /// ì¸ë²¤í† ë¦¬ UIë¥¼ ì´ˆê¸°í™”í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <param name="playerInventory">ÇÃ·¹ÀÌ¾î ÀÎº¥Åä¸®</param>
+    /// <param name="playerInventory">í”Œë ˆì´ì–´ ì¸ë²¤í† ë¦¬</param>
     public void InitializeInventoryUI(Inventory playerInventory)
     {
-        inventory = playerInventory;    // ÃÊ±âÈ­ÇÑ ÀÎº¥Åä¸® ³»¿ë ¹Ş±â
-        slotsUIs = new InventorySlotUI[Inventory.SlotSize]; // ½½·Ô Å©±â ÇÒ´ç
-        slotsUIs = GetComponentsInChildren<InventorySlotUI>();  // ÀÏ¹İ ½½·Ô
-        tempSlotUI = GetComponentInChildren<TempSlotUI>(); // ÀÓ½Ã ½½·Ô
-        detailUI = GetComponentInChildren<InventoryDetailUI>(); // ¾ÆÀÌÅÛ Á¤º¸ ÆĞ³Î
-        dividUI = GetComponentInChildren<InventoryDividUI>(); // ¾ÆÀÌÅÛ ³ª´©±â ÆĞ³Î
-        sortUI = GetComponentInChildren<InventorySortUI>(); // ¾ÆÀÌÅÛ Á¤·Ä UI
-        goldUI = GetComponentInChildren<InventoryGoldUI>(); // ¾ÆÀÌÅÛ °ñµå UI
-        selectedMenuUI = GetComponentInChildren<InventorySelectedMenuUI>(); // ¾ÆÀÌÅÛ ½½·Ô ¸Å´º UI
+        inventory = playerInventory;    // ì´ˆê¸°í™”í•œ ì¸ë²¤í† ë¦¬ ë‚´ìš© ë°›ê¸°
+        slotsUIs = new InventorySlotUI[Inventory.SlotSize]; // ìŠ¬ë¡¯ í¬ê¸° í• ë‹¹
+        slotsUIs = GetComponentsInChildren<InventorySlotUI>();  // ì¼ë°˜ ìŠ¬ë¡¯
+        tempSlotUI = GetComponentInChildren<TempSlotUI>(); // ì„ì‹œ ìŠ¬ë¡¯
+        detailUI = GetComponentInChildren<InventoryDetailUI>(); // ì•„ì´í…œ ì •ë³´ íŒ¨ë„
+        dividUI = GetComponentInChildren<InventoryDividUI>(); // ì•„ì´í…œ ë‚˜ëˆ„ê¸° íŒ¨ë„
+        sortUI = GetComponentInChildren<InventorySortUI>(); // ì•„ì´í…œ ì •ë ¬ UI
+        goldUI = GetComponentInChildren<InventoryGoldUI>(); // ì•„ì´í…œ ê³¨ë“œ UI
+        selectedMenuUI = GetComponentInChildren<InventorySelectedMenuUI>(); // ì•„ì´í…œ ìŠ¬ë¡¯ ë§¤ë‰´ UI
         canvasGroup = GetComponent<CanvasGroup>();
 
         RefreshInventoryUI();
@@ -97,32 +122,33 @@ public class InventoryUI : MonoBehaviour
         onLeftClickItem += OnLeftClickItem;
         onRightClickItem += OnRightClickItem;
         dividUI.onDivid += DividItem;
+        dividUI.onDrop += OnDropItem;
         sortUI.onSortItem += OnSortItem;
 
-        Inventory.onInventoryGoldChange += goldUI.onGoldChange; // IventoryÀÇ °ñµå·®ÀÌ ¼öÁ¤µÉ ¶§ goldUIµµ ¼öÁ¤µÇ°Ô ÇÔ¼ö Ãß°¡
+        Inventory.onInventoryGoldChange += goldUI.onGoldChange; // Iventoryì˜ ê³¨ë“œëŸ‰ì´ ìˆ˜ì •ë  ë•Œ goldUIë„ ìˆ˜ì •ë˜ê²Œ í•¨ìˆ˜ ì¶”ê°€
 
-        goldUI.onGoldChange?.Invoke(Inventory.Gold);            // °ñµå ÃÊ±âÈ­
+        goldUI.onGoldChange?.Invoke(Inventory.Gold);            // ê³¨ë“œ ì´ˆê¸°í™”
     }
 
     /// <summary>
-    /// ¾ÆÀÌÅÛÀ» Á¤·ÄÇÏ´Â ÇÔ¼ö
+    /// ì•„ì´í…œì„ ì •ë ¬í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <param name="sortMode">¾ÆÀÌÅÛ Á¤·Ä ¸ğµå</param>
-    /// <param name="isAcending">true¸é ¿À¸§Â÷¼ø, false¸é ³»¸²Â÷¼ø</param>
+    /// <param name="sortMode">ì•„ì´í…œ ì •ë ¬ ëª¨ë“œ</param>
+    /// <param name="isAcending">trueë©´ ì˜¤ë¦„ì°¨ìˆœ, falseë©´ ë‚´ë¦¼ì°¨ìˆœ</param>
     private void OnSortItem(uint sortMode, bool isAcending)
     {
         if (isOpenedMenuPanel)
             return;
 
-        // ¾ÆÀÌÅÛÀÌ ¿¬¼ÓÀûÀ¸·Î ¾øÀ¸¸é ¾ÆÀÌÅÛÀ» ¶¯±â°í Á¤·ÄÇÏ±â
+        // ì•„ì´í…œì´ ì—°ì†ì ìœ¼ë¡œ ì—†ìœ¼ë©´ ì•„ì´í…œì„ ë•¡ê¸°ê³  ì •ë ¬í•˜ê¸°
 
         Inventory.SortSlot((SortMode)sortMode, isAcending);        
     }
 
     /// <summary>
-    /// ½½·Ô µå·¡±× ½ÃÀÛ
+    /// ìŠ¬ë¡¯ ë“œë˜ê·¸ ì‹œì‘
     /// </summary>
-    /// <param name="index">ÀÓ½Ã ½½·Ô¿¡ µé¾î°¥ ÀÎº¥Åä¸® ½½·Ô ÀÎµ¦½º</param>
+    /// <param name="index">ì„ì‹œ ìŠ¬ë¡¯ì— ë“¤ì–´ê°ˆ ì¸ë²¤í† ë¦¬ ìŠ¬ë¡¯ ì¸ë±ìŠ¤</param>
     private void OnSlotDragBegin(uint index)
     {
         if (isOpenedMenuPanel)
@@ -130,11 +156,13 @@ public class InventoryUI : MonoBehaviour
 
         if (Inventory[index].SlotItemData != null)
         {
+            // indexë²ˆì˜ ìŠ¬ë¡¯ ë‚´ìš© ì„ì‹œ ì €ì¥
             uint targetSlotIndex = index;
             uint targetSlotItemCode = (uint)Inventory[index].SlotItemData.itemCode;
             int targetItemSlotCount = Inventory[index].CurrentItemCount;
             bool targetIsEquip = Inventory[index].IsEquip;
 
+            // tempSlotì— ë“œë˜ê·¸ë¥¼ ì‹œì‘í•œ ìŠ¬ë¡¯ì˜ ì•„ì´í…œ ë°ì´í„° ì €ì¥
             tempSlotUI.OpenTempSlot();
 
             Inventory.AccessTempSlot(targetSlotIndex, targetSlotItemCode, targetItemSlotCount);
@@ -144,18 +172,18 @@ public class InventoryUI : MonoBehaviour
     }
 
     /// <summary>
-    /// ½½·Ô µå·¡±× Á¾·á
+    /// ìŠ¬ë¡¯ ë“œë˜ê·¸ ì¢…ë£Œ
     /// </summary>
-    /// <param name="index">¾ÆÀÌÅÛÀ» ³ÖÀ» ÀÎº¥Åä¸® ½½·Ô ÀÎµ¦½º</param>
+    /// <param name="index">ì•„ì´í…œì„ ë„£ì„ ì¸ë²¤í† ë¦¬ ìŠ¬ë¡¯ ì¸ë±ìŠ¤</param>
     private void OnSlotDragEnd(GameObject slotObj)
     {
-        if (isOpenedMenuPanel)
+        if (isOpenedMenuPanel || !tempSlotUI.IsOpen)
             return;
 
-        if (slotObj == null) // µå·¡±× Á¾·á ½ÃÁ¡¿¡ °¨ÁöµÇ´Â ½½·ÔÀÌ ¾ø´Ù.
+        if (slotObj == null) // ë“œë˜ê·¸ ì¢…ë£Œ ì‹œì ì— ê°ì§€ë˜ëŠ” ìŠ¬ë¡¯ì´ ì—†ë‹¤.
         {
             OnSlotDragFail();
-            Debug.Log("Á¸ÀçÇÏÁö ¾Ê´Â ¿ÀºêÁ§Æ®ÀÔ´Ï´Ù");
+            Debug.Log("ì¡´ì¬í•˜ì§€ ì•ŠëŠ” ì˜¤ë¸Œì íŠ¸ì…ë‹ˆë‹¤");
             return;
         }
         else
@@ -166,58 +194,58 @@ public class InventoryUI : MonoBehaviour
             if (slotUI == null)
             {
                 OnSlotDragFail();
-                Debug.Log("¾ÆÀÌÅÛ ½½·Ô º£ÀÌ½º ½ºÅ©¸³Æ®°¡ Á¸ÀçÇÏÁö ¾Ê´Â ¿ÀºêÁ§Æ® ÀÔ´Ï´Ù.");
+                Debug.Log("ì•„ì´í…œ ìŠ¬ë¡¯ ë² ì´ìŠ¤ ìŠ¤í¬ë¦½íŠ¸ê°€ ì¡´ì¬í•˜ì§€ ì•ŠëŠ” ì˜¤ë¸Œì íŠ¸ ì…ë‹ˆë‹¤.");
                 return;
             }
 
-            if(!isSlot) // µå·¡±× ³¡³ª´Â ÁöÁ¡ÀÌ ½½·ÔÀÌ ¾Æ´Ï´Ù.
+            if(!isSlot) // ë“œë˜ê·¸ ëë‚˜ëŠ” ì§€ì ì´ ìŠ¬ë¡¯ì´ ì•„ë‹ˆë‹¤.
             {
                 OnSlotDragFail();
-                Debug.Log("½½·ÔÀÌ ¾Æ´Õ´Ï´Ù");
+                Debug.Log("ìŠ¬ë¡¯ì´ ì•„ë‹™ë‹ˆë‹¤");
                 return;
             }
 
-            // ½½·Ô ÀÎµ¦½º
+            // ìŠ¬ë¡¯ ì¸ë±ìŠ¤
             uint index = slotUI.InventorySlotData.SlotIndex;
             uint tempFromIndex = Inventory.TempSlot.FromIndex;
 
-            // ÀÓ½Ã ½½·Ô¿¡ µé¾îÀÖ´Â ³»¿ë
+            // ì„ì‹œ ìŠ¬ë¡¯ì— ë“¤ì–´ìˆëŠ” ë‚´ìš©
             uint tempSlotItemCode = (uint)Inventory.TempSlot.SlotItemData.itemCode;
             int tempSlotItemCount = Inventory.TempSlot.CurrentItemCount;
             bool tempSlotIsEqiup = Inventory.TempSlot.IsEquip;
 
-            if (Inventory[index].SlotItemData != null)   // ¾ÆÀÌÅÛÀÌ µé¾îÀÖ´Ù.
+            if (Inventory[index].SlotItemData != null)   // ì•„ì´í…œì´ ë“¤ì–´ìˆë‹¤.
             {
-                if (Inventory[index].SlotItemData.itemCode == Inventory.TempSlot.SlotItemData.itemCode) // ±³È¯ÇÏ·Á´Â ¾ÆÀÌÅÛÀÌ °°À¸¸é
+                if (Inventory[index].SlotItemData.itemCode == Inventory.TempSlot.SlotItemData.itemCode) // êµí™˜í•˜ë ¤ëŠ” ì•„ì´í…œì´ ê°™ìœ¼ë©´
                 {
                     Inventory[index].AssignItem(tempSlotItemCode, tempSlotItemCount, out int overCount);
 
-                    if (overCount > 0) // ½½·Ô¿¡ ³Ö¾ú´Âµ¥ ³ÑÃÆÀ¸¸é
+                    if (overCount > 0) // ìŠ¬ë¡¯ì— ë„£ì—ˆëŠ”ë° ë„˜ì³¤ìœ¼ë©´
                     {
                         OnSlotDragFail();
                     }
 
                     Inventory.TempSlot.ClearItem();
                 }
-                else // ¾ÆÀÌÅÛÀÌ µé¾îÀÖ°í ¸ñÇ¥ ½½·ÔÀÌ Á¸ÀçÇÑ´Ù.
+                else // ì•„ì´í…œì´ ë“¤ì–´ìˆê³  ëª©í‘œ ìŠ¬ë¡¯ì´ ì¡´ì¬í•œë‹¤.
                 {
                     uint targetSlotItemCode = (uint)Inventory[index].SlotItemData.itemCode;
                     int targetSlotItemCount = Inventory[index].CurrentItemCount;
                     bool targetSlotIsEquip = Inventory[index].IsEquip;
 
                     inventory[index].ClearItem();
-                    Inventory.AccessTempSlot(index, tempSlotItemCode, tempSlotItemCount); // target ½½·Ô¿¡ ¾ÆÀÌÅÛ ÀúÀå
+                    Inventory.AccessTempSlot(index, tempSlotItemCode, tempSlotItemCount); // target ìŠ¬ë¡¯ì— ì•„ì´í…œ ì €ì¥
                     Inventory[index].IsEquip = tempSlotIsEqiup;
 
-                    // Àåºñ À§Ä¡ ¹Ù²Ù±â
-                    IEquipTarget equipTarget = Inventory.Owner.GetComponent<IEquipTarget>();    // ÀÎº¥Åä¸®¸¦ °¡Áø ¿ÀºêÁ§Æ®
-                    ItemData_Equipment itemData = Inventory[index].SlotItemData as ItemData_Equipment; // ¼±ÅÃÇÑ ÀÎº¥Åä¸®ÀÇ ¾ÆÀÌÅÛ µ¥ÀÌÅÍ
-                    if (itemData != null && Inventory[index].IsEquip)    // ¾ÆÀÌÅÛÀÌ ÀåºñÀÌ´Ù
+                    // ì¥ë¹„ ìœ„ì¹˜ ë°”ê¾¸ê¸°
+                    IEquipTarget equipTarget = Inventory.Owner.GetComponent<IEquipTarget>();    // ì¸ë²¤í† ë¦¬ë¥¼ ê°€ì§„ ì˜¤ë¸Œì íŠ¸
+                    ItemData_Equipment itemData = Inventory[index].SlotItemData as ItemData_Equipment; // ì„ íƒí•œ ì¸ë²¤í† ë¦¬ì˜ ì•„ì´í…œ ë°ì´í„°
+                    if (itemData != null && Inventory[index].IsEquip)    // ì•„ì´í…œì´ ì¥ë¹„ì´ë‹¤
                     {
-                        equipTarget.EquipPart[(int)itemData.equipPart] = Inventory[index];  // Àåºñ ¾ÆÀÌÅÛ Á¤º¸ º¯°æ 
+                        equipTarget.EquipPart[(int)itemData.equipPart] = Inventory[index];  // ì¥ë¹„ ì•„ì´í…œ ì •ë³´ ë³€ê²½ 
                     }
 
-                    Inventory.AccessTempSlot(index, targetSlotItemCode, targetSlotItemCount); // target ½½·Ô¿¡ ÀÖ¾ú´ø ¾ÆÀÌÅÛ ³»¿ë ÀÓ½Ã ½½·Ô¿¡ ÀúÀå
+                    Inventory.AccessTempSlot(index, targetSlotItemCode, targetSlotItemCount); // target ìŠ¬ë¡¯ì— ìˆì—ˆë˜ ì•„ì´í…œ ë‚´ìš© ì„ì‹œ ìŠ¬ë¡¯ì— ì €ì¥
                     Inventory.TempSlot.IsEquip = targetSlotIsEquip;
 
                     tempSlotItemCode = (uint)Inventory.TempSlot.SlotItemData.itemCode;
@@ -228,18 +256,18 @@ public class InventoryUI : MonoBehaviour
                     Inventory.AccessTempSlot(tempFromIndex, tempSlotItemCode, tempSlotItemCount);
                 }
             }
-            else // ¾ÆÀÌÅÛÀÌ µé¾îÀÖÁö ¾ÊÀ¸¸é
+            else // ì•„ì´í…œì´ ë“¤ì–´ìˆì§€ ì•Šìœ¼ë©´
             {
-                Inventory[tempFromIndex].IsEquip = Inventory[index].IsEquip; // ÀÌÀü Ä­¿¡ ÀåÂø¿©ºÎ´Â targetÀÇ ÀåÂø ¿©ºÎ·Î º¯°æ
+                Inventory[tempFromIndex].IsEquip = Inventory[index].IsEquip; // ì´ì „ ì¹¸ì— ì¥ì°©ì—¬ë¶€ëŠ” targetì˜ ì¥ì°© ì—¬ë¶€ë¡œ ë³€ê²½
 
                 Inventory[index].IsEquip = tempSlotIsEqiup;
                 Inventory.AccessTempSlot(index, tempSlotItemCode, tempSlotItemCount);
 
-                IEquipTarget equipTarget = Inventory.Owner.GetComponent<IEquipTarget>();    // ÀÎº¥Åä¸®¸¦ °¡Áø ¿ÀºêÁ§Æ®
-                ItemData_Equipment itemData = Inventory[index].SlotItemData as ItemData_Equipment; // ¼±ÅÃÇÑ ÀÎº¥Åä¸®ÀÇ ¾ÆÀÌÅÛ µ¥ÀÌÅÍ
-                if(itemData != null && Inventory[index].IsEquip)    // ¾ÆÀÌÅÛÀÌ ÀåºñÀÌ°í ÀåÂøÁßÀÌ´Ù
+                IEquipTarget equipTarget = Inventory.Owner.GetComponent<IEquipTarget>();    // ì¸ë²¤í† ë¦¬ë¥¼ ê°€ì§„ ì˜¤ë¸Œì íŠ¸
+                ItemData_Equipment itemData = Inventory[index].SlotItemData as ItemData_Equipment; // ì„ íƒí•œ ì¸ë²¤í† ë¦¬ì˜ ì•„ì´í…œ ë°ì´í„°
+                if(itemData != null && Inventory[index].IsEquip)    // ì•„ì´í…œì´ ì¥ë¹„ì´ê³  ì¥ì°©ì¤‘ì´ë‹¤
                 {
-                    equipTarget.EquipPart[(int)itemData.equipPart] = Inventory[index];  // Àåºñ ¾ÆÀÌÅÛ Á¤º¸ º¯°æ
+                    equipTarget.EquipPart[(int)itemData.equipPart] = Inventory[index];  // ì¥ë¹„ ì•„ì´í…œ ì •ë³´ ë³€ê²½
                 }
             }
             tempSlotUI.CloseTempSlot();
@@ -247,7 +275,7 @@ public class InventoryUI : MonoBehaviour
     }
 
     /// <summary>
-    /// ¾ÆÀÌÅÛ µå·¡±×¸¦ ¼º°øÀûÀ¸·Î ½ÇÇàÇÏÁö ¸øÇßÀ» ¶§ ½ÇÇàÇÏ´Â ÇÔ¼ö ( ´Ù½Ã ¿ø·¡ ½½·ÔÀ¸·Î µÇµ¹¸°´Ù. )
+    /// ì•„ì´í…œ ë“œë˜ê·¸ë¥¼ ì„±ê³µì ìœ¼ë¡œ ì‹¤í–‰í•˜ì§€ ëª»í–ˆì„ ë•Œ ì‹¤í–‰í•˜ëŠ” í•¨ìˆ˜ ( ë‹¤ì‹œ ì›ë˜ ìŠ¬ë¡¯ìœ¼ë¡œ ë˜ëŒë¦°ë‹¤. )
     /// </summary>
     private void OnSlotDragFail()
     {
@@ -266,14 +294,15 @@ public class InventoryUI : MonoBehaviour
     }
 
     /// <summary>
-    /// ¾ÆÀÌÅÛ »ó¼¼Á¤º¸ ÆĞ³ÎÀ» º¸¿©ÁÖ´Â ÇÔ¼ö
+    /// ì•„ì´í…œ ìƒì„¸ì •ë³´ íŒ¨ë„ì„ ë³´ì—¬ì£¼ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <param name="index">º¸¿©ÁÙ·Á´Â ¾ÆÀÌÅÛ ½½·Ô ÀÎµ¦½º</param>
+    /// <param name="index">ë³´ì—¬ì¤„ë ¤ëŠ” ì•„ì´í…œ ìŠ¬ë¡¯ ì¸ë±ìŠ¤</param>
     private void OnShowDetail(uint index)
     {
-        if (isOpenedMenuPanel)
+        if (isOpenedMenuPanel)  // ë©”ë‰´ íŒ¨ë„ì´ ì—´ë ¤ìˆìœ¼ë©´ ë¬´ì‹œ
             return;
 
+        // ì•„ì´í…œ ë°ì´í„°ê°€ ìˆìœ¼ë©´ ì•„ì´í…œ ì •ë³´ ë³´ì—¬ì£¼ê¸°
         if (Inventory[index].SlotItemData != null)
         {
             string name = Inventory[index].SlotItemData.itemName;
@@ -286,69 +315,79 @@ public class InventoryUI : MonoBehaviour
     }
 
     /// <summary>
-    /// ¾ÆÀÌÅÛ ¿ŞÂÊ Å¬¸¯ÇÒ ¶§ ½ÇÇàÇÏ´Â ÇÔ¼ö
+    /// ì•„ì´í…œ ì™¼ìª½ í´ë¦­í•  ë•Œ ì‹¤í–‰í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <param name="index">Å¬¸¯ÇÑ ½½·Ô ÀÎµ¦½º</param>
+    /// <param name="index">í´ë¦­í•œ ìŠ¬ë¡¯ ì¸ë±ìŠ¤</param>
     private void OnLeftClickItem(uint index)
     {
-        bool isEquip = Inventory[index].SlotItemData is IEquipable; // Àåºñ ¾ÆÀÌÅÛÀÌ¸é true ¾Æ´Ï¸é false
-        if (isEquip)    // Å¬¸¯ÇÑ ½½·Ô ¾ÆÀÌÅÛÀÌ ÀåºñÀÌ¸é
+        bool isEquip = Inventory[index].SlotItemData is IEquipable; // ì¥ë¹„ ì•„ì´í…œì´ë©´ true ì•„ë‹ˆë©´ false
+        if (isEquip)    // í´ë¦­í•œ ìŠ¬ë¡¯ ì•„ì´í…œì´ ì¥ë¹„ì´ë©´
         {
-            EquipItem(index);
+            EquipItem(index);   // ì•„ì´í…œ ì¥ë¹„
         }
-        bool isConsumalbe = Inventory[index].SlotItemData is IConsumable; // È¸º¹ ¾ÆÀÌÅÛÀÌ¸é true ¾Æ´Ï¸é false
+        bool isConsumalbe = Inventory[index].SlotItemData is IConsumable; // íšŒë³µ ì•„ì´í…œì´ë©´ true ì•„ë‹ˆë©´ false
         if(isConsumalbe)
         {
-            ConsumItem(index);
+            ConsumItem(index);  // ì•„ì´í…œ ì†Œë¹„
         }
     }
 
     /// <summary>
-    /// ¾ÆÀÌÅÛ ¿À¸¥ÂÊ Å¬¸¯ÇÒ ¶§ ½ÇÇàÇÏ´Â ÇÔ¼ö (Slot Menu)
+    /// ì•„ì´í…œ ì˜¤ë¥¸ìª½ í´ë¦­í•  ë•Œ ì‹¤í–‰í•˜ëŠ” í•¨ìˆ˜ (Slot Menu)
     /// </summary>
-    /// <param name="index">Å¬¸¯ÇÑ ½½·Ô ÀÎµ¦½º</param>
+    /// <param name="index">í´ë¦­í•œ ìŠ¬ë¡¯ ì¸ë±ìŠ¤</param>
     private void OnRightClickItem(uint index, Vector2 position)
     {
         isOpenedMenuPanel = true;
 
-        // ¹öÆ° ÀÌº¥Æ® ºÎ¿© index¹ø ½½·Ô¿¡ ´ëÇÑ ³»¿ë 
+        // ë²„íŠ¼ ì´ë²¤íŠ¸ ë¶€ì—¬ indexë²ˆ ìŠ¬ë¡¯ì— ëŒ€í•œ ë‚´ìš© 
+
+        // ì•„ì´í…œ ë‚˜ëˆ„ê¸°
         selectedMenuUI.OnDividButtonClick = () =>
         {
             if (Inventory[index].CurrentItemCount <= 1)
             {
-                Debug.Log($"[{Inventory[index].SlotItemData.itemName}]Àº ¾ÆÀÌÅÛÀÌ [{Inventory[index].CurrentItemCount}]°³ ÀÖ½À´Ï´Ù.");
+                Debug.Log($"[{Inventory[index].SlotItemData.itemName}]ì€ ì•„ì´í…œì´ [{Inventory[index].CurrentItemCount}]ê°œ ìˆìŠµë‹ˆë‹¤.");
                 return;
             }
-            dividUI.InitializeValue(Inventory[index], 1, (int)Inventory[index].CurrentItemCount - 1);
-            dividUI.DividUIOpen();
+            dividUI.InitializeValue(Inventory[index], 1, (int)Inventory[index].CurrentItemCount - 1); // íŒ¨ë„ ì´ˆê¸°í™”
+            dividUI.DividUIOpen(DividPanelType.Divid);
 
             selectedMenuUI.HideMenu();
             isOpenedMenuPanel = false;
         };
 
+        // ì•„ì´í…œ ë“œë
         selectedMenuUI.OnDropButtonClick = () =>
         {
-            DropItem(index);
+            //DropItem(index);
+            dividUI.InitializeValue(Inventory[index], 1, (int)Inventory[index].CurrentItemCount); // íŒ¨ë„ ì´ˆê¸°í™”
+            dividUI.DividUIOpen(DividPanelType.Drop);
             selectedMenuUI.HideMenu();
             isOpenedMenuPanel = false;
         };
 
         selectedMenuUI.SetPosition(position);
-        selectedMenuUI.ShowMenu(); // ¸Å´º º¸¿©ÁÖ±â
+        selectedMenuUI.ShowMenu(); // ë§¤ë‰´ ë³´ì—¬ì£¼ê¸°
+    }
+
+    private void OnDropItem(InventorySlot slot, int count)
+    {
+        DropItem(slot.SlotIndex, count);
     }
 
     /// <summary>
-    /// ¾ÆÀÌÅÛÀ» ³ª´­ ¶§ µ¨¸®°ÔÀÌÆ®¿¡ ½ÅÈ£¸¦ º¸³»´Â ÇÔ¼ö
+    /// ì•„ì´í…œì„ ë‚˜ëˆŒ ë•Œ ë¸ë¦¬ê²Œì´íŠ¸ì— ì‹ í˜¸ë¥¼ ë³´ë‚´ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <param name="InventorySlot">³ª´­ ¾ÆÀÌÅÛ ½½·Ô</param>
-    /// <param name="count">³ª´­ ¾ÆÀÌÅÛ¾ç</param>
+    /// <param name="InventorySlot">ë‚˜ëˆŒ ì•„ì´í…œ ìŠ¬ë¡¯</param>
+    /// <param name="count">ë‚˜ëˆŒ ì•„ì´í…œì–‘</param>
     private void DividItem(InventorySlot slot, int count)
     {
         uint nextIndex = slot.SlotIndex;
 
-        if(!Inventory.IsVaildSlot(nextIndex)) // ´ÙÀ½ ½½·Ô¸¸ Ã£¾Æ¼­ ¾øÀ¸¸é ½ÇÇà X
+        if(!Inventory.IsVaildSlot(nextIndex)) // ë‹¤ìŒ ìŠ¬ë¡¯ë§Œ ì°¾ì•„ì„œ ì—†ìœ¼ë©´ ì‹¤í–‰ X
         {
-            Debug.Log("½½·ÔÀÌ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ìŠ¬ë¡¯ì´ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
             return;
         }
         else
@@ -358,7 +397,7 @@ public class InventoryUI : MonoBehaviour
                 nextIndex++;
                 if(nextIndex >= Inventory.SlotSize)
                 {
-                    Debug.LogError($"ÇØ´ç ÀÎº¥Åä¸®¿¡ °ø°£ÀÌ ºÎÁ·ÇÕ´Ï´Ù.");
+                    Debug.LogError($"í•´ë‹¹ ì¸ë²¤í† ë¦¬ì— ê³µê°„ì´ ë¶€ì¡±í•©ë‹ˆë‹¤.");
                     return;
                 }
             }
@@ -368,9 +407,9 @@ public class InventoryUI : MonoBehaviour
     }
 
     /// <summary>
-    /// ¾ÆÀÌÅÛÀ» ÀåÂøÇÒ ¶§ ½ÇÇàÇÏ´Â ÇÔ¼ö
+    /// ì•„ì´í…œì„ ì¥ì°©í•  ë•Œ ì‹¤í–‰í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <param name="index">ÀåÂøÇÒ ¾ÆÀÌÅÛÀÇ ÀÎµ¦½º</param>
+    /// <param name="index">ì¥ì°©í•  ì•„ì´í…œì˜ ì¸ë±ìŠ¤</param>
     private void EquipItem(uint index)
     {
         if (isOpenedMenuPanel)
@@ -381,43 +420,47 @@ public class InventoryUI : MonoBehaviour
         bool isEquip = Inventory[index].IsEquip;
         if (equipable != null)
         {
-            if (isEquip) // ÀåÂøÀÌ µÇ¾îÀÖÀ¸¸é ÀåÂøÇØÁ¦
+            if (isEquip) // ì„ íƒí•œ ì•„ì´í…œì´ ì¥ì°©ì´ ë˜ì–´ìˆìœ¼ë©´ ì¥ì°©í•´ì œ
             {
-                equipable.UnEquipItem(Inventory.Owner, Inventory[index]);
+                equipable.UnEquipItem(Inventory.Owner);
                 Inventory[index].IsEquip = false;
             }
-            else if (!isEquip) // ÀåÂøÀÌ ¾ÈµÇÀÖÀ¸¸é ÀåÂø
+            else if (!isEquip) // ì¥ì°©ì´ ì•ˆë˜ìˆìœ¼ë©´ ì¥ì°©
             {
-                IEquipTarget equipTarget = Inventory.Owner.GetComponent<IEquipTarget>();    // ÀÎº¥Åä¸®¸¦ °¡Áø ¿ÀºêÁ§Æ®ÀÇ IEquipTarget
-                ItemData_Equipment itemData = Inventory[index].SlotItemData as ItemData_Equipment;  // ÀåÂøÇÏ·Á´Â ¾ÆÀÌÅÛ µ¥ÀÌÅÍ
+                IEquipTarget equipTarget = Inventory.Owner.GetComponent<IEquipTarget>();    // ì¸ë²¤í† ë¦¬ë¥¼ ê°€ì§„ ì˜¤ë¸Œì íŠ¸ì˜ IEquipTarget
+                ItemData_Equipment itemData = Inventory[index].SlotItemData as ItemData_Equipment;  // ì¥ì°©í•˜ë ¤ëŠ” ì•„ì´í…œ ë°ì´í„°
 
-                int partInedex = (int)itemData.equipPart;   // ÀåÂøÇÒ·Á´Â Àåºñ À§Ä¡ ÀÎµ¦½º
-                InventorySlot equipedItem = equipTarget.EquipPart[partInedex];
+                /*// ì¥ì°©ë¶€ìœ„ì— ì•„ì´í…œì„ í™•ì¸í•˜ëŠ” ì£¼ì„
+                  //int partInedex = (int)itemData.equipPart;   // ì¥ì°©í• ë ¤ëŠ” ì¥ë¹„ ìœ„ì¹˜ ì¸ë±ìŠ¤
+                  InventorySlot equipedItem = equipTarget.EquipPart[partInedex];
+                  if (equipedItem != null)  // ì¥ì°©í•  í•´ë‹¹ ë¶€ìœ„ì— ì•„ì´í…œì´ ìˆë‹¤
+                  {
+                      Inventory[equipedItem.SlotIndex].IsEquip = false; // ì¥ì°©í•œ ì•„ì´í…œ ìŠ¬ë¡¯ ì¥ì°©í•´ì œ
+                  }*/
 
-                if (equipedItem != null)  // ÀåÂøÇÒ ÇØ´ç ºÎÀ§¿¡ ¾ÆÀÌÅÛÀÌ ÀÖ´Ù
+                // 0 ì˜¤ë¥¸ìª½ì†, 1 ì™¼ì† ì¥ì°©ë¶€ìœ„í™•ì¸
+                for(int i = 0; i <= (int)EquipPart.Hand_L; i++)
                 {
-                    for(uint i = 0; i < inventory.SlotSize; i++)    // ¸ğµç ½½·Ô Ã¼Å©
+                    if (equipTarget.EquipPart[i] != null) // ë‘ ì¥ì°©ë¶€ìœ„ì— ì•„ì´í…œì´ ìˆë‹¤.
                     {
-                        ItemData_Equipment data = Inventory[i].SlotItemData as ItemData_Equipment;
-                        if(data != null) // ÇØ´ç ÀåÂøºÎÀ§°¡ ÀÖ´Â Àåºñ´Ù
-                        {
-                            Inventory[i].IsEquip = false;
-                        }
+                        uint equipIndex = equipTarget.EquipPart[i].SlotIndex; // ì¥ì°©ë¶€ìœ„ì˜ ì¸ë²¤í† ë¦¬ ìŠ¬ë¡¯ ì¸ë±ìŠ¤
+                        inventory[equipIndex].IsEquip = false;  // ì•„ì´í…œ ì¥ì°©í•´ì œ ( UI )
+
+                        IEquipable equipedItem = Inventory[equipIndex].SlotItemData as IEquipable; // ì¥ì°©ë¶€ìœ„ì˜ ì¥ì°© ì¸í„°í˜ì´ìŠ¤ ì ‘ê·¼
+                        equipedItem.UnEquipItem(Inventory.Owner); // ì¥ì°©ëœ ìºë¦­í„°ì˜ ì•„ì´í…œ ì¥ì°©í•´ì œ
                     }
                 }
 
-                equipable.EquipItem(Inventory.Owner, Inventory[index]); // ¾ÆÀÌÅÛ ÀåÂø                
-                Inventory[index].IsEquip = true;
+                equipable.EquipItem(Inventory.Owner, Inventory[index]); // ìŠ¬ë¡¯ ì•„ì´í…œ ì¥ì°©                
+                Inventory[index].IsEquip = true;                        // ì•„ì´í…œ ì¥ì°© ( UI )
             }
         }
-
-        //showEquip();
     }
 
     /// <summary>
-    /// ¾ÆÀÌÅÛ ¼ÒºñÇÒ ¶§ ½ÇÇàÇÏ´Â ÇÔ¼ö
+    /// ì•„ì´í…œ ì†Œë¹„í•  ë•Œ ì‹¤í–‰í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <param name="index">¼ÒºñÇÒ ¾ÆÀÌÅÛ ½½·Ô ÀÎµ¦½º</param>
+    /// <param name="index">ì†Œë¹„í•  ì•„ì´í…œ ìŠ¬ë¡¯ ì¸ë±ìŠ¤</param>
     private void ConsumItem(uint index)
     {
         if (isOpenedMenuPanel)
@@ -428,16 +471,28 @@ public class InventoryUI : MonoBehaviour
         consumable.Consum(Inventory.Owner, Inventory[index]);
     }
 
-    private void DropItem(uint index)
+    /// <summary>
+    /// ì¸ë²¤í† ë¦¬ì—ì„œ ì•„ì´í…œì„ ë“œëí•˜ëŠ” í•¨ìˆ˜
+    /// </summary>
+    /// <param name="index"></param>
+    private void DropItem(uint index, int count)
     {
-        if(!Inventory[index].IsEquip)
+        if(!Inventory[index].IsEquip)   // ë§Œì•½ ì•„ì´í…œì´ ì¥ì°©ìƒíƒœë©´ ë¬´ì‹œ
         {
-            Inventory.DropItem(index);
+            for(int i = 0; i < count; i++)
+            {
+                if (Inventory[index].CurrentItemCount <= 0) // ì•„ì´í…œ ê°œìˆ˜ í™•ì¸ ( 0ê°œë©´ ì•„ì´í…œ X)
+                {
+                    Debug.Log("ë²„ë¦´ ì•„ì´í…œ ë°ì´í„°ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+                }
+
+                Inventory.DropItem(index); // ì•„ì´í…œ ë“œë
+            }
         }            
     }
 
     /// <summary>
-    /// ¾ÆÀÌÅÛ »ó¼¼Á¤º¸ ÆĞ³ÎÀ» ´İ´Â ÇÔ¼ö
+    /// ì•„ì´í…œ ìƒì„¸ì •ë³´ íŒ¨ë„ì„ ë‹«ëŠ” í•¨ìˆ˜
     /// </summary>
     private void OnCloseDetail()
     {
@@ -446,47 +501,44 @@ public class InventoryUI : MonoBehaviour
     }
 
     /// <summary>
-    /// ÀÎº¥Åä¸® UI¸¦ ¿©´Â ÇÔ¼ö
+    /// ì¸ë²¤í† ë¦¬ UIë¥¼ ì—¬ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <returns>UI È°¼ºÈ­ true, ¾Æ´Ï¸é false</returns>
-    public bool ShowInventory()
+    public void ShowInventory()
     {
-        bool result = false;
-        if(canvasGroup.alpha == 1) // ºñÈ°¼ºÈ­
-        {
-            canvasGroup.alpha = 0;
-            canvasGroup.interactable = false;
-            canvasGroup.blocksRaycasts = false;
-        }
-        else if(canvasGroup.alpha < 1)// È°¼ºÈ­
-        {
-            canvasGroup.alpha = 1;
-            canvasGroup.interactable = true;
-            canvasGroup.blocksRaycasts = true;
-
-            result = true;
-        }
+        canvasGroup.alpha = 1;
+        canvasGroup.interactable = true;
+        canvasGroup.blocksRaycasts = true;
 
         RefreshInventoryUI();
-
-        return result;
     }
 
     /// <summary>
-    /// ÀÎº¥Åä¸® ³»¿ëÀ» ÃÊ±âÈ­ ÇÏ´Â ÇÔ¼ö 
+    /// ì¸ë²¤í† ë¦¬ UIë¥¼ ë‹«ëŠ” í•¨ìˆ˜
+    /// </summary>
+    public void CloseInventory()
+    {
+        canvasGroup.alpha = 0;
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
+
+        RefreshInventoryUI();
+    }
+
+    /// <summary>
+    /// ì¸ë²¤í† ë¦¬ ë‚´ìš©ì„ ì´ˆê¸°í™” í•˜ëŠ” í•¨ìˆ˜ 
     /// </summary>
     public void RefreshInventoryUI()
     {
         for (uint i = 0; i < Inventory.SlotSize; i++)
         {
-            slotsUIs[i].InitializeSlotUI(Inventory[i]); // ÀÎº¥Åä¸®½½·ÔÀ» slotUI¿Í ¿¬°á
+            slotsUIs[i].InitializeSlotUI(Inventory[i]); // ì¸ë²¤í† ë¦¬ìŠ¬ë¡¯ì„ slotUIì™€ ì—°ê²°
         }
     }
 
 #if UNITY_EDITOR
 
     /// <summary>
-    /// °¢ ½½·Ô ÀåÂø ¿©ºÎÈ®ÀÎ ÇÔ¼ö
+    /// ê° ìŠ¬ë¡¯ ì¥ì°© ì—¬ë¶€í™•ì¸ í•¨ìˆ˜
     /// </summary>
     void showEquip()
     {

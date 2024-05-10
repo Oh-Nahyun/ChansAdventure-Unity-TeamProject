@@ -17,4 +17,9 @@ public class Test_01_EnemySpawn : TestBase
     {
         Factory.Instance.GetEnemy(waypointIndex, spawnTarget.position);
     }
+
+    protected override void OnTest2(InputAction.CallbackContext context)
+    {
+        Factory.Instance.GetNightmareDragonEnemy(waypointIndex, spawnTarget.position);
+    }
 }

@@ -61,6 +61,8 @@ public class InventorySelectedMenuUI : MonoBehaviour
     public void ShowMenu()
     {
         canvasGroup.alpha = ShowPanelValue;
+        canvasGroup.interactable = true;
+        canvasGroup.blocksRaycasts = true;
     }
 
     /// <summary>
@@ -69,5 +71,7 @@ public class InventorySelectedMenuUI : MonoBehaviour
     public void HideMenu()
     {
         canvasGroup.alpha = HidePanelValue;
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
     }
 }

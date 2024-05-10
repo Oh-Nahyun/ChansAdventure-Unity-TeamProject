@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FireBall : MonoBehaviour
+public class FireBall : RecycleObject
 {
-    float speed = 10.0f;
+    float speed = 30.0f;
 
     private void FixedUpdate()
     {

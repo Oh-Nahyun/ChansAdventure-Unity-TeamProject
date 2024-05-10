@@ -20,11 +20,11 @@ public class ItemDataObject : RecycleObject
 
     private void OnItemDisable()
     {
-        Debug.Log($"아이템 제거중");                  
+        //Debug.Log($"아이템 제거중");                  
 
         int childObjCount = transform.childCount;           // 자식 오브젝트 개수
 
-        Debug.Log($"{childObjCount}");
+        //Debug.Log($"{childObjCount}");
 
         for(int i = 0; i < childObjCount; i++)
         {

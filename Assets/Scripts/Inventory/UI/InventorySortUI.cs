@@ -14,6 +14,9 @@ public class InventorySortUI : MonoBehaviour
     uint sortValue = 0;
     bool isAcending = false;
 
+    /// <summary>
+    /// 아이템 정렬을 할 때 실행되는 델리게이트
+    /// </summary>
     public Action<uint, bool> onSortItem;
 
     void Awake()
@@ -22,7 +25,7 @@ public class InventorySortUI : MonoBehaviour
         dropDown = child.GetComponent<TMP_Dropdown>();
 
         dropDown.onValueChanged.AddListener((int value) =>
-        {
+        {   // dropDown에서 정렬할 기준 선택
             sortValue = (uint)value; 
         });
 

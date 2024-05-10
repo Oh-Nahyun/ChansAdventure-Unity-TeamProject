@@ -152,6 +152,16 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+
+                    ""name"": ""Open_Menu"",
+                    ""type"": ""Button"",
+                    ""id"": ""a6a4a307-edce-4efd-84c7-098a1874d874"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -350,6 +360,17 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""KM"",
                     ""action"": ""Open_Quest"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                    },
+                    {
+                    ""name"": """",
+                    ""id"": ""517f5c83-7451-4211-89f1-70161e71f452"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Open_Menu"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -683,6 +704,33 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""PrePanel"",
+                    ""type"": ""Button"",
+                    ""id"": ""7d6a380c-1ae5-4cb1-a6d8-8920dd5d2517"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""NextPanel"",
+                    ""type"": ""Button"",
+                    ""id"": ""ef17e6cc-c919-4bf0-9e43-ac5efcc7593a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Close"",
+                    ""type"": ""Button"",
+                    ""id"": ""6c4afe10-7349-4961-a8b7-c59bb1754aac"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -694,6 +742,39 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8abf1ef6-138e-43a3-912a-0fec2a1137ca"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KM"",
+                    ""action"": ""PrePanel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""413373ad-968f-41aa-aae9-34a2e14f1681"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KM"",
+                    ""action"": ""NextPanel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0c58922e-077d-4736-b386-039ee2a6309c"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KM"",
+                    ""action"": ""Close"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -735,6 +816,8 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         m_Player_Get_Item = m_Player.FindAction("Get_Item", throwIfNotFound: true);
         m_Player_Open_Map = m_Player.FindAction("Open_Map", throwIfNotFound: true);
         m_Player_Open_Quest = m_Player.FindAction("Open_Quest", throwIfNotFound: true);
+        m_Player_Open_Menu = m_Player.FindAction("Open_Menu", throwIfNotFound: true);
+
         // Weapon
         m_Weapon = asset.FindActionMap("Weapon", throwIfNotFound: true);
         m_Weapon_Attack = m_Weapon.FindAction("Attack", throwIfNotFound: true);
@@ -757,6 +840,9 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Click = m_UI.FindAction("Click", throwIfNotFound: true);
+        m_UI_PrePanel = m_UI.FindAction("PrePanel", throwIfNotFound: true);
+        m_UI_NextPanel = m_UI.FindAction("NextPanel", throwIfNotFound: true);
+        m_UI_Close = m_UI.FindAction("Close", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -831,7 +917,10 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Open_Inventory;
     private readonly InputAction m_Player_Get_Item;
     private readonly InputAction m_Player_Open_Map;
+
     private readonly InputAction m_Player_Open_Quest;
+    private readonly InputAction m_Player_Open_Menu;
+
     public struct PlayerActions
     {
         private @PlayerinputActions m_Wrapper;
@@ -849,7 +938,10 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         public InputAction @Open_Inventory => m_Wrapper.m_Player_Open_Inventory;
         public InputAction @Get_Item => m_Wrapper.m_Player_Get_Item;
         public InputAction @Open_Map => m_Wrapper.m_Player_Open_Map;
+
         public InputAction @Open_Quest => m_Wrapper.m_Player_Open_Quest;
+        public InputAction @Open_Menu => m_Wrapper.m_Player_Open_Menu;
+
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -898,9 +990,15 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
             @Open_Map.started += instance.OnOpen_Map;
             @Open_Map.performed += instance.OnOpen_Map;
             @Open_Map.canceled += instance.OnOpen_Map;
+
             @Open_Quest.started += instance.OnOpen_Quest;
             @Open_Quest.performed += instance.OnOpen_Quest;
             @Open_Quest.canceled += instance.OnOpen_Quest;
+
+            @Open_Menu.started += instance.OnOpen_Menu;
+            @Open_Menu.performed += instance.OnOpen_Menu;
+            @Open_Menu.canceled += instance.OnOpen_Menu;
+
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -944,9 +1042,15 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
             @Open_Map.started -= instance.OnOpen_Map;
             @Open_Map.performed -= instance.OnOpen_Map;
             @Open_Map.canceled -= instance.OnOpen_Map;
+
             @Open_Quest.started -= instance.OnOpen_Quest;
             @Open_Quest.performed -= instance.OnOpen_Quest;
             @Open_Quest.canceled -= instance.OnOpen_Quest;
+
+            @Open_Menu.started -= instance.OnOpen_Menu;
+            @Open_Menu.performed -= instance.OnOpen_Menu;
+            @Open_Menu.canceled -= instance.OnOpen_Menu;
+
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1165,11 +1269,17 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_UI;
     private List<IUIActions> m_UIActionsCallbackInterfaces = new List<IUIActions>();
     private readonly InputAction m_UI_Click;
+    private readonly InputAction m_UI_PrePanel;
+    private readonly InputAction m_UI_NextPanel;
+    private readonly InputAction m_UI_Close;
     public struct UIActions
     {
         private @PlayerinputActions m_Wrapper;
         public UIActions(@PlayerinputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Click => m_Wrapper.m_UI_Click;
+        public InputAction @PrePanel => m_Wrapper.m_UI_PrePanel;
+        public InputAction @NextPanel => m_Wrapper.m_UI_NextPanel;
+        public InputAction @Close => m_Wrapper.m_UI_Close;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1182,6 +1292,15 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
             @Click.started += instance.OnClick;
             @Click.performed += instance.OnClick;
             @Click.canceled += instance.OnClick;
+            @PrePanel.started += instance.OnPrePanel;
+            @PrePanel.performed += instance.OnPrePanel;
+            @PrePanel.canceled += instance.OnPrePanel;
+            @NextPanel.started += instance.OnNextPanel;
+            @NextPanel.performed += instance.OnNextPanel;
+            @NextPanel.canceled += instance.OnNextPanel;
+            @Close.started += instance.OnClose;
+            @Close.performed += instance.OnClose;
+            @Close.canceled += instance.OnClose;
         }
 
         private void UnregisterCallbacks(IUIActions instance)
@@ -1189,6 +1308,15 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
             @Click.started -= instance.OnClick;
             @Click.performed -= instance.OnClick;
             @Click.canceled -= instance.OnClick;
+            @PrePanel.started -= instance.OnPrePanel;
+            @PrePanel.performed -= instance.OnPrePanel;
+            @PrePanel.canceled -= instance.OnPrePanel;
+            @NextPanel.started -= instance.OnNextPanel;
+            @NextPanel.performed -= instance.OnNextPanel;
+            @NextPanel.canceled -= instance.OnNextPanel;
+            @Close.started -= instance.OnClose;
+            @Close.performed -= instance.OnClose;
+            @Close.canceled -= instance.OnClose;
         }
 
         public void RemoveCallbacks(IUIActions instance)
@@ -1230,7 +1358,10 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         void OnOpen_Inventory(InputAction.CallbackContext context);
         void OnGet_Item(InputAction.CallbackContext context);
         void OnOpen_Map(InputAction.CallbackContext context);
+
         void OnOpen_Quest(InputAction.CallbackContext context);
+        void OnOpen_Menu(InputAction.CallbackContext context);
+
     }
     public interface IWeaponActions
     {
@@ -1256,5 +1387,8 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
     public interface IUIActions
     {
         void OnClick(InputAction.CallbackContext context);
+        void OnPrePanel(InputAction.CallbackContext context);
+        void OnNextPanel(InputAction.CallbackContext context);
+        void OnClose(InputAction.CallbackContext context);
     }
 }

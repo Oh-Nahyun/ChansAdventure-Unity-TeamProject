@@ -51,9 +51,18 @@ public class ItemDataManager : MonoBehaviour
     /// </summary>
     public GameObject CharaterRenderCameraPoint;
 
+    /// <summary>
+    /// ItemDataManager 클래스 초기화 함수 ( Player 초기화이후에 할 것 )
+    /// </summary>
     public void InitializeItemDataUI()
     {
         inventoryUI = FindAnyObjectByType<InventoryUI>(); // find inventoryUI
         sellPanelUI = FindAnyObjectByType<SellPanelUI>();
+
+        if(GameManager.Instance.Player != null)
+        {
+            Player player = GameManager.Instance.Player;    
+            CharaterRenderCameraPoint = player.gameObject.transform.GetChild(player.transform.childCount - 1).gameObject;
+        }
     }
 }

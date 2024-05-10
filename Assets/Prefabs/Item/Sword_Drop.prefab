@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 4145553361310044}
   - component: {fileID: 33732668498054106}
   - component: {fileID: 23590991179431624}
-  m_Layer: 8
-  m_Name: Sword_OH
+  - component: {fileID: 5102657807351740582}
+  m_Layer: 9
+  m_Name: Sword_Drop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -83,3 +84,26 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &5102657807351740582
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1037715513984232}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.15
+  m_Height: 1.3
+  m_Direction: 2
+  m_Center: {x: -0.0000001899898, y: -0.00011270773, z: 0.47850552}
