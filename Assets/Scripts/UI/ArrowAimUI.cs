@@ -32,7 +32,7 @@ public class ArrowAimUI : MonoBehaviour
     /// <summary>
     /// 보유중인 화살 개수
     /// </summary>
-    TextMeshProUGUI arrowCount;
+    TextMeshProUGUI arrowCountUI;
 
     // 트랜스폼
     Transform aim01;
@@ -45,7 +45,7 @@ public class ArrowAimUI : MonoBehaviour
     private void Awake()
     {
         Transform child = transform.GetChild(0);
-        arrowCount = child.GetComponent<TextMeshProUGUI>();
+        arrowCountUI = child.GetComponent<TextMeshProUGUI>();
 
         child = transform.GetChild(1);
         aim01 = child.GetChild(0);
@@ -60,7 +60,7 @@ public class ArrowAimUI : MonoBehaviour
 
     private void Update()
     {
-        arrowCount.text = weapon.arrowCount.ToString(); // 남은 화살 개수 출력
+        arrowCountUI.text = weapon.ArrowCount.ToString(); // 남은 화살 개수 출력
         timer += Time.deltaTime;                        // 타이머 갱신
         PrintArrowAim();
     }

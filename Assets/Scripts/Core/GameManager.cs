@@ -4,6 +4,9 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+[RequireComponent(typeof(CameraManager))]
+[RequireComponent(typeof(ItemDataManager))]
+[RequireComponent(typeof(MapManager))]
 public class GameManager : Singleton<GameManager>
 {
     Player player;

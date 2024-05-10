@@ -93,6 +93,11 @@ public class Weapon : MonoBehaviour
     uint arrowCount = 0; // -> public float arrowCount = 0; 
 
     /// <summary>
+    /// 화살개수 확인하기 위한 프로퍼티
+    /// </summary>
+    public Unit ArrowCount => ArrowCount;
+
+    /// <summary>
     /// 화살 프리팹
     /// </summary>
     GameObject arrowPrefab;
@@ -194,13 +199,13 @@ public class Weapon : MonoBehaviour
                 ShowWeapon(false, true);
 
                 // 인벤토리에 화살 개수가 0이 아닌 경우 >> 화살 자동 장전 후 공격
-                if (arrowCount != 0) ////////////////////////////////////////////////////////////////////////////////////////////////// [2] 인벤토리 변수로 변경 필수!!!!!!!!!!
+                if (arrowCount != 0) //
                 {
                     OnLoad();
                 }
 
                 // 인벤토리에 화살 개수가 0이고, 화살 장전이 안되어있는 경우 >> 활 자체 공격
-                if (arrowCount == 0 && !IsArrowEquip) ///////////////////////////////////////////////////////////////////////////////// [3] 인벤토리 변수로 변경 필수!!!!!!!!!!
+                if (arrowCount == 0 && !IsArrowEquip) //
                 {
                     animator.SetBool(HaveArrowHash, false);
                     Debug.Log("***** 인벤토리 내 보유하고 있는 화살이 없습니다.");

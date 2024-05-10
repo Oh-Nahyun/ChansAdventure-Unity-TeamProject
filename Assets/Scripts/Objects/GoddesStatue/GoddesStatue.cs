@@ -8,7 +8,7 @@ public class GoddesStatue : MonoBehaviour
     /// <summary>
     /// ∆Ω¥Á »∏∫π«“ ∑Æ
     /// </summary>
-    public float tickRegen = GameManager.Instance.Player.maxHP;
+    public float tickRegen = GameManager.Instance.Player.MaxHP;
 
     /// <summary>
     /// ∆Ω ¿Œ≈Õπ˙
@@ -27,7 +27,7 @@ public class GoddesStatue : MonoBehaviour
             IHealth health = other.GetComponent<IHealth>();
             if (health != null)
             {
-                tickRegen = GameManager.Instance.Player.maxHP;
+                tickRegen = GameManager.Instance.Player.MaxHP;
                 health.HealthRegenerateByTick(tickRegen, inverval, tickCount);
             }
         }

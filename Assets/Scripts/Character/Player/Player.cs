@@ -1248,26 +1248,6 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         inventory.AddSlotItem((uint)ItemCode.Sword);
         inventory.AddSlotItem((uint)ItemCode.HP_portion, 3);
         inventory.AddSlotItem((uint)ItemCode.Coin);
-    }    
-    //IBatter 인터페이스 상속 --------------------------------------------------------------------------------------------------
-    public float weakPointAttack = 1.2f;
-    public void Attack(IBattler target, bool isWeakPoint = false)
-    {
-        if (isWeakPoint)
-        {
-            target.Defence(AttackPower * weakPointAttack);
-        }
-        else
-        {
-            target.Defence(AttackPower);
-        }
     }
-
-    public void Defence(float damage)
-    {
-        Debug.Log("플레이어가 피격 당함");
-        // 피격 이벤트 작성해야됨
-    }
-    //--------------------------------------------------------------------------------------------------
 #endif
 }
