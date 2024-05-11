@@ -57,12 +57,12 @@ public class MapPanelUI : MonoBehaviour
         float scroll = -scrollDelta.y;
 
         mapCamera.orthographicSize += scroll;
-        mapCamera.orthographicSize = Mathf.Clamp(mapCamera.orthographicSize, 50, 100);
+        mapCamera.orthographicSize = Mathf.Clamp(mapCamera.orthographicSize, 30, 100);
     }
 
     private void Start()
     {
-        mapCamera = MapManager.Instance.MapCamera;
+        mapCamera = GameManager.Instance.MapManager.MapCamera;
     }
 
     /// <summary>
@@ -73,7 +73,7 @@ public class MapPanelUI : MonoBehaviour
     {
         startDragVector = new Vector3(vector.x, 0, vector.y);
         startDragVector += mapCamera.transform.position;
-        MapManager.Instance.SetCameraPosition(startDragVector);
+        GameManager.Instance.MapManager.SetCameraPosition(startDragVector);
     }
 
     /// <summary>
@@ -88,7 +88,7 @@ public class MapPanelUI : MonoBehaviour
 
         Vector3 result = startDragVector - onDragingVector;
 
-        MapManager.Instance.SetCameraPosition(result);
+        GameManager.Instance.MapManager.SetCameraPosition(result);
     }
 
     /// <summary>
@@ -165,7 +165,7 @@ public class MapPanelUI : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, 1000f, LayerMask.GetMask("Map Object"))) // Map Object Å½Áö
         {
-            Debug.DrawRay(ray.origin, ray.direction * 100, Color.red, 5f);
+            //Debug.DrawRay(ray.origin, ray.direction * 100, Color.red, 5f);
         }
 
         return hit;

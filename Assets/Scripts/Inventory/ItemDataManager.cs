@@ -37,12 +37,32 @@ public class ItemDataManager : MonoBehaviour
     public InventoryUI InventoryUI => inventoryUI;
 
     /// <summary>
+    /// 판매창 UI 클래스
+    /// </summary>
+    SellPanelUI sellPanelUI;
+
+    /// <summary>
+    /// sellPanelUI 접근을 위한 프로퍼티
+    /// </summary>
+    public SellPanelUI SellPanelUI => sellPanelUI;  
+
+    /// <summary>
     /// Inventory RenderTexture Object Point
     /// </summary>
     public GameObject CharaterRenderCameraPoint;
 
-    void Awake()
+    /// <summary>
+    /// ItemDataManager 클래스 초기화 함수 ( Player 초기화이후에 할 것 )
+    /// </summary>
+    public void InitializeItemDataUI()
     {
         inventoryUI = FindAnyObjectByType<InventoryUI>(); // find inventoryUI
+        sellPanelUI = FindAnyObjectByType<SellPanelUI>();
+
+        if(GameManager.Instance.Player != null)
+        {
+            Player player = GameManager.Instance.Player;    
+            CharaterRenderCameraPoint = player.gameObject.transform.GetChild(player.transform.childCount - 1).gameObject;
+        }
     }
 }
