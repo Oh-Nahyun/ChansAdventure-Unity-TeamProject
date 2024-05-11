@@ -47,6 +47,7 @@ public class PlayerMapController : MonoBehaviour
     private void LateUpdate()
     {
         FollowMapCam();
+        MapManager.Instance.SetPlayerMarkPosition(playerPos);
     }
 
     /// <summary>
@@ -56,7 +57,7 @@ public class PlayerMapController : MonoBehaviour
     {
         if (GameManager.Instance.Player.IsOpenedLargeMap == false)
         {
-            GameManager.Instance.MapManager.SetCameraPosition(playerPos);
+            MapManager.Instance.SetCameraPosition(playerPos);
         }
     }
 
@@ -65,8 +66,8 @@ public class PlayerMapController : MonoBehaviour
     /// </summary>
     void Initialize()
     {
-        largeMap_CanvasGroup = GameManager.Instance.MapManager.LargeMapPanelUI.GetComponent<CanvasGroup>();
-        playerLineRenderer = GameManager.Instance.MapManager.PlayerLineRendere;
+        largeMap_CanvasGroup = MapManager.Instance.LargeMapPanelUI.GetComponent<CanvasGroup>();
+        playerLineRenderer = MapManager.Instance.PlayerLineRendere;
 
         InitLine();
     }

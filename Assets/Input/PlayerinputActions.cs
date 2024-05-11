@@ -498,7 +498,7 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""SpecialKey1"",
+                    ""name"": ""SpecialKeyUp"",
                     ""type"": ""Button"",
                     ""id"": ""9dd2a7b1-b748-4608-b262-a3deda748aba"",
                     ""expectedControlType"": ""Button"",
@@ -507,9 +507,27 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""SpecialKey2"",
+                    ""name"": ""SpecialKeyDown"",
                     ""type"": ""Button"",
                     ""id"": ""ac4efe34-db19-4f5f-9121-7435f70c266b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SpecialKeyLeft"",
+                    ""type"": ""Button"",
+                    ""id"": ""1745a67f-e2e2-46fc-8f1e-04e0df8d40f8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SpecialKeyRight"",
+                    ""type"": ""Button"",
+                    ""id"": ""9e56206a-82fe-441a-b012-7755a46e3265"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -630,22 +648,44 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""26cb31fe-87e3-47a3-9dc4-d1f6c3f105f8"",
-                    ""path"": ""<Keyboard>/rightBracket"",
+                    ""path"": ""<Keyboard>/numpad5"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""SpecialKey2"",
+                    ""action"": ""SpecialKeyDown"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""fb690cff-cbeb-4055-983b-685533afbec6"",
-                    ""path"": ""<Keyboard>/leftBracket"",
+                    ""path"": ""<Keyboard>/numpad8"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""SpecialKey1"",
+                    ""action"": ""SpecialKeyUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a5912ace-40e2-4e27-85cc-21572f811f70"",
+                    ""path"": ""<Keyboard>/numpad4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SpecialKeyLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3e7fc6b7-bd4e-45b5-88f5-b3dc4bc55ea5"",
+                    ""path"": ""<Keyboard>/numpad6"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SpecialKeyRight"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -731,8 +771,10 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         m_Skill_OnSkill = m_Skill.FindAction("OnSkill", throwIfNotFound: true);
         m_Skill_Throw = m_Skill.FindAction("Throw", throwIfNotFound: true);
         m_Skill_Cancel = m_Skill.FindAction("Cancel", throwIfNotFound: true);
-        m_Skill_SpecialKey1 = m_Skill.FindAction("SpecialKey1", throwIfNotFound: true);
-        m_Skill_SpecialKey2 = m_Skill.FindAction("SpecialKey2", throwIfNotFound: true);
+        m_Skill_SpecialKeyUp = m_Skill.FindAction("SpecialKeyUp", throwIfNotFound: true);
+        m_Skill_SpecialKeyDown = m_Skill.FindAction("SpecialKeyDown", throwIfNotFound: true);
+        m_Skill_SpecialKeyLeft = m_Skill.FindAction("SpecialKeyLeft", throwIfNotFound: true);
+        m_Skill_SpecialKeyRight = m_Skill.FindAction("SpecialKeyRight", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Click = m_UI.FindAction("Click", throwIfNotFound: true);
@@ -1011,8 +1053,10 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Skill_OnSkill;
     private readonly InputAction m_Skill_Throw;
     private readonly InputAction m_Skill_Cancel;
-    private readonly InputAction m_Skill_SpecialKey1;
-    private readonly InputAction m_Skill_SpecialKey2;
+    private readonly InputAction m_Skill_SpecialKeyUp;
+    private readonly InputAction m_Skill_SpecialKeyDown;
+    private readonly InputAction m_Skill_SpecialKeyLeft;
+    private readonly InputAction m_Skill_SpecialKeyRight;
     public struct SkillActions
     {
         private @PlayerinputActions m_Wrapper;
@@ -1027,8 +1071,10 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         public InputAction @OnSkill => m_Wrapper.m_Skill_OnSkill;
         public InputAction @Throw => m_Wrapper.m_Skill_Throw;
         public InputAction @Cancel => m_Wrapper.m_Skill_Cancel;
-        public InputAction @SpecialKey1 => m_Wrapper.m_Skill_SpecialKey1;
-        public InputAction @SpecialKey2 => m_Wrapper.m_Skill_SpecialKey2;
+        public InputAction @SpecialKeyUp => m_Wrapper.m_Skill_SpecialKeyUp;
+        public InputAction @SpecialKeyDown => m_Wrapper.m_Skill_SpecialKeyDown;
+        public InputAction @SpecialKeyLeft => m_Wrapper.m_Skill_SpecialKeyLeft;
+        public InputAction @SpecialKeyRight => m_Wrapper.m_Skill_SpecialKeyRight;
         public InputActionMap Get() { return m_Wrapper.m_Skill; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1068,12 +1114,18 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
             @Cancel.started += instance.OnCancel;
             @Cancel.performed += instance.OnCancel;
             @Cancel.canceled += instance.OnCancel;
-            @SpecialKey1.started += instance.OnSpecialKey1;
-            @SpecialKey1.performed += instance.OnSpecialKey1;
-            @SpecialKey1.canceled += instance.OnSpecialKey1;
-            @SpecialKey2.started += instance.OnSpecialKey2;
-            @SpecialKey2.performed += instance.OnSpecialKey2;
-            @SpecialKey2.canceled += instance.OnSpecialKey2;
+            @SpecialKeyUp.started += instance.OnSpecialKeyUp;
+            @SpecialKeyUp.performed += instance.OnSpecialKeyUp;
+            @SpecialKeyUp.canceled += instance.OnSpecialKeyUp;
+            @SpecialKeyDown.started += instance.OnSpecialKeyDown;
+            @SpecialKeyDown.performed += instance.OnSpecialKeyDown;
+            @SpecialKeyDown.canceled += instance.OnSpecialKeyDown;
+            @SpecialKeyLeft.started += instance.OnSpecialKeyLeft;
+            @SpecialKeyLeft.performed += instance.OnSpecialKeyLeft;
+            @SpecialKeyLeft.canceled += instance.OnSpecialKeyLeft;
+            @SpecialKeyRight.started += instance.OnSpecialKeyRight;
+            @SpecialKeyRight.performed += instance.OnSpecialKeyRight;
+            @SpecialKeyRight.canceled += instance.OnSpecialKeyRight;
         }
 
         private void UnregisterCallbacks(ISkillActions instance)
@@ -1108,12 +1160,18 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
             @Cancel.started -= instance.OnCancel;
             @Cancel.performed -= instance.OnCancel;
             @Cancel.canceled -= instance.OnCancel;
-            @SpecialKey1.started -= instance.OnSpecialKey1;
-            @SpecialKey1.performed -= instance.OnSpecialKey1;
-            @SpecialKey1.canceled -= instance.OnSpecialKey1;
-            @SpecialKey2.started -= instance.OnSpecialKey2;
-            @SpecialKey2.performed -= instance.OnSpecialKey2;
-            @SpecialKey2.canceled -= instance.OnSpecialKey2;
+            @SpecialKeyUp.started -= instance.OnSpecialKeyUp;
+            @SpecialKeyUp.performed -= instance.OnSpecialKeyUp;
+            @SpecialKeyUp.canceled -= instance.OnSpecialKeyUp;
+            @SpecialKeyDown.started -= instance.OnSpecialKeyDown;
+            @SpecialKeyDown.performed -= instance.OnSpecialKeyDown;
+            @SpecialKeyDown.canceled -= instance.OnSpecialKeyDown;
+            @SpecialKeyLeft.started -= instance.OnSpecialKeyLeft;
+            @SpecialKeyLeft.performed -= instance.OnSpecialKeyLeft;
+            @SpecialKeyLeft.canceled -= instance.OnSpecialKeyLeft;
+            @SpecialKeyRight.started -= instance.OnSpecialKeyRight;
+            @SpecialKeyRight.performed -= instance.OnSpecialKeyRight;
+            @SpecialKeyRight.canceled -= instance.OnSpecialKeyRight;
         }
 
         public void RemoveCallbacks(ISkillActions instance)
@@ -1220,8 +1278,10 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         void OnOnSkill(InputAction.CallbackContext context);
         void OnThrow(InputAction.CallbackContext context);
         void OnCancel(InputAction.CallbackContext context);
-        void OnSpecialKey1(InputAction.CallbackContext context);
-        void OnSpecialKey2(InputAction.CallbackContext context);
+        void OnSpecialKeyUp(InputAction.CallbackContext context);
+        void OnSpecialKeyDown(InputAction.CallbackContext context);
+        void OnSpecialKeyLeft(InputAction.CallbackContext context);
+        void OnSpecialKeyRight(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

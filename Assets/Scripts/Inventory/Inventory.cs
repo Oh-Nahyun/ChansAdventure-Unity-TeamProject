@@ -363,10 +363,8 @@ public class Inventory
     public void DropItem(uint index)
     {
         //GameObject dropItem = UnityEngine.Object.Instantiate(slots[index].SlotItemData.ItemPrefab, Owner.transform);
-        ItemData dropItemData = slots[index].SlotItemData;
-        uint itemCount = 1;
 
-        GameObject dropItem = Factory.Instance.GetItemObject(dropItemData, itemCount, Owner.transform.position + Vector3.up * 0.5f); // Factory에서 아이템 소환
+        GameObject dropItem = Factory.Instance.GetItemObject(slots[index], Owner.transform.position + Vector3.up * 0.5f); // Factory에서 아이템 소환
 
         dropItem.name = $"{slots[index].SlotItemData.itemName}";    // 아이템 이름 변경
         //dropItem.transform.SetParent(null);

@@ -5,11 +5,11 @@ using Unity.VisualScripting;
 using UnityEngine;
 public enum SkillName
 {
-    RemoteBomb = 1,
-    RemoteBomb_Cube = 2,
-    MagnetCatch = 3,
-    TimeLock = 4,
-    IceMaker = 5
+    RemoteBomb = 0,
+    RemoteBomb_Cube,
+    MagnetCatch,
+    IceMaker,
+    TimeLock
 }
 
 public class Skill : ReactionObject
@@ -30,13 +30,23 @@ public class Skill : ReactionObject
 
     // 쿨타임 어디서 처리? 지금은 PlayerSkills에서 생각중
     /// <summary>
-    /// 쿨타임 (아직 설정 안함)
+    /// 쿨타임 (외부에서 사용 x)
     /// </summary>
-    public float coolTime = 1.0f;
+    public float cooltime = 1.0f;
     /// <summary>
-    /// 현재 쿨타임 (아직 설정 안함)
+    /// 쿨타임 (get, 외부 확인용)
     /// </summary>
-    protected float currCoolTime = 0.0f;
+    public float Cooltime => cooltime;
+
+    /// <summary>
+    /// 스킬 이미지 (외부에서 사용 x)
+    /// </summary>
+    public Sprite skillSprite;
+
+    /// <summary>
+    /// 스킬 이미지 (get, 외부 확인용)
+    /// </summary>
+    public Sprite SkillImage => skillSprite;
 
     /// <summary>
     /// 현재 작동 중인지 확인용 변수
@@ -61,29 +71,38 @@ public class Skill : ReactionObject
     /// 스킬 취소 처리용 델리게이트
     /// (풀로 돌아갈 때 동작)
     /// </summary>
-    public Action cancelSkill;
+    public Action<SkillName> cancelSkill;
+    /// <summary>
+    /// 쿨타임이 돌기 시작하라고 알리는 델리게이트
+    /// </summary>
+    public Action<SkillName> cooltimeReset;
+    /// <summary>
+    /// 스킬 모션 변경용 델리게이트
+    /// </summary>
+    public Action<bool> onMotionChange;
+
     /// <summary>
     /// 카메라 중앙
     /// </summary>
     protected readonly Vector3 Center = new Vector3(0.5f, 0.5f, 0.0f);
 
+    protected Crosshair crosshair;
+
+    Action OnCrosshair;
+    Action OffCrosshair;
+
     protected override void Awake()
     {
         base.Awake();
-        rigid.isKinematic = true;           // 들고있을 경우 Kinematic으로 지정, 리모컨폭탄류는 던지면 변경됨
+        rigid.isKinematic = true;           // 스킬의 경우 Kinematic으로 지정, 리모컨폭탄류는 던지면 변경됨
         reactionType |= ReactionType.Skill; // 반응 타입에 스킬 추가 (별다른 반응은 없고 구별용)
-    }
-
-    protected virtual void Start()
-    {
-        if (skillVcam == null)
-        {
-            skillVcam = GameManager.Instance.Cam.SkillCam;
-        }
+        //cooltime = maxCooltime;
+        isRecycle = true;
     }
 
     protected override void OnEnable()
     {
+        StopAllCoroutines();
         base.OnEnable();
 
         if (skillVcam != null)
@@ -95,6 +114,18 @@ public class Skill : ReactionObject
         else
         {
             skillVcam = GameManager.Instance.Cam.SkillCam;
+        }
+
+        if (crosshair == null)
+        {
+            crosshair = FindAnyObjectByType<Crosshair>();
+            if (crosshair == null)
+            {
+                Debug.LogWarning("크로스헤어 찾지 못함");
+            }
+
+            OnCrosshair += crosshair.Open;
+            OffCrosshair += crosshair.Close;
         }
     }
 
@@ -129,6 +160,7 @@ public class Skill : ReactionObject
     protected virtual void OnSKillAction()
     {
         camOn?.Invoke();
+        OnCrosshair?.Invoke();
     }
 
     /// <summary>
@@ -147,7 +179,10 @@ public class Skill : ReactionObject
     protected virtual void UseSkillAction()
     {
         camOff?.Invoke();
+        cooltimeReset?.Invoke(skillName);
+        OffCrosshair?.Invoke();
         isActivate = true;
+        cooltime = 0;
     }
     /// <summary>
     /// 스킬 종료 메서드(현재: X 키)
@@ -162,6 +197,7 @@ public class Skill : ReactionObject
     protected virtual void OffSKillAction()
     {
         camOff?.Invoke();
+        OffCrosshair?.Invoke();
         isActivate = false;
         ReturnToPool();
 
@@ -171,7 +207,13 @@ public class Skill : ReactionObject
     /// </summary>
     protected override void ReturnAction()
     {
-        cancelSkill?.Invoke();
+        cancelSkill?.Invoke(skillName);
+        cancelSkill = null;
+        base.ReturnAction();
         // 파괴 애니메이션 추가
+    }
+
+    public virtual void InputSpecialKey(PlayerSkills.SpecialKey key)
+    {
     }
 }

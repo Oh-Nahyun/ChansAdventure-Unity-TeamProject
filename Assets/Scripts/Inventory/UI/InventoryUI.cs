@@ -63,11 +63,6 @@ public class InventoryUI : MonoBehaviour
     public Action<uint, Vector2> onRightClickItem;
 
     /// <summary>
-    /// 아이템 상호작용 매뉴가 열렸는지 확인하는 변수
-    /// </summary>
-    private bool isOpenedMenuPanel = false;
-
-    /// <summary>
     /// 인벤토리 UI를 초기화하는 함수
     /// </summary>
     /// <param name="playerInventory">플레이어 인벤토리</param>
@@ -112,9 +107,6 @@ public class InventoryUI : MonoBehaviour
     /// <param name="isAcending">true면 오름차순, false면 내림차순</param>
     private void OnSortItem(uint sortMode, bool isAcending)
     {
-        if (isOpenedMenuPanel)
-            return;
-
         // 아이템이 연속적으로 없으면 아이템을 땡기고 정렬하기
 
         Inventory.SortSlot((SortMode)sortMode, isAcending);        
@@ -126,9 +118,6 @@ public class InventoryUI : MonoBehaviour
     /// <param name="index">임시 슬롯에 들어갈 인벤토리 슬롯 인덱스</param>
     private void OnSlotDragBegin(uint index)
     {
-        if (isOpenedMenuPanel)
-            return;
-
         if (Inventory[index].SlotItemData != null)
         {
             uint targetSlotIndex = index;
@@ -150,10 +139,7 @@ public class InventoryUI : MonoBehaviour
     /// <param name="index">아이템을 넣을 인벤토리 슬롯 인덱스</param>
     private void OnSlotDragEnd(GameObject slotObj)
     {
-        if (isOpenedMenuPanel)
-            return;
-
-        if (slotObj == null) // 드래그 종료 시점에 감지되는 슬롯이 없다.
+        if(slotObj == null) // 드래그 종료 시점에 감지되는 슬롯이 없다.
         {
             OnSlotDragFail();
             Debug.Log("존재하지 않는 오브젝트입니다");
@@ -272,9 +258,6 @@ public class InventoryUI : MonoBehaviour
     /// <param name="index">보여줄려는 아이템 슬롯 인덱스</param>
     private void OnShowDetail(uint index)
     {
-        if (isOpenedMenuPanel)
-            return;
-
         if (Inventory[index].SlotItemData != null)
         {
             string name = Inventory[index].SlotItemData.itemName;
@@ -310,8 +293,6 @@ public class InventoryUI : MonoBehaviour
     /// <param name="index">클릭한 슬롯 인덱스</param>
     private void OnRightClickItem(uint index, Vector2 position)
     {
-        isOpenedMenuPanel = true;
-
         // 버튼 이벤트 부여 index번 슬롯에 대한 내용 
         selectedMenuUI.OnDividButtonClick = () =>
         {
@@ -324,14 +305,12 @@ public class InventoryUI : MonoBehaviour
             dividUI.DividUIOpen();
 
             selectedMenuUI.HideMenu();
-            isOpenedMenuPanel = false;
         };
 
         selectedMenuUI.OnDropButtonClick = () =>
         {
             DropItem(index);
             selectedMenuUI.HideMenu();
-            isOpenedMenuPanel = false;
         };
 
         selectedMenuUI.SetPosition(position);
@@ -374,9 +353,6 @@ public class InventoryUI : MonoBehaviour
     /// <param name="index">장착할 아이템의 인덱스</param>
     private void EquipItem(uint index)
     {
-        if (isOpenedMenuPanel)
-            return;
-
         IEquipable equipable = Inventory[index].SlotItemData as IEquipable;
 
         bool isEquip = Inventory[index].IsEquip;
@@ -421,9 +397,6 @@ public class InventoryUI : MonoBehaviour
     /// <param name="index">소비할 아이템 슬롯 인덱스</param>
     private void ConsumItem(uint index)
     {
-        if (isOpenedMenuPanel)
-            return;
-
         IConsumable consumable = Inventory[index].SlotItemData as IConsumable;
 
         consumable.Consum(Inventory.Owner, Inventory[index]);

@@ -1,22 +1,11 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
-    public Player player;
-    public Player Player
-    {
-        get
-        {
-            if (player == null)
-            {
-                player = FindAnyObjectByType<Player>();
-            }
-            return player;
-        }
-    }
+    Player player;
+    public Player Player => player;
 
     Weapon weapon;
     public Weapon Weapon => weapon;
@@ -27,14 +16,14 @@ public class GameManager : Singleton<GameManager>
     ItemDataManager itemDataManager;
 
     /// <summary>
-    /// ¾ÆÀÌÅÛ µ¥ÀÌÅÍ Å¬·¡½º Á¢±ÙÀ» ÇÏ±âÀ§ÇÑ ÇÁ·ÎÆÛÆ¼
+    /// å ì™ì˜™å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™å ì™ì˜™ í´å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™å ì™ì˜™í‹°
     /// </summary>
     public ItemDataManager ItemDataManager => itemDataManager;
 
     MapManager mapManager;
 
     /// <summary>
-    /// mapManager Á¢±ÙÀ» À§ÇÑ ÇÁ·ÎÆÛÆ¼
+    /// mapManager ì ‘ê·¼ì„ ìœ„í•œ í”„ë¡œí¼í‹°
     /// </summary>
     public MapManager MapManager => mapManager;
 
@@ -48,118 +37,19 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    /// <summary>
-    /// ·Îµù ÁßÀÎÁö È®ÀÎÇÏ´Â bool°ª
-    /// </summary>
-    public bool isLoading;
-
-    /// <summary>
-    /// ÀÌµ¿ÇÒ ¾ÀÀÇ ÀÌ¸§
-    /// </summary>
-    string targetSceneName = null;
-
-    /// <summary>
-    /// ÀÌµ¿ÇÒ ¾ÀÀÇ ÀÌ¸§À» Á¢±Ù ¹× ¼öÁ¤ÇÏ±â À§ÇÑ ÇÁ·ÎÆÛÆ¼ ( ÀÌ¸§ÀÌ ¹Ù²î¸é ÇØ´ç ¾ÀÀÌ TragetSceneÀÌ µÇ°í ·Îµù¾ÀÀ» È£ÃâÇÑ´Ù. )
-    /// </summary>
-    public string TargetSceneName
-    {
-        get => targetSceneName;
-        set
-        {
-            if(targetSceneName != value)
-            {
-                targetSceneName = value;
-                ChangeToLoadingScene();
-            }
-        }
-    }
-
-    public GameObject loadPlayerGameObject;
-
-    protected override void OnPreInitialize()
-    {
-        base.OnPreInitialize();
-
-        loadPlayerGameObject = new GameObject();
-        DontDestroyOnLoad(loadPlayerGameObject);
-    }
+    SkillManager skillManager;
+    public SkillManager Skill => skillManager;
 
     protected override void OnInitialize()
     {
-        if (isLoading)
-            return;
-
         player = FindAnyObjectByType<Player>();
         weapon = FindAnyObjectByType<Weapon>();
         cameraManager = GetComponent<CameraManager>();
         itemDataManager = GetComponent<ItemDataManager>();
         mapManager = GetComponent<MapManager>();
-
-        itemDataManager.InitializeItemDataUI();
-
-        mapManager.InitalizeMapUI();
+        skillManager = GetComponent<SkillManager>();
+        skillManager.Initialize();
     }
-
-    protected override void OnAdditiveInitiallize()
-    {
-        SpawnPlayerAfterLoadScene();
-
-        weapon = FindAnyObjectByType<Weapon>();
-        cameraManager = GetComponent<CameraManager>();
-        itemDataManager = GetComponent<ItemDataManager>();
-        mapManager = GetComponent<MapManager>();
-
-        itemDataManager.InitializeItemDataUI();
-
-        mapManager.InitalizeMapUI();
-    }
-
-    #region Loading Function
-    /// <summary>
-    /// ¾ÀÀ» º¯°æÇÒ ¶§ ½ÇÇàÇÏ´Â ÇÔ¼ö
-    /// </summary>
-    /// <param name="SceneName"> º¯°æÇÒ ¾À ÀÌ¸§</param>
-    public void ChangeToTargetScene(string SceneName, GameObject playerObject)
-    {
-        GameObject obj = Instantiate(playerObject, loadPlayerGameObject.transform);
-        obj.transform.position = Vector3.zero;        
-
-        loadPlayerGameObject.SetActive(false);
-
-        TargetSceneName = SceneName;
-    }
-
-    /// <summary>
-    /// ¾À ·ÎµùÀÌ ³¡³­ ÈÄ ÇÃ·¹ÀÌ¾î ½ºÆùÀ» ½ÇÇàÇÏ´Â ÇÔ¼ö
-    /// </summary>
-    public void SpawnPlayerAfterLoadScene()
-    {
-        if (loadPlayerGameObject.transform.childCount < 1)
-            return;
-
-        if (!isLoading)
-        {
-            loadPlayerGameObject.SetActive(true);
-            GameObject loadingPlayer = Instantiate(loadPlayerGameObject.transform.GetChild(0).gameObject);  // »õ·Î¿î ¾À¿¡ ÇÃ·¹ÀÌ¾î »ı¼º
-            loadingPlayer.name = "Player";
-
-            loadingPlayer.transform.position = Vector3.zero;
-
-            Destroy(loadPlayerGameObject.transform.GetChild(0).gameObject); // ÀúÀåµÈ ÇÃ·¹ÀÌ¾î ¿ÀºêÁ§Æ® Á¦°Å
-
-            player = loadingPlayer.GetComponent<Player>();
-        }
-    }
-
-    /// <summary>
-    /// ¸ÊÀ» ÀÌµ¿ÇÒ ¶§ È£ÃâµÇ´Â ÇÔ¼ö ( ·Îµù¾ÀÀ¸·Î ÀÌµ¿ )
-    /// </summary>
-    void ChangeToLoadingScene()
-    {
-        SceneManager.LoadScene("02_LoadingScene");
-        isLoading = true;
-    }
-    #endregion
 
 #if UNITY_EDITOR
     public bool isNPC = false;
@@ -172,12 +62,12 @@ public class GameManager : Singleton<GameManager>
         if (!isNPC)
         {
             onTalkNPC?.Invoke();
-            Debug.Log("ï¿½ï¿½È£ï¿½Û¿ï¿½ Å° ï¿½ï¿½ï¿½ï¿½");
+            Debug.Log("å ì™ì˜™í˜¸å ìŒœìš¸ì˜™ í‚¤ å ì™ì˜™å ì™ì˜™");
         }
         else
         {
             onTalkObj?.Invoke();
-            Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½È­");
+            Debug.Log("å ì™ì˜™å ì™ì˜™å ì™ì˜™íŠ¸å ì™ì˜™ å ì™ì˜™í™”");
         }
     }
 

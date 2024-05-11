@@ -14,13 +14,14 @@ public class PlayerLookVCam : MonoBehaviour
     /// </summary>
     public Vector3 offset = new Vector3(0.0f, 1.0f, 0.0f);
 
-    void Start()
+    void Awake()
     {
-        player = GameManager.Instance.Player;
+        player = FindAnyObjectByType<Player>();
     }
 
     void Update()
     {
+        //transform.localPosition = player.transform.position + offset;
         transform.localPosition = player.transform.position + offset;
     }
 }

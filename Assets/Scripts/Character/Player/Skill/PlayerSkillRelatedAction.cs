@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static PlayerSkills;
 
 public class PlayerSkillRelatedAction : MonoBehaviour, ILifter
 {
@@ -19,12 +20,10 @@ public class PlayerSkillRelatedAction : MonoBehaviour, ILifter
     /// </summary>
     Transform pickUpRoot;
 
-    PlayerSkills skill;
-
     /// <summary>
     /// 현재 선택된 스킬 (사용시 해당 스킬이 발동됨)
     /// </summary>
-    SkillName selectSkill = SkillName.RemoteBomb;
+    SkillName selectSkill = SkillName.TimeLock;
 
     /// <summary>
     /// 현재 선택된 스킬용 프로퍼티
@@ -36,14 +35,14 @@ public class PlayerSkillRelatedAction : MonoBehaviour, ILifter
         {
             if (selectSkill != value)
             {
-                if (reaction != null && reaction.IsSkill)     // 리모컨폭탄류의 스킬을 들고 있는 경우
+                if (reaction != null && reaction.IsSkill && GameManager.Instance.Skill.PlayerSkill.IsUableSkills[(int)value])     // 리모컨폭탄류의 스킬을 들고 있는 경우
                 {
 
                     switch (selectSkill)
                     {
                         case SkillName.RemoteBomb:
                         case SkillName.RemoteBomb_Cube:
-                            Drop();   // 땅에 버리기
+                            //Drop();   // 땅에 버리기
                             break;
                         case SkillName.IceMaker:
                         case SkillName.TimeLock:
@@ -60,13 +59,12 @@ public class PlayerSkillRelatedAction : MonoBehaviour, ILifter
                             else if (magnet != null)
                             {
                                 magnet.OffSkill();
-                                Drop();
+                                //Drop();
                             }
                             break;
                     }
                 }
                 selectSkill = value;            // 현재 스킬 설정
-                Debug.Log($"스킬 [{selectSkill}]로 설정");
 
                 onSkillChange?.Invoke(selectSkill);         // 현재 선택된 스킬을 알림
             }
@@ -107,6 +105,15 @@ public class PlayerSkillRelatedAction : MonoBehaviour, ILifter
             {
                 isPickUp = value;
                 animator.SetBool(Hash_IsPickUp, isPickUp);
+                if(reaction is Skill)
+                {
+                    animator.SetInteger(Hash_SkillNumber, (int)SelectSkill);
+                }
+                else
+                {
+                    animator.SetInteger(Hash_SkillNumber, SkillNumber_None);
+                }
+                onPickUp?.Invoke(value);
                 // 추가: 마그넷 애니메이션 등 다른 애니메이션 if로 구분하기
             }
         }
@@ -123,16 +130,41 @@ public class PlayerSkillRelatedAction : MonoBehaviour, ILifter
     /// <summary>
     /// 오브젝트를 들었을 경우를 알리는 델리게이트
     /// </summary>
-    public Action onPickUp;
+    public Action<bool> onPickUp;
 
     /// <summary>
-    /// f: 스킬 사용
+    /// 손 따라다니는 트랜스폼 이동하기 시작하라고 알리는 델리게이트
     /// </summary>
     public Action onHandRootMove;
+
+    /// <summary>
+    /// F : 스킬 사용
+    /// </summary>
+    public Action onSkill;
+
+    /// <summary>
+    /// X : 스킬 취소
+    /// </summary>
+    public Action onSkillCancel;
+
+    /// <summary>
+    /// 우클릭
+    /// </summary>
+    public Action onSkillInteraction;
+
+    /// <summary>
+    /// 특수스킬키를 눌렀을 때 발동되는 델리게이트
+    /// </summary>
+    public Action<SpecialKey> onSpecialKey;
 
     // Hashes
     readonly int Hash_IsPickUp = Animator.StringToHash("IsPickUp");
     readonly int Hash_Throw = Animator.StringToHash("Throw");
+    readonly int Hash_SkillNumber = Animator.StringToHash("SkillNumber");
+    readonly int Hash_IsSkillUse = Animator.StringToHash("IsSKillUse");
+    readonly int Hash_SpecialMotion = Animator.StringToHash("SpecialMotion");
+
+    const int SkillNumber_None = 0;
 
     private void Awake()
     {
@@ -140,20 +172,42 @@ public class PlayerSkillRelatedAction : MonoBehaviour, ILifter
 
         animator = GetComponent<Animator>();                          // 애니메이션은 자식 트랜스폼인 모델에서 처리
 
-        PlayerSkillController skillController = GetComponent<PlayerSkillController>();
-        skillController.rightClick += PickUpObjectDetect;       // 우클릭 = 물건 들기
-        skillController.onThrow += Throw;                 // 던지기
-        skillController.onCancel += Drop;                // 취소
-        skillController.onSkillActive += OnSkillAction;
-        skillController.onSkillChange += (skillName) => SelectSkill = skillName;
-
         HandRoot handRoot = transform.GetComponentInChildren<HandRoot>();       // 플레이어 손 위치를 찾기 귀찮아서 스크립트 넣어서 찾음
         handRootTracker = transform.GetComponentInChildren<HandRootTracker>();  // 플레이어 손 위치를 추적하는 트랜스폼 => 집어든 오브젝트를 자식으로 놨을 때 정면을 플레이어의 정면으로 맞추기 위해
+        PlayerSkillController skillController = GetComponent<PlayerSkillController>();
+        skillController.rightClick += PickUpObjectDetect;       // 우클릭 = 물건 들기
+        skillController.rightClick += onSkillInteraction;
+
+        skillController.onThrow += ThrowMotion;                 // 던지기
+
+        skillController.onCancel += () =>
+        {
+            // 던지고 있는 도중에는 취소가 안되도록 설정
+            if (!isThrowing)
+            {
+                onSkillCancel?.Invoke();
+                Drop();
+                handRootTracker.OffTracking();
+            }
+        };
+        
+
+        skillController.onSkillActive += OnSkillAction;
+
+        skillController.onSkillChange += (skillName) => SelectSkill = skillName;
 
         onHandRootMove += () => handRootTracker.OnTracking(handRoot.transform);    // 스킬 사용시 손위치추적기 동작
-        skillController.onCancel += handRootTracker.OffTracking;
 
-        skill = GetComponent<PlayerSkills>();
+        int enumLenght = Enum.GetValues(typeof(PlayerSkills.SpecialKey)).Length;
+        for (int i = 0; i < enumLenght; i++)
+        {
+            int index = i;      // 반복문 안에서 람다식을 사용할 때 변수값이 이상해 지는 것 방지하기위해 반복문 안에 변수 선언 후 사용
+            skillController.onSpecialKey[i] += () => {
+                animator.SetInteger(Hash_SpecialMotion, index);
+                onSpecialKey?.Invoke((SpecialKey)index);
+
+            };
+        }
     }
 
     /// <summary>
@@ -206,18 +260,30 @@ public class PlayerSkillRelatedAction : MonoBehaviour, ILifter
         // 상호작용 키 들었을 때 행동 야숨에서 확인하기
     }
 
+
+    bool isThrowing = false;
+
     /// <summary>
-    /// 오브젝트 던지는 메서드
+    /// 오브젝트 던지는 모션을 취하는 함수
     /// </summary>
-    void Throw()
+    void ThrowMotion()
     {
         if (IsPickUp && reaction != null && reaction.IsThrowable)
         {
             animator.SetTrigger(Hash_Throw);
-            reaction.TryThrow(throwPower, transform);
-            IsPickUp = false;
-            reaction = null;
+            isThrowing = true;
         }
+    }
+
+    /// <summary>
+    /// 오브젝트 던지는 실제 행동을 하는 함수 (애니메이션 이벤트에서 동작)
+    /// </summary>
+    void ThrowEvent()
+    {
+        reaction.TryThrow(throwPower, transform);
+        IsPickUp = false;
+        isThrowing = false;
+        reaction = null;
     }
 
     /// <summary>
@@ -227,10 +293,10 @@ public class PlayerSkillRelatedAction : MonoBehaviour, ILifter
     {
         if (!IsPickUp)
         {
-            IsPickUp = true;
             onHandRootMove?.Invoke();
             reaction = pickUpObject;
             reaction.transform.rotation = Quaternion.identity;  // 물건의 회전값 없애기 = 플레이어의 정면과 맞추기
+            IsPickUp = true;
         }
     }
 
@@ -254,7 +320,17 @@ public class PlayerSkillRelatedAction : MonoBehaviour, ILifter
         if (!IsPickUp)
         {
             onHandRootMove?.Invoke();
-            //reaction = skill.CurrentOnSkill;  // 손에 드는 오브젝트는 현재 사용중인 스킬
+            onSkill.Invoke();
         }
+    }
+
+    public void SetSkillUseAnimation(bool isUse)
+    {
+        animator.SetBool(Hash_IsSkillUse, isUse);
+    }
+
+    public void SetSelectSkill(SkillName skillName)
+    {
+       SelectSkill = skillName;
     }
 }

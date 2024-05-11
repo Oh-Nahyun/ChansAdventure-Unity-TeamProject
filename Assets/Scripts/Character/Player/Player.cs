@@ -84,9 +84,10 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
     public float turnSpeed = 10.0f;
 
     /// <summary>
-    /// 중력값 -9.81f / 04.15 
+    /// 중력
     /// </summary>
-    readonly float gravity = -9.81f;
+    //[Range(-1, 1)]
+    //public float gravity = 0.96f;
 
     /// <summary>
     /// 슬라이드 정도
@@ -94,19 +95,15 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
     public float slidePower = 5.0f;
 
     /// <summary>
-    /// 플레이어의 움직임 Velocity 값 / 04.15
-    /// </summary>
-    public Vector3 playerVelocity;
-
-    /// <summary>
     /// 점프 시간 제한
     /// </summary>
     //public float jumpTimeLimit = 4.0f;
 
     /// <summary>
-    /// 점프 시간 ( 애니메이션 점프 체공 시간 ) / 04.15 
+    /// 점프 시간
     /// </summary>
-    readonly float jumpTime = 0.9f;
+    //[SerializeField]
+    //public float jumpTime;
 
     /// <summary>
     /// 점프 정도
@@ -121,7 +118,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
     /// <summary>
     /// 점프 중인지 아닌지 확인용 변수
     /// </summary>
-    public bool isJumping = false;
+    bool isJumping = false;
 
     /// <summary>
     /// 점프가 가능한지 확인하는 프로퍼티 (점프중이 아닐 때)
@@ -141,24 +138,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
     /// <summary>
     /// 주변 시야 카메라
     /// </summary>
-    GameObject cameraRoot;
-
-    /// <summary>
-    /// cameraRoot 게임 오브젝트를 접근하기 위한 프로퍼티
-    /// </summary>
-    public GameObject CameraRoot
-    {
-        get 
-        {
-            if(cameraRoot == null)
-            {
-                cameraRoot = FindAnyObjectByType<PlayerLookVCam>().gameObject;
-            }
-
-            return cameraRoot;
-        } 
-    }
-
+    public GameObject cameraRoot;
 
     /// <summary>
     /// 주변 시야 카메라 회전 정도
@@ -293,18 +273,21 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
     #region Player LifeCycle Method
     void Awake()
     {
-        // initialize
         controller = GetComponent<PlayerController>();
         characterController = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
 
         interaction = GetComponent<Interaction>();
-
-        cameraRoot = FindAnyObjectByType<PlayerLookVCam>().gameObject;
     }
 
     void Start()
     {
+        // exception
+        if (cameraRoot == null)
+        {
+            Debug.LogError("CameraRoot가 비어있습니다. CameraRoot Prefab 오브젝트를 넣어주세요 ( PlayerLookVCam 스크립트 있는 오브젝트 )");
+        }
+
         // controller
         controller.onMove += OnMove;
         controller.onMoveModeChange += OnMoveModeChange;
@@ -319,15 +302,12 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
         inventory = new Inventory(this.gameObject, 16);
         //GameManager.Instance.ItemDataManager.InventoryUI.InitializeInventoryUI(inventory); // 인벤 UI 초기화
         EquipPart = new InventorySlot[partCount]; // EquipPart 배열 초기화
-
-        Test_AddItem();
     }
 
     private void Update()
     {        
         LookRotation();
         Jump();
-        playerVelocity.y += gravity * Time.deltaTime; // 적용되고 있는 플레이어의 중력 / 04.15 추가
     }
 
     private void FixedUpdate()
@@ -479,46 +459,15 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
         }
     }
 
-    /// <summary>
-    /// 플레이어 점프를 실행하는 함수 ( Update ) / 04.15 추가
-    /// </summary>
     void Jump()
     {
         // 점프가 가능한 경우
-        // IsJumpAvailavle => !isJumping
-        if (IsJumpAvailable) // 점프가 활성화 되면 실행
+        if (IsJumpAvailable)
         {
-            StartCoroutine(Jump_co());
-
             animator.SetTrigger(IsJumpHash);
-        }
-        else // 점프 비활성화 중일 때 실행
-        {
-            playerVelocity.y = 0f; // 04.15 추가
         }
 
         isJumping = true;
-
-        characterController.Move(playerVelocity * Time.fixedDeltaTime); // Move 값 추가 / 04.15 
-    }
-
-    /// <summary>
-    /// 점프를 시작할때 실행하는 코루틴 / 04.15
-    /// </summary>
-    IEnumerator Jump_co()
-    {
-        float curHeight = 0f; // 현재 높이
-        yield return new WaitForSeconds(0.1f); // Jump 딜레이
-
-        while(curHeight < jumpTime) // jumpTime 만큼 실행
-        {
-            curHeight += Time.deltaTime;
-
-            playerVelocity.y = curHeight * -jumpPower * gravity; // 점프 할 동안 y값을 Time.deltaTime만큼 받는다
-            characterController.Move(playerVelocity * Time.deltaTime); // Jump할 때 실행하는 .Move메소드 / 04.15 
-
-            yield return null;
-        }
     }
 
     /// <summary>
@@ -692,13 +641,13 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
         // 임시 온오프
         if (isOpenedLargeMap == false)
         {
-            GameManager.Instance.MapManager.OpenMapUI();
+            MapManager.Instance.OpenMapUI();
             isOpenedLargeMap = true;
         }
         else if (isOpenedLargeMap == true)
         {
-            GameManager.Instance.MapManager.SetCameraPosition(transform.position);
-            GameManager.Instance.MapManager.CloseMapUI();
+            MapManager.Instance.SetCameraPosition(transform.position);
+            MapManager.Instance.CloseMapUI();
             isOpenedLargeMap = false;
         }
     }
@@ -750,7 +699,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IBattler
 
     public void Defence(float damage)
     {
-        
+        Debug.Log("맞았다");
     }
     //--------------------------------------------------------------------------------------------------
 #endif

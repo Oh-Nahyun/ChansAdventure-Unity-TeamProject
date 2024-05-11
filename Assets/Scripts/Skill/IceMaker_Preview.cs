@@ -14,18 +14,19 @@ public class IceMaker_Preview : MonoBehaviour
     Animator animator;
     Material material;
 
-    Color originColor;
-    Color clearColor;
+    Transform icon;
 
     readonly int Hash_IsValid = Animator.StringToHash("IsValid");
-    //readonly int Hash_Generate = Animator.StringToHash("Generate");
+
+    readonly int ID_SettingAlpha = Shader.PropertyToID("_SettingAlpha");
+
 
     private void Awake()
     {
+        icon = transform.GetChild(1);
         animator = GetComponent<Animator>();
         Renderer renderer = GetComponentInChildren<Renderer>();
         material = renderer.material;
-        originColor = material.color;
     }
 
     private void OnEnable()
@@ -38,12 +39,11 @@ public class IceMaker_Preview : MonoBehaviour
         if (!isNotBlink)
         {
             //Mathf.cos 1->0 3초
+            icon.gameObject.SetActive(true);
             elapsedTime += Time.deltaTime * intervalTime;
             float alpha = (Mathf.Cos(elapsedTime) + 1) * 0.5f;
 
-            Color color = originColor;
-            color.a = alpha * color.a;
-            material.color = color;
+            material.SetFloat(ID_SettingAlpha, alpha);
         }
     }
 
@@ -64,7 +64,8 @@ public class IceMaker_Preview : MonoBehaviour
     public void SetVisible()
     {
         isNotBlink = true;
-        material.color = originColor;
+        material.SetFloat(ID_SettingAlpha, 1.0f);
+        icon.gameObject.SetActive(true);
     }
     /// <summary>
     /// 프리뷰를 안보이게 만드는 메서드
@@ -72,7 +73,8 @@ public class IceMaker_Preview : MonoBehaviour
     public void SetInvisible()
     {
         isNotBlink = true;
-        material.color = Color.clear;
+        material.SetFloat(ID_SettingAlpha, 0.0f);
+        icon.gameObject.SetActive(false);
     }
     /// <summary>
     /// 얼음을 생성 가능한 위치를 가져오는 메서드

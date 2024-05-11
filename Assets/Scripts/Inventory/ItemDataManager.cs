@@ -41,7 +41,7 @@ public class ItemDataManager : MonoBehaviour
     /// </summary>
     public GameObject CharaterRenderCameraPoint;
 
-    public void InitializeItemDataUI()
+    void Awake()
     {
         inventoryUI = FindAnyObjectByType<InventoryUI>(); // find inventoryUI
     }
