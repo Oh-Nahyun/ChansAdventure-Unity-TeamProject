@@ -218,5 +218,6 @@ public class MenuPanel : MonoBehaviour
         GameManager.Instance.MapManager.OpenMiniMapUI();
 
         GameManager.Instance.MapManager.IsOpenedLargeMap = false;
+        GameManager.Instance.Player.UIPanelClose();
     }
 }

@@ -1040,6 +1040,13 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         inventory = invenData;
     }
 
+    /// <summary>
+    /// UI가 닫힐 때 실행하는 함수
+    /// </summary>
+    public void UIPanelClose()
+    {
+        isAnyUIPanelOpened = false;
+    }
 
     #endregion
 
