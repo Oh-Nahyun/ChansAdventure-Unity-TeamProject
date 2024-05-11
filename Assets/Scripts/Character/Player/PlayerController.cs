@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 using static UnityEngine.InputSystem.InputAction;
 
 /// <summary>
@@ -15,25 +16,38 @@ public class PlayerController : MonoBehaviour
 
     // movment delegate
     public Action<Vector2, bool> onMove;
-    public Action onMoveModeChange;
+    public Action onMoveRunMode;
+    public Action onMoveWalkMode;
     public Action<Vector2, bool> onLook;
-    public Action onSlide;
     public Action<bool> onJump;
+    public Action<bool> onSlide;
     public Action onSkillModeChange;
 
     // behavior delegate
     public Action onInteraction;
     public Action onInventoryOpen;
     public Action onMapOpen;
+    public Action onOpenQuest;
+    public Action onMenuOpen;
+
+    // 컴포넌트
+    Weapon weapon;
 
     void Awake()
     {
         playerInputAction = new PlayerinputActions();
+        weapon = GetComponent<Weapon>();
+    }
+
+    void Start()
+    {
+        GameManager.Instance.TextBoxManager.isTalkAction += (talk) => IsTalk(talk);
     }
 
     void OnEnable()
     {
         playerInputAction.Player.Enable();
+
         // Player Movement
         playerInputAction.Player.Move.performed += OnMoveInput;
         playerInputAction.Player.Move.canceled += OnMoveInput;
@@ -41,7 +55,8 @@ public class PlayerController : MonoBehaviour
         playerInputAction.Player.LookAround.canceled += OnLookInput;
         playerInputAction.Player.Jump.performed += OnJumpInput;
         playerInputAction.Player.Slide.performed += OnSlideInput;
-        playerInputAction.Player.MoveModeChange.performed += OnMoveModeChangeInput;
+        playerInputAction.Player.MoveModeChange.performed += OnMoveRunModeInput;
+        playerInputAction.Player.MoveModeChange.canceled += OnMoveWalkModeInput;
 
         // Player Inventory
         playerInputAction.Player.Open_Inventory.performed += OnOpenInventory;
@@ -49,6 +64,10 @@ public class PlayerController : MonoBehaviour
 
         // Map
         playerInputAction.Player.Open_Map.performed += OnOpenMap;
+        // Quest
+        playerInputAction.Player.Open_Quest.performed += OnOpenQuest;
+        // UI
+        playerInputAction.Player.Open_Menu.performed += OnOpenMenu;
 
         //playerInputAction.Player.ActiveSkillMode.performed += OnSkillModeChange;
     }
@@ -56,7 +75,11 @@ public class PlayerController : MonoBehaviour
     void OnDisable()
     {
         //playerInputAction.Player.ActiveSkillMode.performed -= OnSkillModeChange;
-
+    
+        // UI
+        playerInputAction.Player.Open_Menu.performed -= OnOpenMenu;
+        // Quest
+        playerInputAction.Player.Open_Quest.performed -= OnOpenQuest;
         // Map
         playerInputAction.Player.Open_Map.performed -= OnOpenMap;
 
@@ -65,13 +88,15 @@ public class PlayerController : MonoBehaviour
         playerInputAction.Player.Get_Item.performed -= OnGetItem;
 
         // Player Movement
-        playerInputAction.Player.MoveModeChange.performed -= OnMoveModeChangeInput;
+        playerInputAction.Player.MoveModeChange.canceled -= OnMoveWalkModeInput;
+        playerInputAction.Player.MoveModeChange.performed -= OnMoveRunModeInput;
         playerInputAction.Player.Slide.performed -= OnSlideInput;
         playerInputAction.Player.Jump.performed -= OnJumpInput;
         playerInputAction.Player.LookAround.canceled -= OnLookInput;
         playerInputAction.Player.LookAround.performed -= OnLookInput;
         playerInputAction.Player.Move.canceled -= OnMoveInput;
         playerInputAction.Player.Move.performed -= OnMoveInput;
+
 
         playerInputAction.Player.Disable();
     }
@@ -100,15 +125,30 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void OnMoveInput(InputAction.CallbackContext context)
     {
-        onMove?.Invoke(context.ReadValue<Vector2>(), !context.canceled);
+        if (isTalk)
+        {
+            onMove?.Invoke(new Vector2(0,0), false);
+        }
+        else
+        {
+            onMove?.Invoke(context.ReadValue<Vector2>(), !context.canceled);
+        }
     }
 
     /// <summary>
-    /// 이동 모드 변경 함수
+    /// 달리기 모드 함수
     /// </summary>
-    private void OnMoveModeChangeInput(CallbackContext _)
+    private void OnMoveRunModeInput(CallbackContext _)
     {
-        onMoveModeChange?.Invoke();
+        onMoveRunMode?.Invoke();
+    }
+
+    /// <summary>
+    /// 걷기 모드 함수
+    /// </summary>
+    private void OnMoveWalkModeInput(CallbackContext _)
+    {
+        onMoveWalkMode?.Invoke();
     }
 
     /// <summary>
@@ -116,15 +156,16 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void OnLookInput(InputAction.CallbackContext context)
     {
-        onLook?.Invoke(context.ReadValue<Vector2>(), context.performed);
-    }
-
-    /// <summary>
-    /// 회피 처리 함수
-    /// </summary>
-    private void OnSlideInput(InputAction.CallbackContext context)
-    {
-        onSlide?.Invoke();
+        if (weapon.IsZoomIn || isTalk)
+        {
+            // 카메라가 줌을 당길 경우 => 카메라 회전 중지
+            onLook?.Invoke(context.ReadValue<Vector2>(), !context.performed);
+        }
+        else
+        {
+            // 그 외의 경우 => 주변 시야 확인 가능
+            onLook?.Invoke(context.ReadValue<Vector2>(), context.performed);
+        }
     }
 
     /// <summary>
@@ -132,7 +173,31 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void OnJumpInput(InputAction.CallbackContext context)
     {
-        onJump?.Invoke(context.performed);
+        if (weapon.IsZoomIn || isTalk)
+        {
+            // 카메라가 줌을 당길 경우 => 점프 불가능
+            onJump?.Invoke(!context.performed);
+        }
+        else
+        {
+            onJump?.Invoke(context.performed);
+        }
+    }
+
+    /// <summary>
+    /// 회피 처리 함수
+    /// </summary>
+    private void OnSlideInput(InputAction.CallbackContext context)
+    {
+        if (weapon.IsZoomIn || isTalk)
+        {
+            // 카메라가 줌을 당길 경우 => 슬라이드 불가능
+            onSlide?.Invoke(!context.performed);
+        }
+        else
+        {
+            onSlide?.Invoke(context.performed);
+        }
     }
     #endregion
 
@@ -165,16 +230,86 @@ public class PlayerController : MonoBehaviour
         onMapOpen?.Invoke();
     }
 
+    /// <summary>
+    /// 퀘스트창 키는 함수 ( L key )
+    /// </summary>
+    /// <param name="context"></param>
+    private void OnOpenQuest(InputAction.CallbackContext context)
+    {
+        onOpenQuest?.Invoke();
+    }
+
+    private void OnOpenMenu(CallbackContext context)
+    {
+        onMenuOpen?.Invoke();
+    }
+
     #endregion
 
     /// <summary>
     /// 입력 처리 불가 처리 코루틴
     /// </summary>
-    /// <returns></returns>
-    public IEnumerator StopInput()
+    /// <param name="clipPath">애니메이션 클립의 리소스 경로</param>
+    public IEnumerator StopInput(string clipPath)
     {
-        playerInputAction.Player.Disable();          // Player 액션맵 비활성화
-        yield return new WaitForSeconds(4.0f);
-        playerInputAction.Player.Enable();           // Player 액션맵 활성화
+        float waitingTime = GetAnimationLegth(clipPath);    // 애니메이션 클립 로드
+
+        if (clipPath == weapon.clipPath_None)
+        {
+            waitingTime *= 0.5f;
+        }
+        else if (clipPath == weapon.clipPath_SwordSheath2)
+        {
+            // 검 공격 시간 고려
+            waitingTime += GetAnimationLegth(weapon.clipPath_Sword1);
+
+            //Debug.Log(GetAnimationLegth(weapon.clipPath_Sword1)); // 1.5초
+            //Debug.Log(GetAnimationLegth(weapon.clipPath_Sword2)); // 2.43초
+
+            //if (randomAttackSelector.AttackModeHash == 0) // 일반 공격
+            //{
+            //    waitingTime += GetAnimationLegth(weapon.clipPath_Sword1);
+            //}
+            //else if (randomAttackSelector.AttackModeHash == 1) // Critical 공격
+            //{
+            //    waitingTime += GetAnimationLegth(weapon.clipPath_Sword2);
+            //}
+        }
+
+        playerInputAction.Player.Disable();                 // Player 액션맵 비활성화
+        yield return new WaitForSeconds(waitingTime);       // waitingTime만큼 딜레이
+        playerInputAction.Player.Enable();                  // Player 액션맵 활성화
     }
+
+    /// <summary>
+    /// 애니메이션 클립 로드 및 재생 시간 출력 함수
+    /// </summary>
+    /// <param name="clipPath">애니메이션 클립의 리소스 경로</param>
+    /// <returns>애니메이션 재생 시간</returns>
+    public float GetAnimationLegth(string clipPath)
+    {
+        AnimationClip clip = Resources.Load<AnimationClip>(clipPath);
+        if (clip != null)
+        {
+            return clip.length;
+        }
+        else
+        {
+            Debug.Log("애니메이션 재생 시간을 출력할 수 없습니다.");
+            return -1.0f;
+        }
+    }
+
+    bool isTalk = false;
+
+    /// <summary>
+    /// 대화중임을 확인하는 함수
+    /// </summary>
+    /// <param name="talk">true면 대화중</param>
+    /// <returns></returns>
+    void IsTalk(bool talk)
+    {
+        isTalk = talk;
+    }
+
 }

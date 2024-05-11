@@ -29,10 +29,16 @@ public class ArrowFirePoint : MonoBehaviour
     /// </summary>
     Transform fireTransform;
 
+    /// <summary>
+    /// 화살 방향 트랜스폼
+    /// </summary>
+    Transform arrowDir;
+
     private void Start()
     {
         rightHand = GameObject.FindWithTag("RightHand").transform;
         fireTransform = transform.GetChild(0);
+        arrowDir = transform.GetComponentInParent<Player>().transform;
     }
 
     private void Update()
@@ -46,6 +52,15 @@ public class ArrowFirePoint : MonoBehaviour
     public void FireArrow()
     {
         //Instantiate(arrowPrefab, fireTransform); // 화살 생성 후 발사
+        Factory.Instance.GetObject(type, fireTransform.position, new Vector3(90.0f, arrowDir.eulerAngles.y, 0f));
+    }
+
+    /// <summary>
+    /// 인벤토리의 화살을 발사하는 함수
+    /// </summary>
+    /// <param name="arrow">화살 아이템 오브젝트</param>
+    public void GetFireArrow(PoolObjectType type, GameObject arrow)
+    {
         Factory.Instance.GetObject(type, fireTransform.position, new Vector3(90.0f, 0f, 0f));
     }
 }

@@ -27,8 +27,9 @@ public class Factory : Singleton<Factory>
     DamageTextPool damageTextPool;
     ItemPool itemPool;
     NightmareDragonPool nightmareDragonPool;
+    FireBallPool fireballPool;
 
-    ArrowPool arrowPool; //
+    ArrowPool arrowPool;
 
     protected override void OnInitialize()
     {
@@ -55,10 +56,14 @@ public class Factory : Singleton<Factory>
         nightmareDragonPool = GetComponentInChildren<NightmareDragonPool>();
         if(nightmareDragonPool != null) nightmareDragonPool.Initialize();
 
+        fireballPool = GetComponentInChildren<FireBallPool>();
+        if (fireballPool != null) fireballPool.Initialize();
+
         // Inventory Branch
         itemPool = GetComponentInChildren<ItemPool>();
         if (itemPool != null) itemPool.Initialize();
-        
+
+        // Player Weapon Arrow
         arrowPool = GetComponentInChildren<ArrowPool>();
         if (arrowPool != null)
             arrowPool.Initialize();
@@ -211,23 +216,46 @@ public class Factory : Singleton<Factory>
 
     // Inventory Branch
     /// <summary>
-    /// Factory에서 아이템을 생성하는 함수
+    /// Factory에서 아이템 1개 생성하는 함수
     /// </summary>
     /// <param name="slot">소환할 아이템 슬롯</param>
     /// <param name="position">소환할 위치</param>
     /// <returns></returns>
-    public GameObject GetItemObject(InventorySlot slot, Vector3? position = null)
+    public GameObject GetItemObject(ItemData itemData, Vector3? position = null)
     {
-        return itemPool.GetItemObject(slot, position);
+        GameObject obj = itemPool.GetItemObject(itemData, position);
+
+        return obj;
     }
 
-    // 나중에 빼야됨  ----------------------------------------------------------------------
-    //public GameObject GetItemObject(ItemData data, Vector3? position = null)
-    //{
-    //    return itemPool.GetItemObject(data, position);
-    //}
-    // ---------------------------------------------------------------------------------------
-    //
+    /// <summary>
+    /// 아이템들을 생성하는 함수
+    /// </summary>
+    /// <param name="itemData">생성할 아이템 데이터</param>
+    /// <param name="count">아이탬 개수</param>
+    /// <param name="position">아이템 위치</param>
+    /// <param name="getNoise">true면 포지션 + 랜덤위치 설정, false면 position에 생성</param>
+    /// <returns></returns>
+    public GameObject[] GetItemObjets(ItemData itemData, uint count = 1, Vector3? position = null, bool getNoise = false)
+    {
+        GameObject[] objs = new GameObject[count];  // 아이템 개수만큼 증가
+        Vector3? itemPosition = Vector3.zero;       // 설정될 아이템 위치
+
+        for(int i = 0; i < objs.Length; i++)
+        {
+            Vector3 noisePosition = Random.onUnitSphere.normalized * 1.5f;  // 구 범위네 랜덤 위치 설정
+            if(getNoise)
+            {
+                itemPosition = position + noisePosition;                    // 아이템 위치 설정
+            }
+
+            objs[i] = itemPool.GetItemObject(itemData, itemPosition);       // 배열에 아이템 저장
+        }
+
+        return objs;    // 아이템풀에 아이템 반환
+    }
+
+    // Player Weapon Arrow
     /// <summary>
     /// 풀에 있는 게임 오브젝트 하나 가져오기
     /// </summary>
@@ -247,5 +275,14 @@ public class Factory : Singleton<Factory>
         }
 
         return result;
+    }
+
+    public FireBall GetFireBall()
+    {
+        return fireballPool.GetObject();
+    }
+    public FireBall GetFireBall(Vector3 position, float angle = 0.0f)
+    {
+        return fireballPool.GetObject(position, angle * Vector3.forward);
     }
 }

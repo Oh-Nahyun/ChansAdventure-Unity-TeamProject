@@ -32,8 +32,6 @@ public interface IBattler
     /// <param name="isWeakPoint">약점인지 아닌지 확인용(true이면 약점, false이면 약점아님</param>
     void Attack(IBattler target, bool isWeakPoint = false);
 
-    
-
     /// <summary>
     /// 기본 방어 함수
     /// </summary>

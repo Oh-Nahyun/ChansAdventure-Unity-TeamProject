@@ -59,9 +59,18 @@ public class Test_EquipCharacter : MonoBehaviour, IEquipTarget, IHealth
     }
 
     Inventory inventory;
-    PlayerinputActions input;
 
+    /// <summary>
+    /// 인벤토리 접근을 위한 프로퍼티
+    /// </summary>
+    public Inventory Inventory => inventory;
+    
+    /// <summary>
+    /// 아이템 수집을 위한 클래스
+    /// </summary>
     Interaction interaction;
+
+    PlayerinputActions input;
 
     int partCount = Enum.GetNames(typeof(EquipPart)).Length;
 

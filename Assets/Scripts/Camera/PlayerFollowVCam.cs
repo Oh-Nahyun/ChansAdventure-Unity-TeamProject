@@ -6,26 +6,54 @@ using UnityEngine;
 public class PlayerFollowVCam : MonoBehaviour
 {
     /// <summary>
-    /// Ä«¸Ş¶ó º¯°æ ¼Óµµ
+    /// ì¹´ë©”ë¼ ì›ë˜ ìœ„ì¹˜
+    /// </summary>
+    public Vector3 followCamPosition = new Vector3(0.0f, 1.65f, -4.0f);
+
+    /// <summary>
+    /// ì¹´ë©”ë¼ ë³€ê²½ ì†ë„
     /// </summary>
     public float speed = 1.0f;
 
     /// <summary>
-    /// Ä«¸Ş¶ó Zoom Á¤µµ
+    /// ì¹´ë©”ë¼ Zoom ì •ë„
     /// </summary>
     readonly Vector3 zoomIn = new Vector3(0.25f, 0.0f, 2.0f);
     readonly Vector3 zoomOut = new Vector3(0.0f, 0.25f, -2.0f);
 
-    // ÄÄÆ÷³ÍÆ®µé
+    /// <summary>
+    /// í”Œë ˆì´ì–´ Forward ë°©í–¥ì— ìœ„ì¹˜í•œ íŠ¸ëœìŠ¤í¼
+    /// </summary>
+    Transform lookAtPosition;
+
+    /// <summary>
+    /// í”Œë ˆì´ì–´ ì¹´ë©”ë¼ ìœ„ì¹˜ íŠ¸ëœìŠ¤í¼
+    /// </summary>
+    Transform cameraRoot;
+
+    /// <summary>
+    /// í™”ì‚´ ì¡°ì¤€ UI
+    /// </summary>
+    ArrowAimUI arrowAimUI;
+
+    // ì»´í¬ë„ŒíŠ¸ë“¤
+    Player player;
     Weapon weapon;
     CinemachineVirtualCamera vcam;
     Cinemachine3rdPersonFollow follow;
 
     private void Awake()
     {
+        player = FindAnyObjectByType<Player>();
         weapon = FindAnyObjectByType<Weapon>();
         vcam = GetComponent<CinemachineVirtualCamera>();
         follow = vcam.GetCinemachineComponent<Cinemachine3rdPersonFollow>();
+        lookAtPosition = GameObject.FindWithTag("LookAtPosition").transform;
+        cameraRoot = GameObject.FindWithTag("CameraRoot").transform;
+        arrowAimUI = GameObject.FindWithTag("ArrowAimUI").GetComponent<ArrowAimUI>();
+        arrowAimUI.gameObject.SetActive(false);
+
+        vcam.Follow = cameraRoot; // cameraRoot ì—°ê²°
     }
 
     private void Update()
@@ -33,33 +61,27 @@ public class PlayerFollowVCam : MonoBehaviour
         ChangeCameraZoom();
     }
 
+    /// <summary>
+    /// í”Œë ˆì´ì–´ê°€ í™”ì‚´ì„ ì‚¬ìš©í•  ê²½ìš°ì˜ ì¹´ë©”ë¼ ì„¸íŒ… í•¨ìˆ˜
+    /// </summary>
     void ChangeCameraZoom()
     {
-        if (weapon.IsBowEquip && weapon.IsArrowEquip) // Ä³¸¯ÅÍ°¡ È°À» ÀåºñÇÏ°í ÀÖ°í È­»ìÀ» ÀåÀüÇÏ°í ÀÖ´Â °æ¿ì
+        if (weapon.IsBowEquip && weapon.IsArrowEquip) // ìºë¦­í„°ê°€ í™œì„ ì¥ë¹„í•˜ê³  ìˆê³  í™”ì‚´ì„ ì¥ì „í•˜ê³  ìˆëŠ” ê²½ìš°
         {
-            ///// CanZoomÀÌ trueÀÎ »óÅÂ
-            ///// ¸¶¿ì½º ¿ŞÂÊ ¹öÆ°À» ´©¸£¸é ÁÜÀÎÀÌ µÇ°í, ZoomInÀÌ true°¡ µÇ¾î¾ßÇÑ´Ù. (È°½ÃÀ§¸¦ ´ç±ä´Ù.)
-            ///// ¸¶¿ì½º ¿ŞÂÊ ¹öÆ°À» ´©¸£´Ù°¡ ¶¼¸é ÁÜ¾Æ¿ôÀÌ µÇ°í, ZoomInÀÌ false°¡ µÇ¾î¾ßÇÑ´Ù. (È­»ìÀ» ½ğ´Ù.)
-
-            // ÇÃ·¹ÀÌ¾î°¡ ¸¶¿ì½º ¿ŞÂÊ ¹öÆ°À» ´©¸£°í ÀÖ´Â °æ¿ì
+            // í”Œë ˆì´ì–´ê°€ ë§ˆìš°ìŠ¤ ì™¼ìª½ ë²„íŠ¼ì„ ëˆ„ë¥´ê³  ìˆëŠ” ê²½ìš°
             if (Input.GetMouseButtonDown(0))
             {
-                // vcam.transform.rotation = Quaternion.LookRotation(player.transform.forward, Vector3.up); // È°½ÃÀ§¸¦ ´ç±æ ¶§, Ä³¸¯ÅÍ¿Í Ä«¸Ş¶ó°¡ °°Àº ¹æÇâ ¹Ù¶óº¸±â
                 StopAllCoroutines();
                 StartCoroutine(Timer(true));
-                weapon.IsZoomIn = true;
-                weapon.LoadArrowAfter();
-                Debug.Log("Camera Zoom-In");
+                // Debug.Log("Camera Zoom-In");
             }
 
-            // ÇÃ·¹ÀÌ¾î°¡ ¸¶¿ì½º ¿ŞÂÊ ¹öÆ°¿¡¼­ ¶¾ °æ¿ì
+            // í”Œë ˆì´ì–´ê°€ ë§ˆìš°ìŠ¤ ì™¼ìª½ ë²„íŠ¼ì—ì„œ ë—€ ê²½ìš°
             if (Input.GetMouseButtonUp(0))
             {
                 StopAllCoroutines();
                 StartCoroutine(Timer(false));
-                weapon.IsZoomIn = false;
-                weapon.LoadArrowAfter();
-                Debug.Log("Camera Zoom-Out");
+                // Debug.Log("Camera Zoom-Out");
             }
         }
         else
@@ -69,17 +91,42 @@ public class PlayerFollowVCam : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// ë§ˆìš°ìŠ¤ ì…ë ¥ì— ë”°ë¥¸ ì¹´ë©”ë¼ ì¤Œ ê´€ë ¨ í•¨ìˆ˜
+    /// </summary>
+    /// <param name="IsZoom">trueì´ë©´ ë§ˆìš°ìŠ¤ ì™¼ìª½ ë²„íŠ¼ì„ ëˆ„ë¥´ê³  ìˆë‹¤ëŠ” ì˜ë¯¸ì´ê³ , falseì´ë©´ ë—ë‹¤ëŠ” ì˜ë¯¸ì´ë‹¤.</param>
     IEnumerator Timer(bool IsZoom)
     {
         float timeElapsed = 0.0f;
-        while (true)
+        while (timeElapsed < 1.0f)
         {
             timeElapsed += speed * Time.deltaTime;
 
             if (IsZoom)
+            {
+                //cameraRoot.forward = player.transform.forward; // íšŒì „ ë°©í–¥ ì¼ì¹˜ì‹œí‚¤ê¸°
+                //cameraRoot.position = lookAtPosition.position + new Vector3(1.0f, 0.0f, -1.0f); // ì¹´ë©”ë¼ ìµœì¢… ìœ„ì¹˜ ì„¤ì •
+                cameraRoot.rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f); // ì¹´ë©”ë¼ ìµœì¢… íšŒì „ ì„¤ì • (ë†’ì´)
+
                 follow.ShoulderOffset = Vector3.Lerp(zoomOut, zoomIn, timeElapsed);
+                follow.Damping = new Vector3(0.0f, 0.0f, 0.0f); // ì¹´ë©”ë¼ Damping ì œê±°
+                vcam.LookAt = lookAtPosition;                   // ì¹´ë©”ë¼ ëª©í‘œë¬¼ ì„¤ì •
+                weapon.IsZoomIn = true;                         // í™œì´ ì¡°ê¸ˆì´ë¼ë„ ë‹¹ê²¨ì§€ë©´ ZoomInì´ trueê°€ ëœë‹¤.
+
+                arrowAimUI.gameObject.SetActive(true);
+                weapon.LoadArrowAfter();
+            }
             else
+            {
                 follow.ShoulderOffset = Vector3.Lerp(zoomIn, zoomOut, timeElapsed);
+                follow.Damping = new Vector3(0.1f, 0.5f, 0.3f); // ì¹´ë©”ë¼ Damping ìƒì„±
+                vcam.LookAt = null;                             // ì¹´ë©”ë¼ ëª©í‘œë¬¼ ì´ˆê¸°í™”
+                weapon.IsZoomIn = false;                        // ZoomOut í‘œì‹œ
+
+                arrowAimUI.ZoomOutArrowAim();
+                arrowAimUI.gameObject.SetActive(false);
+                weapon.LoadArrowAfter();
+            }
 
             yield return null;
         }

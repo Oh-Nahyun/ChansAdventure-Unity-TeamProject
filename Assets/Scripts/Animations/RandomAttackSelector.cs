@@ -10,7 +10,7 @@ public class RandomAttackSelector : StateMachineBehaviour
     int preSelect = 0;
 
     // 애니메이션용 해시값
-    readonly int AttackModeHash = Animator.StringToHash("AttackMode");
+    public int AttackModeHash = Animator.StringToHash("AttackMode");
 
     // 무기
     Weapon weapon;
