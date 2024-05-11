@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ItemData_Equipment : ItemData, IEquipable
 {
+    [Header("장작 아이템 정보")]
     /// <summary>
     /// 장착할 아이템 프리팹
     /// </summary>
@@ -23,13 +24,14 @@ public class ItemData_Equipment : ItemData, IEquipable
         if(equipTarget != null)
         {
             equipTarget.CharacterEquipItem(EqiupPrefab, equipPart, slot);
+            slot.IsEquip = true;
         }
     }
 
     /// <summary>
     /// 아이템 착용 해제할 때 실행하는 함수
     /// </summary>
-    public void UnEquipItem(GameObject owner)
+    public void UnEquipItem(GameObject owner, InventorySlot slot)
     {
         IEquipTarget equipTarget = owner.GetComponent<IEquipTarget>();
 
@@ -37,6 +39,7 @@ public class ItemData_Equipment : ItemData, IEquipable
         {
             equipTarget.CharacterUnequipItem(equipPart);
             equipTarget.EquipPart[(int)equipPart] = null;
+            slot.IsEquip = false;
         }
     }
 }

@@ -34,13 +34,13 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     // 변수 ==========================================================================================================================
 
     #region PlayerMove Values
-    [Header("# PlayerMove Values")]
 
     /// <summary>
     /// 입력된 이동 방향
     /// </summary>
     Vector3 inputDirection = Vector3.zero;
 
+    [Header("캐릭터 기본 정보")]
     /// <summary>
     /// 걷는 속도
     /// </summary>
@@ -246,9 +246,85 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     Weapon weapon;
     #endregion
 
-    #region Inventory Values (IHealth, IStamina 포함되있음)
+    #region Inventory Values
 
-    [Header("# Inventory Values")]
+    [Header("인벤토리 정보")]
+    /// <summary>
+    /// 아이템 장착할 위치 ( equipPart 순서대로 초기화 해야함)
+    /// </summary>
+    [Tooltip("Equip Part와 동일하게 배치할 것")]
+    public Transform[] partPosition;
+
+    /// <summary>
+    /// 장착한 부위의 아이템들
+    /// </summary>
+    private InventorySlot[] equipPart;
+
+    /// <summary>
+    /// 장착할 부위접근을 하기위한 프로퍼티
+    /// </summary>
+    public InventorySlot[] EquipPart
+    {
+        get => equipPart;
+        set
+        {
+            if(equipPart != value)
+            {
+                equipPart = value;
+            }
+        }
+    }
+
+    int partCount = Enum.GetNames(typeof(EquipPart)).Length;
+
+    /// 인벤토리에서 아이템 장착시 실행되는 델리게이트
+    /// </summary>
+    public Action<int> OnEquipWeaponItem;
+
+    /// <summary>
+    /// 인벤토리에서 아이템 장착해제시 실행되는 델리게이트
+    /// </summary>
+    public Action<int> OnUnEquipWeaponItem;
+
+    /// <summary>
+    /// 해당 오브젝트의 인벤토리
+    /// </summary>
+    Inventory inventory;
+
+    /// <summary>
+    /// 오브젝트 인벤토리 접근을 위한 프로퍼티
+    /// </summary>
+    public Inventory Inventory => inventory;
+
+    /// <summary>
+    /// 맵 패널 활성화 여부 ( true : 열려있음 , false 닫혀있음 )
+    /// </summary>
+    bool isOpenMapPanel = false;
+
+    /// <summary>
+    /// 맵 패널 활성화 여부를 접근하기 위한 프로퍼티 
+    /// </summary>
+    public bool IsOpenMapPanel => isOpenMapPanel;
+
+    /// <summary>
+    /// 인벤토리 패널 활성화 여부 ( true : 열려있음, false 닫혀있음)
+    /// </summary>
+    bool isOpenInventoryPanel = false;
+
+    /// <summary>
+    /// UI가 열려있는지 확인하는 변수
+    /// </summary>
+    bool isOpenedAnyUIPanel = false;
+
+    /// <summary>
+    /// UI가 열려있는지 확인하는 프로퍼티
+    /// </summary>
+    public bool IsOpenedAnyUIPanel => isOpenedAnyUIPanel;
+
+    #endregion
+
+    #region IHealth Values
+
     /// <summary>
     /// 오브젝트가 가지고 있는 현재 체력
     /// </summary>
@@ -292,8 +368,6 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         }
     }
 
-    int partCount = Enum.GetNames(typeof(EquipPart)).Length;
-
     /// <summary>
     /// 체력이 변경될 때 실행되는 델리게이트
     /// </summary>
@@ -309,47 +383,16 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// </summary>
     public Action onDie { get; set; }
 
-    /// <summary>
-    /// 아이템 장착할 위치 ( equipPart 순서대로 초기화 해야함)
-    /// </summary>
-    [Tooltip("Equip Part와 동일하게 배치할 것")]
-    public Transform[] partPosition;
+    #endregion
+
+    #region IStamina Values
+
+    [Header("캐릭터 스태미나 정보")]
 
     /// <summary>
-    /// 장착한 부위의 아이템들
+    /// 기력 소모 및 증가 속도
     /// </summary>
-    private InventorySlot[] equipPart;
-
-    /// <summary>
-    /// 장착할 부위접근을 하기위한 프로퍼티
-    /// </summary>
-    public InventorySlot[] EquipPart
-    {
-        get => equipPart;
-        set
-        {
-            if(equipPart != value)
-            {
-                equipPart = value;
-            }
-        }
-    }
-
-    /// <summary>
-    /// 플레이어가 받은 최종 데미지
-    /// </summary>
-    public float finalDamage;
-    
-    /// 인벤토리에서 아이템 장착시 실행되는 델리게이트
-    /// </summary>
-    public Action<int> OnEquipWeaponItem;
-
-    /// <summary>
-    /// 인벤토리에서 아이템 장착해제시 실행되는 델리게이트
-    /// </summary>
-    public Action<int> OnUnEquipWeaponItem;
-
-    // Stamina ===================================================================================
+    public float spendStaminaTime = 10.0f;
 
     /// <summary>
     /// 현재 기력
@@ -412,17 +455,14 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     public Action onSpendAllStamina { get; set; }
 
     /// <summary>
-    /// 기력 소모 및 증가 속도
-    /// </summary>
-    public float spendStaminaTime = 10.0f;
-
-    /// <summary>
     /// 스태미너 UI
     /// </summary>
     StaminaCheckUI staminaCheckUI;
+    #endregion
 
-    // IBattler ====================================================================================
+    #region IBattler Values
 
+    [Header("캐릭터 전투 정보")]
     // 플레이어의 공격력과 방어력
     public float baseAttackPower = 10.0f;
     public float baseDefencePower = 3.0f;
@@ -431,62 +471,43 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// 공격력
     /// </summary>
     public float attackPower = 10.0f;
+
+    /// <summary>
+    /// 캐릭터 공격력 프로퍼티
+    /// </summary>
     public float AttackPower => attackPower;
 
     /// <summary>
     /// 방어력
     /// </summary>
     public float defencePower = 3.0f;
+
+    /// <summary>
+    /// 캐릭터 방어도 프로퍼티
+    /// </summary>
     public float DefencePower => defencePower;
 
+    /// <summary>
+    /// 공격 받았을 때 실행하는 델리게이트
+    /// </summary>
     public Action<int> onHit { get; set; }
 
-    // Inventory ====================================================================================
     /// <summary>
-    /// 해당 오브젝트의 인벤토리
+    /// 플레이어가 받은 최종 데미지
     /// </summary>
-    Inventory inventory;
-
-    /// <summary>
-    /// 오브젝트 인벤토리 접근을 위한 프로퍼티
-    /// </summary>
-    public Inventory Inventory => inventory;
-
-    /// <summary>
-    /// 맵 패널 활성화 여부 ( true : 열려있음 , false 닫혀있음 )
-    /// </summary>
-    bool isOpenMapPanel = false;
-
-    /// <summary>
-    /// 맵 패널 활성화 여부를 접근하기 위한 프로퍼티 
-    /// </summary>
-    public bool IsOpenMapPanel => isOpenMapPanel;
-
-    /// <summary>
-    /// 인벤토리 패널 활성화 여부 ( true : 열려있음, false 닫혀있음)
-    /// </summary>
-    bool isOpenInventoryPanel = false;
-
-    /// <summary>
-    /// UI가 열려있는지 확인하는 변수
-    /// </summary>
-    bool isOpenedAnyUIPanel = false;
-
-    /// <summary>
-    /// UI가 열려있는지 확인하는 프로퍼티
-    /// </summary>
-    public bool IsOpenedAnyUIPanel => isOpenedAnyUIPanel;
+    public float finalDamage;
 
     #endregion
 
     #region PlayerInteraction Values
 
+    [Header("인터렉션 정보")]
+    public bool isTalk = false;
+
     /// <summary>
     /// 상호작용을 하기위한 interaction 클래스
     /// </summary>
     Interaction interaction;
-
-    public bool isTalk = false;
 
     #endregion
 

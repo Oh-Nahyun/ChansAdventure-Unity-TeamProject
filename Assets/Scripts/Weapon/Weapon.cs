@@ -224,6 +224,7 @@ public class Weapon : MonoBehaviour
     private void OnSwordModeInput(InputAction.CallbackContext _)
     {
         currentWeaponMode = WeaponMode.Sword;
+        QuickEquipWeapon(currentWeaponMode);
         ChangeWeaponMode(currentWeaponMode);
         Debug.Log("WeaponMode : Sword");
     }
@@ -234,6 +235,7 @@ public class Weapon : MonoBehaviour
     private void OnBowModeInput(InputAction.CallbackContext _)
     {
         currentWeaponMode = WeaponMode.Bow;
+        QuickEquipWeapon(currentWeaponMode);
         ChangeWeaponMode(currentWeaponMode);
         Debug.Log("WeaponMode : Bow");
     }
@@ -598,6 +600,33 @@ public class Weapon : MonoBehaviour
         }
 
         arrowCount = totalGetItemCount; // 찾은 화살 개수 갱신
+    }
+
+    /// <summary>
+    /// 가장 강한 아이템을 장착하는 함수
+    /// </summary>
+    /// <param name="mode">장착할 무기 모드</param>
+    void QuickEquipWeapon(WeaponMode mode)
+    {
+        WeaponType weaponType; // mode에 따른 무기 타입 설정
+        switch (mode)
+        {
+            case WeaponMode.Sword:
+                weaponType = WeaponType.Melee;
+                break;
+            case WeaponMode.Bow:
+                weaponType = WeaponType.Range;
+                break;
+            default:
+                return;
+        }
+        InventorySlot slot = player.Inventory.QuickWeaponEquip(weaponType); // 아이템 슬롯
+        ItemData_Weapon itemData = slot.SlotItemData as ItemData_Weapon;    // 아이템 데이터
+
+        GameObject itemPrefab = itemData.EqiupPrefab;                       // 아이템 프리팹
+        EquipPart part = itemData.equipPart;                                // 아이템 장착 부위
+
+        player.CharacterEquipItem(itemPrefab, part, slot);
     }
     #endregion
 }
