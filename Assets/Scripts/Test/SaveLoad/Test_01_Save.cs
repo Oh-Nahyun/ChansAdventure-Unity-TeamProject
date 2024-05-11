@@ -30,6 +30,8 @@ public class Test_01_Save : TestBase
     /// </summary>
     public int loadIndex = 0;
 
+    public Transform traget;
+
     private void Start()
     {
         SceneDatas = new int[DATA_SIZE];
@@ -51,6 +53,13 @@ public class Test_01_Save : TestBase
     protected override void OnTest3(InputAction.CallbackContext context)
     {
         LoadPlayerData(loadIndex);
+    }
+
+    protected override void OnTest4(InputAction.CallbackContext context)
+    {
+        Factory.Instance.GetItemObject(GameManager.Instance.ItemDataManager[4]);
+        Factory.Instance.GetItemObject(GameManager.Instance.ItemDataManager[8]);
+        Factory.Instance.GetItemObjets(GameManager.Instance.ItemDataManager[9], 3, traget.position, true);
     }
 
     // Save Scripts

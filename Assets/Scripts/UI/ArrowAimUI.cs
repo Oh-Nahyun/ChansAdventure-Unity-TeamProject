@@ -42,6 +42,23 @@ public class ArrowAimUI : MonoBehaviour
     // 컴포넌트
     Weapon weapon;
 
+    Weapon PlayerWeapon
+    {
+        get => weapon;
+        set
+        {
+            if (weapon != value)
+            {
+                if(weapon == null)
+                {
+                    weapon = FindAnyObjectByType<Weapon>();
+                }
+
+                weapon = value;
+            }
+        }
+    }
+
     private void Awake()
     {
         Transform child = transform.GetChild(0);
@@ -60,9 +77,12 @@ public class ArrowAimUI : MonoBehaviour
 
     private void Update()
     {
-        arrowCountUI.text = weapon.ArrowCount.ToString(); // 남은 화살 개수 출력
-        timer += Time.deltaTime;                        // 타이머 갱신
-        PrintArrowAim();
+        if (PlayerWeapon != null)
+        {
+            arrowCountUI.text = PlayerWeapon.ArrowCount.ToString(); // 남은 화살 개수 출력
+            timer += Time.deltaTime;                        // 타이머 갱신
+            PrintArrowAim();
+        }
     }
 
     /// <summary>

@@ -518,7 +518,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 910211098}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &290962158
@@ -537,6 +538,7 @@ MonoBehaviour:
   player: {fileID: 0}
   saveIndex: 0
   loadIndex: 0
+  traget: {fileID: 910211098}
 --- !u!114 &290962159
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1126,6 +1128,37 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 859137608}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &910211097
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 910211098}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &910211098
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 910211097}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.99, z: -7.25}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 290962157}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &979400133
 GameObject:
   m_ObjectHideFlags: 0
@@ -1796,6 +1829,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Test_Player
       objectReference: {fileID: 0}
+    - target: {fileID: 7973622836142104029, guid: 01eee89cde26bf04aa9194d5dd3ca811,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8251251243466306971, guid: 01eee89cde26bf04aa9194d5dd3ca811,
         type: 3}
       propertyPath: m_IsTrigger
@@ -2057,11 +2095,6 @@ PrefabInstance:
     - target: {fileID: 5068715014579894295, guid: ac0fb5c40098d544b9cba775920e881a,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5093914871028013458, guid: ac0fb5c40098d544b9cba775920e881a,
-        type: 3}
-      propertyPath: m_Alpha
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5157729106993721025, guid: ac0fb5c40098d544b9cba775920e881a,

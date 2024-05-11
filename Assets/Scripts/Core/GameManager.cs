@@ -4,11 +4,41 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// 게임 상태 enum
+/// </summary>
+public enum GameState
+{
+    NotStart = 0,
+    Started = 1,
+}
+
+
 [RequireComponent(typeof(CameraManager))]
 [RequireComponent(typeof(ItemDataManager))]
 [RequireComponent(typeof(MapManager))]
 public class GameManager : Singleton<GameManager>
 {
+    /// <summary>
+    /// 현재 게임 상태
+    /// </summary>
+    public GameState gameState = GameState.NotStart;
+
+    /// <summary>
+    /// 현재 게임 상태 접근 프로퍼티
+    /// </summary>
+    public GameState CurrnetGameState
+    {
+        get => gameState;
+        set
+        {
+            if (gameState != value)
+            {
+                gameState = value;
+            }
+        }
+    }
+
     Player player;
     public Player Player
     {
@@ -16,7 +46,7 @@ public class GameManager : Singleton<GameManager>
         {
             if (player == null)
             {
-                player = FindAnyObjectByType<Player>();
+                player = FindAnyObjectByType<Player>(FindObjectsInactive.Include);
             }
             return player;
         }
@@ -98,27 +128,42 @@ public class GameManager : Singleton<GameManager>
     Inventory savedInventory;
 
     InventorySlot[] savedEquipParts;
+
+    /// <summary>
+    /// 플레이어 프리팹
+    /// </summary>
+    public GameObject playerPrefab;
+
     protected override void OnPreInitialize()
     {
         base.OnPreInitialize();
 
         loadPlayerGameObject = new GameObject();
         DontDestroyOnLoad(loadPlayerGameObject);
+
+        GameObject playerObj = Instantiate(playerPrefab);
+        player = playerObj.GetComponent<Player>();
+
+        cameraManager = GetComponent<CameraManager>();
+        itemDataManager = GetComponent<ItemDataManager>();
+        mapManager = GetComponent<MapManager>();
     }
 
     protected override void OnInitialize()
     {
+        if (gameState == GameState.NotStart)
+            return;
+
         if (isLoading) // 로딩중일 때 실행
         {
             OnLoadInitiallize();
             return;
         }
 
-        player = FindAnyObjectByType<Player>();
+        SpawnPlayerAfterLoadScene();
+
+        if (player == null) player = FindAnyObjectByType<Player>();
         weapon = FindAnyObjectByType<Weapon>();
-        cameraManager = GetComponent<CameraManager>();
-        itemDataManager = GetComponent<ItemDataManager>();
-        mapManager = GetComponent<MapManager>();
 
         itemDataManager.InitializeItemDataUI();
 
@@ -174,6 +219,7 @@ public class GameManager : Singleton<GameManager>
             loadingPlayer.name = "Player";
 
             loadingPlayer.transform.position = Vector3.zero;
+            loadingPlayer.SetActive(true);
 
             Destroy(loadPlayerGameObject.transform.GetChild(0).gameObject); // 저장된 플레이어 오브젝트 제거
 

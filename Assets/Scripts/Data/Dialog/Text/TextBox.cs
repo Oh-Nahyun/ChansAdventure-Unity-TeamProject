@@ -61,7 +61,7 @@ public class TextBox : MonoBehaviour
         questManager = FindObjectOfType<QuestManager>();
         warpBase = FindObjectOfType<WarpBase>();
 
-        controller = FindAnyObjectByType<PlayerController>();
+        controller = FindAnyObjectByType<PlayerController>(FindObjectsInactive.Include);
     }
 
     private void Start()

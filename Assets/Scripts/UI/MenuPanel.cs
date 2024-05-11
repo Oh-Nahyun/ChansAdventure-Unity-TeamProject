@@ -25,7 +25,7 @@ public class MenuPanel : MonoBehaviour
     
     PlayerinputActions inputActions;
 
-    SaveHandler saveHandler;
+    SaveHandler_Base saveHandler;
 
     /// <summary>
     /// 현재 패널 상태
@@ -89,7 +89,7 @@ public class MenuPanel : MonoBehaviour
     void OnEnable()
     {
         canvasGroup = gameObject.GetComponent<CanvasGroup>();
-        saveHandler = FindAnyObjectByType<SaveHandler>();
+        saveHandler = FindAnyObjectByType<SaveHandler_Base>();
     }
 
     void OnDisable() // 비활성화 되면 인풋 제거

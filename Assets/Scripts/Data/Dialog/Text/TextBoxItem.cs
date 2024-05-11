@@ -63,7 +63,7 @@ public class TextBoxItem : MonoBehaviour
         
         player = FindAnyObjectByType<Player>();
 
-        controller = FindAnyObjectByType<PlayerController>();
+        controller = FindAnyObjectByType<PlayerController>(FindObjectsInactive.Include);
     }
 
     private void Start()

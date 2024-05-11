@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEditor.Experimental.GraphView;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Windows;
@@ -450,7 +451,25 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// <summary>
     /// 오브젝트 인벤토리 접근을 위한 프로퍼티
     /// </summary>
-    public Inventory Inventory => inventory;
+    public Inventory Inventory
+    {
+        get
+        {
+            if(inventory == null)
+            {
+                inventory = new Inventory(this.gameObject, 16);
+            }
+            return inventory;
+        }
+        set
+        {
+            if(inventory == null)
+            {
+                inventory = new Inventory(this.gameObject, 16);
+                inventory = value;
+            }
+        }
+    }
 
     /// <summary>
     /// 맵 패널 활성화 여부 ( true : 열려있음 , false 닫혀있음 )
@@ -554,9 +573,20 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
 
         // inventory
         inventory = new Inventory(this.gameObject, 16);
-        GameManager.Instance.ItemDataManager.InventoryUI.InitializeInventoryUI(inventory); // 인벤 UI 초기화
         EquipPart = new InventorySlot[partCount]; // EquipPart 배열 초기화
-        GameManager.Instance.TextBoxManager.isTalkAction += (talk) => IsTalk(talk);
+
+        // 게임 시작 전이면 비활성화
+        GameState state = GameManager.Instance.CurrnetGameState;
+        if(state == GameState.NotStart)
+        {
+            gameObject.SetActive(false);
+        }
+        else
+        {
+            GameManager.Instance.ItemDataManager.InventoryUI.InitializeInventoryUI(inventory); // 인벤 UI 초기화
+            GameManager.Instance.TextBoxManager.isTalkAction += (talk) => IsTalk(talk);
+        }
+
         //Test_AddItem();
     }
 
@@ -1016,7 +1046,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// <param name="invenData">받을 인벤토리 데이터</param>
     public void GetInventoryData(Inventory invenData)
     {
-        inventory = invenData;
+        Inventory = invenData;
     }
 
 
