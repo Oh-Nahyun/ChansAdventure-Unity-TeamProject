@@ -25,4 +25,5 @@ public class Test_EquipWeapons : TestBase
     {
         Factory.Instance.GetItemObjets(manager.datas[(uint)ItemCode.Arrow], 10, target.position, true);
     }
+
 }
