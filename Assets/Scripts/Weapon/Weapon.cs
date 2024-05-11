@@ -221,6 +221,9 @@ public class Weapon : MonoBehaviour
     /// </summary>
     private void OnSwordModeInput(InputAction.CallbackContext _)
     {
+        if (IsZoomIn)
+            return;
+
         currentWeaponMode = WeaponMode.Sword;
         QuickEquipWeapon(currentWeaponMode);
         ChangeWeaponMode(currentWeaponMode);
@@ -232,6 +235,9 @@ public class Weapon : MonoBehaviour
     /// </summary>
     private void OnBowModeInput(InputAction.CallbackContext _)
     {
+        if (IsZoomIn)
+            return;
+
         currentWeaponMode = WeaponMode.Bow;
         QuickEquipWeapon(currentWeaponMode);
         ChangeWeaponMode(currentWeaponMode);
@@ -243,6 +249,9 @@ public class Weapon : MonoBehaviour
     /// </summary>
     private void OnNormalModeInput(InputAction.CallbackContext _)
     {
+        if (IsZoomIn)
+            return;
+
         currentWeaponMode = WeaponMode.None;
         ChangeWeaponMode(currentWeaponMode);
         Debug.Log("WeaponMode : None");
