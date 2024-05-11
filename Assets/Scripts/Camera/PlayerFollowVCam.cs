@@ -42,7 +42,7 @@ public class PlayerFollowVCam : MonoBehaviour
     CinemachineVirtualCamera vcam;
     Cinemachine3rdPersonFollow follow;
 
-    private void Start()
+    private void Awake()
     {
         player = FindAnyObjectByType<Player>();
         weapon = FindAnyObjectByType<Weapon>();

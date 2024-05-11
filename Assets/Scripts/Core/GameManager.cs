@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Runtime.InteropServices;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(CameraManager))]
 [RequireComponent(typeof(ItemDataManager))]
@@ -10,6 +9,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : Singleton<GameManager>
 {
     Player player;
+    
     public Player Player
     {
         get
@@ -61,6 +61,11 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    SkillManager skillManager;
+    public SkillManager Skill => skillManager;
+
+    protected override void OnInitialize()
+    {
     /// <summary>
     /// 로딩하는 중인지 확인하는 bool값
     /// </summary>
@@ -119,6 +124,8 @@ public class GameManager : Singleton<GameManager>
         cameraManager = GetComponent<CameraManager>();
         itemDataManager = GetComponent<ItemDataManager>();
         mapManager = GetComponent<MapManager>();
+        skillManager = GetComponent<SkillManager>();
+        skillManager.Initialize();
 
         itemDataManager.InitializeItemDataUI();
 
@@ -190,7 +197,6 @@ public class GameManager : Singleton<GameManager>
         SceneManager.LoadScene("02_LoadingScene");
         isLoading = true;
     }
-    #endregion
 
 #if UNITY_EDITOR
     public bool isNPC = false;

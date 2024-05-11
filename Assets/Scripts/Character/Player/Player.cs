@@ -118,17 +118,12 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     const float gravity = 9.8f;
 
     /// <summary>
-    /// 플레이어의 움직임 Velocity 값 / 04.15
-    /// </summary>
-    public Vector3 playerVelocity;
-
-    /// <summary>
     /// 점프 시간 제한
     /// </summary>
     const float jumpTimeLimit = 1.0f;
 
     /// <summary>
-    /// 점프 시간 ( 애니메이션 점프 체공 시간 ) / 04.15 
+    /// 점프 시간
     /// </summary>
     float jumpTime = 0.0f;
 
@@ -150,7 +145,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// <summary>
     /// 점프 중인지 아닌지 확인용 변수
     /// </summary>
-    public bool isJumping = false;
+    bool isJumping = false;
 
     /// <summary>
     /// 점프가 가능한지 확인하는 프로퍼티 (점프중이 아닐 때)
@@ -200,24 +195,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// <summary>
     /// 주변 시야 카메라
     /// </summary>
-    GameObject cameraRoot;
-
-    /// <summary>
-    /// cameraRoot 게임 오브젝트를 접근하기 위한 프로퍼티
-    /// </summary>
-    public GameObject CameraRoot
-    {
-        get 
-        {
-            if(cameraRoot == null)
-            {
-                cameraRoot = FindAnyObjectByType<PlayerLookVCam>().gameObject;
-            }
-
-            return cameraRoot;
-        } 
-    }
-
+    public GameObject cameraRoot;
 
     /// <summary>
     /// 주변 시야 카메라 회전 정도
@@ -526,7 +504,6 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     #region Player LifeCycle Method
     void Awake()
     {
-        // initialize
         controller = GetComponent<PlayerController>();
         characterController = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
@@ -559,7 +536,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         isMoving = false;
         isJumping = true;
         isSliding = true;
-
+        
         // controller
         controller.onMove += OnMove;
         controller.onMoveRunMode += OnMoveRunMode;
@@ -828,7 +805,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
             isJumping = true;
         }
     }
-
+    
     /// <summary>
     /// 점프 처리 함수
     /// </summary>

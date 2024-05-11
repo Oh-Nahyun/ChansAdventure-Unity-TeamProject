@@ -1,16 +1,6 @@
 using System.Collections;
 using UnityEngine;
-using Unity.VisualScripting;
-using System;
 using UnityEngine.InputSystem;
-using System.Security.Cryptography;
-using static UnityEditor.PlayerSettings;
-
-
-
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 // 카메라 막혔을 때 등뒤로 붙이는 것만 하면 끝
 public class MagnetCatch : Skill
@@ -31,6 +21,10 @@ public class MagnetCatch : Skill
     /// </summary>
     public float minDistanceFromUser = 1.0f;
     /// <summary>
+    /// 타겟이 문일때 초당 돌아가는 속도
+    /// </summary>
+    public float doorRotateAngle = 90.0f;
+    /// <summary>
     /// 타겟이 붙어 있는지 (true: 붙어있음)
     /// </summary>
     bool isMagnetActivate = false;
@@ -47,9 +41,17 @@ public class MagnetCatch : Skill
     /// </summary>
     float preAngleY;
     /// <summary>
+    /// 타겟이 움직일 목적지 (거리 계산 간편화 용)
+    /// </summary>
+    Transform targetDestination;
+    /// <summary>
     /// 자석에 붙은 오브젝트 (= 타겟)
     /// </summary>
     Transform target;
+    /// <summary>
+    /// 마그넷캐치 현재 모양
+    /// </summary>
+    Transform[] shapeTransform;
     /// <summary>
     /// 타겟에 있는 스크립트 (반응형 오브젝트)
     /// </summary>
@@ -70,65 +72,166 @@ public class MagnetCatch : Skill
     /// 마그넷 카메라의 각도
     /// </summary>
     public const float CameraRotateVertical = 15.0f;
+    /// <summary>
+    /// 스페셜키([,])를 통한 앞뒤 방향 계산용 변수
+    /// </summary>
+    int directionAxisZ = 0;
+    /// <summary>
+    /// 현재 프레임에 이동할 Y(로컬좌표) 거리
+    /// </summary>
+    float targetMoveY = 0.0f;
+    /// <summary>
+    /// 현재 프레임에 이동할 Z(로컬좌표) 거리
+    /// </summary>
+    float targetMoveZ = 0.0f;
+    /// <summary>
+    /// 붙은 타겟이 문인지 확인하는 변수 (true: 문)
+    /// </summary>
+    bool isTarget_Door = false;
 
-    Vector3 targetMoveY = Vector3.zero;
-    Vector3 targetMoveZ = Vector3.zero;
+    /// <summary>
+    /// 이전 프레임의 문과 유저의 거리(제곱)
+    /// </summary>
+    float preSqrDistance = 0f;
+
+    /// <summary>
+    /// 이전 프레임의 유저 위치 (문열기에 사용)
+    /// </summary>
+    Vector3 preUserPosition = Vector3.zero;
+
+    Transform interpolation1;
+    Transform interpolation2;
+    MagnetCatch_Line line;
+
+    const float Interpolation1Value = 0.2f;
+    const float Interpolation2Value = 0.7f;
+
+
+    enum MagnetShape
+    {
+        SheikahStone,
+        Magnet
+    }
+
+    MagnetShape shape = MagnetShape.Magnet;
+    MagnetShape Shape
+    {
+        get => shape;
+        set
+        {
+            if (shape != value)
+            {
+                shapeTransform[(int)shape].gameObject.SetActive(false);
+                shape = value;
+                shapeTransform[(int)shape].gameObject.SetActive(true);
+
+            }
+
+        }
+    }
 
     protected override void Awake()
     {
         base.Awake();
-        targetGroup = GetComponentInChildren<Cinemachine.CinemachineTargetGroup>();
-        skillName = SkillName.MagnetCatch;                  // 스킬 이름: 마그넷캐치로 설정
+        targetGroup = GetComponentInChildren<Cinemachine.CinemachineTargetGroup>(); // 사용자와 타겟을 묶은 타겟 그룹 (카메라용)
+        line = GetComponentInChildren<MagnetCatch_Line>();
+
+        skillName = SkillName.MagnetCatch;                                          // 스킬 이름: 마그넷캐치로 설정
+        shapeTransform = new Transform[2];
+        shapeTransform[0] = transform.GetChild(0);
+        shapeTransform[1] = transform.GetChild(1);
+        targetDestination = transform.GetChild(2);                                  // 타겟이 이동할 목적지
+        interpolation1 = transform.GetChild(3);
+        interpolation2 = transform.GetChild(4);
+
+        Shape = MagnetShape.SheikahStone;
+
+        line.gameObject.SetActive(false);
     }
 
     protected override void OnEnable()
     {
         base.OnEnable();
 
-        if (magnetVcam == null)         // 마그넷캠이 없으면 게임매니저에서 찾음
+        if (magnetVcam == null)         // 활성화 될 때 마그넷캠이 없으면 게임매니저에서 찾음
         {
             magnetVcam = GameManager.Instance.Cam.MagnetCam;
         }
 
+        Shape = MagnetShape.SheikahStone;
     }
 
     protected override void OnDisable()
     {
         base.OnDisable();
 
-        StopAllCoroutines();
-
         // 비활성화시 초기화
+        // 타겟 제거 (OffSkill에서 처리하지만 확실하게)
         reactionTarget = null;
         target = null;
 
-        isMagnetActivate = false;
+        isMagnetActivate = false;   // 자석 활성화 상태 false
     }
 
     private void FixedUpdate()
     {
+        // 작동 중이면 실행
         if (isActivate)
         {
-            // 이전과 현재의 카메라 회전각 차이 계산
+            LookForwardUser(Camera.main.transform.forward);                 // 사용자는 카메라 정면을 바라봄
+
+            // 이전 프레임과 현재 프레임의 Y축 기준 카메라 회전각 차이 계산
             float angleY = Camera.main.transform.eulerAngles.y;
             float resultY = angleY - preAngleY;
             preAngleY = angleY;
 
-            LookForwardUser(Camera.main.transform.forward);     // 카메라가 바라보는 곳이 사용자의 정면
+            if (isTarget_Door)
+            {
+                float angle = Vector3.Angle(user.forward, target.forward);
+                float dir = Mathf.Sign(target.localScale.x);    // 회전값은 스케일(문의 방향)에 따라 영향을 받음
 
-            // y축 움직이면 z축 안움직이는 이유 찾기
-            InputMouseMove();
+                if(angle > 90)
+                {
+                    dir = -dir;     // 문과 유저의 방향이 반대면 회전값 반대로 (원래 가까워지면 커짐 -> 가까워지면 작아짐)
+                }
+                float sqrDistance = (user.position - target.position).sqrMagnitude;
+                float distanceDiff = sqrDistance - preSqrDistance;          // 가까워지면 양수, 멀어지면 음수
+                if(distanceDiff > 0f)
+                {
+                    distanceDiff = 1;
+                }
+                else if(distanceDiff < 0f)
+                {
+                    distanceDiff = -1;
+                }
+                else
+                {
+                    distanceDiff = 0;
+                }
 
-            Vector3 targetLocalPos = target.localPosition;
-            targetLocalPos.x = 0;
-            reactionTarget.AttachMagnetMove(targetLocalPos + targetMoveY + targetMoveZ, user);
-            //reactionTarget.AttachRotate(resultY * Vector3.up);              // 타겟 회전하기
+                float rotate = dir * distanceDiff * Time.fixedDeltaTime * doorRotateAngle;
 
+                float specialRotate = -directionAxisZ * dir * Time.fixedDeltaTime * doorRotateAngle;
 
-            targetMoveY = Vector3.zero;
-            targetMoveZ = Vector3.zero;
+                reactionTarget.AttachRotate((rotate + specialRotate - resultY) * Vector3.up);              // 문 회전
+
+                preSqrDistance = sqrDistance;
+                preUserPosition = user.position;
+            }
+            else
+            {
+
+                InputMouseMove();                                               // 마우스 움직임 처리
+
+                DestinationMove();                                              // 목적지 이동
+
+                reactionTarget.AttachMagnetMove(targetDestination.position);    // 타겟 이동
+                reactionTarget.AttachRotate((resultY * Vector3.up));              // 타겟 회전
+            }
+           
         }
     }
+
     /// <summary>
     /// 마그넷캐치 스킬 소환했을 때 행동
     /// </summary>
@@ -136,35 +239,56 @@ public class MagnetCatch : Skill
     {
         base.OnSKillAction();
 
-        targetGroup.m_Targets[1].target = user;     // 카메라가 바라볼 타겟그룹에 사용자 등록
+        targetGroup.m_Targets[1].target = user;     // 카메라가 바라볼 타겟 그룹에 사용자 등록
 
-        StartCoroutine(TargetCheck());              // 자석에 붙는 오브젝트 체크
+        StartCoroutine(TargetCheck());              // 타겟 체크
     }
     /// <summary>
     /// 마그넷캐치 스킬 발동 했을 때 행동
     /// </summary>
     protected override void UseSkillAction()
     {
+        onMotionChange?.Invoke(true);
+        Shape = MagnetShape.Magnet;
+        // 붙을 타겟이 적절하면
         if (isMagnetActivate)
         {
-            StopAllCoroutines();    // 자석에 붙는 오브젝트 탐지용 코루틴 정지
+            StopAllCoroutines();                                // 타겟 탐지용 코루틴 정지
+            // TODO: 끝까지 날아가게
 
             base.UseSkillAction();
 
-            OnMagnetAction();
+            OnMagnetAction();                                   // 카메라가 실행될 때 처리할 행동들 처리
 
-            LookForwardUser(Camera.main.transform.forward);
+            LookForwardUser(Camera.main.transform.forward);     // 플레이어와 카메라 정면 맞추기
+
+            // 타겟 목적지 설정
+            targetDestination.SetParent(user);                  // 목적지 부모는 사용자
+            targetDestination.position = target.position;       // 목적지의 위치 옮기기
+            interpolation1.SetParent(user);
+            interpolation1.localPosition = targetDestination.localPosition * Interpolation1Value;
+            interpolation2.SetParent(user);
+            interpolation2.localPosition = targetDestination.localPosition * Interpolation2Value;
 
             // 타겟 관련 설정
-            reactionTarget.AttachMagnet(user, targetMoveSpeed);    // 반응형 오브젝트 붙이기
+            reactionTarget.AttachMagnet(targetMoveSpeed);       // 타겟 붙이기
 
-            targetGroup.m_Targets[0].target = target;   // 마그넷 카메라가 바라볼 그룹
+            targetGroup.m_Targets[0].target = target;           // 타겟 그룹에 타겟 추가
 
-            preMousePos = Mouse.current.position.value;         // y축 이동을 위한 마우스 설정
+            // 초기값 설정
+            preMousePos = Mouse.current.position.value;         // y축 이동을 위한 마우스 초기값 설정 (현재 위치)
             preAngleY = Camera.main.transform.eulerAngles.y;    // 타겟과 사용자의 y축 회전(좌우)을 맞추기 위한 카메라각도 설정
+            preSqrDistance = (user.position - target.position).sqrMagnitude;
+            preUserPosition = user.position;    
 
-            targetMoveY = Vector3.zero;
-            targetMoveZ = Vector3.zero;
+            targetMoveY = 0f;
+            targetMoveZ = 0f;
+        }
+        else
+        {
+            // TODO: 날아가다 끊기게
+            onMotionChange?.Invoke(false);
+            Shape = MagnetShape.SheikahStone;
         }
     }
     /// <summary>
@@ -174,11 +298,14 @@ public class MagnetCatch : Skill
     {
         OffMagnetAction();
 
-        if (reactionTarget != null)     // 붙어있는 타겟이 있으면 자석에서 떼기
+        if (reactionTarget != null)             // 붙어있는 타겟이 있으면
         {
-            reactionTarget.DettachMagnet();
-            target.SetParent(originParent);               // 타겟의 부모 원래대로 돌리기
+            reactionTarget.DettachMagnet();     // 타겟 자석에서 떼기
         }
+
+        targetDestination.SetParent(transform); // 목적지의 부모 원래대로(이 트랜스폼) 돌리기
+        interpolation1.SetParent(transform); // 목적지의 부모 원래대로(이 트랜스폼) 돌리기
+        interpolation2.SetParent(transform); // 목적지의 부모 원래대로(이 트랜스폼) 돌리기
 
         base.OffSKillAction();
     }
@@ -190,22 +317,37 @@ public class MagnetCatch : Skill
         magnetVcam.OnSkillCamera();                               // 마그넷카메라 실행
         magnetVcam.SetLookAtTransform(targetGroup.transform);     // 물체와 사용자의 그룹 바라보기
 
+        line.gameObject.SetActive(true);
+        line.transform.SetParent(null);
+        line.transform.localPosition = Vector3.zero;
+        line.transform.localRotation = Quaternion.identity;
+        line.Initialize(transform, interpolation1, interpolation2, target);
+
         // 현재 사용자가 플레이어라면
         Player player = user.GetComponent<Player>();
         if (player != null)
-            player.SetMagnetCamera(false, CameraRotateVertical);  // 카메라루트의 x축 회전 막기
+            player.SetMagnetCamera(false, CameraRotateVertical);  // 카메라루트의 x축 회전(위아래) 막기
     }
     /// <summary>
     /// 마그넷이 발동해제될 때 메서드 (물체가 떨어졌을 때)
     /// </summary>
     void OffMagnetAction()
     {
-        magnetVcam.OffSkillCamera();    // 마그넷카메라 종료
+        onMotionChange?.Invoke(false);
+
+        line.transform.SetParent(transform);
+        line.transform.localRotation = Quaternion.identity;
+        line.transform.localPosition = Vector3.zero;
+        line.gameObject.SetActive(false);
+        magnetVcam.OffSkillCamera();                            // 마그넷카메라 끄기
+
+        isMagnetActivate = false;
+        isTarget_Door = false;
 
         // 현재 사용자가 플레이어라면
         Player player = user.GetComponent<Player>();
         if (player != null)
-            player.SetMagnetCamera(true, CameraRotateVertical);     // 카메라루트의 x축 회전 동작
+            player.SetMagnetCamera(true, CameraRotateVertical);  // 카메라루트의 x축 회전(위아래) 동작
     }
 
     /// <summary>
@@ -214,7 +356,7 @@ public class MagnetCatch : Skill
     /// <param name="forward">바라볼 방향</param>
     public void LookForwardUser(Vector3 forward)
     {
-        forward.y = 0;
+        forward.y = 0;              // y축(위아래)는 신경 안씀
         user.forward = forward;
     }
 
@@ -228,96 +370,95 @@ public class MagnetCatch : Skill
         Vector2 mouseDir = (curMousePos - preMousePos).normalized;
         preMousePos = curMousePos;
 
-
-        targetMoveY = SetDistance(target.localPosition.y, mouseDir.y * Time.fixedDeltaTime, Vector3.up);
-
-        // 마우스 입력에 따라 목적지 위치에서 이동한 위치 계산
-        /*float movePosY = mouseDir.y * Time.fixedDeltaTime * targetMoveSpeed;
-
-        float targetDistance = MathF.Abs(user.position.y - movePosY);      // 사용자와 떨어진 거리의 절대값 계산
-
-        movePosY = (targetDistance < maxDistanceFromUser) ? movePosY : 0;   // 사용자와 최대 거리보다 멀면 움직이지 않기
-
-        reactionTarget.AttachMagnetMove(target.position + movePosY * Vector3.up);*/
+        targetMoveY = SetDistance(mouseDir.y, targetDestination.localPosition.y);   // 거리 설정
     }
 
 
-    int directionAxisZ = 0;
-
-        /// <summary>
-        /// 앞뒤 움직임을 처리하는 메서드
-        /// </summary>
-        /// <param name="input">[ , ] 두가지 키만 받음</param>
-    public void InputSpecialKey(PlayerSkills.SpecialKey input)
+    /// <summary>
+    /// 앞뒤 움직임을 처리하는 메서드
+    /// </summary>
+    /// <param name="input">[ , ] 두가지 키만 받음</param>
+    public override void InputSpecialKey(PlayerSkills.SpecialKey input)
     {
         switch (input)
         {
-            case PlayerSkills.SpecialKey.SquareBracket_Open:
+            case PlayerSkills.SpecialKey.NumPad5_Down:        // [ : 가까워짐
                 directionAxisZ = -1;
                 break;
-            case PlayerSkills.SpecialKey.SquareBracket_Close:
+            case PlayerSkills.SpecialKey.NumPad8_Up:       // [ : 멀어짐
                 directionAxisZ = 1;
                 break;
-            case PlayerSkills.SpecialKey.None:
+            case PlayerSkills.SpecialKey.None:                      // 입력 없으면 그대로
             default:
                 directionAxisZ = 0;
                 break;
         }
-        targetMoveZ = SetDistance(target.localPosition.z, directionAxisZ * Time.deltaTime, Vector3.forward);
 
+        targetMoveZ = SetDistance(directionAxisZ, targetDestination.localPosition.z);   // 이동할 거리가 최대거리 안인지 계산
+
+        float finalDistance = targetDestination.localPosition.z + targetMoveZ;          
+        if (finalDistance < minDistanceFromUser && directionAxisZ < 0)                  // 가까워 질 경우 최소거리보다 작아지면 이동할 거리 제거
+        {
+            targetMoveZ = 0;
+        }
     }
 
-    Vector3 SetDistance(float localPosAxis, float moveValue, Vector3 direction)
+    /// <summary>
+    /// y, z축의 이동거리를 처리하는 메서드
+    /// </summary>
+    /// <param name="moveDirection">이동할 방향 (+, -)</param>
+    /// <param name="currentPositionAxis">타겟의 위치(현재 축: y, z)</param>
+    /// <returns>계산된 이동할 양</returns>
+    float SetDistance(float moveDirection, float currentPositionAxis)
     {
-        // 입력([,]키 or 사용자의 움직임)에 따라 목적지 위치에서 이동한 위치 계산
-        localPosAxis += moveValue;
-        moveValue *= targetMoveSpeed;
+        float moveValue = moveDirection * Time.deltaTime * targetMoveSpeed;     // 목적지가 한프레임에 이동할 양을 계산하고
+        float finalDistance = currentPositionAxis + moveValue;                  // 이동할 거리와 현재 타겟 위치를 더해 최종 위치를 구하여
 
-        if (localPosAxis > maxDistanceFromUser && moveValue > 0)                               // 떨어진 거리가 최대치보다 크면 최대치로 변경
-        {
-            moveValue = 0;
-        }
-        else if(localPosAxis < minDistanceFromUser && moveValue < 0)
+        if (finalDistance > maxDistanceFromUser && moveDirection > 0)           // 최종 위치가 최대 떨어질 수 있는 거리보다 크면 이동할 거리 제거
         {
             moveValue = 0;
         }
 
-        return moveValue * direction;
-
-        //reactionTarget.AttachMagnetMove(localPos);
+        return moveValue;
     }
 
 
     /// <summary>
     /// 자석에 붙는 오브젝트 검사
     /// </summary>
-    /// <returns></returns>
+    /// <returns>프레임당 코루틴</returns>
     IEnumerator TargetCheck()
     {
         while (true)
         {
             Ray ray = Camera.main.ViewportPointToRay(Center);           // 카메라의 중앙에서 레이 생성
-            Physics.Raycast(ray, out RaycastHit hit, skillDistance);
+            Physics.Raycast(ray, out RaycastHit hit, skillDistance);    // 생성한 레이로 스킬 거리만큼 레이캐스트 검사
 
             target = hit.transform;
-            // 부딪친 물체가 있으면
-            if (target != null)
+            if (target != null)                                                             // 부딪친 물체가 있으면
             {
-                reactionTarget = target.GetComponent<ReactionObject>(); // 반응형 오브젝트인지 확인
-
-                isMagnetActivate = (reactionTarget != null) && (reactionTarget.IsMagnetic);   // 반응형 오브젝트이고 자석에 반응하는 오브젝트라면 자석에 붙음
-                if (isMagnetActivate)
+                reactionTarget = target.GetComponent<ReactionObject>();                     // 반응형 오브젝트인지 확인
+                if(reactionTarget != null)
                 {
-                    hitPoint = hit.collider.bounds.center;  // 해당 오브젝트의 중앙에서 시작
-                    //hitPoint = hit.point;
+                    isMagnetActivate = reactionTarget.IsMagnetic; // 자석에 반응하는 오브젝트면 자석 활성화
+                    isTarget_Door = reactionTarget is ReactionDoor;
                 }
             }
-
             yield return null;
         }
     }
 
-
+    /// <summary>
+    /// 목적지를 이동시키는 메서드
+    /// </summary>
+    void DestinationMove()
+    {
+        Vector3 destinationLocalPos = targetDestination.localPosition;  // 로컬 좌표 받아와서
+        destinationLocalPos.x = 0f;                                     // x축은 0 고정 (사용자와 같은 위치 = 사용자는 카메라 정면을 바라봄 = 카메라의 정면에 고정)
+        destinationLocalPos.y += targetMoveY;                           // y축 이동거리만큼 더하기
+        destinationLocalPos.z += targetMoveZ;                           // z축 이동거리만큼 더하기
+        targetDestination.localPosition = destinationLocalPos;          // 목적지 위치 설정
+    }
 
 #if UNITY_EDITOR
     private void OnDrawGizmos()

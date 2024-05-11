@@ -9,7 +9,7 @@ public class IceMaker_Ice : ReactionObject
     /// <summary>
     /// 얼음의 크기
     /// </summary>
-    public Vector3 size = new Vector3(1.7f, 2f, 1.7f);
+    public Vector3 size = new Vector3(2.8f, 3.6f, 2.8f);
 
     /// <summary>
     /// 얼음의 크기 프로퍼티 (get)
@@ -58,10 +58,13 @@ public class IceMaker_Ice : ReactionObject
         animator = GetComponent<Animator>();
         animator.SetFloat(Hash_GenerateSpeed, generateTime);
 
-        Transform ice = transform.GetChild(0);
-        ice.localScale = size;
+        //Transform ice = transform.GetChild(0);
+        //ice.localScale = size;
         BoxCollider collider = transform.GetComponent<BoxCollider>();
         collider.size = size;
+
+        Vector3 scale = new Vector3(1, 0, 1);
+        transform.localScale = scale;
     }
 
     protected override void OnEnable()
@@ -76,6 +79,8 @@ public class IceMaker_Ice : ReactionObject
         user = null;
         onDestroy = null;
         base.OnDisable();
+        Vector3 scale = new Vector3(1, 0, 1);
+        transform.localScale = scale;
     }
 
     /// <summary>

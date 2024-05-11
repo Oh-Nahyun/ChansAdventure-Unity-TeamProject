@@ -16,7 +16,7 @@ GameObject:
   m_Layer: 0
   m_Name: IceMaker_Ice_Pivot
   m_TagString: Skill
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -33,7 +33,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6266273388517672521}
+  - {fileID: 2839179866516046780}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &2352404559011357207
@@ -74,10 +74,12 @@ MonoBehaviour:
     forceY: 5
     boomRange: 3
     damage: 3
-  Weight: 1
+  weight: 1
   objectMaxHp: 1
+  defencePower: 1
   reactionType: 8
-  size: {x: 1.7, y: 2, z: 1.7}
+  MaxTimeLockDamage: 50
+  size: {x: 2.8, y: 3.6, z: 2.8}
 --- !u!54 &757299836642890944
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -124,88 +126,79 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.7, y: 2, z: 1.7}
-  m_Center: {x: 0, y: 1, z: 0}
---- !u!1 &7478661320597728556
-GameObject:
+  m_Size: {x: 2.8, y: 3.6, z: 2.8}
+  m_Center: {x: 0, y: 1.8, z: 0}
+--- !u!1001 &6237804424105834580
+PrefabInstance:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6266273388517672521}
-  - component: {fileID: 8620057198932089996}
-  - component: {fileID: 1244209095030631419}
-  m_Layer: 0
-  m_Name: Ice
-  m_TagString: Skill
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6266273388517672521
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7478661320597728556}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
-  m_LocalScale: {x: 1.7, y: 2, z: 1.7}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 9067561309681514994}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &8620057198932089996
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 9067561309681514994}
+    m_Modifications:
+    - target: {fileID: 8212288738178464744, guid: 8a7b6267a8439184f84558cd85403529,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.67
+      objectReference: {fileID: 0}
+    - target: {fileID: 8212288738178464744, guid: 8a7b6267a8439184f84558cd85403529,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 8212288738178464744, guid: 8a7b6267a8439184f84558cd85403529,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8212288738178464744, guid: 8a7b6267a8439184f84558cd85403529,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8212288738178464744, guid: 8a7b6267a8439184f84558cd85403529,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8212288738178464744, guid: 8a7b6267a8439184f84558cd85403529,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8212288738178464744, guid: 8a7b6267a8439184f84558cd85403529,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8212288738178464744, guid: 8a7b6267a8439184f84558cd85403529,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8212288738178464744, guid: 8a7b6267a8439184f84558cd85403529,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8212288738178464744, guid: 8a7b6267a8439184f84558cd85403529,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8618921064782548943, guid: 8a7b6267a8439184f84558cd85403529,
+        type: 3}
+      propertyPath: m_Name
+      value: Icemaker_Ice
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8a7b6267a8439184f84558cd85403529, type: 3}
+--- !u!4 &2839179866516046780 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8212288738178464744, guid: 8a7b6267a8439184f84558cd85403529,
+    type: 3}
+  m_PrefabInstance: {fileID: 6237804424105834580}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7478661320597728556}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &1244209095030631419
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7478661320597728556}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 7e34522a580fcf54390fa4b4a013eec7, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}

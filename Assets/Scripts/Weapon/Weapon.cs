@@ -24,12 +24,12 @@ public class Weapon : MonoBehaviour
     /// <summary>
     /// [무기1] 칼
     /// </summary>
-    public Transform swordWeapon;
+    Transform swordWeapon;
 
     /// <summary>
     /// [무기2-1] 활
     /// </summary>
-    public Transform bowWeapon;
+    Transform bowWeapon;
 
     /// <summary>
     /// [무기2-2] 화살
