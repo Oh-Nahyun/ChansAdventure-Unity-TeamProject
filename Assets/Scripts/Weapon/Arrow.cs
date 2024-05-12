@@ -28,13 +28,9 @@ public class Arrow : RecycleObject
 
     private void Awake()
     {
-        arrowFirePoint = FindAnyObjectByType<ArrowFirePoint>();
         arrowCollider = GetComponent<Collider>();
         rigid = GetComponent<Rigidbody>();
         //ps = GetComponent<ParticleSystem>();
-        player = GameManager.Instance.Player;   // 플레이어 찾기
-
-        arrowRange = arrowFirePoint.arrowFireRange;
     }
 
     protected override void OnEnable()
@@ -42,9 +38,18 @@ public class Arrow : RecycleObject
         base.OnEnable();
         StartCoroutine(LifeOver(lifeTime));                         // 수명 설정
         rigid.angularVelocity = Vector3.zero;                       // 이전의 회전력 제거
-        rigid.velocity = player.transform.forward * arrowSpeed * arrowRange;    // 발사 방향과 속도 설정 // transform.up
         
-        if(player == null) player = GameManager.Instance.Player;   // 플레이어 찾기
+        if(player == null)
+        {
+            player = GameManager.Instance.Player;   // 플레이어 찾기
+        }
+        else
+        {
+            arrowFirePoint = FindAnyObjectByType<ArrowFirePoint>();
+            arrowRange = arrowFirePoint.arrowFireRange;
+        }
+
+        rigid.velocity = player.transform.forward * arrowSpeed * arrowRange;    // 발사 방향과 속도 설정 // transform.up
     }
 
     private void OnCollisionEnter(Collision collision)

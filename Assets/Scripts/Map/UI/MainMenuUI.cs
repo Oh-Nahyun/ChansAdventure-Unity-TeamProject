@@ -53,6 +53,8 @@ public class MainMenuUI : MonoBehaviour
     void OnStart()
     {
         // 게임 처음메인 씬으로 이동
+        string sceneName = $"Main_Map_Test";
+        GameManager.Instance.ChangeToTargetScene(sceneName, GameManager.Instance.Player.gameObject);
     }
 
     /// <summary>

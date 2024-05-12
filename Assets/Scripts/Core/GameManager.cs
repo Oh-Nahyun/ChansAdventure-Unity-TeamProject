@@ -17,6 +17,7 @@ public enum GameState
 [RequireComponent(typeof(CameraManager))]
 [RequireComponent(typeof(ItemDataManager))]
 [RequireComponent(typeof(MapManager))]
+[RequireComponent(typeof(SkillManager))]
 public class GameManager : Singleton<GameManager>
 {
     /// <summary>
@@ -96,6 +97,11 @@ public class GameManager : Singleton<GameManager>
     public SkillManager Skill => skillManager;
 
     /// <summary>
+    /// 스폰 위지 트랜스폼
+    /// </summary>
+    public Transform spawnPoint;
+
+    /// <summary>
     /// 로딩하는 중인지 확인하는 bool값
     /// </summary>
     public bool isLoading;
@@ -150,6 +156,7 @@ public class GameManager : Singleton<GameManager>
         DontDestroyOnLoad(loadPlayerGameObject);
 
         GameObject playerObj = Instantiate(playerPrefab);
+        playerObj.transform.position = spawnPoint.position;
         player = playerObj.GetComponent<Player>();
 
         cameraManager = GetComponent<CameraManager>();

@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2990285908136317154
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5161949054548638291}
+  m_Layer: 0
+  m_Name: SpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5161949054548638291
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2990285908136317154}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.86, y: 4.79, z: 12.4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9214185627190435623}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4259061661310028882
 GameObject:
   m_ObjectHideFlags: 0
@@ -13,6 +44,7 @@ GameObject:
   - component: {fileID: 7616533183204277396}
   - component: {fileID: 1789021134245975183}
   - component: {fileID: 8413078663783774573}
+  - component: {fileID: 7711979120005187342}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -35,6 +67,7 @@ Transform:
   m_Children:
   - {fileID: 446764570546874086}
   - {fileID: 7875589753598165296}
+  - {fileID: 5161949054548638291}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7525014269693007579
@@ -50,6 +83,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameState: 1
+  spawnPoint: {fileID: 5161949054548638291}
   isLoading: 0
   loadPlayerGameObject: {fileID: 0}
   playerPrefab: {fileID: 7973622836142104029, guid: 01eee89cde26bf04aa9194d5dd3ca811,
@@ -103,9 +137,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c7a4a50e2e404c4caa12015f2bd96d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapSizeX: 300
-  mapSizeY: 300
+  mapSizeX: 100
+  mapSizeY: 100
   IsOpenedLargeMap: 0
+--- !u!114 &7711979120005187342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4259061661310028882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cd1ccf8d5a082748bd3208b923c8785, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skills:
+  - {fileID: 6731784966498643628, guid: 5357befead7529840918c0b0c1e05995, type: 3}
+  - {fileID: 5673038610984017870, guid: 97ca29bfc7140bc4cb01d6a19ecb28f9, type: 3}
+  - {fileID: 4161315281032934609, guid: 14c165a4a63eb5b47ac7a930095ddae4, type: 3}
+  - {fileID: 818589885712792232, guid: d65926a35bb69b5448a9a5f1ae00ab88, type: 3}
+  - {fileID: 2839625063180649222, guid: 2bec7fee1d688f34cb929c5497a84b49, type: 3}
 --- !u!1001 &1512909484931155663
 PrefabInstance:
   m_ObjectHideFlags: 0

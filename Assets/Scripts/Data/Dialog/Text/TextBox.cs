@@ -63,9 +63,15 @@ public class TextBox : MonoBehaviour
 
         controller = FindAnyObjectByType<PlayerController>(FindObjectsInactive.Include);
     }
+    private void OnEnable()
+    {
+
+    }
 
     private void Start()
     {
+        gameObject.SetActive(true);
+
         canvasGroup.alpha = 0.0f;
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;

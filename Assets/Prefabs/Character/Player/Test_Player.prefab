@@ -7324,11 +7324,10 @@ MonoBehaviour:
   slowSpeed: 1.5
   currentSpeed: 0
   turnSpeed: 10
-  playerVelocity: {x: 0, y: 0, z: 0}
   jumpPower: 2.5
-  isJumping: 0
   slidePower: 5
   isLook: 0
+  cameraRoot: {fileID: 0}
   followCamRotatePower: 5
   partPosition:
   - {fileID: 4511879611240405110}
@@ -7404,8 +7403,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49ab87d01e2c74fc28507b59a02addf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swordWeapon: {fileID: 0}
-  bowWeapon: {fileID: 0}
   IsBowEquip: 0
   IsArrowEquip: 0
   IsZoomIn: 0

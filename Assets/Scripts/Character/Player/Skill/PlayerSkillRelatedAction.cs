@@ -167,6 +167,10 @@ public class PlayerSkillRelatedAction : MonoBehaviour, ILifter
 
     private void Awake()
     {
+
+    }
+    private void Start()
+    {
         pickUpRoot = transform.GetChild(3);
 
         animator = GetComponent<Animator>();                          // 애니메이션은 자식 트랜스폼인 모델에서 처리
@@ -189,7 +193,7 @@ public class PlayerSkillRelatedAction : MonoBehaviour, ILifter
                 handRootTracker.OffTracking();
             }
         };
-        
+
 
         skillController.onSkillActive += OnSkillAction;
 

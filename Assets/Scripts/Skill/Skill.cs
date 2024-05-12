@@ -123,9 +123,11 @@ public class Skill : ReactionObject
             {
                 Debug.LogWarning("크로스헤어 찾지 못함");
             }
-
-            OnCrosshair += crosshair.Open;
-            OffCrosshair += crosshair.Close;
+            else
+            {
+                OnCrosshair += crosshair.Open;
+                OffCrosshair += crosshair.Close;
+            }
         }
     }
 
