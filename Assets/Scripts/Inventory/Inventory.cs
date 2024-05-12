@@ -424,6 +424,52 @@ public class Inventory
         owner = owerObj;
     }
 
+    /// <summary>
+    /// 아이템들 중 가장 강한 아이템의 아이템 슬롯을 반환하는 함수 ( 동일한 아이템이 있으면 가장 먼저있는 아이템을 반환 )
+    /// </summary>
+    /// <param name="weaponType">장착할 무기 타입</param>
+    /// <returns>무기 타입을 가진 아이템 가장 Damage가 높은 InventorySlot</returns>
+    public InventorySlot QuickWeaponEquip(WeaponType weaponType)
+    {
+        // 아이템이 장착 되어있으면 장착 해제
+        UnEquipAllItem();
+
+        // 아이템 찾기
+        InventorySlot resultSlot = null;    // 반환할 아이템 슬롯값
+        float weaponDamage = 0;             // 확인한 아이템 중 가장 높은 데미지
+        
+        foreach(var item in slots)
+        {
+            ItemData_Weapon weaponItem = item.SlotItemData as ItemData_Weapon;
+
+            if (weaponItem != null) // 해당 아이템이 무기 아이템이다
+            {
+                if(weaponItem.WeaponType == weaponType && weaponItem.Damage > weaponDamage) // 찾은 무기 타입이고 가장 높은 데미지를 가진 아이템이다
+                {
+                    resultSlot = item;                  
+                    weaponDamage = weaponItem.Damage;   // 저장한 데미지값 갱신
+                }
+            }
+        }
+
+        resultSlot.IsEquip = true;
+        return resultSlot;
+    }
+    
+    /// <summary>
+    /// 모든 아이템 장착을 해제 하는 함수
+    /// </summary>
+    void UnEquipAllItem()
+    {
+        foreach (var item in slots)
+        {
+            if (item.IsEquip)
+            {
+                item.IsEquip = false;
+            }
+        }
+    }
+
 #if UNITY_EDITOR
 
     /// <summary>

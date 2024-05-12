@@ -40,6 +40,7 @@ public class GameManager : Singleton<GameManager>
     }
 
     Player player;
+    
     public Player Player
     {
         get
@@ -90,6 +91,9 @@ public class GameManager : Singleton<GameManager>
             return cameraManager;
         }
     }
+
+    SkillManager skillManager;
+    public SkillManager Skill => skillManager;
 
     /// <summary>
     /// 로딩하는 중인지 확인하는 bool값
@@ -168,6 +172,13 @@ public class GameManager : Singleton<GameManager>
         weapon = FindAnyObjectByType<Weapon>();
         cameraManager = GetComponent<CameraManager>();
         itemDataManager = GetComponent<ItemDataManager>();
+        mapManager = GetComponent<MapManager>();
+        skillManager = GetComponent<SkillManager>();
+        skillManager.Initialize();
+
+        itemDataManager.InitializeItemDataUI();
+
+        mapManager.InitalizeMapUI();
         questManager = FindAnyObjectByType<QuestManager>();
         textBoxManager = FindAnyObjectByType<TextBoxManager>();
         

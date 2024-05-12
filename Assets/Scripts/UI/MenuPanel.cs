@@ -28,12 +28,12 @@ public class MenuPanel : MonoBehaviour
     SaveHandler_Base saveHandler;
 
     /// <summary>
-    /// ÇöÀç ÆĞ³Î »óÅÂ
+    /// í˜„ì¬ íŒ¨ë„ ìƒíƒœ
     /// </summary>
     MenuState state = MenuState.Nomal;
 
     /// <summary>
-    /// ÆĞ³Î »óÅÂ¸¦ º¯°æÇÏ´Â ÇÁ·ÎÆÛÆ¼ 
+    /// íŒ¨ë„ ìƒíƒœë¥¼ ë³€ê²½í•˜ëŠ” í”„ë¡œí¼í‹° 
     /// </summary>
     MenuState State
     {
@@ -44,27 +44,27 @@ public class MenuPanel : MonoBehaviour
             switch(state)
             {
                 case MenuState.Nomal:
-                    prePanelName.text = $"¼¼ÀÌºê";
-                    currnetPanelName.text = $"³ë¸»";
-                    nextPanelName.text = $"ÀÎº¥Åä¸®";
+                    prePanelName.text = $"ì„¸ì´ë¸Œ";
+                    currnetPanelName.text = $"ë…¸ë§";
+                    nextPanelName.text = $"ì¸ë²¤í† ë¦¬";
                     ShowNormal();
                     break;
                 case MenuState.Inventory:
-                    prePanelName.text = $"³ë¸»";
-                    currnetPanelName.text = $"ÀÎº¥Åä¸®";
-                    nextPanelName.text = $"¸Ê";
+                    prePanelName.text = $"ë…¸ë§";
+                    currnetPanelName.text = $"ì¸ë²¤í† ë¦¬";
+                    nextPanelName.text = $"ë§µ";
                     ShowInventory();
                     break;
                 case MenuState.Map:
-                    prePanelName.text = $"ÀÎº¥Åä¸®";
-                    currnetPanelName.text = $"¸Ê";
-                    nextPanelName.text = $"¼¼ÀÌºê";
+                    prePanelName.text = $"ì¸ë²¤í† ë¦¬";
+                    currnetPanelName.text = $"ë§µ";
+                    nextPanelName.text = $"ì„¸ì´ë¸Œ";
                     ShowMap();
                     break;
                 case MenuState.Save:
-                    prePanelName.text = $"¸Ê";
-                    currnetPanelName.text = $"¼¼ÀÌºê";
-                    nextPanelName.text = $"³ë¸»";
+                    prePanelName.text = $"ë§µ";
+                    currnetPanelName.text = $"ì„¸ì´ë¸Œ";
+                    nextPanelName.text = $"ë…¸ë§";
                     ShowSave();
                     break;
                 default:
@@ -92,7 +92,7 @@ public class MenuPanel : MonoBehaviour
         saveHandler = FindAnyObjectByType<SaveHandler_Base>();
     }
 
-    void OnDisable() // ºñÈ°¼ºÈ­ µÇ¸é ÀÎÇ² Á¦°Å
+    void OnDisable() // ë¹„í™œì„±í™” ë˜ë©´ ì¸í’‹ ì œê±°
     {
         inputActions.UI.PrePanel.performed -= OnLeftArrow;
         inputActions.UI.NextPanel.performed -= OnRightArrow;
@@ -138,50 +138,50 @@ public class MenuPanel : MonoBehaviour
     {
         GameManager.Instance.ItemDataManager.InventoryUI.CloseInventory();
         GameManager.Instance.MapManager.CloseMapUI();
-        saveHandler.CloseSavePanel(); // ¼¼ÀÌºê ÆĞ³Î ´İ±â
+        saveHandler.CloseSavePanel(); // ì„¸ì´ë¸Œ íŒ¨ë„ ë‹«ê¸°
 
         GameManager.Instance.MapManager.CloseMiniMapUI();
     }
 
     /// <summary>
-    /// ¸ğµç UI¸¦ ´İ°í ÀÎº¥Åä¸®¸¦ ¿©´Â ÇÔ¼ö
+    /// ëª¨ë“  UIë¥¼ ë‹«ê³  ì¸ë²¤í† ë¦¬ë¥¼ ì—¬ëŠ” í•¨ìˆ˜
     /// </summary>
     public void ShowInventory()
     {
         GameManager.Instance.ItemDataManager.InventoryUI.ShowInventory();
-        GameManager.Instance.ItemDataManager.CharaterRenderCameraPoint.transform.eulerAngles = new Vector3(0, 180f, 0); // RenderTexture ÇÃ·¹ÀÌ¾î À§Ä¡ ÃÊ±âÈ­
+        GameManager.Instance.ItemDataManager.CharaterRenderCameraPoint.transform.eulerAngles = new Vector3(0, 180f, 0); // RenderTexture í”Œë ˆì´ì–´ ìœ„ì¹˜ ì´ˆê¸°í™”
         GameManager.Instance.MapManager.CloseMapUI();
-        saveHandler.CloseSavePanel(); // ¼¼ÀÌºê ÆĞ³Î ´İ±â
+        saveHandler.CloseSavePanel(); // ì„¸ì´ë¸Œ íŒ¨ë„ ë‹«ê¸°
 
         GameManager.Instance.MapManager.CloseMiniMapUI();
     }
 
     /// <summary>
-    /// ¸ğµç UI¸¦ ´İ°í ¸ÊÀ» ¿©´Â ÇÔ¼ö
+    /// ëª¨ë“  UIë¥¼ ë‹«ê³  ë§µì„ ì—¬ëŠ” í•¨ìˆ˜
     /// </summary>
     public void ShowMap()
     {
         GameManager.Instance.ItemDataManager.InventoryUI.CloseInventory();
         GameManager.Instance.MapManager.OpenMapUI();
-        saveHandler.CloseSavePanel(); // ¼¼ÀÌºê ÆĞ³Î ´İ±â
+        saveHandler.CloseSavePanel(); // ì„¸ì´ë¸Œ íŒ¨ë„ ë‹«ê¸°
 
         GameManager.Instance.MapManager.CloseMiniMapUI();
     }
 
     /// <summary>
-    /// ¸ğµç UI¸¦ ´İ°í ¼¼ÀÌºêÃ¢ ¿©´Â ÇÔ¼ö
+    /// ëª¨ë“  UIë¥¼ ë‹«ê³  ì„¸ì´ë¸Œì°½ ì—¬ëŠ” í•¨ìˆ˜
     /// </summary>
     public void ShowSave()
     {
         GameManager.Instance.ItemDataManager.InventoryUI.CloseInventory();
         GameManager.Instance.MapManager.CloseMapUI();
-        saveHandler.ShowSavePanel(); // ¼¼ÀÌºê ÆĞ³Î ¿­±â
+        saveHandler.ShowSavePanel(); // ì„¸ì´ë¸Œ íŒ¨ë„ ì—´ê¸°
 
         GameManager.Instance.MapManager.CloseMiniMapUI();
     }
 
     /// <summary>
-    /// ¸Å´ºÆĞ³ÎÀ» È°¼ºÈ­ ÇÏ´Â ÇÔ¼ö
+    /// ë§¤ë‰´íŒ¨ë„ì„ í™œì„±í™” í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
     public void ShowMenu(MenuState setState)
     {
@@ -202,7 +202,7 @@ public class MenuPanel : MonoBehaviour
 
 
     /// <summary>
-    /// ¸Å´ºÆĞ³ÎÀ» ºñÈ°¼ºÈ­ ÇÏ´Â ÇÔ¼ö
+    /// ë§¤ë‰´íŒ¨ë„ì„ ë¹„í™œì„±í™” í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
     public void CloseMenu()
     {
@@ -218,6 +218,6 @@ public class MenuPanel : MonoBehaviour
         GameManager.Instance.MapManager.OpenMiniMapUI();
 
         GameManager.Instance.MapManager.IsOpenedLargeMap = false;
-        GameManager.Instance.Player.OnCloseUIPanel();
+        GameManager.Instance.Player.UIPanelClose();
     }
 }

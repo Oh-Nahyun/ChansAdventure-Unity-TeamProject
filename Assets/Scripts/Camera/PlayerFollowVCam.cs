@@ -42,7 +42,7 @@ public class PlayerFollowVCam : MonoBehaviour
     CinemachineVirtualCamera vcam;
     Cinemachine3rdPersonFollow follow;
 
-    private void Start()
+    private void Awake()
     {
         GameState state = GameManager.Instance.CurrnetGameState;
         if (state == GameState.NotStart)

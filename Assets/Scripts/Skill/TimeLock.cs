@@ -15,6 +15,8 @@ public class TimeLock : Skill
     /// </summary>
     public float duration = 10.0f;
 
+    public float maxAccumulateDamage = 50.0f;
+
     ReactionObject target;
 
     bool IsValidTarget => target != null;
@@ -29,7 +31,6 @@ public class TimeLock : Skill
 
     protected override void OnEnable()
     {
-        StopAllCoroutines();
         base.OnEnable();
     }
 
@@ -44,8 +45,12 @@ public class TimeLock : Skill
         if (IsValidTarget)
         {
             base.UseSkillAction();
+            onMotionChange?.Invoke(true);
             StopCoroutine(detectObject);
-            target.OnTimeLock(timeLockColor, duration);
+            target.OnTimeLock(timeLockColor, duration, maxAccumulateDamage);
+
+            TimeLockArrow timeLockArrow = Factory.Instance.GetTimeLockArrow(target.transform.position);
+            timeLockArrow.Initialize(target, maxAccumulateDamage);
 
             OffSkill();
         }

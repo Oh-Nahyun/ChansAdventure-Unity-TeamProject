@@ -24,17 +24,16 @@ public class SkillVCam : MonoBehaviour
 
     protected void Awake()
     {
+        vCam = GetComponent<CinemachineVirtualCamera>();
+        personFollow = vCam.GetCinemachineComponent<Cinemachine3rdPersonFollow>();
     }
 
     void Start()
     {
-        vCam = GetComponent<CinemachineVirtualCamera>();
-        personFollow = vCam.GetCinemachineComponent<Cinemachine3rdPersonFollow>();
-
         player = GameManager.Instance.Player;
         if (player != null)
         {
-            FollwSelector();
+            FllowSelector();
         }
         else
         {
@@ -43,9 +42,9 @@ public class SkillVCam : MonoBehaviour
 
     }
 
-    protected virtual void FollwSelector()
+    protected virtual void FllowSelector()
     {
-        cameraRoot = player.CameraRoot.transform;
+        cameraRoot = player.cameraRoot.transform;
         vCam.Follow = cameraRoot;
     }
 

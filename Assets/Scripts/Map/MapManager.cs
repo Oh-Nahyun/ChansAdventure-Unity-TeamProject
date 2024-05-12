@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 /// <summary>
 /// Map UI의 각종 값을 다루는 Manager 클래스 ( 위치값 맵의 왼쪽 밑에 고정 )
 /// </summary>
-public class MapManager : MonoBehaviour
+public class MapManager : Singleton<MapManager>
 {
     [Header("Currnet Map Size")]
     public float mapSizeX = 300f;

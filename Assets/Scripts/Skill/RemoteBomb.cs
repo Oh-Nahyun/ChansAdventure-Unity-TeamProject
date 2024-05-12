@@ -13,16 +13,12 @@ public class RemoteBomb : Skill
 
     }
 
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-    }
-
     protected override void OnSKillAction()
     {
         //if (currentState == StateType.Throw || currentState == StateType.Drop)
-        if (currentState == StateType.None)
+        if (currentState == StateType.None || currentState == StateType.Throw)
         {
+            cooltime = 0;
             TryBoom();
         }
     }
@@ -50,6 +46,12 @@ public class RemoteBomb : Skill
     {
         currentState = StateType.None;  // 현재 상태를 기본 상태로
         //currentState = StateType.Drop;
+    }
+
+    protected override void BoomAction()
+    {
+        cooltimeReset?.Invoke(skillName);
+        base.BoomAction();
     }
 
 #if UNITY_EDITOR

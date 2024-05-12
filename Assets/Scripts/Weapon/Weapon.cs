@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -26,12 +24,12 @@ public class Weapon : MonoBehaviour
     /// <summary>
     /// [무기1] 칼
     /// </summary>
-    public Transform swordWeapon;
+    Transform swordWeapon;
 
     /// <summary>
     /// [무기2-1] 활
     /// </summary>
-    public Transform bowWeapon;
+    Transform bowWeapon;
 
     /// <summary>
     /// [무기2-2] 화살
@@ -95,7 +93,7 @@ public class Weapon : MonoBehaviour
     /// <summary>
     /// 화살개수 확인하기 위한 프로퍼티
     /// </summary>
-    public Unit ArrowCount => ArrowCount;
+    public uint ArrowCount => arrowCount;
 
     /// <summary>
     /// 화살 프리팹
@@ -198,14 +196,14 @@ public class Weapon : MonoBehaviour
                 animator.SetTrigger(IsBowHash);
                 ShowWeapon(false, true);
 
-                // 인벤토리에 화살 개수가 0이 아닌 경우 >> 화살 자동 장전 후 공격
-                if (arrowCount != 0) //
+                // 갱신한 화살이 존재할 경우 ( 1개 이상 ) >> 화살 자동 장전 후 공격
+                if (ArrowCount > 0) //
                 {
                     OnLoad();
                 }
 
                 // 인벤토리에 화살 개수가 0이고, 화살 장전이 안되어있는 경우 >> 활 자체 공격
-                if (arrowCount == 0 && !IsArrowEquip) //
+                if (ArrowCount == 0 && !IsArrowEquip) //
                 {
                     animator.SetBool(HaveArrowHash, false);
                     Debug.Log("***** 인벤토리 내 보유하고 있는 화살이 없습니다.");
@@ -223,7 +221,11 @@ public class Weapon : MonoBehaviour
     /// </summary>
     private void OnSwordModeInput(InputAction.CallbackContext _)
     {
+        if (IsZoomIn)
+            return;
+
         currentWeaponMode = WeaponMode.Sword;
+        QuickEquipWeapon(currentWeaponMode);
         ChangeWeaponMode(currentWeaponMode);
         Debug.Log("WeaponMode : Sword");
     }
@@ -233,7 +235,11 @@ public class Weapon : MonoBehaviour
     /// </summary>
     private void OnBowModeInput(InputAction.CallbackContext _)
     {
+        if (IsZoomIn)
+            return;
+
         currentWeaponMode = WeaponMode.Bow;
+        QuickEquipWeapon(currentWeaponMode);
         ChangeWeaponMode(currentWeaponMode);
         Debug.Log("WeaponMode : Bow");
     }
@@ -243,6 +249,9 @@ public class Weapon : MonoBehaviour
     /// </summary>
     private void OnNormalModeInput(InputAction.CallbackContext _)
     {
+        if (IsZoomIn)
+            return;
+
         currentWeaponMode = WeaponMode.None;
         ChangeWeaponMode(currentWeaponMode);
         Debug.Log("WeaponMode : None");
@@ -364,7 +373,6 @@ public class Weapon : MonoBehaviour
     private void OnLoad()
     {
         if (player.SkillRelatedAction.IsPickUp || player.isTalk || player.IsAnyUIPanelOpened) // 물건을 들고 있거나 대화중일 때 입력 막기
-
             return;
 
         if (IsBowEquip) // 활을 장비하고 있는 경우
@@ -395,6 +403,7 @@ public class Weapon : MonoBehaviour
             if (!IsZoomIn) // 카메라 줌아웃인 경우 ( = 화살을 쐈다.)
             {
                 // 장전되었던 화살 사용 표시
+                UpdateArrow();
                 animator.SetBool(HaveArrowHash, false);
                 IsArrowEquip = false;
                 // Debug.Log($"IsArrowEquip : {IsArrowEquip}");
@@ -409,7 +418,7 @@ public class Weapon : MonoBehaviour
     {
         //arrowFirePoint.FireArrow();
         // 화살 개수 소비
-        OnFierArrow();
+        OnFireArrow();
     }
 
     /// <summary>
@@ -558,7 +567,7 @@ public class Weapon : MonoBehaviour
     /// <summary>
     /// 화살을 발사 할 때 화살 개수를 소모하고 화살을 생성하는 함수
     /// </summary>
-    void OnFierArrow()
+    void OnFireArrow()
     {
         // 해당슬롯에 개수가 부족하면 보충
         if(arrowCount > 0 && arrowSlot.CurrentItemCount <= 0)
@@ -608,6 +617,34 @@ public class Weapon : MonoBehaviour
         arrowCount = totalGetItemCount; // 찾은 화살 개수 갱신
 
         return result;
+    }
+
+    /// <summary>
+    /// 가장 강한 아이템을 장착하는 함수
+    /// </summary>
+    /// <param name="mode">장착할 무기 모드</param>
+    void QuickEquipWeapon(WeaponMode mode)
+    {
+        WeaponType weaponType; // mode에 따른 무기 타입 설정
+        switch (mode)
+        {
+            case WeaponMode.Sword:
+                weaponType = WeaponType.Melee;
+                break;
+            case WeaponMode.Bow:
+                weaponType = WeaponType.Range;
+                UpdateArrow();  // 화살 개수 갱신
+                break;
+            default:
+                return;
+        }
+        InventorySlot slot = player.Inventory.QuickWeaponEquip(weaponType); // 아이템 슬롯
+        ItemData_Weapon itemData = slot.SlotItemData as ItemData_Weapon;    // 아이템 데이터
+
+        GameObject itemPrefab = itemData.EqiupPrefab;                       // 아이템 프리팹
+        EquipPart part = itemData.equipPart;                                // 아이템 장착 부위
+
+        player.CharacterEquipItem(itemPrefab, part, slot);
     }
     #endregion
 }

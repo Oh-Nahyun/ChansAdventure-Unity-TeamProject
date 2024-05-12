@@ -38,3 +38,12 @@ public enum EquipPart
     Hand_R,
     Hand_L
 }
+
+/// <summary>
+/// 무기 아이템의 아이템 타입 enum
+/// </summary>
+public enum WeaponType
+{
+    Melee = 0,
+    Range
+}
