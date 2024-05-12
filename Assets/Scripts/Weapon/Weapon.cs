@@ -563,7 +563,12 @@ public class Weapon : MonoBehaviour
         // 해당슬롯에 개수가 부족하면 보충
         if(arrowCount > 0 && arrowSlot.CurrentItemCount <= 0)
         {
-            UpdateArrow();
+            if (!UpdateArrow())
+            {
+                Debug.Log("인벤토리에 화살이 존재하지 않습니다.");
+
+                return;
+            }
         }
 
         arrowCount--;
@@ -574,8 +579,10 @@ public class Weapon : MonoBehaviour
     /// <summary>
     /// 화살을 들 때 인벤토리에서 사용할 수 있는 화살 개수를 업데이트 하는 함수
     /// </summary>
-    void UpdateArrow()
+    bool UpdateArrow()
     {
+        bool result = true;
+        
         Inventory inventory = player.Inventory;
         uint totalGetItemCount = 0;
 
@@ -594,10 +601,13 @@ public class Weapon : MonoBehaviour
             else
             {
                 Debug.Log($"인벤토리에 화살이 존재하지 않습니다.");
+                result = false; 
             }
         }
 
         arrowCount = totalGetItemCount; // 찾은 화살 개수 갱신
+
+        return result;
     }
     #endregion
 }

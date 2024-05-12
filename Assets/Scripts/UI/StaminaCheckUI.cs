@@ -55,6 +55,12 @@ public class StaminaCheckUI : MonoBehaviour
     /// </summary>
     private void PrintStamina()
     {
+        if (player == null)
+        {
+            player = GameManager.Instance.Player;
+            return;
+        }
+
         float playerStamina = player.Stamina * 0.01f;
 
         if (!IsActive)

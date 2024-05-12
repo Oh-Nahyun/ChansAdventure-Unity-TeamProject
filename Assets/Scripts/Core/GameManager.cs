@@ -114,6 +114,10 @@ public class GameManager : Singleton<GameManager>
                 targetSceneName = value;
                 ChangeToLoadingScene();
             }
+            else
+            {
+                ChangeToLoadingScene();
+            }
         }
     }
 
@@ -160,16 +164,14 @@ public class GameManager : Singleton<GameManager>
             return;
         }
 
-        SpawnPlayerAfterLoadScene();
-
         if (player == null) player = FindAnyObjectByType<Player>();
         weapon = FindAnyObjectByType<Weapon>();
-
-        itemDataManager.InitializeItemDataUI();
-
-        mapManager.InitalizeMapUI();
+        cameraManager = GetComponent<CameraManager>();
+        itemDataManager = GetComponent<ItemDataManager>();
         questManager = FindAnyObjectByType<QuestManager>();
         textBoxManager = FindAnyObjectByType<TextBoxManager>();
+        
+        SpawnPlayerAfterLoadScene();
     }
 
     #region Loading Function
@@ -214,6 +216,7 @@ public class GameManager : Singleton<GameManager>
 
         if (!isLoading)
         {
+
             loadPlayerGameObject.SetActive(true);
             GameObject loadingPlayer = Instantiate(loadPlayerGameObject.transform.GetChild(0).gameObject);   // 새로운 씬에 플레이어 생성
             loadingPlayer.name = "Player";
@@ -225,6 +228,13 @@ public class GameManager : Singleton<GameManager>
 
             player = loadingPlayer.GetComponent<Player>();  // 플레이어 초기화
             player.GetInventoryData(savedInventory);        // 플레이어 인벤토리 데이터 받기
+
+            itemDataManager.InitializeItemDataUI();         // 아이템 데이터 매니저 초기화 후
+
+            player.Inventory.SetOwner(player.gameObject);   // 인벤토리 주인 갱신
+            ItemDataManager.InventoryUI.InitializeInventoryUI(player.Inventory); // 로딩 후 인벤 UI 초기화
+
+            mapManager.InitalizeMapUI();                    // 맵 매니저 초기화
         }
     }
 

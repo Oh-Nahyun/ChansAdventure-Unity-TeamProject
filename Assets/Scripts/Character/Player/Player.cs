@@ -12,6 +12,11 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
 {
     #region additional Classes
     PlayerController controller;
+
+    /// <summary>
+    /// 플레이어 컨트롤러 접근용 프로퍼티
+    /// </summary>
+    public PlayerController PlayerController => controller;
     
     /// <summary>
     /// PlayerSKills를 받기 위한 프로퍼티
@@ -457,6 +462,8 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         {
             if(inventory == null)
             {
+                Debug.Log($"받을 인벤토리가 존재하지 않습니다");
+        
                 inventory = new Inventory(this.gameObject, 16);
             }
             return inventory;
@@ -465,9 +472,12 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         {
             if(inventory == null)
             {
+                Debug.Log($"수정할 인벤토리가 존재하지 않습니다");
+        
                 inventory = new Inventory(this.gameObject, 16);
-                inventory = value;
             }
+
+            inventory = value;
         }
     }
 
@@ -540,6 +550,15 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     void OnEnable()
     {
         menuPanel = FindAnyObjectByType<MenuPanel>();
+
+        // 게임 시작 전이면 비활성화
+        GameState state = GameManager.Instance.CurrnetGameState;
+        if (state == GameState.NotStart)
+        {
+            inventory = new Inventory(this.gameObject, 16);
+            EquipPart = new InventorySlot[partCount]; // EquipPart 배열 초기화
+            gameObject.SetActive(false);
+        }
     }
 
     void Start()
@@ -572,20 +591,11 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         controller.onMenuOpen += OnOpenMenuPanel;
 
         // inventory
-        inventory = new Inventory(this.gameObject, 16);
-        EquipPart = new InventorySlot[partCount]; // EquipPart 배열 초기화
+        //inventory = new Inventory(this.gameObject, 16);
 
-        // 게임 시작 전이면 비활성화
-        GameState state = GameManager.Instance.CurrnetGameState;
-        if(state == GameState.NotStart)
-        {
-            gameObject.SetActive(false);
-        }
-        else
-        {
-            GameManager.Instance.ItemDataManager.InventoryUI.InitializeInventoryUI(inventory); // 인벤 UI 초기화
-            GameManager.Instance.TextBoxManager.isTalkAction += (talk) => IsTalk(talk);
-        }
+        GameManager.Instance.ItemDataManager.InventoryUI.InitializeInventoryUI(Inventory); // 인벤 UI 초기화
+        GameManager.Instance.TextBoxManager.isTalkAction += (talk) => IsTalk(talk);
+        EquipPart = new InventorySlot[partCount]; // EquipPart 배열 초기화
 
         //Test_AddItem();
     }
@@ -1234,6 +1244,14 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     {
         menuPanel.ShowMenu((MenuState)0);
         isAnyUIPanelOpened = true;
+    }
+
+    /// <summary>
+    /// UI창을 닫을 때 호출되는 함수
+    /// </summary>
+    public void OnCloseUIPanel()
+    {
+        isAnyUIPanelOpened = false;
     }
 
     void OnQusetShow()

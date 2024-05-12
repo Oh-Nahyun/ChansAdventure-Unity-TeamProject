@@ -51,6 +51,7 @@ public class InventorySlotUI : SlotUI_Base, IBeginDragHandler, IDragHandler, IEn
             if(buttonValue == PointerEventData.InputButton.Left) // 왼쪽 클릭
             {
                 inventoryUI.onLeftClickItem(InventorySlotData.SlotIndex);
+                Debug.Log($"{InventorySlotData.SlotIndex}번 {InventorySlotData.IsEquip}");
             }
             else // 오른쪽 클릭
             {

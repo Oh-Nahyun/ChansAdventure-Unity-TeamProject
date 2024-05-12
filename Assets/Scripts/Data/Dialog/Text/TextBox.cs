@@ -71,7 +71,8 @@ public class TextBox : MonoBehaviour
         canvasGroup.blocksRaycasts = false;
         endImageAnimator.speed = 0.0f;
 
-        controller.onInteraction += () =>
+        //controller.onInteraction += () =>
+        GameManager.Instance.Player.PlayerController.onInteraction += () =>
         {
             if (scanObject != null)
             {
