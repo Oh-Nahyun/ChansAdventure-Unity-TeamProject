@@ -41,4 +41,6 @@ public class Waypoints : MonoBehaviour
         //index++;
         index %= children.Length;
     }
+#if UNITY_EDITOR
+#endif
 }

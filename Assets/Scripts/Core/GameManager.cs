@@ -3,6 +3,7 @@ using System.Collections;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 /// <summary>
 /// 게임 상태 enum
@@ -99,7 +100,7 @@ public class GameManager : Singleton<GameManager>
     /// <summary>
     /// 스폰 위지 트랜스폼
     /// </summary>
-    public Transform spawnPoint;
+    public Vector3 spawnPoint = Vector3.zero;
 
     /// <summary>
     /// 로딩하는 중인지 확인하는 bool값
@@ -155,8 +156,7 @@ public class GameManager : Singleton<GameManager>
         loadPlayerGameObject = new GameObject();
         DontDestroyOnLoad(loadPlayerGameObject);
 
-        GameObject playerObj = Instantiate(playerPrefab);
-        playerObj.transform.position = spawnPoint.position;
+        GameObject playerObj = Instantiate(playerPrefab, spawnPoint, Quaternion.identity);
         player = playerObj.GetComponent<Player>();
 
         cameraManager = GetComponent<CameraManager>();
@@ -234,12 +234,13 @@ public class GameManager : Singleton<GameManager>
 
         if (!isLoading)
         {
-
             loadPlayerGameObject.SetActive(true);
-            GameObject loadingPlayer = Instantiate(loadPlayerGameObject.transform.GetChild(0).gameObject);   // 새로운 씬에 플레이어 생성
+            GameObject loadingPlayer = Instantiate(loadPlayerGameObject.transform.GetChild(0).gameObject,
+                                                    spawnPoint,
+                                                    Quaternion.identity);   // 새로운 씬에 플레이어 생성
             loadingPlayer.name = "Player";
 
-            loadingPlayer.transform.position = Vector3.zero;
+            //loadingPlayer.transform.position = Vector3.zero;
             loadingPlayer.SetActive(true);
 
             Destroy(loadPlayerGameObject.transform.GetChild(0).gameObject); // 저장된 플레이어 오브젝트 제거

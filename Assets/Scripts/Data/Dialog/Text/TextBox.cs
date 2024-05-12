@@ -61,7 +61,6 @@ public class TextBox : MonoBehaviour
         questManager = FindObjectOfType<QuestManager>();
         warpBase = FindObjectOfType<WarpBase>();
 
-        controller = FindAnyObjectByType<PlayerController>(FindObjectsInactive.Include);
     }
     private void OnEnable()
     {
@@ -77,8 +76,8 @@ public class TextBox : MonoBehaviour
         canvasGroup.blocksRaycasts = false;
         endImageAnimator.speed = 0.0f;
 
-        //controller.onInteraction += () =>
-        GameManager.Instance.Player.PlayerController.onInteraction += () =>
+        controller = FindAnyObjectByType<PlayerController>(FindObjectsInactive.Include);
+        controller.onInteraction += () =>
         {
             if (scanObject != null)
             {

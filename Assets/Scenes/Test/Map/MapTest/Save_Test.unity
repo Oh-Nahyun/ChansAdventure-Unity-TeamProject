@@ -979,15 +979,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 7525014269693007579, guid: 03e3a0de6a355401a8754d70887c467b,
+        type: 3}
+      propertyPath: spawnPoint
+      value: 
+      objectReference: {fileID: 1985484957}
     - target: {fileID: 9214185627190435623, guid: 03e3a0de6a355401a8754d70887c467b,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -3.06
       objectReference: {fileID: 0}
     - target: {fileID: 9214185627190435623, guid: 03e3a0de6a355401a8754d70887c467b,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 1.64
       objectReference: {fileID: 0}
     - target: {fileID: 9214185627190435623, guid: 03e3a0de6a355401a8754d70887c467b,
         type: 3}
@@ -1750,6 +1755,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c718de118a361e9469ee5664b1cf2667, type: 3}
+--- !u!4 &1985484957 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9214185627190435623, guid: 03e3a0de6a355401a8754d70887c467b,
+    type: 3}
+  m_PrefabInstance: {fileID: 787459207}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2030208354
 PrefabInstance:
   m_ObjectHideFlags: 0

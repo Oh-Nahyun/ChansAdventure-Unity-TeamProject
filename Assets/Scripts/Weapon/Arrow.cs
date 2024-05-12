@@ -38,8 +38,8 @@ public class Arrow : RecycleObject
         base.OnEnable();
         StartCoroutine(LifeOver(lifeTime));                         // 수명 설정
         rigid.angularVelocity = Vector3.zero;                       // 이전의 회전력 제거
-        
-        if(player == null)
+
+        if (player == null)
         {
             player = GameManager.Instance.Player;   // 플레이어 찾기
         }
@@ -47,9 +47,9 @@ public class Arrow : RecycleObject
         {
             arrowFirePoint = FindAnyObjectByType<ArrowFirePoint>();
             arrowRange = arrowFirePoint.arrowFireRange;
+            rigid.velocity = player.transform.forward * arrowSpeed * arrowRange;    // 발사 방향과 속도 설정 // transform.up        }
         }
 
-        rigid.velocity = player.transform.forward * arrowSpeed * arrowRange;    // 발사 방향과 속도 설정 // transform.up
     }
 
     private void OnCollisionEnter(Collision collision)

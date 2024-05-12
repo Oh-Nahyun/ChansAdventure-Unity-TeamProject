@@ -1256,6 +1256,11 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         GameManager.Instance.QuestManager.OpenQuest();
     }
 
+    public void SetTransform(Vector3 position)
+    {
+        gameObject.transform.localPosition = position;
+    }
+
     /// <summary>
     /// 대화중임을 확인하는 함수
     /// </summary>
