@@ -7303,8 +7303,8 @@ Transform:
   - {fileID: 5089249904176087030}
   - {fileID: 7257339759839291239}
   - {fileID: 8951937894335498168}
-  - {fileID: 3381662755034565680}
   - {fileID: 7768805566426207049}
+  - {fileID: 3381662755034565680}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2557118109478462143
@@ -7436,7 +7436,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7973622836142104029}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f10f6577cbcf67041a22da4e22587c5a, type: 3}
   m_Name: 
@@ -9441,12 +9441,12 @@ PrefabInstance:
     - target: {fileID: 2271775307032758251, guid: eec6ade81d9d64b9ca44eb4a4ce605c1,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 2271775307032758251, guid: eec6ade81d9d64b9ca44eb4a4ce605c1,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2271775307032758251, guid: eec6ade81d9d64b9ca44eb4a4ce605c1,
         type: 3}

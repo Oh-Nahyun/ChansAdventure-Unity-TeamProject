@@ -22,4 +22,13 @@ public class Test_01_EnemySpawn : TestBase
     {
         Factory.Instance.GetNightmareDragonEnemy(waypointIndex, spawnTarget.position);
     }
+
+    protected override void OnTest3(InputAction.CallbackContext context)
+    {
+        ItemDataManager dataManager = GameManager.Instance.ItemDataManager;
+        Factory.Instance.GetItemObject(dataManager[ItemCode.Sword], spawnTarget.position);
+        Factory.Instance.GetItemObject(dataManager[ItemCode.Bow], spawnTarget.position);
+        Factory.Instance.GetItemObjects(dataManager[ItemCode.Arrow], 10, spawnTarget.position, true);
+        Factory.Instance.GetItemObjects(dataManager[ItemCode.HP_portion_Tick], 2, spawnTarget.position);
+    }
 }

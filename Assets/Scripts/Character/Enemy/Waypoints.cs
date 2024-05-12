@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 /// <summary>
@@ -42,5 +43,19 @@ public class Waypoints : MonoBehaviour
         index %= children.Length;
     }
 #if UNITY_EDITOR
+    void OnDrawGizmos()
+    {
+        Transform child = transform.GetChild(0);
+        for (int i = 0; i < child.childCount - 2; i++)
+        {
+            child = transform.GetChild(i);
+            Vector3 pos1 = child.localPosition;
+            child = transform.GetChild(i + 1);
+            Vector3 pos2 = child.localPosition;
+
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(pos1, pos2);
+        }
+    }
 #endif
 }

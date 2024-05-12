@@ -236,7 +236,7 @@ public class Factory : Singleton<Factory>
     /// <param name="position">아이템 위치</param>
     /// <param name="getNoise">true면 포지션 + 랜덤위치 설정, false면 position에 생성</param>
     /// <returns></returns>
-    public GameObject[] GetItemObjets(ItemData itemData, uint count = 1, Vector3? position = null, bool getNoise = false)
+    public GameObject[] GetItemObjects(ItemData itemData, uint count = 1, Vector3? position = null, bool getNoise = false)
     {
         GameObject[] objs = new GameObject[count];  // 아이템 개수만큼 증가
         Vector3? itemPosition = Vector3.zero;       // 설정될 아이템 위치

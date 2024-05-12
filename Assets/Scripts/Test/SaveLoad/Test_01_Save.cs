@@ -59,7 +59,7 @@ public class Test_01_Save : TestBase
     {
         Factory.Instance.GetItemObject(GameManager.Instance.ItemDataManager[4]);
         Factory.Instance.GetItemObject(GameManager.Instance.ItemDataManager[8]);
-        Factory.Instance.GetItemObjets(GameManager.Instance.ItemDataManager[9], 3, traget.position, true);
+        Factory.Instance.GetItemObjects(GameManager.Instance.ItemDataManager[9], 3, traget.position, true);
     }
 
     // Save Scripts
