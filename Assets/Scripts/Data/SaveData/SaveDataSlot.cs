@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 public class SaveDataSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    SaveHandler handler;
+    SaveHandler_Base handler;
 
     /// <summary>
     /// ΩΩ∑‘ ¿Œµ¶Ω∫
@@ -36,7 +36,7 @@ public class SaveDataSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
     /// </summary>
     public void InitializeComponent()
     {
-        handler = GetComponentInParent<SaveHandler>();
+        handler = GetComponentInParent<SaveHandler_Base>();
         Transform child = transform.GetChild(1);
         saveName = child.GetComponent<TextMeshProUGUI>();
         child = transform.GetChild(2);

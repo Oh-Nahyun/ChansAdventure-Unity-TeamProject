@@ -58,6 +58,7 @@ public class HeartCheckUI : MonoBehaviour
 
     private void Update()
     {
+        player = GameManager.Instance.Player;   
         PrintHearts();
     }
 
@@ -66,6 +67,12 @@ public class HeartCheckUI : MonoBehaviour
     /// </summary>
     private void PrintHearts()
     {
+        if (player == null)
+        {
+
+            return;
+        }
+
         // 하트 수 초기화
         numOfHearts = heartImages.Length;                                               // 하트 이미지 배열 크기 = 하트의 총 개수
         filledHeart = Mathf.CeilToInt(player.HP * numOfHearts * (1 / player.MaxHP));    // 하트 중 채워진 하트 개수 = (올림 이후 정수화)(플레이어 체력 * 총 개수 * (1 / 플레이어 최대 체력))

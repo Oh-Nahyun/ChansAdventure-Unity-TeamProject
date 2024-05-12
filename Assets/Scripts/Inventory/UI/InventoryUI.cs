@@ -114,18 +114,18 @@ public class InventoryUI : MonoBehaviour
         RefreshInventoryUI();
         tempSlotUI.InitializeSlotUI(Inventory.TempSlot);
 
-        onSlotDragBegin += OnSlotDragBegin;
-        onSlotDragEnd += OnSlotDragEnd;
-        onShowDetail += OnShowDetail;
-        onCloseDetail += OnCloseDetail;
-        onSlotDragEndFail += OnSlotDragFail;
-        onLeftClickItem += OnLeftClickItem;
-        onRightClickItem += OnRightClickItem;
-        dividUI.onDivid += DividItem;
-        dividUI.onDrop += OnDropItem;
-        sortUI.onSortItem += OnSortItem;
+        onSlotDragBegin = OnSlotDragBegin;
+        onSlotDragEnd = OnSlotDragEnd;
+        onShowDetail = OnShowDetail;
+        onCloseDetail = OnCloseDetail;
+        onSlotDragEndFail = OnSlotDragFail;
+        onLeftClickItem = OnLeftClickItem;
+        onRightClickItem = OnRightClickItem;
+        dividUI.onDivid = DividItem;
+        dividUI.onDrop = OnDropItem;
+        sortUI.onSortItem = OnSortItem;
 
-        Inventory.onInventoryGoldChange += goldUI.onGoldChange; // Iventory의 골드량이 수정될 때 goldUI도 수정되게 함수 추가
+        Inventory.onInventoryGoldChange = goldUI.onGoldChange; // Iventory의 골드량이 수정될 때 goldUI도 수정되게 함수 추가
 
         goldUI.onGoldChange?.Invoke(Inventory.Gold);            // 골드 초기화
     }
@@ -320,6 +320,7 @@ public class InventoryUI : MonoBehaviour
     /// <param name="index">클릭한 슬롯 인덱스</param>
     private void OnLeftClickItem(uint index)
     {
+        Debug.Log("클릭");
         bool isEquip = Inventory[index].SlotItemData is IEquipable; // 장비 아이템이면 true 아니면 false
         if (isEquip)    // 클릭한 슬롯 아이템이 장비이면
         {

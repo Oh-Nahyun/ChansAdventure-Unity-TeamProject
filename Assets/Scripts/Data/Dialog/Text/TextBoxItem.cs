@@ -63,7 +63,7 @@ public class TextBoxItem : MonoBehaviour
         
         player = FindAnyObjectByType<Player>();
 
-        controller = FindAnyObjectByType<PlayerController>();
+        controller = FindAnyObjectByType<PlayerController>(FindObjectsInactive.Include);
     }
 
     private void Start()
@@ -73,7 +73,8 @@ public class TextBoxItem : MonoBehaviour
         canvasGroup.blocksRaycasts = false;
         endImageAnimator.speed = 0.0f;
 
-        controller.onInteraction += () =>
+        //controller.onInteraction += () =>
+        GameManager.Instance.Player.PlayerController.onInteraction += () =>
         {
             if (scanObject != null)
             {

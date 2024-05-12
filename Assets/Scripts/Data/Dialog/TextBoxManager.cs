@@ -112,7 +112,11 @@ public class TextBoxManager : MonoBehaviour
 
     private void TalkingAction()
     {
-        if(!textBox.TalkingEnd && !textBoxItem.Talking)
+        GameState state = GameManager.Instance.CurrnetGameState;
+        if (state == GameState.NotStart || textBox == null || textBoxItem != null)
+            return;
+
+        if (!textBox.TalkingEnd && !textBoxItem.Talking)
         {
             isTalkAction?.Invoke(false);
             for(int i = 0; i < setActiveObjs.Length; i++)
