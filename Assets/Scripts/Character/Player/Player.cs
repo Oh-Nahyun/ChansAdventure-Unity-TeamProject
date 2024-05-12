@@ -278,7 +278,30 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// <summary>
     /// 오브젝트 인벤토리 접근을 위한 프로퍼티
     /// </summary>
-    public Inventory Inventory => inventory;
+    public Inventory Inventory
+    {
+        get
+        {
+            if (inventory == null)
+            {
+                Debug.Log($"받을 인벤토리가 존재하지 않습니다");
+
+                inventory = new Inventory(this.gameObject, 16);
+            }
+            return inventory;
+        }
+        set
+        {
+            if (inventory == null)
+            {
+                Debug.Log($"수정할 인벤토리가 존재하지 않습니다");
+
+                inventory = new Inventory(this.gameObject, 16);
+            }
+
+            inventory = value;
+        }
+    }
 
     /// <summary>
     /// 맵 패널 활성화 여부 ( true : 열려있음 , false 닫혀있음 )
@@ -459,41 +482,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// <summary>
     /// 캐릭터 공격력 프로퍼티
     /// </summary>
-    public float AttackPower => attackPower;
-    
-    // Inventory ====================================================================================
-    /// <summary>
-    /// 해당 오브젝트의 인벤토리
-    /// </summary>
-    Inventory inventory;
-
-    /// <summary>
-    /// 오브젝트 인벤토리 접근을 위한 프로퍼티
-    /// </summary>
-    public Inventory Inventory
-    {
-        get
-        {
-            if(inventory == null)
-            {
-                Debug.Log($"받을 인벤토리가 존재하지 않습니다");
-        
-                inventory = new Inventory(this.gameObject, 16);
-            }
-            return inventory;
-        }
-        set
-        {
-            if(inventory == null)
-            {
-                Debug.Log($"수정할 인벤토리가 존재하지 않습니다");
-        
-                inventory = new Inventory(this.gameObject, 16);
-            }
-
-            inventory = value;
-        }
-    }    
+    public float AttackPower => attackPower;   
 
     /// <summary>
     /// 방어력
