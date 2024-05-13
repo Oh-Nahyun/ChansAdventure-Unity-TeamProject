@@ -30,16 +30,18 @@ public class FadeInOutTextUI : MonoBehaviour
 
     void Start()
     {
-        text.color = new Color(1f, 1f, 1f, 0f);
+        //text.color = new Color(1f, 1f, 1f, 0f);
+        text.faceColor = new Color(1f, 1f, 1f, 0f);
+        text.outlineColor = new Color(1f, 1f, 1f, 0f);
     }
 
     /// <summary>
     /// 페이드 인 할 때 실행하는 함수
     /// </summary>
-    public void StartFadeIn()
+    public void StartFadeInOut()
     {
         StopAllCoroutines();
-        StartCoroutine(FadeIn());
+        StartCoroutine(FadeIn());        
     }
 
     IEnumerator FadeIn()
@@ -48,19 +50,13 @@ public class FadeInOutTextUI : MonoBehaviour
         while (timeElapsed < fadeIntime)
         {
             timeElapsed += Time.deltaTime;
-            Alpha += timeElapsed;
-            text.color = new Color(1f, 1f, 1f, Alpha);
+            Alpha = timeElapsed;
+            text.faceColor = new Color(1f, 1f, 1f, Alpha);
+            text.outlineColor = new Color(1f, 1f, 1f, Alpha);
 
             yield return null;
         }
-    }
 
-    /// <summary>
-    /// 페이드 아웃할 때 실행하는 함수
-    /// </summary>
-    public void StartFadeOut()
-    {
-        StopAllCoroutines();
         StartCoroutine(FadeOut());
     }
 
@@ -71,7 +67,8 @@ public class FadeInOutTextUI : MonoBehaviour
         {
             timeElapsed += Time.deltaTime;
             Alpha -= timeElapsed;
-            text.color = new Color(1f, 1f, 1f, Alpha);
+            text.faceColor = new Color(1f, 1f, 1f, Alpha);
+            text.outlineColor = new Color(1f, 1f, 1f, Alpha);
 
             yield return null;
         }

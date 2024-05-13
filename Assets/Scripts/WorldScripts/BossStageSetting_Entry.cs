@@ -27,6 +27,8 @@ public class BossStageSetting_Entry : MonoBehaviour
     /// </summary>
     BossHPSlider bossHPSlider;
 
+    Collider collider;
+
     void Start()
     {
         bossCamera = FindAnyObjectByType<BossCamera>();
@@ -34,6 +36,7 @@ public class BossStageSetting_Entry : MonoBehaviour
         bossNameUI = FindAnyObjectByType<FadeInOutTextUI>();
         bossHPSlider = FindAnyObjectByType<BossHPSlider>();
 
+        collider = GetComponent<Collider>();
     }
 
     void OnTriggerEnter(Collider other)
@@ -51,11 +54,13 @@ public class BossStageSetting_Entry : MonoBehaviour
     {
         Transform bossTransform = stageSetting.GetBoss().gameObject.transform;
         // Boss spawn
-        bossNameUI.StartFadeIn();
+        bossNameUI.StartFadeInOut();
         bossCamera.StartBossCameraCoroutine(bossTransform);
         bossTransform.gameObject.SetActive(true);
-        bossNameUI.StartFadeOut();
 
         bossHPSlider.ShowPanel();
+
+        collider.isTrigger = false; // 트리거 비활성화
+        transform.localPosition += Vector3.left * 2f;
     }
 }

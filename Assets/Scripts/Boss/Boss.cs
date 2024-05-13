@@ -280,6 +280,9 @@ public class Boss : MonoBehaviour, IBattler, IHealth
         }
         agent.isStopped = true;
     }
+
+    public float StartDelayValue = 4f;
+
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -291,11 +294,23 @@ public class Boss : MonoBehaviour, IBattler, IHealth
         breathParticle = GetComponentInChildren<ParticleSystem>(true);
     }
 
+    private void OnEnable()
+    {
+        StartCoroutine(StartDelay());
+    }
+
     private void Start()
     {
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
         player = playerObject.GetComponent<Player>();
+    }
+
+    IEnumerator StartDelay()
+    {
+        //isActive = false;
         animator.SetTrigger("Roar");
+        yield return new WaitForSeconds(StartDelayValue);
+        isActive = true;
     }
 
     public void OnFireBall()
