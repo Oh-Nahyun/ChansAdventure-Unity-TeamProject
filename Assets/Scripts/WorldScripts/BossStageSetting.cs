@@ -9,10 +9,16 @@ public class BossStageSetting : MonoBehaviour
 {
     Boss boss;
 
+    public Transform dropposition;
+
     void Start()
     {
         boss = FindAnyObjectByType<Boss>(); // 보스 찾기
         boss.gameObject.SetActive(false);   // 보스 비활성화
+
+        Factory.Instance.GetItemObject(GameManager.Instance.ItemDataManager[4], dropposition.position);
+        Factory.Instance.GetItemObject(GameManager.Instance.ItemDataManager[8], dropposition.position);
+        Factory.Instance.GetItemObjects(GameManager.Instance.ItemDataManager[9],5 ,dropposition.position);
     }
 
     public Boss GetBoss()

@@ -1566,7 +1566,7 @@ GameObject:
   - component: {fileID: 5339455270733978796}
   - component: {fileID: 3856308558408814739}
   m_Layer: 0
-  m_Name: Particle System
+  m_Name: FireEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7119,6 +7119,72 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1027384530455949198}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4223123573262300169
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5785648925983736479}
+  - component: {fileID: 178143991931816382}
+  - component: {fileID: 5454874625641979137}
+  m_Layer: 20
+  m_Name: FireBreathArea
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &5785648925983736479
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4223123573262300169}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7240195563237092782}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &178143991931816382
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4223123573262300169}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.3940876, y: 1.84462, z: 5.5115724}
+  m_Center: {x: 0.17642283, y: 1.9723095, z: 3.205786}
+--- !u!114 &5454874625641979137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4223123573262300169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5db000bb17f543541b7b6c4251487c35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4332818270766982360
 GameObject:
   m_ObjectHideFlags: 0
@@ -8999,7 +9065,7 @@ GameObject:
   - component: {fileID: 6370216162398727282}
   - component: {fileID: 7701598726330915736}
   - component: {fileID: 8782939244162711047}
-  m_Layer: 20
+  m_Layer: 11
   m_Name: Boss
   m_TagString: Animal
   m_Icon: {fileID: 0}
@@ -9023,6 +9089,7 @@ Transform:
   - {fileID: 7065062600373104389}
   - {fileID: 8362088036731555345}
   - {fileID: 5667111084897793946}
+  - {fileID: 5785648925983736479}
   - {fileID: 1800282033028588258}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9114,6 +9181,9 @@ MonoBehaviour:
   speed: 3
   approachDuration: 1.2
   stopDistance: 1.5
+  maxHP: 100
+  attackPower: 10
+  finalDamage: 0
 --- !u!195 &8782939244162711047
 NavMeshAgent:
   m_ObjectHideFlags: 0

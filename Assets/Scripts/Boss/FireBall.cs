@@ -9,13 +9,19 @@ public class FireBall : RecycleObject
 
     private void Start()
     {
-        GameObject bossObject = GameObject.FindWithTag("Player");
-        boss = bossObject.GetComponent<Boss>();
+        boss = FindAnyObjectByType<Boss>();
+        GameObject bossObject = boss.gameObject;
+
+        if (boss != null)
+        {
+            transform.rotation = Quaternion.Euler(0f, bossObject.transform.eulerAngles.y,0f);
+        }
+
     }
 
     private void FixedUpdate()
     {
-        transform.Translate(speed * transform.forward * Time.fixedDeltaTime, Space.World);
+        transform.Translate(speed * Vector3.forward * Time.fixedDeltaTime);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -25,6 +31,7 @@ public class FireBall : RecycleObject
             IBattler target = other.GetComponentInParent<IBattler>();
             if (target != null)
             {
+                Debug.Log("파이어볼 공격 맞음");
                 boss.Attack(target, false);
             }
         }

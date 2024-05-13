@@ -97,7 +97,6 @@ public class Boss : MonoBehaviour, IBattler, IHealth
                     case BossState.Dead:
                         isActive = false;
                         agent.isStopped = true;
-                        animator.SetTrigger("Die");
                         break;
                 }
             }
@@ -140,7 +139,6 @@ public class Boss : MonoBehaviour, IBattler, IHealth
             hp = Mathf.Clamp(value, 0, MaxHP); // 먼저 값을 제한한 후
             if (hp <= 0 && State != BossState.Dead) // HP가 0 이하이고, 현재 상태가 Dead 상태가 아니면
             {
-                State = BossState.Dead; // 상태를 Dead로 변경
                 Die(); // Die 메서드 호출
             }
             onHealthChange?.Invoke(hp / MaxHP); // Health 변화 알림
@@ -168,7 +166,12 @@ public class Boss : MonoBehaviour, IBattler, IHealth
     /// </summary>
     public void Die()
     {
-        Debug.Log($"{gameObject.name} 사망");
+        if(State != BossState.Dead) // 사망 상태가 됬는지 확인
+        {
+            Debug.Log($"{gameObject.name} 사망");
+            animator.SetTrigger("Die");
+            State = BossState.Dead; // 상태를 Dead로 변경
+        }
     }
 
     /// <summary>
@@ -352,8 +355,8 @@ public class Boss : MonoBehaviour, IBattler, IHealth
 
     public void OnActive()
     {
-        //isActive = true;
-        StartCoroutine(ActiveDelay());
+        isActive = true;
+        //StartCoroutine(ActiveDelay());
     }
 
     public void OnDodge()
@@ -365,6 +368,7 @@ public class Boss : MonoBehaviour, IBattler, IHealth
     {
         yield return new WaitForSeconds(3f);
         isActive = true;
+ 
     }
 
     IEnumerator MoveTowardsPlayer()

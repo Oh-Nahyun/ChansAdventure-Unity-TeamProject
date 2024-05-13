@@ -44,6 +44,14 @@ public class Sword : MonoBehaviour
                     player.Attack(target, true);
                 }
             }
+            else
+            {
+                IBattler target = other.GetComponentInParent<IBattler>();
+                if (target != null)
+                {
+                    player.Attack(target, false);
+                }
+            }
         }
     }
     // --------------------------------------------------------------------------------------------------------------
