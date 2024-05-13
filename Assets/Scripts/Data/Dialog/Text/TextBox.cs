@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 using UnityEngine.UI;
 
 
@@ -19,6 +20,7 @@ public class TextBox : MonoBehaviour
 
     TextSelect textSelet;
     Interaction interaction;
+    PlayerController controller;
 
     public string talkString;
     public int talkIndex = 0;
@@ -26,11 +28,15 @@ public class TextBox : MonoBehaviour
 
     private bool talkingEnd;
     private bool talking;
+    public bool TalkingEnd => talkingEnd;
+
     private bool typingTalk;
     private bool typingStop;
 
     public NPCBase NPCdata;
+
     TextBoxManager textBoxManager; // TextBoxManager에 대한 참조
+    QuestManager questManager;
 
     private void Awake()
     {
@@ -52,24 +58,32 @@ public class TextBox : MonoBehaviour
         interaction = FindObjectOfType<Interaction>();
 
         textBoxManager = FindObjectOfType<TextBoxManager>();
+        questManager = FindObjectOfType<QuestManager>();
         warpBase = FindObjectOfType<WarpBase>();
+
+    }
+    private void OnEnable()
+    {
+
     }
 
     private void Start()
     {
+        gameObject.SetActive(true);
+
         canvasGroup.alpha = 0.0f;
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
-
         endImageAnimator.speed = 0.0f;
-        
-        if (scanObject != null)
+
+        controller = FindAnyObjectByType<PlayerController>(FindObjectsInactive.Include);
+        controller.onInteraction += () =>
         {
-            GameManager.Instance.onTalkNPC += () =>
+            if (scanObject != null)
             {
                 Action();
-            };
-        }
+            }
+        };
     }
 
     private void Update()
@@ -80,11 +94,14 @@ public class TextBox : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 상호작용 입력시 대상 분별 함수
+    /// </summary>
     public void Action()
     {
+        
         talkText.text = "";
         nameText.text = "";
-
         if (scanObject != null)
         {
             NPCdata = scanObject.GetComponent<NPCBase>();
@@ -93,7 +110,7 @@ public class TextBox : MonoBehaviour
         {
             NPCdata = null;
         }
-        
+
 
         if (typingTalk == false && NPCdata != null && !NPCdata.isTextObject && !NPCdata.otherObject)
         {
@@ -120,17 +137,7 @@ public class TextBox : MonoBehaviour
         }
         else if (NPCdata != null && NPCdata.otherObject)
         {
-            warpBase = scanObject.GetComponent<WarpBase>();
-            //DoorBase door = scanObject.GetComponent<DoorBase>();
-            if (warpBase != null)
-            {
-                warpBase.WarpToWarpPoint();
-            }
-            /*
-            if (door != null)
-            {
-                door.OpenDoor(talking);
-            }*/
+            isOtherObject();
         }
         else
         {
@@ -138,11 +145,15 @@ public class TextBox : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 대화 시작, 진행, 종료 코루틴
+    /// </summary>
+    /// <returns></returns>
     IEnumerator TalkStart()
     {
         if (!talking && !talkingEnd)
         {
-            
+
             canvasGroup.interactable = true;
             canvasGroup.blocksRaycasts = true;
 
@@ -166,6 +177,7 @@ public class TextBox : MonoBehaviour
         }
         else
         {
+            talkingEnd = false;
             while (canvasGroup.alpha > 0.0f)
             {
                 canvasGroup.alpha -= Time.deltaTime * alphaChangeSpeed;
@@ -177,11 +189,15 @@ public class TextBox : MonoBehaviour
             nameText.text = "";
             talkIndex = 0;
             talking = false;
-            talkingEnd = false;
             NPCdata.isTalk = false;
         }
     }
 
+    /// <summary>
+    /// 대사 타이핑 효과 코루틴
+    /// </summary>
+    /// <param name="text">타이핑 효과를 줄 텍스트</param>
+    /// <returns></returns>
     IEnumerator TypingText(string text)
     {
         typingStop = false;
@@ -205,30 +221,49 @@ public class TextBox : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 이름 및 대사 출력 함수
+    /// </summary>
     void SetTalkText()
     {
-        talkText.text = $"{talkString}";
-        if (NPCdata.isNPC)
+        if (talkText != null)
         {
-            nameText.text = $"{NPCdata.nameNPC}";
-            StartCoroutine(TypingText(talkText.text));
-        }
-        else
-        {
-            endImageAnimator.speed = 1.0f;
-            endImage.color = new Color(endImage.color.r, endImage.color.g, endImage.color.b, 1f);
-        }
+            talkText.text = $"{talkString}";
+            if (NPCdata.isNPC)
+            {
+                nameText.text = $"{NPCdata.nameNPC}";
+                StartCoroutine(TypingText(talkText.text));
+            }
+            else
+            {
+                endImageAnimator.speed = 1.0f;
+                endImage.color = new Color(endImage.color.r, endImage.color.g, endImage.color.b, 1f);
+            }
 
-        if (NPCdata.selectId)
-        {
-            textSelet.onSeletStart();
-        }
-        else
-        {
-            textSelet.onSeletEnd();
+
+            if (textBoxManager.GetTalkData(NPCdata.id + 4) != null)
+            {
+                string buttonText0 = textBoxManager.GetTalkData(NPCdata.id + 4)[0];
+                string buttonText1 = textBoxManager.GetTalkData(NPCdata.id + 4)[1];
+                string buttonText2 = textBoxManager.GetTalkData(NPCdata.id + 4)[2];
+
+                textSelet.setButtonText(buttonText0, buttonText1, buttonText2);
+                textSelet.onSeletStart();
+
+            }
+            else
+            {
+                textSelet.onSeletEnd();
+            }
+
+
         }
     }
 
+    /// <summary>
+    /// 다음 대화 내용 불러오는 함수
+    /// </summary>
+    /// <param name="id">대화 대상의 ID</param>
     void Talk(int id)
     {
         if ((talkIndex + 1) == textBoxManager.GetTalkData(id).Length)
@@ -242,13 +277,41 @@ public class TextBox : MonoBehaviour
         talkIndex++;
     }
 
+    /// <summary>
+    /// 선택지 받아오는 함수
+    /// </summary>
+    /// <param name="selectId">받아온 선택지</param>
     public void OnSelect(int selectId)
     {
-        NPCdata.id += selectId;
+        NPCdata.id += selectId; // 받아온 선택지에 따라 Id값을 증가시켜 다음 대사로 진행
         talkingEnd = false;
         Action();
         textSelet.onSeletEnd();
     }
 
-}
+    /// <summary>
+    /// 대사창을 출력하지 않는 오브젝트 처리 함수
+    /// </summary>
+    void isOtherObject()
+    {
+        warpBase = scanObject.GetComponent<WarpBase>();
+        DoorBase door = scanObject.GetComponent<DoorBase>();
+        Lever lever = scanObject.GetComponent<Lever>();
+        if (warpBase != null)
+        {
+            Debug.Log("워프");
+            warpBase.WarpToWarpPoint();
+        }
 
+        if (door != null)
+        {
+            door.OpenDoor();
+        }
+
+        if (lever != null)
+        {
+            lever.Use();
+        }
+    }
+
+}

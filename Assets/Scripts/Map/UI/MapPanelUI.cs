@@ -57,7 +57,7 @@ public class MapPanelUI : MonoBehaviour
         float scroll = -scrollDelta.y;
 
         mapCamera.orthographicSize += scroll;
-        mapCamera.orthographicSize = Mathf.Clamp(mapCamera.orthographicSize, 50, 100);
+        mapCamera.orthographicSize = Mathf.Clamp(mapCamera.orthographicSize, 30, 100);
     }
 
     private void Start()

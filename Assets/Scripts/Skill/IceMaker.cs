@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -83,6 +84,22 @@ public class IceMaker : Skill
     /// </summary>
     int layerMask_PlayerIgnore;
 
+    /// <summary>
+    /// 스페셜키([)를 눌러 유저 아래쪽에 얼음 생성하는지 여부(true: 플레이어의 아래에 설치)
+    /// </summary>
+    bool isSpecialAction = false;
+
+    /// <summary>
+    /// 얼음의 생성위치에 플레이어가 올라가 있는지 여부(true: 플레이어의 발밑에 설치)
+    /// </summary>
+    bool isUnderUser = false;
+
+    PlayerSkills.SpecialKey inputSpecialKey;
+
+    Action<bool, Vector3> crosshairPositionChange;
+
+    const float YpositionForCrosshair = 0.2f;
+
     protected override void Awake()
     {
         base.Awake();
@@ -107,10 +124,26 @@ public class IceMaker : Skill
         layerMask_PlayerIgnore = ~layerMask_PlayerIgnore;
     }
 
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        if(crosshair != null)
+        {
+            crosshairPositionChange += (isSpecialAction, worldPosition) => crosshair.SetPosition(isSpecialAction, worldPosition);
+        }
+        if (isSpecialAction)
+        {
+            Vector3 userPos = user.position;
+            userPos.y += YpositionForCrosshair;
+            crosshairPositionChange?.Invoke(!isSpecialAction, userPos);
+        }
+    }
+
     protected override void OnDisable()
     {
         collisionGround.Clear();
         StopAllCoroutines();
+        crosshairPositionChange?.Invoke(true, Vector3.zero);
         base.OnDisable();
     }
 
@@ -121,6 +154,10 @@ public class IceMaker : Skill
             // 겹친 부분이 못움직이는 오브젝트면 추가
             collisionGround.Add(other.transform);
         }
+        if (other.transform == user)
+        {
+            isUnderUser = true;
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -129,6 +166,10 @@ public class IceMaker : Skill
         {
             // 추가 됐던 부분이 트리거 밖으로 나가면 제거
             collisionGround.Remove(other.transform);
+        }
+        if(other.transform == user)
+        {
+            isUnderUser = false;
         }
     }
 
@@ -147,11 +188,24 @@ public class IceMaker : Skill
         // base 상속 안받음 : cam 변화 x, isActive 변화 x
         if(isValid)
         {
+            base.UseSkillAction();
+            onMotionChange?.Invoke(true);
             if(usingIceList.Count >= IceCount)     // IceCount만큼 설치되어 있다면 파괴 (이상으로 해놓은 이유는 안전장치)
             {
                 DestroyIce(usingIceList[0]);
             }
+            if (isUnderUser)
+            {
+                Vector3 pos = user.position;
+                if(pos.y < createPosition.y)
+                { 
+                    pos.y = createPosition.y + 0.1f;
+                    user.position = pos;
+                }
+            }
             GenerateIce();
+
+            OffSkill();
         }
         else if (IsIce)
         {
@@ -197,23 +251,30 @@ public class IceMaker : Skill
             isValid = false;
             hitIce = null;
 
-            Ray ray = Camera.main.ViewportPointToRay(Center);   // 카메라 중심에서 레이 
+            Ray ray = Camera.main.ViewportPointToRay(Center);   // 카메라 중심에서 레이   
 
-            // 카메라 중심에서 레이캐스트 쏘기
-            if (Physics.Raycast(ray, out RaycastHit hit, skillDistance, layerMask_PlayerIgnore))
+            if (isSpecialAction)
+            {
+                float startRayPoint = 0.1f;
+                Vector3 pos = user.position;
+                pos.y += startRayPoint;
+                ray = new Ray(pos, -user.up);
+            }
+
+            if (Physics.Raycast(ray, out RaycastHit hitInfo, skillDistance, layerMask_PlayerIgnore))
             {
 
                 // 레이캐스트에 닿은 위치의 Layer가 Water레이어 인지 확인
-                if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Water"))
+                if (hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("Water"))
                 {
-                    validChecker.position = hit.point;
-                    preview.transform.position = hit.point;     // 프리뷰 위치 옮기기
+                    validChecker.position = hitInfo.point;
+                    preview.transform.position = hitInfo.point;     // 프리뷰 위치 옮기기
 
-                    if (WaterCheck(hit.point))
+                    if (WaterCheck(hitInfo.point))
                     {
                         preview.ValidPosition(true);
                         preview.SetVisible();
-                        createPosition = hit.point;             // 생성 위치는 레이캐스트가 닿은 곳
+                        createPosition = hitInfo.point;             // 생성 위치는 레이캐스트가 닿은 곳
                         isValid = true;
                     }
                     else
@@ -225,9 +286,9 @@ public class IceMaker : Skill
                 {
                     //preview.gameObject.SetActive(false);    // 프리뷰 비활성화
                     preview.SetInvisible();
-                    if (hit.transform.CompareTag("Skill"))
+                    if (hitInfo.transform.CompareTag("Skill"))
                     {
-                        hitIce = hit.transform.GetComponentInParent<IceMaker_Ice>();
+                        hitIce = hitInfo.transform.GetComponentInParent<IceMaker_Ice>();
                     }
                 }
             }
@@ -327,15 +388,17 @@ public class IceMaker : Skill
     /// 스페셜키([)를 누르면 플레이어의 발밑으로 생성위치를 바꿈(토글 형식)
     /// </summary>
     /// <param name="key">[</param>
-    public void InputSpecialKey(PlayerSkills.SpecialKey key)
+    public override void InputSpecialKey(PlayerSkills.SpecialKey key)
     {
         // 위치만 
-        switch (key)
+        if(key == PlayerSkills.SpecialKey.None && inputSpecialKey == PlayerSkills.SpecialKey.NumPad5_Down)
         {
-            case PlayerSkills.SpecialKey.SquareBracket_Open:
-                // 위치만 발밑
-                break;
+            isSpecialAction = !isSpecialAction;
+            Vector3 userPos = user.position;
+            userPos.y += YpositionForCrosshair;
+            crosshairPositionChange?.Invoke(!isSpecialAction, userPos);
         }
+        inputSpecialKey = key;
     }
 
 #if UNITY_EDITOR

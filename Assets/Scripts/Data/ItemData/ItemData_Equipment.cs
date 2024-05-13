@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ItemData_Equipment : ItemData, IEquipable
 {
+    [Header("장작 아이템 정보")]
     /// <summary>
     /// 장착할 아이템 프리팹
     /// </summary>
@@ -23,6 +24,7 @@ public class ItemData_Equipment : ItemData, IEquipable
         if(equipTarget != null)
         {
             equipTarget.CharacterEquipItem(EqiupPrefab, equipPart, slot);
+            slot.IsEquip = true;
         }
     }
 
@@ -35,8 +37,9 @@ public class ItemData_Equipment : ItemData, IEquipable
 
         if (equipTarget != null)
         {
-            equipTarget.EquipPart[(int)equipPart] = null;
             equipTarget.CharacterUnequipItem(equipPart);
+            equipTarget.EquipPart[(int)equipPart] = null;
+            slot.IsEquip = false;
         }
     }
 }

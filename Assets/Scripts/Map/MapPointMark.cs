@@ -22,6 +22,8 @@ public class MapPointMark : MonoBehaviour
     /// </summary>
     public void DestoryMark()
     {
+        Debug.Log($"GameObject Name : {transform.position}");
+
         Destroy(transform.parent.gameObject);  // 핑 오브젝트 삭제
     }
 

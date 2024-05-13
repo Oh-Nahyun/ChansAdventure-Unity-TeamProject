@@ -1,9 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
@@ -100,6 +97,7 @@ public class Boss : MonoBehaviour, IBattler, IHealth
                     case BossState.Dead:
                         isActive = false;
                         agent.isStopped = true;
+                        animator.SetTrigger("Die");
                         break;
                 }
             }
@@ -112,6 +110,7 @@ public class Boss : MonoBehaviour, IBattler, IHealth
     Rigidbody rb;
     ClowAttackArea clowAttackArea;
     BiteAttackArea biteAttackArea;
+    BreathArea breathArea;
     Animator animator;
     ParticleSystem breathParticle;
     Player player;
@@ -138,13 +137,13 @@ public class Boss : MonoBehaviour, IBattler, IHealth
         get => hp;
         set
         {
-            hp = value;
-            if(State!= BossState.Dead)
+            hp = Mathf.Clamp(value, 0, MaxHP); // 먼저 값을 제한한 후
+            if (hp <= 0 && State != BossState.Dead) // HP가 0 이하이고, 현재 상태가 Dead 상태가 아니면
             {
-                Die();
+                State = BossState.Dead; // 상태를 Dead로 변경
+                Die(); // Die 메서드 호출
             }
-            hp = Mathf.Clamp(hp, 0, MaxHP);
-            onHealthChange?.Invoke(hp / MaxHP);
+            onHealthChange?.Invoke(hp / MaxHP); // Health 변화 알림
         }
     }
 
@@ -169,7 +168,7 @@ public class Boss : MonoBehaviour, IBattler, IHealth
     /// </summary>
     public void Die()
     {
-
+        Debug.Log($"{gameObject.name} 사망");
     }
 
     /// <summary>
@@ -211,6 +210,8 @@ public class Boss : MonoBehaviour, IBattler, IHealth
     public float defencePower => 3.0f;
     public float DefencePower => defencePower;
 
+    public float finalDamage;
+
     /// <summary>
     /// 맞았을 때 실행될 델리게이트(int:실제로 입은 데미지)
     /// </summary>
@@ -223,10 +224,8 @@ public class Boss : MonoBehaviour, IBattler, IHealth
     /// <param name="isWeakPoint">약점인지 아닌지 확인용(true이면 약점, false이면 약점아님</param>
     public void Attack(IBattler target, bool isWeakPoint = false)
     {
-
+        target.Defence(AttackPower);
     }
-
-
 
     /// <summary>
     /// 기본 방어 함수
@@ -234,10 +233,15 @@ public class Boss : MonoBehaviour, IBattler, IHealth
     /// <param name="damage">내가 받은 데미지</param>
     public void Defence(float damage)
     {
+        if (IsAlive)
+        {
+            // 최종 데미지
+            finalDamage = Mathf.Max(0, damage - DefencePower);
+            HP -= finalDamage;
 
+            onHit?.Invoke(Mathf.RoundToInt(finalDamage));
+        }
     }
-
-
 
     IEnumerator MoveRandomDirection()
     {
@@ -280,6 +284,7 @@ public class Boss : MonoBehaviour, IBattler, IHealth
         rb = GetComponent<Rigidbody>();
         clowAttackArea = GetComponentInChildren<ClowAttackArea>(true);
         biteAttackArea = GetComponentInChildren<BiteAttackArea>(true);
+        breathArea = GetComponentInChildren<BreathArea>(true);
         breathParticle = GetComponentInChildren<ParticleSystem>(true);
     }
 
@@ -331,11 +336,13 @@ public class Boss : MonoBehaviour, IBattler, IHealth
     public void OnBreathArea()
     {
         breathParticle.Play();
+        breathArea.Activate();
     }
 
     public void OffBreathArea()
     {
         breathParticle.Stop();
+        breathArea.Deactivate();
     }
 
     public void OnDash()
@@ -345,12 +352,19 @@ public class Boss : MonoBehaviour, IBattler, IHealth
 
     public void OnActive()
     {
-        isActive = true;
+        //isActive = true;
+        StartCoroutine(ActiveDelay());
     }
 
     public void OnDodge()
     {
         animator.SetTrigger("GroundDodge");
+    }
+
+    IEnumerator ActiveDelay() // isActive 활성화 딜레이 코루틴
+    {
+        yield return new WaitForSeconds(3f);
+        isActive = true;
     }
 
     IEnumerator MoveTowardsPlayer()

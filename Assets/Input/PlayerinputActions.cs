@@ -143,6 +143,25 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Open_Quest"",
+                    ""type"": ""Button"",
+                    ""id"": ""d98c0f3e-dce1-4550-9913-efaa1469a52d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+
+                    ""name"": ""Open_Menu"",
+                    ""type"": ""Button"",
+                    ""id"": ""a6a4a307-edce-4efd-84c7-098a1874d874"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -332,6 +351,28 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Open_Map"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4b512deb-6fda-4137-b8df-9397a82bd827"",
+                    ""path"": ""<Keyboard>/l"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KM"",
+                    ""action"": ""Open_Quest"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                    },
+                    {
+                    ""name"": """",
+                    ""id"": ""517f5c83-7451-4211-89f1-70161e71f452"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Open_Menu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -349,7 +390,7 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Change"",
+                    ""name"": ""Sword Mode"",
                     ""type"": ""Button"",
                     ""id"": ""df5ab539-e7c0-4a08-861f-41ffd1348f22"",
                     ""expectedControlType"": ""Button"",
@@ -358,9 +399,18 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Load"",
+                    ""name"": ""Bow Mode"",
                     ""type"": ""Button"",
                     ""id"": ""3e057eaf-1de1-46f8-b70b-c7ace608bcd4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Normal Mode"",
+                    ""type"": ""Button"",
+                    ""id"": ""ca5dd82f-42b8-4591-9d6b-880e53250c8a"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -386,7 +436,7 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Change"",
+                    ""action"": ""Sword Mode"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -397,7 +447,18 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KM"",
-                    ""action"": ""Load"",
+                    ""action"": ""Bow Mode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6d0f5d2a-e7fe-4630-94f6-dde7d237cace"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KM"",
+                    ""action"": ""Normal Mode"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -498,7 +559,7 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""SpecialKey1"",
+                    ""name"": ""SpecialKeyUp"",
                     ""type"": ""Button"",
                     ""id"": ""9dd2a7b1-b748-4608-b262-a3deda748aba"",
                     ""expectedControlType"": ""Button"",
@@ -507,9 +568,27 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""SpecialKey2"",
+                    ""name"": ""SpecialKeyDown"",
                     ""type"": ""Button"",
                     ""id"": ""ac4efe34-db19-4f5f-9121-7435f70c266b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SpecialKeyLeft"",
+                    ""type"": ""Button"",
+                    ""id"": ""1745a67f-e2e2-46fc-8f1e-04e0df8d40f8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SpecialKeyRight"",
+                    ""type"": ""Button"",
+                    ""id"": ""9e56206a-82fe-441a-b012-7755a46e3265"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -630,22 +709,44 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""26cb31fe-87e3-47a3-9dc4-d1f6c3f105f8"",
-                    ""path"": ""<Keyboard>/rightBracket"",
+                    ""path"": ""<Keyboard>/numpad5"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""SpecialKey2"",
+                    ""action"": ""SpecialKeyDown"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""fb690cff-cbeb-4055-983b-685533afbec6"",
-                    ""path"": ""<Keyboard>/leftBracket"",
+                    ""path"": ""<Keyboard>/numpad8"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""SpecialKey1"",
+                    ""action"": ""SpecialKeyUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a5912ace-40e2-4e27-85cc-21572f811f70"",
+                    ""path"": ""<Keyboard>/numpad4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SpecialKeyLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3e7fc6b7-bd4e-45b5-88f5-b3dc4bc55ea5"",
+                    ""path"": ""<Keyboard>/numpad6"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SpecialKeyRight"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -663,6 +764,33 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""PrePanel"",
+                    ""type"": ""Button"",
+                    ""id"": ""7d6a380c-1ae5-4cb1-a6d8-8920dd5d2517"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""NextPanel"",
+                    ""type"": ""Button"",
+                    ""id"": ""ef17e6cc-c919-4bf0-9e43-ac5efcc7593a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Close"",
+                    ""type"": ""Button"",
+                    ""id"": ""6c4afe10-7349-4961-a8b7-c59bb1754aac"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -674,6 +802,39 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8abf1ef6-138e-43a3-912a-0fec2a1137ca"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KM"",
+                    ""action"": ""PrePanel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""413373ad-968f-41aa-aae9-34a2e14f1681"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KM"",
+                    ""action"": ""NextPanel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0c58922e-077d-4736-b386-039ee2a6309c"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KM"",
+                    ""action"": ""Close"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -714,11 +875,15 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         m_Player_Open_Inventory = m_Player.FindAction("Open_Inventory", throwIfNotFound: true);
         m_Player_Get_Item = m_Player.FindAction("Get_Item", throwIfNotFound: true);
         m_Player_Open_Map = m_Player.FindAction("Open_Map", throwIfNotFound: true);
+        m_Player_Open_Quest = m_Player.FindAction("Open_Quest", throwIfNotFound: true);
+        m_Player_Open_Menu = m_Player.FindAction("Open_Menu", throwIfNotFound: true);
+
         // Weapon
         m_Weapon = asset.FindActionMap("Weapon", throwIfNotFound: true);
         m_Weapon_Attack = m_Weapon.FindAction("Attack", throwIfNotFound: true);
-        m_Weapon_Change = m_Weapon.FindAction("Change", throwIfNotFound: true);
-        m_Weapon_Load = m_Weapon.FindAction("Load", throwIfNotFound: true);
+        m_Weapon_SwordMode = m_Weapon.FindAction("Sword Mode", throwIfNotFound: true);
+        m_Weapon_BowMode = m_Weapon.FindAction("Bow Mode", throwIfNotFound: true);
+        m_Weapon_NormalMode = m_Weapon.FindAction("Normal Mode", throwIfNotFound: true);
         // Skill
         m_Skill = asset.FindActionMap("Skill", throwIfNotFound: true);
         m_Skill_LeftClick = m_Skill.FindAction("LeftClick", throwIfNotFound: true);
@@ -731,11 +896,16 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         m_Skill_OnSkill = m_Skill.FindAction("OnSkill", throwIfNotFound: true);
         m_Skill_Throw = m_Skill.FindAction("Throw", throwIfNotFound: true);
         m_Skill_Cancel = m_Skill.FindAction("Cancel", throwIfNotFound: true);
-        m_Skill_SpecialKey1 = m_Skill.FindAction("SpecialKey1", throwIfNotFound: true);
-        m_Skill_SpecialKey2 = m_Skill.FindAction("SpecialKey2", throwIfNotFound: true);
+        m_Skill_SpecialKeyUp = m_Skill.FindAction("SpecialKeyUp", throwIfNotFound: true);
+        m_Skill_SpecialKeyDown = m_Skill.FindAction("SpecialKeyDown", throwIfNotFound: true);
+        m_Skill_SpecialKeyLeft = m_Skill.FindAction("SpecialKeyLeft", throwIfNotFound: true);
+        m_Skill_SpecialKeyRight = m_Skill.FindAction("SpecialKeyRight", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Click = m_UI.FindAction("Click", throwIfNotFound: true);
+        m_UI_PrePanel = m_UI.FindAction("PrePanel", throwIfNotFound: true);
+        m_UI_NextPanel = m_UI.FindAction("NextPanel", throwIfNotFound: true);
+        m_UI_Close = m_UI.FindAction("Close", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -810,6 +980,10 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Open_Inventory;
     private readonly InputAction m_Player_Get_Item;
     private readonly InputAction m_Player_Open_Map;
+
+    private readonly InputAction m_Player_Open_Quest;
+    private readonly InputAction m_Player_Open_Menu;
+
     public struct PlayerActions
     {
         private @PlayerinputActions m_Wrapper;
@@ -827,6 +1001,10 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         public InputAction @Open_Inventory => m_Wrapper.m_Player_Open_Inventory;
         public InputAction @Get_Item => m_Wrapper.m_Player_Get_Item;
         public InputAction @Open_Map => m_Wrapper.m_Player_Open_Map;
+
+        public InputAction @Open_Quest => m_Wrapper.m_Player_Open_Quest;
+        public InputAction @Open_Menu => m_Wrapper.m_Player_Open_Menu;
+
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -875,6 +1053,15 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
             @Open_Map.started += instance.OnOpen_Map;
             @Open_Map.performed += instance.OnOpen_Map;
             @Open_Map.canceled += instance.OnOpen_Map;
+
+            @Open_Quest.started += instance.OnOpen_Quest;
+            @Open_Quest.performed += instance.OnOpen_Quest;
+            @Open_Quest.canceled += instance.OnOpen_Quest;
+
+            @Open_Menu.started += instance.OnOpen_Menu;
+            @Open_Menu.performed += instance.OnOpen_Menu;
+            @Open_Menu.canceled += instance.OnOpen_Menu;
+
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -918,6 +1105,15 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
             @Open_Map.started -= instance.OnOpen_Map;
             @Open_Map.performed -= instance.OnOpen_Map;
             @Open_Map.canceled -= instance.OnOpen_Map;
+
+            @Open_Quest.started -= instance.OnOpen_Quest;
+            @Open_Quest.performed -= instance.OnOpen_Quest;
+            @Open_Quest.canceled -= instance.OnOpen_Quest;
+
+            @Open_Menu.started -= instance.OnOpen_Menu;
+            @Open_Menu.performed -= instance.OnOpen_Menu;
+            @Open_Menu.canceled -= instance.OnOpen_Menu;
+
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -940,15 +1136,17 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Weapon;
     private List<IWeaponActions> m_WeaponActionsCallbackInterfaces = new List<IWeaponActions>();
     private readonly InputAction m_Weapon_Attack;
-    private readonly InputAction m_Weapon_Change;
-    private readonly InputAction m_Weapon_Load;
+    private readonly InputAction m_Weapon_SwordMode;
+    private readonly InputAction m_Weapon_BowMode;
+    private readonly InputAction m_Weapon_NormalMode;
     public struct WeaponActions
     {
         private @PlayerinputActions m_Wrapper;
         public WeaponActions(@PlayerinputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Attack => m_Wrapper.m_Weapon_Attack;
-        public InputAction @Change => m_Wrapper.m_Weapon_Change;
-        public InputAction @Load => m_Wrapper.m_Weapon_Load;
+        public InputAction @SwordMode => m_Wrapper.m_Weapon_SwordMode;
+        public InputAction @BowMode => m_Wrapper.m_Weapon_BowMode;
+        public InputAction @NormalMode => m_Wrapper.m_Weapon_NormalMode;
         public InputActionMap Get() { return m_Wrapper.m_Weapon; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -961,12 +1159,15 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
             @Attack.started += instance.OnAttack;
             @Attack.performed += instance.OnAttack;
             @Attack.canceled += instance.OnAttack;
-            @Change.started += instance.OnChange;
-            @Change.performed += instance.OnChange;
-            @Change.canceled += instance.OnChange;
-            @Load.started += instance.OnLoad;
-            @Load.performed += instance.OnLoad;
-            @Load.canceled += instance.OnLoad;
+            @SwordMode.started += instance.OnSwordMode;
+            @SwordMode.performed += instance.OnSwordMode;
+            @SwordMode.canceled += instance.OnSwordMode;
+            @BowMode.started += instance.OnBowMode;
+            @BowMode.performed += instance.OnBowMode;
+            @BowMode.canceled += instance.OnBowMode;
+            @NormalMode.started += instance.OnNormalMode;
+            @NormalMode.performed += instance.OnNormalMode;
+            @NormalMode.canceled += instance.OnNormalMode;
         }
 
         private void UnregisterCallbacks(IWeaponActions instance)
@@ -974,12 +1175,15 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
             @Attack.started -= instance.OnAttack;
             @Attack.performed -= instance.OnAttack;
             @Attack.canceled -= instance.OnAttack;
-            @Change.started -= instance.OnChange;
-            @Change.performed -= instance.OnChange;
-            @Change.canceled -= instance.OnChange;
-            @Load.started -= instance.OnLoad;
-            @Load.performed -= instance.OnLoad;
-            @Load.canceled -= instance.OnLoad;
+            @SwordMode.started -= instance.OnSwordMode;
+            @SwordMode.performed -= instance.OnSwordMode;
+            @SwordMode.canceled -= instance.OnSwordMode;
+            @BowMode.started -= instance.OnBowMode;
+            @BowMode.performed -= instance.OnBowMode;
+            @BowMode.canceled -= instance.OnBowMode;
+            @NormalMode.started -= instance.OnNormalMode;
+            @NormalMode.performed -= instance.OnNormalMode;
+            @NormalMode.canceled -= instance.OnNormalMode;
         }
 
         public void RemoveCallbacks(IWeaponActions instance)
@@ -1011,8 +1215,10 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Skill_OnSkill;
     private readonly InputAction m_Skill_Throw;
     private readonly InputAction m_Skill_Cancel;
-    private readonly InputAction m_Skill_SpecialKey1;
-    private readonly InputAction m_Skill_SpecialKey2;
+    private readonly InputAction m_Skill_SpecialKeyUp;
+    private readonly InputAction m_Skill_SpecialKeyDown;
+    private readonly InputAction m_Skill_SpecialKeyLeft;
+    private readonly InputAction m_Skill_SpecialKeyRight;
     public struct SkillActions
     {
         private @PlayerinputActions m_Wrapper;
@@ -1027,8 +1233,10 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         public InputAction @OnSkill => m_Wrapper.m_Skill_OnSkill;
         public InputAction @Throw => m_Wrapper.m_Skill_Throw;
         public InputAction @Cancel => m_Wrapper.m_Skill_Cancel;
-        public InputAction @SpecialKey1 => m_Wrapper.m_Skill_SpecialKey1;
-        public InputAction @SpecialKey2 => m_Wrapper.m_Skill_SpecialKey2;
+        public InputAction @SpecialKeyUp => m_Wrapper.m_Skill_SpecialKeyUp;
+        public InputAction @SpecialKeyDown => m_Wrapper.m_Skill_SpecialKeyDown;
+        public InputAction @SpecialKeyLeft => m_Wrapper.m_Skill_SpecialKeyLeft;
+        public InputAction @SpecialKeyRight => m_Wrapper.m_Skill_SpecialKeyRight;
         public InputActionMap Get() { return m_Wrapper.m_Skill; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1068,12 +1276,18 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
             @Cancel.started += instance.OnCancel;
             @Cancel.performed += instance.OnCancel;
             @Cancel.canceled += instance.OnCancel;
-            @SpecialKey1.started += instance.OnSpecialKey1;
-            @SpecialKey1.performed += instance.OnSpecialKey1;
-            @SpecialKey1.canceled += instance.OnSpecialKey1;
-            @SpecialKey2.started += instance.OnSpecialKey2;
-            @SpecialKey2.performed += instance.OnSpecialKey2;
-            @SpecialKey2.canceled += instance.OnSpecialKey2;
+            @SpecialKeyUp.started += instance.OnSpecialKeyUp;
+            @SpecialKeyUp.performed += instance.OnSpecialKeyUp;
+            @SpecialKeyUp.canceled += instance.OnSpecialKeyUp;
+            @SpecialKeyDown.started += instance.OnSpecialKeyDown;
+            @SpecialKeyDown.performed += instance.OnSpecialKeyDown;
+            @SpecialKeyDown.canceled += instance.OnSpecialKeyDown;
+            @SpecialKeyLeft.started += instance.OnSpecialKeyLeft;
+            @SpecialKeyLeft.performed += instance.OnSpecialKeyLeft;
+            @SpecialKeyLeft.canceled += instance.OnSpecialKeyLeft;
+            @SpecialKeyRight.started += instance.OnSpecialKeyRight;
+            @SpecialKeyRight.performed += instance.OnSpecialKeyRight;
+            @SpecialKeyRight.canceled += instance.OnSpecialKeyRight;
         }
 
         private void UnregisterCallbacks(ISkillActions instance)
@@ -1108,12 +1322,18 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
             @Cancel.started -= instance.OnCancel;
             @Cancel.performed -= instance.OnCancel;
             @Cancel.canceled -= instance.OnCancel;
-            @SpecialKey1.started -= instance.OnSpecialKey1;
-            @SpecialKey1.performed -= instance.OnSpecialKey1;
-            @SpecialKey1.canceled -= instance.OnSpecialKey1;
-            @SpecialKey2.started -= instance.OnSpecialKey2;
-            @SpecialKey2.performed -= instance.OnSpecialKey2;
-            @SpecialKey2.canceled -= instance.OnSpecialKey2;
+            @SpecialKeyUp.started -= instance.OnSpecialKeyUp;
+            @SpecialKeyUp.performed -= instance.OnSpecialKeyUp;
+            @SpecialKeyUp.canceled -= instance.OnSpecialKeyUp;
+            @SpecialKeyDown.started -= instance.OnSpecialKeyDown;
+            @SpecialKeyDown.performed -= instance.OnSpecialKeyDown;
+            @SpecialKeyDown.canceled -= instance.OnSpecialKeyDown;
+            @SpecialKeyLeft.started -= instance.OnSpecialKeyLeft;
+            @SpecialKeyLeft.performed -= instance.OnSpecialKeyLeft;
+            @SpecialKeyLeft.canceled -= instance.OnSpecialKeyLeft;
+            @SpecialKeyRight.started -= instance.OnSpecialKeyRight;
+            @SpecialKeyRight.performed -= instance.OnSpecialKeyRight;
+            @SpecialKeyRight.canceled -= instance.OnSpecialKeyRight;
         }
 
         public void RemoveCallbacks(ISkillActions instance)
@@ -1136,11 +1356,17 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_UI;
     private List<IUIActions> m_UIActionsCallbackInterfaces = new List<IUIActions>();
     private readonly InputAction m_UI_Click;
+    private readonly InputAction m_UI_PrePanel;
+    private readonly InputAction m_UI_NextPanel;
+    private readonly InputAction m_UI_Close;
     public struct UIActions
     {
         private @PlayerinputActions m_Wrapper;
         public UIActions(@PlayerinputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Click => m_Wrapper.m_UI_Click;
+        public InputAction @PrePanel => m_Wrapper.m_UI_PrePanel;
+        public InputAction @NextPanel => m_Wrapper.m_UI_NextPanel;
+        public InputAction @Close => m_Wrapper.m_UI_Close;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1153,6 +1379,15 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
             @Click.started += instance.OnClick;
             @Click.performed += instance.OnClick;
             @Click.canceled += instance.OnClick;
+            @PrePanel.started += instance.OnPrePanel;
+            @PrePanel.performed += instance.OnPrePanel;
+            @PrePanel.canceled += instance.OnPrePanel;
+            @NextPanel.started += instance.OnNextPanel;
+            @NextPanel.performed += instance.OnNextPanel;
+            @NextPanel.canceled += instance.OnNextPanel;
+            @Close.started += instance.OnClose;
+            @Close.performed += instance.OnClose;
+            @Close.canceled += instance.OnClose;
         }
 
         private void UnregisterCallbacks(IUIActions instance)
@@ -1160,6 +1395,15 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
             @Click.started -= instance.OnClick;
             @Click.performed -= instance.OnClick;
             @Click.canceled -= instance.OnClick;
+            @PrePanel.started -= instance.OnPrePanel;
+            @PrePanel.performed -= instance.OnPrePanel;
+            @PrePanel.canceled -= instance.OnPrePanel;
+            @NextPanel.started -= instance.OnNextPanel;
+            @NextPanel.performed -= instance.OnNextPanel;
+            @NextPanel.canceled -= instance.OnNextPanel;
+            @Close.started -= instance.OnClose;
+            @Close.performed -= instance.OnClose;
+            @Close.canceled -= instance.OnClose;
         }
 
         public void RemoveCallbacks(IUIActions instance)
@@ -1201,12 +1445,17 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         void OnOpen_Inventory(InputAction.CallbackContext context);
         void OnGet_Item(InputAction.CallbackContext context);
         void OnOpen_Map(InputAction.CallbackContext context);
+
+        void OnOpen_Quest(InputAction.CallbackContext context);
+        void OnOpen_Menu(InputAction.CallbackContext context);
+
     }
     public interface IWeaponActions
     {
         void OnAttack(InputAction.CallbackContext context);
-        void OnChange(InputAction.CallbackContext context);
-        void OnLoad(InputAction.CallbackContext context);
+        void OnSwordMode(InputAction.CallbackContext context);
+        void OnBowMode(InputAction.CallbackContext context);
+        void OnNormalMode(InputAction.CallbackContext context);
     }
     public interface ISkillActions
     {
@@ -1220,11 +1469,16 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         void OnOnSkill(InputAction.CallbackContext context);
         void OnThrow(InputAction.CallbackContext context);
         void OnCancel(InputAction.CallbackContext context);
-        void OnSpecialKey1(InputAction.CallbackContext context);
-        void OnSpecialKey2(InputAction.CallbackContext context);
+        void OnSpecialKeyUp(InputAction.CallbackContext context);
+        void OnSpecialKeyDown(InputAction.CallbackContext context);
+        void OnSpecialKeyLeft(InputAction.CallbackContext context);
+        void OnSpecialKeyRight(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
         void OnClick(InputAction.CallbackContext context);
+        void OnPrePanel(InputAction.CallbackContext context);
+        void OnNextPanel(InputAction.CallbackContext context);
+        void OnClose(InputAction.CallbackContext context);
     }
 }

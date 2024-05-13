@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 /// <summary>
 /// Map UI의 각종 값을 다루는 Manager 클래스 ( 위치값 맵의 왼쪽 밑에 고정 )
 /// </summary>
-public class MapManager : MonoBehaviour
+public class MapManager : Singleton<MapManager>
 {
     [Header("Currnet Map Size")]
     public float mapSizeX = 300f;
@@ -62,6 +62,11 @@ public class MapManager : MonoBehaviour
     /// 맵 카메라의 y 고정 좌표값
     /// </summary>
     const float mapCameraY = 100f;
+
+    /// <summary>
+    /// 맵 UI를 열였는지 확인하는 변수
+    /// </summary>
+    public bool IsOpenedLargeMap = false;
 
     public void InitalizeMapUI()
     {

@@ -10,4 +10,6 @@ public class ItemData_Weapon : ItemData_Equipment
 {
     [Header("무기 정보")]
     public float Damage;
+
+    public WeaponType WeaponType;
 }

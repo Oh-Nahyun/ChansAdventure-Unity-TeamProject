@@ -121,6 +121,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Open_Quest",
+                    "type": "Button",
+                    "id": "d98c0f3e-dce1-4550-9913-efaa1469a52d",
+                     "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Open_Menu",
+                    "type": "Button",
+                    "id": "a6a4a307-edce-4efd-84c7-098a1874d874",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -310,6 +328,28 @@
                     "action": "Open_Map",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4b512deb-6fda-4137-b8df-9397a82bd827",
+                    "path": "<Keyboard>/l",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KM",
+                    "action": "Open_Quest",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "517f5c83-7451-4211-89f1-70161e71f452",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Open_Menu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -327,7 +367,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Change",
+                    "name": "Sword Mode",
                     "type": "Button",
                     "id": "df5ab539-e7c0-4a08-861f-41ffd1348f22",
                     "expectedControlType": "Button",
@@ -336,9 +376,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Load",
+                    "name": "Bow Mode",
                     "type": "Button",
                     "id": "3e057eaf-1de1-46f8-b70b-c7ace608bcd4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Normal Mode",
+                    "type": "Button",
+                    "id": "ca5dd82f-42b8-4591-9d6b-880e53250c8a",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -364,7 +413,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Change",
+                    "action": "Sword Mode",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -375,7 +424,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "KM",
-                    "action": "Load",
+                    "action": "Bow Mode",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6d0f5d2a-e7fe-4630-94f6-dde7d237cace",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KM",
+                    "action": "Normal Mode",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -476,7 +536,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "SpecialKey1",
+                    "name": "SpecialKeyUp",
                     "type": "Button",
                     "id": "9dd2a7b1-b748-4608-b262-a3deda748aba",
                     "expectedControlType": "Button",
@@ -485,9 +545,27 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "SpecialKey2",
+                    "name": "SpecialKeyDown",
                     "type": "Button",
                     "id": "ac4efe34-db19-4f5f-9121-7435f70c266b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SpecialKeyLeft",
+                    "type": "Button",
+                    "id": "1745a67f-e2e2-46fc-8f1e-04e0df8d40f8",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SpecialKeyRight",
+                    "type": "Button",
+                    "id": "9e56206a-82fe-441a-b012-7755a46e3265",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -608,22 +686,44 @@
                 {
                     "name": "",
                     "id": "26cb31fe-87e3-47a3-9dc4-d1f6c3f105f8",
-                    "path": "<Keyboard>/rightBracket",
+                    "path": "<Keyboard>/numpad5",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "SpecialKey2",
+                    "action": "SpecialKeyDown",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "fb690cff-cbeb-4055-983b-685533afbec6",
-                    "path": "<Keyboard>/leftBracket",
+                    "path": "<Keyboard>/numpad8",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "SpecialKey1",
+                    "action": "SpecialKeyUp",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a5912ace-40e2-4e27-85cc-21572f811f70",
+                    "path": "<Keyboard>/numpad4",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SpecialKeyLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3e7fc6b7-bd4e-45b5-88f5-b3dc4bc55ea5",
+                    "path": "<Keyboard>/numpad6",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SpecialKeyRight",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -641,6 +741,33 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "PrePanel",
+                    "type": "Button",
+                    "id": "7d6a380c-1ae5-4cb1-a6d8-8920dd5d2517",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "NextPanel",
+                    "type": "Button",
+                    "id": "ef17e6cc-c919-4bf0-9e43-ac5efcc7593a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Close",
+                    "type": "Button",
+                    "id": "6c4afe10-7349-4961-a8b7-c59bb1754aac",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -652,6 +779,39 @@
                     "processors": "",
                     "groups": "",
                     "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8abf1ef6-138e-43a3-912a-0fec2a1137ca",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KM",
+                    "action": "PrePanel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "413373ad-968f-41aa-aae9-34a2e14f1681",
+                    "path": "<Keyboard>/rightArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KM",
+                    "action": "NextPanel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0c58922e-077d-4736-b386-039ee2a6309c",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KM",
+                    "action": "Close",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

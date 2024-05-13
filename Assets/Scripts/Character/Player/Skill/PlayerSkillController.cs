@@ -44,21 +44,28 @@ public class PlayerSkillController : MonoBehaviour
         playerInputAction.Skill.Cancel.performed += OnCancel;
         playerInputAction.Skill.RightClick.performed += OnRightClick;
 
-        playerInputAction.Skill.SpecialKey1.performed += OnSpecialKey1Press;
-        playerInputAction.Skill.SpecialKey1.canceled += OnSpecialKey1Release;
-        playerInputAction.Skill.SpecialKey2.performed += OnSpecialKey2Press;
-        playerInputAction.Skill.SpecialKey2.canceled += OnSpecialKey2Release;
+        playerInputAction.Skill.SpecialKeyDown.performed += OnSpecialKeyDownPress;
+        playerInputAction.Skill.SpecialKeyDown.canceled += OnSpecialKeyDownRelease;
+        playerInputAction.Skill.SpecialKeyUp.performed += OnSpecialKeyUpPress;
+        playerInputAction.Skill.SpecialKeyUp.canceled += OnSpecialKeyUpRelease;
+        playerInputAction.Skill.SpecialKeyLeft.performed += OnSpecialKeyLeftPress;
+        playerInputAction.Skill.SpecialKeyLeft.canceled += OnSpecialKeyLeftPress;
+        playerInputAction.Skill.SpecialKeyRight.performed += OnSpecialKeyRightPress;
+        playerInputAction.Skill.SpecialKeyRight.canceled += OnSpecialKeyRightPress;
+
     }
-
-
 
     void OnDisable()
     {
         // Player Skills
-        playerInputAction.Skill.SpecialKey2.canceled -= OnSpecialKey2Release;
-        playerInputAction.Skill.SpecialKey2.performed -= OnSpecialKey2Press;
-        playerInputAction.Skill.SpecialKey1.canceled -= OnSpecialKey1Release;
-        playerInputAction.Skill.SpecialKey1.performed -= OnSpecialKey1Press;
+        playerInputAction.Skill.SpecialKeyRight.canceled -= OnSpecialKeyRightPress;
+        playerInputAction.Skill.SpecialKeyRight.performed -= OnSpecialKeyRightPress;
+        playerInputAction.Skill.SpecialKeyLeft.canceled -= OnSpecialKeyLeftPress;
+        playerInputAction.Skill.SpecialKeyLeft.performed -= OnSpecialKeyLeftPress;
+        playerInputAction.Skill.SpecialKeyUp.canceled -= OnSpecialKeyUpRelease;
+        playerInputAction.Skill.SpecialKeyUp.performed -= OnSpecialKeyUpPress;
+        playerInputAction.Skill.SpecialKeyDown.canceled -= OnSpecialKeyDownRelease;
+        playerInputAction.Skill.SpecialKeyDown.performed -= OnSpecialKeyDownPress;
 
         playerInputAction.Skill.RightClick.performed -= OnRightClick;
         playerInputAction.Skill.Cancel.performed -= OnCancel;
@@ -132,33 +139,54 @@ public class PlayerSkillController : MonoBehaviour
         rightClick?.Invoke();
     }
 
+    bool isSpecialKeyDown = false;
 
-    private void OnSpecialKey1Press(CallbackContext context)
+    private void OnSpecialKeyDownPress(CallbackContext context)
     {
-        StartCoroutine(specialKeyPress[(int)PlayerSkills.SpecialKey.SquareBracket_Open]);
+        StopCoroutine(specialKeyPress[(int)PlayerSkills.SpecialKey.NumPad8_Up]);
+
+        StartCoroutine(specialKeyPress[(int)PlayerSkills.SpecialKey.NumPad5_Down]);
     }
-    private void OnSpecialKey1Release(CallbackContext context)
+    private void OnSpecialKeyDownRelease(CallbackContext context)
     {
 
-        StopCoroutine(specialKeyPress[(int)PlayerSkills.SpecialKey.SquareBracket_Open]);
+        StopCoroutine(specialKeyPress[(int)PlayerSkills.SpecialKey.NumPad5_Down]);
         onSpecialKey[(int)PlayerSkills.SpecialKey.None]?.Invoke();
     }
-    private void OnSpecialKey2Press(CallbackContext context)
+    private void OnSpecialKeyUpPress(CallbackContext context)
     {
-        StartCoroutine(specialKeyPress[(int)PlayerSkills.SpecialKey.SquareBracket_Close]);
+        StopCoroutine(specialKeyPress[(int)PlayerSkills.SpecialKey.NumPad5_Down]);
+
+        StartCoroutine(specialKeyPress[(int)PlayerSkills.SpecialKey.NumPad8_Up]);
 
     }
-    private void OnSpecialKey2Release(CallbackContext context)
+    private void OnSpecialKeyUpRelease(CallbackContext context)
     {
-        StopCoroutine(specialKeyPress[(int)PlayerSkills.SpecialKey.SquareBracket_Close]);
+        StopCoroutine(specialKeyPress[(int)PlayerSkills.SpecialKey.NumPad8_Up]);
         onSpecialKey[(int)PlayerSkills.SpecialKey.None]?.Invoke();
+    }
+    private void OnSpecialKeyRightPress(CallbackContext context)
+    {
+        isSpecialKeyDown = context.performed;
+        if(isSpecialKeyDown)
+            onSpecialKey[(int)PlayerSkills.SpecialKey.NumPad6_Right]?.Invoke();
+    }
+
+    private void OnSpecialKeyLeftPress(CallbackContext context)
+    {
+        isSpecialKeyDown = context.performed;
+        if(isSpecialKeyDown)
+            onSpecialKey[(int)PlayerSkills.SpecialKey.NumPad4_Left]?.Invoke();
     }
 
     IEnumerator SpecialKeyPress(PlayerSkills.SpecialKey key)
     {
         while (true)
         {
-            onSpecialKey[(int)key]?.Invoke();
+            if (!isSpecialKeyDown)
+            {
+                onSpecialKey[(int)key]?.Invoke();
+            }
             yield return null;
         }
     }

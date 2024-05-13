@@ -55,7 +55,7 @@ public class AsyncLoadingScene : MonoBehaviour
     private void OnDisable()
     {
         inputActions.UI.Click.performed -= Press;
-        inputActions.UI.Disable();        
+        inputActions.UI.Disable();
     }
 
     private void Start()
@@ -72,7 +72,7 @@ public class AsyncLoadingScene : MonoBehaviour
     private void Update()
     {
         // 슬라이더의 value가 loadRatio가 될 때까지 계속 증가
-        if(loadingSlider.value < loadRatio)
+        if (loadingSlider.value < loadRatio)
         {
             loadingSlider.value += Time.deltaTime * loadingBarSpeed;
         }
@@ -100,7 +100,7 @@ public class AsyncLoadingScene : MonoBehaviour
         async = SceneManager.LoadSceneAsync(nextSceneName); // 비동기 로딩 시작
         async.allowSceneActivation = false;                 // 자동 씬 변환 비활성화
 
-        while(loadRatio < 1.0f)
+        while (loadRatio < 1.0f)
         {
             loadRatio = async.progress + 0.1f; // 진행률 갱신
 
@@ -109,7 +109,7 @@ public class AsyncLoadingScene : MonoBehaviour
 
         yield return new WaitForSeconds((1 - loadingSlider.value / loadingBarSpeed));
 
-        loadingDone = true;        
+        loadingDone = true;
     }
 
     #endregion

@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 7616533183204277396}
   - component: {fileID: 1789021134245975183}
   - component: {fileID: 8413078663783774573}
+  - component: {fileID: 7711979120005187342}
+  - component: {fileID: 8472077710630412549}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -49,8 +51,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f40596ba75c9f449ae4b82ed6ba2c63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameState: 1
+  spawnPoint: {x: 50, y: 3, z: 50}
   isLoading: 0
   loadPlayerGameObject: {fileID: 0}
+  playerPrefab: {fileID: 7973622836142104029, guid: 01eee89cde26bf04aa9194d5dd3ca811,
+    type: 3}
   isNPC: 0
 --- !u!114 &7616533183204277396
 MonoBehaviour:
@@ -85,6 +91,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ba7b0fe23b3826e408c8c533d1d4bca9, type: 2}
   - {fileID: 11400000, guid: 26764ef1ae7ad6a47bf75f6eba901eae, type: 2}
   - {fileID: 11400000, guid: d4ffee2bd0191214ea867cb3133356ac, type: 2}
+  - {fileID: 11400000, guid: 5ca45c1a8b0027a4290f089f99b2b1c9, type: 2}
+  - {fileID: 11400000, guid: dff38b7caa0efcf4681509cffc3735ae, type: 2}
   CharaterRenderCameraPoint: {fileID: 0}
 --- !u!114 &8413078663783774573
 MonoBehaviour:
@@ -98,8 +106,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c7a4a50e2e404c4caa12015f2bd96d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapSizeX: 100
-  mapSizeY: 100
+  mapSizeX: 300
+  mapSizeY: 300
+  IsOpenedLargeMap: 0
+--- !u!114 &7711979120005187342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4259061661310028882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cd1ccf8d5a082748bd3208b923c8785, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skills:
+  - {fileID: 6731784966498643628, guid: 5357befead7529840918c0b0c1e05995, type: 3}
+  - {fileID: 5673038610984017870, guid: 97ca29bfc7140bc4cb01d6a19ecb28f9, type: 3}
+  - {fileID: 4161315281032934609, guid: 14c165a4a63eb5b47ac7a930095ddae4, type: 3}
+  - {fileID: 818589885712792232, guid: d65926a35bb69b5448a9a5f1ae00ab88, type: 3}
+  - {fileID: 2839625063180649222, guid: 2bec7fee1d688f34cb929c5497a84b49, type: 3}
+--- !u!114 &8472077710630412549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4259061661310028882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cd1ccf8d5a082748bd3208b923c8785, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skills:
+  - {fileID: 6731784966498643628, guid: 5357befead7529840918c0b0c1e05995, type: 3}
+  - {fileID: 5673038610984017870, guid: 97ca29bfc7140bc4cb01d6a19ecb28f9, type: 3}
+  - {fileID: 4161315281032934609, guid: 14c165a4a63eb5b47ac7a930095ddae4, type: 3}
+  - {fileID: 818589885712792232, guid: d65926a35bb69b5448a9a5f1ae00ab88, type: 3}
+  - {fileID: 2839625063180649222, guid: 2bec7fee1d688f34cb929c5497a84b49, type: 3}
 --- !u!1001 &1512909484931155663
 PrefabInstance:
   m_ObjectHideFlags: 0

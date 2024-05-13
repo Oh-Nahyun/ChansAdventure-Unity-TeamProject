@@ -28,6 +28,6 @@ public class Test_ItemDrop : TestBase
 
     protected override void OnTest1(InputAction.CallbackContext context)
     {
-        Factory.Instance.GetItemObject(inven[index].SlotItemData, 1, target.position);
+        Factory.Instance.GetItemObject(inven[index].SlotItemData, target.position);
     }
 }

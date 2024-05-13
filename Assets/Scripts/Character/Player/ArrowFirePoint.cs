@@ -24,37 +24,33 @@ public class ArrowFirePoint : MonoBehaviour
     /// </summary>
     Transform rightHand;
 
-    Transform RightHand
-    {
-        get
-        {
-            if (rightHand == null)
-            {
-                rightHand = GameObject.FindWithTag("RightHand").transform;
-            }
-
-            return rightHand;
-        }
-        set
-        {
-            rightHand = value;
-        }
-    }
-
     /// <summary>
     /// 화살 발사 위치
     /// </summary>
     Transform fireTransform;
 
+    /// <summary>
+    /// 화살 방향 트랜스폼
+    /// </summary>
+    Transform arrowDir;
+
     private void Start()
     {
-        RightHand = GameObject.FindWithTag("RightHand").transform;
+        rightHand = GameObject.FindWithTag("RightHand").transform;
         fireTransform = transform.GetChild(0);
+        arrowDir = transform.GetComponentInParent<Player>().transform;
     }
 
     private void Update()
     {
-        fireTransform.position = RightHand.position; // 화살 발사 위치는 캐릭터 오른손 위치와 일치
+        if(rightHand == null)
+        {
+            rightHand = GameObject.FindWithTag("RightHand").transform;
+        }
+        else
+        {
+            fireTransform.position = rightHand.position; // 화살 발사 위치는 캐릭터 오른손 위치와 일치
+        }
     }
 
     /// <summary>
@@ -63,6 +59,15 @@ public class ArrowFirePoint : MonoBehaviour
     public void FireArrow()
     {
         //Instantiate(arrowPrefab, fireTransform); // 화살 생성 후 발사
+        Factory.Instance.GetObject(type, fireTransform.position, new Vector3(90.0f, arrowDir.eulerAngles.y, 0f));
+    }
+
+    /// <summary>
+    /// 인벤토리의 화살을 발사하는 함수
+    /// </summary>
+    /// <param name="arrow">화살 아이템 오브젝트</param>
+    public void GetFireArrow(PoolObjectType type, GameObject arrow)
+    {
         Factory.Instance.GetObject(type, fireTransform.position, new Vector3(90.0f, 0f, 0f));
     }
 }

@@ -1,0 +1,364 @@
+fileFormatVersion: 2
+guid: 69a5138469107b64280e0d01b2a6baf3
+ModelImporter:
+  serializedVersion: 22200
+  internalIDToNameTable: []
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Default_Material
+    second: {fileID: 2100000, guid: 34fb5f9d31a7ab1439a0ff41427d1349, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_GoalBarrier
+    second: {fileID: 2100000, guid: fa57cef4a48281a478609aea88014ff6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_WarpinParts
+    second: {fileID: 2100000, guid: 0b329a14479a6eb41896c1dc700b7bb4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Warpin_CilingPilar
+    second: {fileID: 2100000, guid: e315529b3f840674fa5e4fb8788fdf68, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_Cdun_MonyoLine_B
+    second: {fileID: 2100000, guid: dfb4d06b4b908154cb487b24c77c4fc2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_CeilingTile
+    second: {fileID: 2100000, guid: 15469df0a6eaa4540a0390ea0b8eb760, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_CmnTex_Cdun_Floor_E
+    second: {fileID: 2100000, guid: eb940e11d9391c04ebef2e4b1f90f468, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_CmnTex_Cdun_OutSideWall_A
+    second: {fileID: 2100000, guid: 8a572fc3ac2948f4b84ae564d7ccdcd9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_CmnTex_Etc_BoxPartsWainscotBase_A
+    second: {fileID: 2100000, guid: fc598f6a8ecd7124a884d240229363c6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_CmnTex_Etc_BoxPartsWainscotBase_A_DUP1
+    second: {fileID: 2100000, guid: 22b49ee6aed69c94e9547b3c607aa46f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_CmnTex_Etc_BoxPartsWainscotSeal_A
+    second: {fileID: 2100000, guid: fd051004514c3d84586924215fdea62e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_CmnTex_Rock_BoxPartsFloor_A
+    second: {fileID: 2100000, guid: aa3091ec4a7226e4cac82014878df344, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_CmnTex_Rock_BoxPartsFloor_B
+    second: {fileID: 2100000, guid: 3d0d1e921353ea04b83710124c1541ee, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_CmnTex_Rock_BoxPartsFloor_B_DUP1
+    second: {fileID: 2100000, guid: f63da9a4a1c842045954cd674a701876, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_CmnTex_Wall_BoxPartsBlackFence_A
+    second: {fileID: 2100000, guid: fa5aed5783bc81b4b8cb49302bc34b26, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_CmnTex_Wall_BoxPartsBlack_A
+    second: {fileID: 2100000, guid: 773c59c46e612924b8ac66e5b0a453a3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_CmnTex_Wall_BoxPartsWainscotBase_A
+    second: {fileID: 2100000, guid: 25e0e00133cbcef4db449ee773d286a3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_CmnTex_Wall_BoxPartsWainscotBase_A_1
+    second: {fileID: 2100000, guid: 80bbbff6c4d4d2e42b315d1ac2589ef5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_CmnTex_Wall_BoxPartsWainscotBase_B
+    second: {fileID: 2100000, guid: 7ef4746372ab4ba47b564831ea7f4be8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_DgnObj_BoxParts_GoalSystem_C
+    second: {fileID: 2100000, guid: ead0b192b4bcc4d4c82bb9f2f4e95c5b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_DgnObj_BoxParts_GoalSystem_D
+    second: {fileID: 2100000, guid: 79811b86f6e3d4741af54dad2a051c1d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_DgnObj_BoxParts_GoalSystem_E
+    second: {fileID: 2100000, guid: 558a7bfbb106fe447bf679a3cc48b848, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_DgnObj_BoxParts_GoalSystem_F
+    second: {fileID: 2100000, guid: fab7e6a37459294438d6858fbe18b17d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_DgnObj_BoxParts_WallA_02Mix
+    second: {fileID: 2100000, guid: 9b4cdab21e3473043858a69bc2e2a43c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_Etc_BoxPartsCeilingPillarA_B
+    second: {fileID: 2100000, guid: 18702e89eebd296479280cbfd0a751f8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_Etc_BoxPartsLadder_A
+    second: {fileID: 2100000, guid: 5931911c3c12e884483ca50d8abf2968, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_LineLight
+    second: {fileID: 2100000, guid: 5daf4bde469f3b545a76e04c17057bf9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_LineLight_01
+    second: {fileID: 2100000, guid: 9ecaf4986dfc03a499820c236c276aee, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_LineLight_01_DUP1
+    second: {fileID: 2100000, guid: 926a56cb737129d4ea9639c330725b32, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_LineLight_01_DUP2
+    second: {fileID: 2100000, guid: f1b9b612f9af99c4facd9266ab93dd95, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_LineLight_DUP1
+    second: {fileID: 2100000, guid: 89bfa30d9ceb37340bafa98b4e30bb66, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_LineLight_DUP3
+    second: {fileID: 2100000, guid: 106857691e05edf44bf9161fedad538f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_LineLight_DUP4
+    second: {fileID: 2100000, guid: b7d3369102a7d354f987feef67d2fa5a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_LineLight_DUP5
+    second: {fileID: 2100000, guid: 4674b41846ffd9f4686cfdbed54141e3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_PartsAutoAnim01
+    second: {fileID: 2100000, guid: 519071a0914677649b589e3d9f5ec067, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_PartsAutoAnim01_01
+    second: {fileID: 2100000, guid: 074c0b58207192e4ca5bfa6c59c93e3a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_PartsAutoAnim01_1
+    second: {fileID: 2100000, guid: 45321200e868630459083d71407cc6fc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_PartsAutoAnim01_DUP1
+    second: {fileID: 2100000, guid: 8ec34c02e5b43c64385e4408f280ab2e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_PartsAutoAnim01_DUP2
+    second: {fileID: 2100000, guid: 00d4072fbe4d79b4c9d29c1159fa8f32, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_PartsAutoAnim03
+    second: {fileID: 2100000, guid: ebf20f79f60a6e2488267feeddd6d366, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_PartsAutoAnim04
+    second: {fileID: 2100000, guid: 40882a23a03d5364ca6a7edcfbf2daba, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_Rock_DoorIronRail_A
+    second: {fileID: 2100000, guid: 16e2814b68724fa4699509781ea0794a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_Sail_A
+    second: {fileID: 2100000, guid: 16b3a6b73bf926347a10ba4946c4afd3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_Wall_BoxPartsFloor1x1_A
+    second: {fileID: 2100000, guid: 488f5c15a3444f847b1ee59c3a7fbc63, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_Wall_BoxPartsFloor_B
+    second: {fileID: 2100000, guid: 89d065f34bec34a4cb43ba33def8ee69, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_Wall_BoxPartsTextBlack_A
+    second: {fileID: 2100000, guid: c20a0efd6d0b89447b2e486dd195bd12, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_Wall_BoxPartsTileRoad_A
+    second: {fileID: 2100000, guid: 320f55af45fd7bc4695cd5be7f9d8502, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_Wall_DgnObjTerminalRugA_A
+    second: {fileID: 2100000, guid: 96f1ff27b1ced464eb1ca0572d9eb22e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mt_Wall_Multi
+    second: {fileID: 2100000, guid: 15dff5a266495054ca085e87084f479c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: cmntex_wall_boxpartsblack_a_alb
+    second: {fileID: 2100000, guid: cbafdad9a9183c248a20962204a68179, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: cmntex_wall_boxpartswainscotbase_a_alb
+    second: {fileID: 2100000, guid: dd47267ee8b37c9429b89eedbddf9c9e, type: 2}
+  materials:
+    materialImportMode: 2
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importPhysicalCameras: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    nodeNameCollisionStrategy: 1
+    fileIdsGeneration: 2
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 1
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    strictVertexDataChecks: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 2
+  humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  importBlendShapeDeformPercent: 1
+  remapMaterialsIfMaterialImportModeIsNone: 0
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

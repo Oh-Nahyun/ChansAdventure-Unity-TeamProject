@@ -125,7 +125,7 @@ namespace StarterAssets
 
         private void Awake()
         {
-            // get a reference to our main camera
+            // get a reference to our main mainCamera
             if (_mainCamera == null)
             {
                 _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
@@ -192,7 +192,7 @@ namespace StarterAssets
 
         private void CameraRotation()
         {
-            // if there is an input and camera position is not fixed
+            // if there is an input and mainCamera position is not fixed
             if (_input.look.sqrMagnitude >= _threshold && !LockCameraPosition)
             {
                 //Don't multiply mouse input by Time.deltaTime;
@@ -260,7 +260,7 @@ namespace StarterAssets
                 float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity,
                     RotationSmoothTime);
 
-                // rotate to face input direction relative to camera position
+                // rotate to face input direction relative to mainCamera position
                 transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
             }
 

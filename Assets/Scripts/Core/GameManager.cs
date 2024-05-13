@@ -1,18 +1,55 @@
 using System;
 using System.Collections;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
+/// <summary>
+/// ê²Œì„ ìƒíƒœ enum
+/// </summary>
+public enum GameState
+{
+    NotStart = 0,
+    Started = 1,
+}
+
+
+[RequireComponent(typeof(CameraManager))]
+[RequireComponent(typeof(ItemDataManager))]
+[RequireComponent(typeof(MapManager))]
+[RequireComponent(typeof(SkillManager))]
 public class GameManager : Singleton<GameManager>
 {
+    /// <summary>
+    /// í˜„ì¬ ê²Œì„ ìƒíƒœ
+    /// </summary>
+    public GameState gameState = GameState.NotStart;
+
+    /// <summary>
+    /// í˜„ì¬ ê²Œì„ ìƒíƒœ ì ‘ê·¼ í”„ë¡œí¼í‹°
+    /// </summary>
+    public GameState CurrnetGameState
+    {
+        get => gameState;
+        set
+        {
+            if (gameState != value)
+            {
+                gameState = value;
+            }
+        }
+    }
+
     Player player;
+    
     public Player Player
     {
         get
         {
             if (player == null)
             {
-                player = FindAnyObjectByType<Player>();
+                player = FindAnyObjectByType<Player>(FindObjectsInactive.Include);
             }
             return player;
         }
@@ -27,16 +64,25 @@ public class GameManager : Singleton<GameManager>
     ItemDataManager itemDataManager;
 
     /// <summary>
-    /// ¾ÆÀÌÅÛ µ¥ÀÌÅÍ Å¬·¡½º Á¢±ÙÀ» ÇÏ±âÀ§ÇÑ ÇÁ·ÎÆÛÆ¼
+    /// ì•„ì´í…œ ë°ì´í„° ë§¤ë‹ˆì €ì— ì ‘ê·¼í•˜ëŠ” í”„ë¡œí¼í‹°
     /// </summary>
     public ItemDataManager ItemDataManager => itemDataManager;
 
     MapManager mapManager;
 
     /// <summary>
-    /// mapManager Á¢±ÙÀ» À§ÇÑ ÇÁ·ÎÆÛÆ¼
+    /// mapManagerì— ì ‘ê·¼í•˜ëŠ” í”„ë¡œí¼í‹°
     /// </summary>
     public MapManager MapManager => mapManager;
+
+    /// <summary>
+    /// questManager ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¼
+    /// </summary>
+    QuestManager questManager;
+    public QuestManager QuestManager => questManager;
+
+    TextBoxManager textBoxManager;
+    public TextBoxManager TextBoxManager => textBoxManager;
 
     public CameraManager Cam
     {
@@ -48,18 +94,26 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    SkillManager skillManager;
+    public SkillManager Skill => skillManager;
+
     /// <summary>
-    /// ·Îµù ÁßÀÎÁö È®ÀÎÇÏ´Â bool°ª
+    /// ìŠ¤í° ìœ„ì§€ íŠ¸ëœìŠ¤í¼
+    /// </summary>
+    public Vector3 spawnPoint = Vector3.zero;
+
+    /// <summary>
+    /// ë¡œë”©í•˜ëŠ” ì¤‘ì¸ì§€ í™•ì¸í•˜ëŠ” boolê°’
     /// </summary>
     public bool isLoading;
 
     /// <summary>
-    /// ÀÌµ¿ÇÒ ¾ÀÀÇ ÀÌ¸§
+    /// ì´ë™í•  ì”¬ì˜ ì´ë¦„
     /// </summary>
     string targetSceneName = null;
 
     /// <summary>
-    /// ÀÌµ¿ÇÒ ¾ÀÀÇ ÀÌ¸§À» Á¢±Ù ¹× ¼öÁ¤ÇÏ±â À§ÇÑ ÇÁ·ÎÆÛÆ¼ ( ÀÌ¸§ÀÌ ¹Ù²î¸é ÇØ´ç ¾ÀÀÌ TragetSceneÀÌ µÇ°í ·Îµù¾ÀÀ» È£ÃâÇÑ´Ù. )
+    /// ì´ë™í•  ì”¬ì˜ ì´ë¦„ì„ ì ‘ê·¼ ë° ìˆ˜ì •í•˜ê¸° ìœ„í•œ í”„ë¡œí¼í‹° ( ì´ë¦„ì´ ë°”ë€Œë©´ í•´ë‹¹ ì”¬ì´ TragetSceneì´ ë˜ê³  ë¡œë”©ì”¬ì„ í˜¸ì¶œí•œë‹¤. )
     /// </summary>
     public string TargetSceneName
     {
@@ -71,10 +125,29 @@ public class GameManager : Singleton<GameManager>
                 targetSceneName = value;
                 ChangeToLoadingScene();
             }
+            else
+            {
+                ChangeToLoadingScene();
+            }
         }
     }
 
+    /// <summary>
+    /// í”Œë ˆì´ì–´ ì˜¤ë¸Œì íŠ¸ë¥¼ ì €ì¥í•  íŒŒê´´ ë¶ˆê°€ëŠ¥í•œ ì˜¤ë¸Œì íŠ¸ ( ì”¬ ì´ë™ìš© )
+    /// </summary>
     public GameObject loadPlayerGameObject;
+
+    /// <summary>
+    /// í”Œë ˆì´ì–´ ì €ì¥ìš© ì¸ë²¤í† ë¦¬ í´ë˜ìŠ¤
+    /// </summary>
+    Inventory savedInventory;
+
+    InventorySlot[] savedEquipParts;
+
+    /// <summary>
+    /// í”Œë ˆì´ì–´ í”„ë¦¬íŒ¹
+    /// </summary>
+    public GameObject playerPrefab;
 
     protected override void OnPreInitialize()
     {
@@ -82,47 +155,54 @@ public class GameManager : Singleton<GameManager>
 
         loadPlayerGameObject = new GameObject();
         DontDestroyOnLoad(loadPlayerGameObject);
+
+        GameObject playerObj = Instantiate(playerPrefab, spawnPoint, Quaternion.identity);
+        player = playerObj.GetComponent<Player>();
+
+        cameraManager = GetComponent<CameraManager>();
+        itemDataManager = GetComponent<ItemDataManager>();
+        mapManager = GetComponent<MapManager>();
     }
 
     protected override void OnInitialize()
     {
-        if (isLoading)
+        if (gameState == GameState.NotStart)
             return;
 
-        player = FindAnyObjectByType<Player>();
+        if (isLoading) // ë¡œë”©ì¤‘ì¼ ë•Œ ì‹¤í–‰
+        {
+            OnLoadInitiallize();
+            return;
+        }
+
+        if (player == null) player = FindAnyObjectByType<Player>();
         weapon = FindAnyObjectByType<Weapon>();
         cameraManager = GetComponent<CameraManager>();
         itemDataManager = GetComponent<ItemDataManager>();
         mapManager = GetComponent<MapManager>();
+        skillManager = GetComponent<SkillManager>();
+        skillManager.Initialize();
 
         itemDataManager.InitializeItemDataUI();
 
         mapManager.InitalizeMapUI();
-    }
-
-    protected override void OnAdditiveInitiallize()
-    {
+        questManager = FindAnyObjectByType<QuestManager>();
+        textBoxManager = FindAnyObjectByType<TextBoxManager>();
+        
         SpawnPlayerAfterLoadScene();
-
-        weapon = FindAnyObjectByType<Weapon>();
-        cameraManager = GetComponent<CameraManager>();
-        itemDataManager = GetComponent<ItemDataManager>();
-        mapManager = GetComponent<MapManager>();
-
-        itemDataManager.InitializeItemDataUI();
-
-        mapManager.InitalizeMapUI();
     }
 
     #region Loading Function
     /// <summary>
-    /// ¾ÀÀ» º¯°æÇÒ ¶§ ½ÇÇàÇÏ´Â ÇÔ¼ö
+    /// ì”¬ì„ ë³€ê²½í•  ë•Œ ì‹¤í–‰í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <param name="SceneName"> º¯°æÇÒ ¾À ÀÌ¸§</param>
+    /// <param name="SceneName"> ë³€ê²½í•  ì”¬ ì´ë¦„</param>
     public void ChangeToTargetScene(string SceneName, GameObject playerObject)
     {
-        GameObject obj = Instantiate(playerObject, loadPlayerGameObject.transform);
-        obj.transform.position = Vector3.zero;        
+        GameObject obj = Instantiate(playerObject, loadPlayerGameObject.transform); // í”Œë ˆì´ì–´ë¥¼ ë¡œë”© ì˜¤ë¸Œì íŠ¸ì— ë³µì œ
+        obj.transform.position = Vector3.zero;                                      // ì˜¤ë¸Œì íŠ¸ ìœ„ì¹˜ ì´ˆê¸°í™”
+        savedInventory = playerObject.GetComponent<Player>().Inventory;             // ì¸ë²¤í† ë¦¬ ì €ì¥
+        savedEquipParts = playerObject.GetComponent<Player>().EquipPart;            // ì¥ì°©ë¶€ìœ„ ì •ë³´ ì €ì¥
 
         loadPlayerGameObject.SetActive(false);
 
@@ -130,7 +210,22 @@ public class GameManager : Singleton<GameManager>
     }
 
     /// <summary>
-    /// ¾À ·ÎµùÀÌ ³¡³­ ÈÄ ÇÃ·¹ÀÌ¾î ½ºÆùÀ» ½ÇÇàÇÏ´Â ÇÔ¼ö
+    /// ë¡œë”©í•  ë•Œ ì‹¤í–‰í•˜ëŠ” ì´ˆê¸°í™” í•¨ìˆ˜
+    /// </summary>
+    protected void OnLoadInitiallize()
+    {
+        weapon = FindAnyObjectByType<Weapon>();
+        cameraManager = GetComponent<CameraManager>();
+        itemDataManager = GetComponent<ItemDataManager>();
+        mapManager = GetComponent<MapManager>();
+
+        itemDataManager.InitializeItemDataUI();
+
+        mapManager.InitalizeMapUI();
+    }
+
+    /// <summary>
+    /// ì”¬ ë¡œë”©ì´ ëë‚œ í›„ í”Œë ˆì´ì–´ ìŠ¤í°ì„ ì‹¤í–‰í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
     public void SpawnPlayerAfterLoadScene()
     {
@@ -140,19 +235,30 @@ public class GameManager : Singleton<GameManager>
         if (!isLoading)
         {
             loadPlayerGameObject.SetActive(true);
-            GameObject loadingPlayer = Instantiate(loadPlayerGameObject.transform.GetChild(0).gameObject);  // »õ·Î¿î ¾À¿¡ ÇÃ·¹ÀÌ¾î »ı¼º
+            GameObject loadingPlayer = Instantiate(loadPlayerGameObject.transform.GetChild(0).gameObject,
+                                                    spawnPoint,
+                                                    Quaternion.identity);   // ìƒˆë¡œìš´ ì”¬ì— í”Œë ˆì´ì–´ ìƒì„±
             loadingPlayer.name = "Player";
 
-            loadingPlayer.transform.position = Vector3.zero;
+            //loadingPlayer.transform.position = Vector3.zero;
+            loadingPlayer.SetActive(true);
 
-            Destroy(loadPlayerGameObject.transform.GetChild(0).gameObject); // ÀúÀåµÈ ÇÃ·¹ÀÌ¾î ¿ÀºêÁ§Æ® Á¦°Å
+            Destroy(loadPlayerGameObject.transform.GetChild(0).gameObject); // ì €ì¥ëœ í”Œë ˆì´ì–´ ì˜¤ë¸Œì íŠ¸ ì œê±°
 
-            player = loadingPlayer.GetComponent<Player>();
+            player = loadingPlayer.GetComponent<Player>();  // í”Œë ˆì´ì–´ ì´ˆê¸°í™”
+            player.GetInventoryData(savedInventory);        // í”Œë ˆì´ì–´ ì¸ë²¤í† ë¦¬ ë°ì´í„° ë°›ê¸°
+
+            itemDataManager.InitializeItemDataUI();         // ì•„ì´í…œ ë°ì´í„° ë§¤ë‹ˆì € ì´ˆê¸°í™” í›„
+
+            player.Inventory.SetOwner(player.gameObject);   // ì¸ë²¤í† ë¦¬ ì£¼ì¸ ê°±ì‹ 
+            ItemDataManager.InventoryUI.InitializeInventoryUI(player.Inventory); // ë¡œë”© í›„ ì¸ë²¤ UI ì´ˆê¸°í™”
+
+            mapManager.InitalizeMapUI();                    // ë§µ ë§¤ë‹ˆì € ì´ˆê¸°í™”
         }
     }
 
     /// <summary>
-    /// ¸ÊÀ» ÀÌµ¿ÇÒ ¶§ È£ÃâµÇ´Â ÇÔ¼ö ( ·Îµù¾ÀÀ¸·Î ÀÌµ¿ )
+    /// ë§µì„ ì´ë™í•  ë•Œ í˜¸ì¶œë˜ëŠ” í•¨ìˆ˜ ( ë¡œë”©ì”¬ìœ¼ë¡œ ì´ë™ )
     /// </summary>
     void ChangeToLoadingScene()
     {
@@ -172,12 +278,12 @@ public class GameManager : Singleton<GameManager>
         if (!isNPC)
         {
             onTalkNPC?.Invoke();
-            Debug.Log("ï¿½ï¿½È£ï¿½Û¿ï¿½ Å° ï¿½ï¿½ï¿½ï¿½");
+            Debug.Log("ìƒí˜¸ì‘ìš© í‚¤ ëˆ„ë¦„");
         }
         else
         {
             onTalkObj?.Invoke();
-            Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½È­");
+            Debug.Log("ì˜¤ë¸Œì íŠ¸ì™€ ëŒ€í™”");
         }
     }
 

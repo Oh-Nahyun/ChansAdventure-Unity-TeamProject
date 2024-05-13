@@ -9,7 +9,6 @@ public class SortUI : MonoBehaviour
 {
     public TMP_Dropdown dropDown;
     public Button checkBtn;
-    //Button AsceningBtn;
 
     public uint sortValue = 0;
     bool isAcending = false;
