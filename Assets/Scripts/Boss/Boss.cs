@@ -338,12 +338,19 @@ public class Boss : MonoBehaviour, IBattler, IHealth
 
     public void OnActive()
     {
-        isActive = true;
+        //isActive = true;
+        StartCoroutine(ActiveDelay());
     }
 
     public void OnDodge()
     {
         animator.SetTrigger("GroundDodge");
+    }
+
+    IEnumerator ActiveDelay() // isActive 활성화 딜레이 코루틴
+    {
+        yield return new WaitForSeconds(3f);
+        isActive = true;
     }
 
     IEnumerator MoveTowardsPlayer()

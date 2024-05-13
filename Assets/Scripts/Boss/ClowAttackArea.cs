@@ -19,6 +19,7 @@ public class ClowAttackArea : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
+
             Debug.Log("Hit!");
         }
 
