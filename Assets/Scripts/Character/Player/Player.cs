@@ -35,6 +35,16 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// 스킬 관련 클래스 접근을 위한 프로퍼티
     /// </summary>
     public PlayerSkillRelatedAction SkillRelatedAction => skillRelatedAction;
+
+    /// <summary>
+    /// 오브젝트에 가할 힘 값 - 05.13
+    /// </summary>
+    const float reactPower = 5f;
+
+    /// <summary>
+    /// 오브젝트에 가할 힘에 접근할 프로퍼티 ( 5f ) - 05.13
+    /// </summary>
+    public float ReactPower => reactPower;
     #endregion
 
     // 변수 ==========================================================================================================================

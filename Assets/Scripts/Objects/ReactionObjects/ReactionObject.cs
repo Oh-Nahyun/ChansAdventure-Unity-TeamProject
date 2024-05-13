@@ -554,6 +554,25 @@ public class ReactionObject : RecycleObject, IBattler
 
         onTimeLockDamageChange?.Invoke(accumulateDirection, AccumulateDamage);
     }
+
+    /// <summary>
+    /// 피격 당할 때 움직이는 힘 값 - 05.13
+    /// </summary>
+    public float hitMovementPower = 2.0f;
+
+    /// <summary>
+    /// 외부에서 오브젝트를 상호작용 할 때 호출되는 함수
+    /// </summary>
+    /// <param name="damage"></param>
+    /// <param name="attacker"></param>
+    public void ReactionToExternalObj(float damage, Transform attacker) // - 05.13
+    {
+        Vector3 correction = Vector3.up * 0.3f;
+        Vector3 direction = (transform.position - attacker.position + correction).normalized;
+        Vector3 power = direction * hitMovementPower;
+
+        TryHit(damage, power);
+    }
     #endregion
 
     #region 유니티 이벤트 관련 함수
@@ -596,8 +615,8 @@ public class ReactionObject : RecycleObject, IBattler
         {
             TryHit(1.0f);
         }
-
     }
+
     /// <summary>
     /// 피격시 동작하는 메서드 (무기, 폭발 등)
     /// </summary>
@@ -609,6 +628,29 @@ public class ReactionObject : RecycleObject, IBattler
             ObjectHP -= damage;
         }
     }
+
+    /// <summary>
+    /// 피격시 동작하는 메서드 - 05.13
+    /// </summary>
+    /// <param name="damage">피격데미지</param>
+    /// <param name="power"></param>
+    public void TryHit(float damage, Vector3 power)
+    {
+        TryHit(damage);
+
+        if(IsMoveable)
+        {
+            if (currentState == StateType.TimeLock)
+            {
+                SetTimeLockPower(power);
+            }
+            else
+            {
+                rigid.AddForce(power, ForceMode.Impulse);
+            }
+        }  
+    }
+
     /// <summary>
     /// 파괴하는 메서드
     /// </summary>

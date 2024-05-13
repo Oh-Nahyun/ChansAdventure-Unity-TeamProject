@@ -22,7 +22,7 @@ public class Sword : MonoBehaviour
     // 플레이어가 화살로 적을 공격했을 때 ---------------------------------------------------------------------------
     private void OnTriggerStay(Collider other)
     {
-        Debug.Log($"name : {other.gameObject.name} , layer : {other.gameObject.layer}");
+        //Debug.Log($"name : {other.gameObject.name} , layer : {other.gameObject.layer}");
         if(other.gameObject.layer == 11) // 11 : hitpoint layer
         {
             // 닿은 대상이 Enemy인지 체크
@@ -51,6 +51,16 @@ public class Sword : MonoBehaviour
                 {
                     player.Attack(target, false);
                 }
+            }
+        }
+
+        if(other.CompareTag("ReactObject")) // 05.13
+        {
+            ReactionObject obj = other.GetComponent<ReactionObject>();
+
+            if(obj != null)
+            {
+                obj.ReactionToExternalObj(player.ReactPower, player.transform);
             }
         }
     }
