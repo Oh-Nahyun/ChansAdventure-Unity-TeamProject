@@ -166,6 +166,7 @@ MonoBehaviour:
   takeDamageAfterThrow: 3
   defencePower: 1
   reactionType: 25
+  mainRenderer: {fileID: 0}
 --- !u!54 &12420126
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1131,6 +1132,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Test_Player
       objectReference: {fileID: 0}
+    - target: {fileID: 7973622836142104029, guid: 01eee89cde26bf04aa9194d5dd3ca811,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -1218,6 +1224,7 @@ MonoBehaviour:
   takeDamageAfterThrow: 3
   defencePower: 1
   reactionType: 1
+  mainRenderer: {fileID: 0}
 --- !u!54 &491474227
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1436,6 +1443,7 @@ MonoBehaviour:
   takeDamageAfterThrow: 3
   defencePower: 1
   reactionType: 1
+  mainRenderer: {fileID: 0}
 --- !u!54 &598996567
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1592,6 +1600,7 @@ MonoBehaviour:
   takeDamageAfterThrow: 3
   defencePower: 1
   reactionType: 5
+  mainRenderer: {fileID: 0}
 --- !u!54 &599811115
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1771,6 +1780,7 @@ MonoBehaviour:
   takeDamageAfterThrow: 3
   defencePower: 1
   reactionType: 1
+  mainRenderer: {fileID: 0}
 --- !u!54 &745691386
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1901,6 +1911,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: GameManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 7525014269693007579, guid: 03e3a0de6a355401a8754d70887c467b,
+        type: 3}
+      propertyPath: spawnPoint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7525014269693007579, guid: 03e3a0de6a355401a8754d70887c467b,
+        type: 3}
+      propertyPath: spawnPoint.z
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9214185627190435623, guid: 03e3a0de6a355401a8754d70887c467b,
         type: 3}
@@ -2152,6 +2172,7 @@ MonoBehaviour:
   takeDamageAfterThrow: 3
   defencePower: 1
   reactionType: 1
+  mainRenderer: {fileID: 0}
 --- !u!54 &901664470
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2308,6 +2329,7 @@ MonoBehaviour:
   takeDamageAfterThrow: 3
   defencePower: 1
   reactionType: 7
+  mainRenderer: {fileID: 0}
 --- !u!54 &933199532
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4064,6 +4086,7 @@ MonoBehaviour:
   takeDamageAfterThrow: 3
   defencePower: 1
   reactionType: 26
+  mainRenderer: {fileID: 0}
 --- !u!23 &1868971333
 MeshRenderer:
   m_ObjectHideFlags: 0

@@ -84,7 +84,7 @@ public class NPC_Trader : NPCBase
 
     void getInventory()
     {
-        playerInventory = player.Inventory;
+        playerInventory = GameManager.Instance.Player.Inventory;
         GameManager.Instance.ItemDataManager.SellPanelUI.GetTarget(playerInventory);
     }
 

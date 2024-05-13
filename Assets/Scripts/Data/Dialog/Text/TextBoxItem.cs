@@ -30,6 +30,7 @@ public class TextBoxItem : MonoBehaviour
 
     public NPCBase NPCdata;
     ChestBase Chestdata;
+    SkillDownloader skillDownloader;
     Inventory inventory;
     TextBoxManager textBoxManager; // TextBoxManager에 대한 참조
 
@@ -50,8 +51,6 @@ public class TextBoxItem : MonoBehaviour
         endImage = child.GetComponent<Image>();
         endImageAnimator = child.GetComponent<Animator>();
 
-        interaction = FindObjectOfType<Interaction>();
-
         child = transform.GetChild(6);
         itemIcon = child.GetComponent<Image>();
 
@@ -61,16 +60,17 @@ public class TextBoxItem : MonoBehaviour
         // TextBoxManager에 대한 참조 가져오기
         textBoxManager = FindObjectOfType<TextBoxManager>();
         
-        player = FindAnyObjectByType<Player>();
+        
     }
 
     private void OnEnable()
     {
-
+        //interaction = GameManager.Instance.Player.GetComponent<Interaction>();
     }
 
     private void Start()
     {
+        interaction = GameManager.Instance.Player.GetComponent<Interaction>();
         gameObject.SetActive(true);
 
         canvasGroup.alpha = 0.0f;
@@ -139,26 +139,40 @@ public class TextBoxItem : MonoBehaviour
             if (NPCdata.isTextObject)
             {
                 Chestdata = scanObject.GetComponent<ChestBase>();
-                Chestdata.lightParticle.Play();
-                itemIcon.sprite = Chestdata.scriptableObject.itemIcon;
-                nameText.text = $"{Chestdata.scriptableObject.itemName}";
-                talkText.text = $"{Chestdata.scriptableObject.desc}";
-                itemCountText.text = $"X {Chestdata.itemCount}";
 
-                if(Chestdata.itemCount > 1)
+                if (Chestdata != null)
                 {
-                    itemCountText.gameObject.SetActive(true);
+                    Chestdata.lightParticle.Play();
+                    itemIcon.sprite = Chestdata.scriptableObject.itemIcon;
+                    nameText.text = $"{Chestdata.scriptableObject.itemName}";
+                    talkText.text = $"{Chestdata.scriptableObject.desc}";
+                    itemCountText.text = $"X {Chestdata.itemCount}";
+
+                    if (Chestdata.itemCount > 1)
+                    {
+                        itemCountText.gameObject.SetActive(true);
+                    }
+                    else
+                    {
+                        itemCountText.gameObject.SetActive(false);
+                    }
+
+                    if (inventory == null)
+                    {
+                        player = GameManager.Instance.Player;
+                        inventory = player.Inventory;
+                    }
+                    inventory.AddSlotItem((uint)Chestdata.scriptableObject.itemCode, Chestdata.itemCount);
                 }
-                else
-                {
+
+                skillDownloader = scanObject.GetComponent<SkillDownloader>();
+                if (skillDownloader != null)
+                {                    
+                    itemIcon.sprite = skillDownloader.sprite;
+                    nameText.text = $"{skillDownloader.nameNPC}";
+                    talkText.text = $"{talkString}";
                     itemCountText.gameObject.SetActive(false);
                 }
-
-                if (inventory == null)
-                {
-                    inventory = player.Inventory;
-                }
-                inventory.AddSlotItem((uint)Chestdata.scriptableObject.itemCode, Chestdata.itemCount);
             }
             else
             {
@@ -183,7 +197,10 @@ public class TextBoxItem : MonoBehaviour
             if (NPCdata.isTextObject)
             {
                 Chestdata = scanObject.GetComponent<ChestBase>();
-                Chestdata.lightParticle.Stop();
+                if (Chestdata != null)
+                {
+                    Chestdata.lightParticle.Stop();
+                }
             }
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;
@@ -196,7 +213,9 @@ public class TextBoxItem : MonoBehaviour
             NPCdata.isTalk = false;
             NPCdata.isTextObject = false;
             animator.SetBool(IsOnTextBoxItemHash, false);
-
+            Chestdata = null;
+            skillDownloader = null;
+            scanObject = null;
         }
     }
 

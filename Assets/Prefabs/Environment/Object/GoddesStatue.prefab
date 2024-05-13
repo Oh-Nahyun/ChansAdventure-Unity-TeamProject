@@ -4840,6 +4840,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2056280793603859012}
   - component: {fileID: 5531694329951568847}
+  - component: {fileID: 4980689574540834231}
   m_Layer: 0
   m_Name: Root__Mt_TwnObj_GoddesStatue_D
   m_TagString: Untagged
@@ -4916,6 +4917,29 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.0043945312, y: -0.010742366, z: -1.1552736}
     m_Extent: {x: 0.76953125, y: 0.58349615, z: 1.1552736}
   m_DirtyAABB: 0
+--- !u!136 &4980689574540834231
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 256512444618374180}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.76953125
+  m_Height: 2.3105476
+  m_Direction: 1
+  m_Center: {x: 0.0043945312, y: 1.1552737, z: -0.010742229}
 --- !u!1 &3230368134814931678
 GameObject:
   m_ObjectHideFlags: 0
@@ -4925,6 +4949,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 572904664617568287}
+  - component: {fileID: 6572338027365101879}
+  - component: {fileID: 2529564729768628508}
   m_Layer: 0
   m_Name: GoddesStatue
   m_TagString: Untagged
@@ -4950,6 +4976,42 @@ Transform:
   - {fileID: 7431267558308044136}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &6572338027365101879
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3230368134814931678}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 3
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2529564729768628508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3230368134814931678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91211c1b0d718ed41a73c80a7a40ebce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tickRegen: 0
+  inverval: 0.2
+  tickCount: 100
 --- !u!1 &6375022909668815924
 GameObject:
   m_ObjectHideFlags: 0

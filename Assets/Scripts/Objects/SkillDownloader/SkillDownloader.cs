@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class SkillDownloader : NPCBase
 {
+    public Sprite sprite;
+
 
     protected override void Awake()
     {
@@ -30,7 +32,29 @@ public class SkillDownloader : NPCBase
     {
         if (isOpen)
         {
-            id = 299;
+            if(id == 301)
+            {
+                GameManager.Instance.Skill.PlayerSkill.SkillAcquisition(SkillName.RemoteBomb_Cube);
+                GameManager.Instance.Skill.PlayerSkill.SkillAcquisition(SkillName.RemoteBomb);
+                Debug.Log("리모컨폭탄 등록");
+            }
+            else if (id == 302)
+            {
+                GameManager.Instance.Skill.PlayerSkill.SkillAcquisition(SkillName.IceMaker);
+                Debug.Log("아이스메이커 등록");
+            }
+            else if (id == 303)
+            {
+                GameManager.Instance.Skill.PlayerSkill.SkillAcquisition(SkillName.MagnetCatch);
+                Debug.Log("마그넷캐치 등록");
+            }
+            else if (id == 304)
+            {
+                GameManager.Instance.Skill.PlayerSkill.SkillAcquisition(SkillName.TimeLock);
+                Debug.Log("타임록 등록");
+            }
+
+            id = 300;
         }
     }
 }

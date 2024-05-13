@@ -13,22 +13,22 @@ public class GoddesStatue : MonoBehaviour
     /// <summary>
     /// Æ½ ÀÎÅÍ¹ú
     /// </summary>
-    public float inverval = 1;
+    public float inverval = 0.2f;
 
     /// <summary>
     /// È¸º¹ Æ½ °³¼ö
     /// </summary>
-    public uint tickCount = 10;
+    public uint tickCount = 100;
 
     private void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("Player"))
         {
-            IHealth health = other.GetComponent<IHealth>();
+            IHealth health = GameManager.Instance.Player as IHealth;
             if (health != null)
             {
                 tickRegen = GameManager.Instance.Player.MaxHP;
-                health.HealthRegenerateByTick(tickRegen, inverval, tickCount);
+                health.HealthRegenerateByTick(tickRegen * 0.1f, inverval, tickCount);
             }
         }
     }

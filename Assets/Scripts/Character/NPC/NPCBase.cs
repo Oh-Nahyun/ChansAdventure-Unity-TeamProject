@@ -23,7 +23,7 @@ public class NPCBase : MonoBehaviour
     public Action onQuestCompleted;
 
     protected Inventory inventory;
-    private TextBox textBox;
+    protected TextBoxItem boxItem;
     private QuestInfoPanel questInfoPanel;
 
     public int id = 0;
@@ -37,12 +37,13 @@ public class NPCBase : MonoBehaviour
     protected Animator animator;
 
     protected virtual void Awake()
-    {
-        name = nameNPC;
+    { 
         textBoxManager = FindObjectOfType<TextBoxManager>();
         textViweName = GetComponentInChildren<TextMeshPro>(true);
         questManager = FindObjectOfType<QuestManager>();
         questInfoPanel = FindObjectOfType<QuestInfoPanel>();
+        textbox = FindObjectOfType<TextBox>();
+        boxItem = FindAnyObjectByType<TextBoxItem>();
     }
 
     protected virtual void Start()
@@ -134,7 +135,7 @@ public class NPCBase : MonoBehaviour
         {
             if (name != null)
             {
-                textViweName.text = name;
+                textViweName.text = nameNPC;
 
                 Vector3 cameraToNpc = transform.position - Camera.main.transform.position;
 
@@ -181,11 +182,12 @@ public class NPCBase : MonoBehaviour
     {
         switch (id)
         {
+
             // id 3xxx Çãµå½¼
             case 3000:
                 if (isTalk)
                 {
-                    if (!textBox.TalkingEnd)
+                    if (!textbox.TalkingEnd)
                     {
                         questManager.GetQuestTalkIndex(10, false);
                         id = 3001;
@@ -211,7 +213,17 @@ public class NPCBase : MonoBehaviour
                     }
                 }
                 break;
-
+            case 5000:
+                if (isTalk)
+                {
+                    if (!isTalk)
+                    {
+                        questManager.GetQuestTalkIndex(50, true);
+                        GameManager.Instance.Player.MaxHP += 100;
+                        id = 5001;
+                    }
+                }
+                break;
         }
     }
 
