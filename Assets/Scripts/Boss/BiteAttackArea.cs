@@ -5,6 +5,12 @@ using UnityEngine;
 
 public class BiteAttackArea : MonoBehaviour
 {
+    Boss boss;
+
+    private void Start()
+    {
+        boss = GetComponentInParent<Boss>();
+    }
     public void Activate()
     {
         gameObject.SetActive(true);
@@ -19,8 +25,11 @@ public class BiteAttackArea : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Hit!");
+            IBattler target = other.GetComponentInParent<IBattler>();
+            if (target != null)
+            {
+                boss.Attack(target, false);
+            }
         }
-
     }
 }
