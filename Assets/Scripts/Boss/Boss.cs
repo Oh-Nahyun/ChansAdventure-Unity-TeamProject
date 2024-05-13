@@ -129,7 +129,7 @@ public class Boss : MonoBehaviour, IBattler, IHealth
     bool isActive = false;
 
     /// <summary>
-    /// HP È®ÀÎ ¹× ¼³Á¤¿ë ÇÁ·ÎÆÛÆ¼
+    /// HP í™•ì¸ ë° ì„¤ì •ìš© í”„ë¡œí¼í‹°
     /// </summary>
     protected float hp = 50.0f;
     public float HP
@@ -137,75 +137,75 @@ public class Boss : MonoBehaviour, IBattler, IHealth
         get => hp;
         set
         {
-            hp = Mathf.Clamp(value, 0, MaxHP); // ¸ÕÀú °ªÀ» Á¦ÇÑÇÑ ÈÄ
-            if (hp <= 0 && State != BossState.Dead) // HP°¡ 0 ÀÌÇÏÀÌ°í, ÇöÀç »óÅÂ°¡ Dead »óÅÂ°¡ ¾Æ´Ï¸é
+            hp = Mathf.Clamp(value, 0, MaxHP); // ë¨¼ì € ê°’ì„ ì œí•œí•œ í›„
+            if (hp <= 0 && State != BossState.Dead) // HPê°€ 0 ì´í•˜ì´ê³ , í˜„ì¬ ìƒíƒœê°€ Dead ìƒíƒœê°€ ì•„ë‹ˆë©´
             {
-                State = BossState.Dead; // »óÅÂ¸¦ Dead·Î º¯°æ
-                Die(); // Die ¸Ş¼­µå È£Ãâ
+                State = BossState.Dead; // ìƒíƒœë¥¼ Deadë¡œ ë³€ê²½
+                Die(); // Die ë©”ì„œë“œ í˜¸ì¶œ
             }
-            onHealthChange?.Invoke(hp / MaxHP); // Health º¯È­ ¾Ë¸²
+            onHealthChange?.Invoke(hp / MaxHP); // Health ë³€í™” ì•Œë¦¼
         }
     }
 
     /// <summary>
-    /// ÃÖ´ë HPÈ®ÀÎ¿ë ÇÁ·ÎÆÛÆ¼
+    /// ìµœëŒ€ HPí™•ì¸ìš© í”„ë¡œí¼í‹°
     /// </summary>
     public float maxHP = 100.0f;
     public float MaxHP => maxHP;
 
     /// <summary>
-    /// HP°¡ º¯°æµÉ ¶§¸¶´Ù ½ÇÇàµÉ µ¨¸®°ÔÀÌÆ®(float:ºñÀ²)¿ë ÇÁ·ÎÆÛÆ¼
+    /// HPê°€ ë³€ê²½ë  ë•Œë§ˆë‹¤ ì‹¤í–‰ë  ë¸ë¦¬ê²Œì´íŠ¸(float:ë¹„ìœ¨)ìš© í”„ë¡œí¼í‹°
     /// </summary>
     public Action<float> onHealthChange { get; set; }
 
     /// <summary>
-    /// »ıÁ¸À» È®ÀÎÇÏ±â À§ÇÑ ÇÁ·ÎÆÛÆ¼
+    /// ìƒì¡´ì„ í™•ì¸í•˜ê¸° ìœ„í•œ í”„ë¡œí¼í‹°
     /// </summary>
     public bool IsAlive => hp > 0;
 
     /// <summary>
-    /// »ç¸Á Ã³¸®¿ë ÇÔ¼ö(¸Ş¼­µå method)
+    /// ì‚¬ë§ ì²˜ë¦¬ìš© í•¨ìˆ˜(ë©”ì„œë“œ method)
     /// </summary>
     public void Die()
     {
-        Debug.Log($"{gameObject.name} »ç¸Á");
+        Debug.Log($"{gameObject.name} ì‚¬ë§");
     }
 
     /// <summary>
-    /// »ç¸ÁÀ» ¾Ë¸®±â À§ÇÑ µ¨¸®°ÔÀÌÆ®¿ë ÇÁ·ÎÆÛÆ¼
+    /// ì‚¬ë§ì„ ì•Œë¦¬ê¸° ìœ„í•œ ë¸ë¦¬ê²Œì´íŠ¸ìš© í”„ë¡œí¼í‹°
     /// </summary>
     public Action onDie { get; set; }
 
     /// <summary>
-    /// Ã¼·ÂÀ» Áö¼ÓÀûÀ¸·Î Áõ°¡½ÃÄÑ ÁÖ´Â ÇÔ¼ö. ÃÊ´ç totalRegen/duration ¸¸Å­ È¸º¹
+    /// ì²´ë ¥ì„ ì§€ì†ì ìœ¼ë¡œ ì¦ê°€ì‹œì¼œ ì£¼ëŠ” í•¨ìˆ˜. ì´ˆë‹¹ totalRegen/duration ë§Œí¼ íšŒë³µ
     /// </summary>
-    /// <param name="totalRegen">ÀüÃ¼ È¸º¹·®</param>
-    /// <param name="duration">ÀüÃ¼ È¸º¹µÇ´Âµ¥ °É¸®´Â ½Ã°£</param>
+    /// <param name="totalRegen">ì „ì²´ íšŒë³µëŸ‰</param>
+    /// <param name="duration">ì „ì²´ íšŒë³µë˜ëŠ”ë° ê±¸ë¦¬ëŠ” ì‹œê°„</param>
     public void HealthRegenerate(float totalRegen, float durationm)
     {
 
     }
 
     /// <summary>
-    /// Ã¼·ÂÀ» Æ½´ÜÀ§·Î È¸º¹½ÃÄÑ ÁÖ´Â ÇÔ¼ö. 
-    /// ÀüÃ¼ È¸º¹·® = tickRegen * totalTickCount. ÀüÃ¼ È¸º¹ ½Ã°£ = tickInterval * totalTickCount
+    /// ì²´ë ¥ì„ í‹±ë‹¨ìœ„ë¡œ íšŒë³µì‹œì¼œ ì£¼ëŠ” í•¨ìˆ˜. 
+    /// ì „ì²´ íšŒë³µëŸ‰ = tickRegen * totalTickCount. ì „ì²´ íšŒë³µ ì‹œê°„ = tickInterval * totalTickCount
     /// </summary>
-    /// <param name="tickRegen">Æ½ ´ç È¸º¹·®</param>
-    /// <param name="tickInterval">Æ½ °£ÀÇ ½Ã°£ °£°İ</param>
-    /// <param name="totalTickCount">ÀüÃ¼ Æ½ ¼ö</param>
+    /// <param name="tickRegen">í‹± ë‹¹ íšŒë³µëŸ‰</param>
+    /// <param name="tickInterval">í‹± ê°„ì˜ ì‹œê°„ ê°„ê²©</param>
+    /// <param name="totalTickCount">ì „ì²´ í‹± ìˆ˜</param>
     public void HealthRegenerateByTick(float tickRegen, float tickInterval, uint totalTickCount)
     {
 
     }
 
     /// <summary>
-    /// °ø°İ·Â È®ÀÎ¿ë ÇÁ·ÎÆÛÆ¼
+    /// ê³µê²©ë ¥ í™•ì¸ìš© í”„ë¡œí¼í‹°
     /// </summary>
     public float attackPower = 10.0f;
     public float AttackPower => attackPower;
 
     /// <summary>
-    /// ¹æ¾î·Â È®ÀÎ¿ë ÇÁ·ÎÆÛÆ¼
+    /// ë°©ì–´ë ¥ í™•ì¸ìš© í”„ë¡œí¼í‹°
     /// </summary>
     public float defencePower => 3.0f;
     public float DefencePower => defencePower;
@@ -213,29 +213,29 @@ public class Boss : MonoBehaviour, IBattler, IHealth
     public float finalDamage;
 
     /// <summary>
-    /// ¸Â¾ÒÀ» ¶§ ½ÇÇàµÉ µ¨¸®°ÔÀÌÆ®(int:½ÇÁ¦·Î ÀÔÀº µ¥¹ÌÁö)
+    /// ë§ì•˜ì„ ë•Œ ì‹¤í–‰ë  ë¸ë¦¬ê²Œì´íŠ¸(int:ì‹¤ì œë¡œ ì…ì€ ë°ë¯¸ì§€)
     /// </summary>
     public Action<int> onHit { get; set; }
 
     /// <summary>
-    /// ±âº» °ø°İ ÇÔ¼ö
+    /// ê¸°ë³¸ ê³µê²© í•¨ìˆ˜
     /// </summary>
-    /// <param name="target">³»°¡ °ø°İÇÒ ´ë»ó</param>
-    /// <param name="isWeakPoint">¾àÁ¡ÀÎÁö ¾Æ´ÑÁö È®ÀÎ¿ë(trueÀÌ¸é ¾àÁ¡, falseÀÌ¸é ¾àÁ¡¾Æ´Ô</param>
+    /// <param name="target">ë‚´ê°€ ê³µê²©í•  ëŒ€ìƒ</param>
+    /// <param name="isWeakPoint">ì•½ì ì¸ì§€ ì•„ë‹Œì§€ í™•ì¸ìš©(trueì´ë©´ ì•½ì , falseì´ë©´ ì•½ì ì•„ë‹˜</param>
     public void Attack(IBattler target, bool isWeakPoint = false)
     {
         target.Defence(AttackPower);
     }
 
     /// <summary>
-    /// ±âº» ¹æ¾î ÇÔ¼ö
+    /// ê¸°ë³¸ ë°©ì–´ í•¨ìˆ˜
     /// </summary>
-    /// <param name="damage">³»°¡ ¹ŞÀº µ¥¹ÌÁö</param>
+    /// <param name="damage">ë‚´ê°€ ë°›ì€ ë°ë¯¸ì§€</param>
     public void Defence(float damage)
     {
         if (IsAlive)
         {
-            // ÃÖÁ¾ µ¥¹ÌÁö
+            // ìµœì¢… ë°ë¯¸ì§€
             finalDamage = Mathf.Max(0, damage - DefencePower);
             HP -= finalDamage;
 
@@ -248,7 +248,7 @@ public class Boss : MonoBehaviour, IBattler, IHealth
         agent.isStopped = false;
         float endTime = Time.time + moveDuration;
 
-        // ·£´ı ¹æÇâ ¼±ÅÃ
+        // ëœë¤ ë°©í–¥ ì„ íƒ
         Vector3[] directions = { Vector3.forward, Vector3.back, Vector3.left, Vector3.right };
         Vector3 direction = directions[UnityEngine.Random.Range(0, directions.Length)];
 
@@ -361,7 +361,7 @@ public class Boss : MonoBehaviour, IBattler, IHealth
         animator.SetTrigger("GroundDodge");
     }
 
-    IEnumerator ActiveDelay() // isActive È°¼ºÈ­ µô·¹ÀÌ ÄÚ·çÆ¾
+    IEnumerator ActiveDelay() // isActive í™œì„±í™” ë”œë ˆì´ ì½”ë£¨í‹´
     {
         yield return new WaitForSeconds(3f);
         isActive = true;
@@ -372,10 +372,10 @@ public class Boss : MonoBehaviour, IBattler, IHealth
         float startTime = Time.time;
         Vector3 startPosition = transform.position;
 
-        // ÇÃ·¹ÀÌ¾î ¹æÇâÀ¸·ÎÀÇ º¤ÅÍ °è»ê
+        // í”Œë ˆì´ì–´ ë°©í–¥ìœ¼ë¡œì˜ ë²¡í„° ê³„ì‚°
         Vector3 directionToPlayer = (player.transform.position - transform.position).normalized;
 
-        // ÃÖÁ¾ ¸ñÇ¥ À§Ä¡´Â ÇÃ·¹ÀÌ¾î À§Ä¡¿¡¼­ stopDistance¸¸Å­ ¶³¾îÁø ÁöÁ¡
+        // ìµœì¢… ëª©í‘œ ìœ„ì¹˜ëŠ” í”Œë ˆì´ì–´ ìœ„ì¹˜ì—ì„œ stopDistanceë§Œí¼ ë–¨ì–´ì§„ ì§€ì 
         Vector3 targetPosition = player.transform.position - directionToPlayer * stopDistance;
 
         while (Time.time < startTime + approachDuration)
@@ -385,7 +385,7 @@ public class Boss : MonoBehaviour, IBattler, IHealth
             yield return null;
         }
 
-        transform.position = targetPosition; // Á¤È®È÷ ¸ñÇ¥ À§Ä¡¿¡ Á¤Áö
+        transform.position = targetPosition; // ì •í™•íˆ ëª©í‘œ ìœ„ì¹˜ì— ì •ì§€
     }
 
     private void Update()
@@ -401,15 +401,15 @@ public class Boss : MonoBehaviour, IBattler, IHealth
     }
     void DecideStateBasedOnDistance()
     {
-        if (sqrDistance > 100) // °Å¸®°¡ 10 ÀÌ»ó (10^2 = 100)
+        if (sqrDistance > 100) // ê±°ë¦¬ê°€ 10 ì´ìƒ (10^2 = 100)
         {
             ChooseNextState(BossState.Move, BossState.GroundDash, BossState.FireBall);
         }
-        else if (sqrDistance > 16 && sqrDistance <= 100) // °Å¸®°¡ 4¿¡¼­ 10 »çÀÌ (4^2 = 16, 10^2 = 100)
+        else if (sqrDistance > 16 && sqrDistance <= 100) // ê±°ë¦¬ê°€ 4ì—ì„œ 10 ì‚¬ì´ (4^2 = 16, 10^2 = 100)
         {
             ChooseNextState(BossState.Move, BossState.GroundDash, BossState.Breath, BossState.FireBall, BossState.GroundDodge);
         }
-        else // °Å¸®°¡ 4 ¹Ì¸¸ (4^2 = 16)
+        else // ê±°ë¦¬ê°€ 4 ë¯¸ë§Œ (4^2 = 16)
         {
             ChooseNextState(BossState.ClowLR, BossState.ClowL, BossState.ClowR, BossState.Bite, BossState.GroundDodge);
         }

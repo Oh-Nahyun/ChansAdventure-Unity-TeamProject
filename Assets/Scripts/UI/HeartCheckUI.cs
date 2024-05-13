@@ -69,7 +69,6 @@ public class HeartCheckUI : MonoBehaviour
     {
         if (player == null)
         {
-
             return;
         }
 
