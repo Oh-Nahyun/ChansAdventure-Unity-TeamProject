@@ -42,7 +42,7 @@ public class PlayerFollowVCam : MonoBehaviour
     CinemachineVirtualCamera vcam;
     Cinemachine3rdPersonFollow follow;
 
-    private void Awake()
+    private void Start()
     {
         GameState state = GameManager.Instance.CurrnetGameState;
         if (state == GameState.NotStart)
@@ -94,7 +94,7 @@ public class PlayerFollowVCam : MonoBehaviour
         }
         else
         {
-            follow.ShoulderOffset = zoomOut;
+            //follow.ShoulderOffset = zoomOut;
             weapon.IsZoomIn = false;
         }
     }

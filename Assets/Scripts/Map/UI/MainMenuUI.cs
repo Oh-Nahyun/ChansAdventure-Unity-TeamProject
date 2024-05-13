@@ -53,7 +53,7 @@ public class MainMenuUI : MonoBehaviour
     void OnStart()
     {
         // 게임 처음메인 씬으로 이동
-        string sceneName = $"Main_Map_Test";
+        string sceneName = $"Main_Map";
         GameManager.Instance.ChangeToTargetScene(sceneName, GameManager.Instance.Player.gameObject);
         GameManager.Instance.gameState = GameState.Started;
         GameManager.Instance.spawnPoint = new Vector3(11f, -11f, 3f);

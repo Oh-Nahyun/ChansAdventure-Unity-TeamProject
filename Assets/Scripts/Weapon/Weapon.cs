@@ -377,7 +377,7 @@ public class Weapon : MonoBehaviour
 
         if (IsBowEquip) // 활을 장비하고 있는 경우
         {
-            if (!IsArrowEquip && arrowCount > 0)  // 장전된 화살이 없는 경우
+            if (!IsArrowEquip && ArrowCount > 0)  // 장전된 화살이 없는 경우
             {
                 animator.SetBool(HaveArrowHash, true); // 화살 장전
                 // Debug.Log($"화살 장전 완료");
@@ -570,7 +570,7 @@ public class Weapon : MonoBehaviour
     void OnFireArrow()
     {
         // 해당슬롯에 개수가 부족하면 보충
-        if(arrowCount > 0 && arrowSlot.CurrentItemCount <= 0)
+        if(ArrowCount > 0 && arrowSlot.CurrentItemCount <= 0)
         {
             if (!UpdateArrow())
             {
@@ -609,7 +609,7 @@ public class Weapon : MonoBehaviour
             }
             else
             {
-                Debug.Log($"인벤토리에 화살이 존재하지 않습니다.");
+                //Debug.Log($"{inventory[i]}번 슬롯에 화살이 존재하지 않습니다.");
                 result = false; 
             }
         }

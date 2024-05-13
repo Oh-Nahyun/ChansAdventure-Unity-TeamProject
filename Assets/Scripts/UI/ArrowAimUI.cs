@@ -71,8 +71,11 @@ public class ArrowAimUI : MonoBehaviour
         originalPosition02 = aim02.position;
         aim03 = child.GetChild(2);
         originalPosition03 = aim03.position;
+    }
 
-        weapon = FindAnyObjectByType<Weapon>();
+    private void Start()
+    {
+        weapon = FindAnyObjectByType<Weapon>();        
     }
 
     private void Update()

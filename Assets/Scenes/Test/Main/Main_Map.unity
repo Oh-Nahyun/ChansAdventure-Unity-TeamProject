@@ -682,6 +682,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 7525014269693007579, guid: 03e3a0de6a355401a8754d70887c467b,
+        type: 3}
+      propertyPath: spawnPoint.x
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 7525014269693007579, guid: 03e3a0de6a355401a8754d70887c467b,
+        type: 3}
+      propertyPath: spawnPoint.y
+      value: -11
+      objectReference: {fileID: 0}
+    - target: {fileID: 7525014269693007579, guid: 03e3a0de6a355401a8754d70887c467b,
+        type: 3}
+      propertyPath: spawnPoint.z
+      value: -7
+      objectReference: {fileID: 0}
     - target: {fileID: 9214185627190435623, guid: 03e3a0de6a355401a8754d70887c467b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4272,11 +4287,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9034772655054366580, guid: ac0fb5c40098d544b9cba775920e881a,
-        type: 3}
-      propertyPath: m_Alpha
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9086720353809979630, guid: ac0fb5c40098d544b9cba775920e881a,
         type: 3}
