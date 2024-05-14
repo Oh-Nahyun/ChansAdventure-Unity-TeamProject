@@ -21,7 +21,6 @@ public class QuestInfo : MonoBehaviour
     private void Awake()
     {
         canvasGroup = GetComponent<CanvasGroup>();
-        questInfoPanel.gameObject.SetActive(false);
     }
 
     private void Start()
@@ -53,11 +52,9 @@ public class QuestInfo : MonoBehaviour
                 yield return null;
             }
             gameObject.SetActive(false);
-            questInfoPanel.gameObject.SetActive(false);
         }
         else
         {
-            questInfoPanel.gameObject.SetActive(true);
             while (canvasGroup.alpha < 1.0f)
             {
                 canvasGroup.alpha += Time.deltaTime * alphaChangeSpeed;

@@ -55,7 +55,7 @@ public class TextBoxManager : MonoBehaviour
 
         // NPC
         // 노인
-        talkData.Add(1000, new string[] { "" });
+        talkData.Add(1000, new string[] { "허허허", "이곳에 새로운 사람이 찾아오다니 별일이군" });
         talkData.Add(1010, new string[] { "다음대사" });
         talkData.Add(1011, new string[] { "선택지 11 선택완료", "AAAAA" });
         talkData.Add(1012, new string[] { "선택지 12 선택완료", "BBBBB" });

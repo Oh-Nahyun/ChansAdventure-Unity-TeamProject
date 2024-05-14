@@ -183,55 +183,14 @@ public class NPCBase : MonoBehaviour
     /// </summary>
     private void TalkData()
     {
-        switch (id)
+        if (id == 5000)
         {
-
-            // id 3xxx Çãµå½¼
-            case 3000:
-                if (isTalk)
-                {
-                    if (!textbox.TalkingEnd)
-                    {
-                        questManager.GetQuestTalkIndex(10, false);
-                        id = 3001;
-                    }
-                }
-                break;
-            case 3001:
-                if (isTalk)
-                {
-                    if (!isTalk)
-                    {
-
-                    }
-                }
-                break;
-            case 3002:
-                if (isTalk)
-                {
-                    if (!isTalk)
-                    {
-                        questManager.GetQuestTalkIndex(10, false);
-                        id = 3003;
-                    }
-                }
-                break;
-            case 5000:
-                if (isTalk)
-                {
-                    if (!isTalk)
-                    {
-                        questManager.GetQuestTalkIndex(50, true);
-                        heartCheckUI.PlusHeart();
-                        id = 5001;
-                    }
-                }
-                break;
+            if (isTalk)
+            {
+                questManager.GetQuestTalkIndex(30, true);
+                heartCheckUI.PlusHeart();
+                id = 5001;
+            }
         }
-    }
-
-    private void IsQusetClear(int id)
-    {
-        Debug.Log(id);
     }
 }
