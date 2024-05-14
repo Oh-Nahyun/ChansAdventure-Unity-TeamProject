@@ -25,6 +25,8 @@ public class NPCBase : MonoBehaviour
     protected Inventory inventory;
     protected TextBoxItem boxItem;
     private QuestInfoPanel questInfoPanel;
+    private HeartCheckUI heartCheckUI;
+
 
     public int id = 0;
     public string nameNPC = "";
@@ -44,6 +46,7 @@ public class NPCBase : MonoBehaviour
         questInfoPanel = FindObjectOfType<QuestInfoPanel>();
         textbox = FindObjectOfType<TextBox>();
         boxItem = FindAnyObjectByType<TextBoxItem>();
+        heartCheckUI = FindAnyObjectByType<HeartCheckUI>();
     }
 
     protected virtual void Start()
@@ -219,7 +222,7 @@ public class NPCBase : MonoBehaviour
                     if (!isTalk)
                     {
                         questManager.GetQuestTalkIndex(50, true);
-                        GameManager.Instance.Player.MaxHP += 100;
+                        heartCheckUI.PlusHeart();
                         id = 5001;
                     }
                 }

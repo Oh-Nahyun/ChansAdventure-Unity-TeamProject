@@ -32,7 +32,7 @@ public class Test_AllSkillAcquisition : TestBase
 
     protected override void OnTest5(InputAction.CallbackContext context)
     {
-
+        GameManager.Instance.Player.MaxHP += 100;
         GameManager.Instance.Skill.PlayerSkill.SkillAcquisition(SkillName.RemoteBomb);
         GameManager.Instance.Skill.PlayerSkill.SkillAcquisition(SkillName.RemoteBomb_Cube);
         GameManager.Instance.Skill.PlayerSkill.SkillAcquisition(SkillName.MagnetCatch);

@@ -100,10 +100,15 @@ public class Interaction : MonoBehaviour
             return childObject;
         }
 
-        // 부모 GameObject에 Collider가 있으면 현재 GameObject를 반환
+        /*
         if (parentTransform.GetComponent<Collider>() != null)
         {
             return childObject;
+        }*/
+
+        if (parentTransform.gameObject.layer != layer)
+        {
+            return parentTransform.gameObject;
         }
 
         // 부모 GameObject의 부모 GameObject를 재귀적으로 검색하여 최상위 부모 GameObject를 반환
