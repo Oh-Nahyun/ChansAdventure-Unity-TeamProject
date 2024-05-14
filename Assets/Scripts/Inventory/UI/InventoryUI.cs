@@ -361,11 +361,17 @@ public class InventoryUI : MonoBehaviour
         // 아이템 드랍
         selectedMenuUI.OnDropButtonClick = () =>
         {
-            //DropItem(index);
-            dividUI.InitializeValue(Inventory[index], 1, (int)Inventory[index].CurrentItemCount); // 패널 초기화
-            dividUI.DividUIOpen(DividPanelType.Drop);
+            if (Inventory[index].CurrentItemCount == 1)
+            {
+                DropItem(index, 1);
+            }
+            else if (Inventory[index].CurrentItemCount > 1)
+            {
+                dividUI.InitializeValue(Inventory[index], 1, (int)Inventory[index].CurrentItemCount); // 패널 초기화
+                dividUI.DividUIOpen(DividPanelType.Drop);
+                isOpenedMenuPanel = false;
+            }
             selectedMenuUI.HideMenu();
-            isOpenedMenuPanel = false;
         };
 
         selectedMenuUI.SetPosition(position);

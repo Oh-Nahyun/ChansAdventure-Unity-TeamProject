@@ -20,7 +20,7 @@ public class RandomAttackSelector : StateMachineBehaviour
     {
         if (weapon == null)
         {
-            weapon = GameManager.Instance.Weapon;
+            weapon = GameManager.Instance.Player.gameObject.GetComponent<Weapon>();
         }
 
         if (weapon.CheckWeaponMode() == 1) // 무기 모드가 칼일 때
@@ -44,6 +44,7 @@ public class RandomAttackSelector : StateMachineBehaviour
             if (num < 0.20f)
             {
                 select = 1;     // 20%
+                weapon.SetCritDamage(0.2f);
             }
         }
 

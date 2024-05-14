@@ -20,7 +20,7 @@ public class Sword : MonoBehaviour
     }
 
     // 플레이어가 화살로 적을 공격했을 때 ---------------------------------------------------------------------------
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         //Debug.Log($"name : {other.gameObject.name} , layer : {other.gameObject.layer}");
         if(other.gameObject.layer == 11) // 11 : hitpoint layer

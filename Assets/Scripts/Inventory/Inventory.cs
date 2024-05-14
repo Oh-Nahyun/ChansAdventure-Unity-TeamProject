@@ -452,7 +452,7 @@ public class Inventory
             }
         }
 
-        resultSlot.IsEquip = true;
+        if(resultSlot != null) resultSlot.IsEquip = true;
         return resultSlot;
     }
     

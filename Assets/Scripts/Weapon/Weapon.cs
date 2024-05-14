@@ -214,6 +214,8 @@ public class Weapon : MonoBehaviour
                 }
             }
         }
+
+        SetBasedamage();
     }
 
     /// <summary>
@@ -226,8 +228,6 @@ public class Weapon : MonoBehaviour
 
         currentWeaponMode = WeaponMode.Sword;
         QuickEquipWeapon(currentWeaponMode);
-        ChangeWeaponMode(currentWeaponMode);
-        Debug.Log("WeaponMode : Sword");
     }
 
     /// <summary>
@@ -240,8 +240,6 @@ public class Weapon : MonoBehaviour
 
         currentWeaponMode = WeaponMode.Bow;
         QuickEquipWeapon(currentWeaponMode);
-        ChangeWeaponMode(currentWeaponMode);
-        Debug.Log("WeaponMode : Bow");
     }
 
     /// <summary>
@@ -517,6 +515,23 @@ public class Weapon : MonoBehaviour
     //    arrow.CloseArrow();
     //}
 
+    /// <summary>
+    /// 크리티컬 데미지 설정 함수
+    /// </summary>
+    /// <param name="damageRatio">베이스 데미지에서 더할 데미지 비율</param>
+    public void SetCritDamage(float damageRatio)
+    {
+        player.attackPower += player.attackPower * damageRatio;
+    }
+
+    /// <summary>
+    /// attackPower을 baseDamage로 설정하는 함수
+    /// </summary>
+    public void SetBasedamage()
+    {
+        player.attackPower = player.baseAttackPower;
+    }
+
     #region Inventory Item Method
     /// <summary>
     /// 아이템 장착시 실행되는 함수 ( 무기 정보를 가진 변수 초기화 함수 )
@@ -639,12 +654,20 @@ public class Weapon : MonoBehaviour
                 return;
         }
         InventorySlot slot = player.Inventory.QuickWeaponEquip(weaponType); // 아이템 슬롯
-        ItemData_Weapon itemData = slot.SlotItemData as ItemData_Weapon;    // 아이템 데이터
+        if (slot == null) 
+            return;   // 반환한 슬롯이 없으면 리턴
+        else
+        {
+            ItemData_Weapon itemData = slot.SlotItemData as ItemData_Weapon;    // 아이템 데이터
 
-        GameObject itemPrefab = itemData.EqiupPrefab;                       // 아이템 프리팹
-        EquipPart part = itemData.equipPart;                                // 아이템 장착 부위
+            GameObject itemPrefab = itemData.EqiupPrefab;                       // 아이템 프리팹
+            EquipPart part = itemData.equipPart;                                // 아이템 장착 부위
 
-        player.CharacterEquipItem(itemPrefab, part, slot);
+            player.CharacterEquipItem(itemPrefab, part, slot);
+
+            ChangeWeaponMode(currentWeaponMode); // 성공하면 모드 변경
+        }
+
     }
     #endregion
 }

@@ -55,9 +55,6 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    Weapon weapon;
-    public Weapon Weapon => weapon;
-
     CameraManager cameraManager;
 
     // ItemData
@@ -176,7 +173,6 @@ public class GameManager : Singleton<GameManager>
         }
 
         if (player == null) player = FindAnyObjectByType<Player>();
-        weapon = FindAnyObjectByType<Weapon>();
         cameraManager = GetComponent<CameraManager>();
         itemDataManager = GetComponent<ItemDataManager>();
         mapManager = GetComponent<MapManager>();
@@ -214,7 +210,6 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     protected void OnLoadInitiallize()
     {
-        weapon = FindAnyObjectByType<Weapon>();
         cameraManager = GetComponent<CameraManager>();
         itemDataManager = GetComponent<ItemDataManager>();
         mapManager = GetComponent<MapManager>();

@@ -655,19 +655,19 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
 
         if (rand < BasicAttackProbability)
         {
-            Debug.Log("단일");
+            //Debug.Log("단일");
             PerformBasicAttack();
             yield return new WaitForSeconds(BasicAttackDuration);
         }
         else if (rand < BasicAttackProbability + HornAttackProbability)
         {
-            Debug.Log("단일");
+            //Debug.Log("단일");
             PerformHornAttack();
             yield return new WaitForSeconds(HornAttackDuration);
         }
         else if (rand < BasicAttackProbability + HornAttackProbability + ClawAttackProbability)
         {
-            Debug.Log("단일");
+            //Debug.Log("단일");
             PerformClawAttack();
             yield return new WaitForSeconds(ClawAttackDuration);
         }

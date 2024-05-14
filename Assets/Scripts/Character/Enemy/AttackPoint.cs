@@ -30,7 +30,7 @@ public class AttackPoint : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.tag);
+        //Debug.Log(other.tag);
         if (other.CompareTag("Player"))
         {
             // 오른손 콜라이더만 활성화됨 수정 필요
