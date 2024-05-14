@@ -15,6 +15,8 @@ public class MainWorldSetting : MonoBehaviour
             Factory.Instance.GetEnemy(EnemySpawnPosition.position + noisePosition);
         }
 
+            Factory.Instance.GetNightmareDragonEnemy(EnemySpawnPosition.position);
+
         // 아이템 소환
         ItemDataManager dataManager = GameManager.Instance.ItemDataManager;
 

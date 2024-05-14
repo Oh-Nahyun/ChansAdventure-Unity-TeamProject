@@ -128,6 +128,9 @@ public class MapPanelUI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 커서에 닿았던 마지막 마커
+    /// </summary>
     MapPointMark lastMark = null;
 
     /// <summary>
@@ -160,7 +163,17 @@ public class MapPanelUI : MonoBehaviour
     /// <returns></returns>
     private RaycastHit GetObjectScreenToWorld(Vector3 vector)
     {
-        Ray ray = mapCamera.ScreenPointToRay(vector);   // ray
+        // renderTexture의 크기 : 1920 x 1080
+        Vector3 ratioVector = new Vector3((1920 / Screen.width), (1080 / Screen.height)); // 랜더러와 화면 차이값
+        float ratioX = 1920 / (float)Screen.width;
+        float ratioY = 1080 / (float)Screen.height;
+
+        Debug.Log(ratioX);
+        Debug.Log(ratioY);
+
+        Vector3 currentPosition = new Vector3(vector.x * ratioX, vector.y * ratioY);
+        Ray ray = mapCamera.ScreenPointToRay(currentPosition);   // ray
+
         RaycastHit hit;                                 // rayHit 정보
 
         if (Physics.Raycast(ray, out hit, 1000f, LayerMask.GetMask("Map Object"))) // Map Object 탐지
