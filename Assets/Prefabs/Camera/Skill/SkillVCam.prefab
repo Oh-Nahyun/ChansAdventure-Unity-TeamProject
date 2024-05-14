@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1354973446505308201}
   - component: {fileID: 5065326086214865066}
   - component: {fileID: -6101044830846081938}
+  - component: {fileID: 7339483081817138409}
   m_Layer: 0
   m_Name: SkillVCam
   m_TagString: Untagged
@@ -85,9 +86,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af02fb4d0faed044d98ba284fd67f2b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotateAngle: 2
-  skillCameraSpeed: 10
-  maxAngle: 30
+  skillCameraOffset: {x: -0.8, y: 1.2, z: 0}
+  cameraSpeed: 10
+--- !u!114 &7339483081817138409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4838363317999640846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e501d18bb52cf8c40b1853ca4904654f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_CollideAgainst:
+    serializedVersion: 2
+    m_Bits: 512
+  m_IgnoreTag: 
+  m_TransparentLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_MinimumDistanceFromTarget: 0.1
+  m_AvoidObstacles: 1
+  m_DistanceLimit: 0
+  m_MinimumOcclusionTime: 0
+  m_CameraRadius: 0.1
+  m_Strategy: 1
+  m_MaximumEffort: 4
+  m_SmoothingTime: 0
+  m_Damping: 0
+  m_DampingWhenOccluded: 0
+  m_OptimalTargetDistance: 0
 --- !u!1 &8774401720906694258
 GameObject:
   m_ObjectHideFlags: 0

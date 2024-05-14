@@ -382,7 +382,7 @@ public class IceMaker : Skill
     /// <returns></returns>
     bool IsObstacle(Transform target)
     {
-        return target.CompareTag("Ground") || target.GetComponent<IceMaker_Ice>() != null;
+        return target.CompareTag("Ground") || target.GetComponent<IceMaker_Ice>() != null || target.gameObject.layer == LayerMask.NameToLayer("Map Object");
     }
     /// <summary>
     /// 스페셜키([)를 누르면 플레이어의 발밑으로 생성위치를 바꿈(토글 형식)
