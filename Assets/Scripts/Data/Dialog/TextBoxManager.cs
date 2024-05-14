@@ -46,9 +46,16 @@ public class TextBoxManager : MonoBehaviour
         talkData.Add(298, new string[] { "문이 열렸다" });
         talkData.Add(299, new string[] { "잠겨있는 문이다" });
 
+        talkData.Add(300, new string[] { "이미 획득한 스킬이다" });
+        talkData.Add(301, new string[] { "폭발로 몬스터에게 대미지를 주거나 물건을 부술 수도 있다" });
+        talkData.Add(302, new string[] { "수면에 얼음 기둥을 만들어 물가에서 발판이나 장애물로 이용할 수 있다" });
+        talkData.Add(303, new string[] { "발사되는 자력을 맞히면 금속 물건을 잡을 수 있다" });
+        talkData.Add(304, new string[] { "물체의 시간을 멈춰 대상에 충격을 축적시킬 수 있다" });
+
+
         // NPC
         // 노인
-        talkData.Add(1000, new string[] { "애국가는 말 그대로 '나라를 사랑하는 노래'를 뜻한다.", "1896년 '독립신문' 창간을 계기로 여러 가지의 애국가 가사가 신문에 게재되기 시작했는데", "이 노래들을 어떤 곡조로 불렀는가는 명확하지 않다.", "다만 대한제국이 서구식 군악대를 조직해 1902년 '대한제국 애국가'라는 이름의 국가를 만들어", " 나라의 주요 행사에 사용했다는 기록은 지금도 남아 있다." });
+        talkData.Add(1000, new string[] { "허허허", "이곳에 새로운 사람이 찾아오다니 별일이군" });
         talkData.Add(1010, new string[] { "다음대사" });
         talkData.Add(1011, new string[] { "선택지 11 선택완료", "AAAAA" });
         talkData.Add(1012, new string[] { "선택지 12 선택완료", "BBBBB" });
@@ -92,6 +99,7 @@ public class TextBoxManager : MonoBehaviour
 
         // 도사
         talkData.Add(5000, new string[] { "....." });
+        talkData.Add(5001, new string[] { "....." });
     }
 
     /// <summary>

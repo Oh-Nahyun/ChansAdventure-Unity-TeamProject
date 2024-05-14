@@ -23,8 +23,10 @@ public class NPCBase : MonoBehaviour
     public Action onQuestCompleted;
 
     protected Inventory inventory;
-    private TextBox textBox;
+    protected TextBoxItem boxItem;
     private QuestInfoPanel questInfoPanel;
+    private HeartCheckUI heartCheckUI;
+
 
     public int id = 0;
     public string nameNPC = "";
@@ -37,12 +39,14 @@ public class NPCBase : MonoBehaviour
     protected Animator animator;
 
     protected virtual void Awake()
-    {
-        name = nameNPC;
+    { 
         textBoxManager = FindObjectOfType<TextBoxManager>();
         textViweName = GetComponentInChildren<TextMeshPro>(true);
         questManager = FindObjectOfType<QuestManager>();
         questInfoPanel = FindObjectOfType<QuestInfoPanel>();
+        textbox = FindObjectOfType<TextBox>();
+        boxItem = FindAnyObjectByType<TextBoxItem>();
+        heartCheckUI = FindAnyObjectByType<HeartCheckUI>();
     }
 
     protected virtual void Start()
@@ -134,7 +138,7 @@ public class NPCBase : MonoBehaviour
         {
             if (name != null)
             {
-                textViweName.text = name;
+                textViweName.text = nameNPC;
 
                 Vector3 cameraToNpc = transform.position - Camera.main.transform.position;
 
@@ -179,44 +183,14 @@ public class NPCBase : MonoBehaviour
     /// </summary>
     private void TalkData()
     {
-        switch (id)
+        if (id == 5000)
         {
-            // id 3xxx Çãµå½¼
-            case 3000:
-                if (isTalk)
-                {
-                    if (!textBox.TalkingEnd)
-                    {
-                        questManager.GetQuestTalkIndex(10, false);
-                        id = 3001;
-                    }
-                }
-                break;
-            case 3001:
-                if (isTalk)
-                {
-                    if (!isTalk)
-                    {
-
-                    }
-                }
-                break;
-            case 3002:
-                if (isTalk)
-                {
-                    if (!isTalk)
-                    {
-                        questManager.GetQuestTalkIndex(10, false);
-                        id = 3003;
-                    }
-                }
-                break;
-
+            if (isTalk)
+            {
+                questManager.GetQuestTalkIndex(30, true);
+                heartCheckUI.PlusHeart();
+                id = 5001;
+            }
         }
-    }
-
-    private void IsQusetClear(int id)
-    {
-        Debug.Log(id);
     }
 }

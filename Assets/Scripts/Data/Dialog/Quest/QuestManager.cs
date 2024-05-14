@@ -34,7 +34,7 @@ public class QuestManager : Singleton<QuestManager>
         questList.Add(0, new QuestData(QuestData.QuestType.None, "퀘스트 이름", "퀘스트 내용", "퀘스트 목표", 1, 0));
         questList.Add(10, new QuestData(QuestData.QuestType.Hunt, "퀘스트 사냥", "퀘스트 내용 사냥", "퀘스트 목표 10마리", 10, 1));
         questList.Add(20, new QuestData(QuestData.QuestType.GiveItem, "퀘스트 아이템 기부", "퀘스트 내용 아이템 기부", "퀘스트 목표 10개", 10, 100));
-        questList.Add(30, new QuestData(QuestData.QuestType.ClearDungeon, "퀘스트 던전 클리어", "퀘스트 내용 던전 클리어", "퀘스트 목표 던전", 1, 0));
+        questList.Add(30, new QuestData(QuestData.QuestType.ClearDungeon, "사당 돌파하기", "사당을 끝까지 돌파하라", "사당 클리어", 1, 0));
     }
 
     /// <summary>

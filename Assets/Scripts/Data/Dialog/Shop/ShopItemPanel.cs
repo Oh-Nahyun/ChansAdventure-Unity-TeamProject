@@ -47,12 +47,12 @@ public class ShopItemPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         itemPriceText = child.GetComponent<TextMeshProUGUI>();
         shopItemData = FindAnyObjectByType<ShopItemData>();
 
-        player = FindAnyObjectByType<Player>();
         selectBox = FindAnyObjectByType<SelectBox>();
     }
 
     private void Start()
     {
+        player = GameManager.Instance.Player;
         if (itemData != null)
         {
             itemImage.sprite = itemData.itemIcon;

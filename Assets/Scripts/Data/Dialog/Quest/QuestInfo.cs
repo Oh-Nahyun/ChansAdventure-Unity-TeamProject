@@ -6,6 +6,9 @@ using static QuestData;
 
 public class QuestInfo : MonoBehaviour
 {
+    // QuestInfoPanel 오브젝트 참조
+    public QuestInfoPanel questInfoPanel;
+
     CanvasGroup canvasGroup;
 
     bool onInfo = false;

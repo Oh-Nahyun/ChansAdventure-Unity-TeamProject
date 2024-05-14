@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -93,6 +94,8 @@ public class GameManager : Singleton<GameManager>
 
     SkillManager skillManager;
     public SkillManager Skill => skillManager;
+
+    public List<int> clearedQuests = new List<int>();
 
     /// <summary>
     /// 스폰 위지 트랜스폼

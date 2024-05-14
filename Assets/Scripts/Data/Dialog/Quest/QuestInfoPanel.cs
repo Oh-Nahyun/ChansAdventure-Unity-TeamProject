@@ -172,7 +172,6 @@ public class QuestInfoPanel : MonoBehaviour, IPointerClickHandler
     /// </summary>
     private void QuestClear()
     {
-        GameManager.Instance.QuestManager.clearQuestID.Add(questId);
         QuestClearId?.Invoke(questId);
         Debug.Log("Å¬¸®¾î");
     }

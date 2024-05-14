@@ -64,13 +64,14 @@ public class TextBox : MonoBehaviour
     }
     private void OnEnable()
     {
-
+        //interaction = GameManager.Instance.Player.GetComponent<Interaction>();
     }
 
     private void Start()
     {
         gameObject.SetActive(true);
 
+        interaction = GameManager.Instance.Player.GetComponent<Interaction>();
         canvasGroup.alpha = 0.0f;
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
