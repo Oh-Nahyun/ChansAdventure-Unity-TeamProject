@@ -431,12 +431,12 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
                 }
             }
         };
+
     }
 
     protected override void OnEnable()
     {
         base.OnEnable();
-
         agent.speed = walkSpeed;            // 이동 속도 지정
         State = EnemyState.Wait;            // 기본 상태 지정
         animator.ResetTrigger("Idle");      // Wait 상태로 설정하면서 Stop 트리거가 쌓인 것을 제거하기 위해 필요
@@ -448,8 +448,7 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
         attackPoint[0] = Dragon_Head_AttackPoint.GetComponent<AttackPoint>();
 
         // attackPoint[2] = 오른손 AttackPoint
-        attackPoint[1] = Dragon_Hand_AttackPoint.GetComponent<AttackPoint>();
-        
+        attackPoint[1] = Dragon_Hand_AttackPoint.GetComponent<AttackPoint>();        
 
         Player player = GameManager.Instance.Player;
         if (player != null)
