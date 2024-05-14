@@ -186,6 +186,7 @@ GameObject:
   - component: {fileID: 2830460727778838072}
   - component: {fileID: 4093464220098218740}
   - component: {fileID: 7075125081749717931}
+  - component: {fileID: 4347539863609022950}
   m_Layer: 24
   m_Name: Chest
   m_TagString: Chest
@@ -252,7 +253,7 @@ MonoBehaviour:
   isTextObject: 0
   otherObject: 0
   lightParticle: {fileID: 0}
-  scriptableObject: {fileID: 11400000, guid: 4c37ee09bd22ad4499f09fdf38b45a97, type: 2}
+  scriptableObject: {fileID: 11400000, guid: 5038057cebfb73f4d9441ce4c1d5314f, type: 2}
   itemCount: 5
 --- !u!54 &4093464220098218740
 Rigidbody:
@@ -304,6 +305,19 @@ MonoBehaviour:
   defencePower: 0
   reactionType: 4
   mainRenderer: {fileID: 0}
+--- !u!114 &4347539863609022950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3601884576934119929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fcf4e0412c0d0a46bc894bd279b071a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weigh: 0
 --- !u!1 &4246780181871856432
 GameObject:
   m_ObjectHideFlags: 0

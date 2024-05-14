@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 8953314260939018293}
   - component: {fileID: 5116132532345592386}
   - component: {fileID: 9079515197096196410}
+  - component: {fileID: 2379243774046924196}
+  - component: {fileID: 8988763673479900085}
   m_Layer: 24
   m_Name: Chest_Dungeon
   m_TagString: Chest
@@ -28,7 +30,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 589689202496012880}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.99988335, z: -0, w: -0.015278004}
+  m_LocalRotation: {x: -0, y: -0.9998833, z: 0, w: -0.015279666}
   m_LocalPosition: {x: 93.37344, y: 7.22801, z: 74.39}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -131,6 +133,32 @@ MonoBehaviour:
   defencePower: 0
   reactionType: 4
   mainRenderer: {fileID: 0}
+--- !u!114 &2379243774046924196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 589689202496012880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fcf4e0412c0d0a46bc894bd279b071a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weigh: 0
+--- !u!114 &8988763673479900085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 589689202496012880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fcf4e0412c0d0a46bc894bd279b071a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weigh: 0
 --- !u!1 &2436616682898801348
 GameObject:
   m_ObjectHideFlags: 0

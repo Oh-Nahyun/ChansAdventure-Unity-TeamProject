@@ -12,6 +12,7 @@ public class QuestInfoPanel : MonoBehaviour, IPointerClickHandler
     QuestInfoData questInfoData;
 
     TestNPC test;
+    private GameManager gameManager;
 
     public int questId;
     /// <summary>
@@ -52,6 +53,7 @@ public class QuestInfoPanel : MonoBehaviour, IPointerClickHandler
         textQuestName = GetComponentInChildren<TextMeshProUGUI>();
         questInfoData = FindAnyObjectByType<QuestInfoData>();
         test = FindAnyObjectByType<TestNPC>();
+        gameManager = GameManager.Instance;
     }
 
     private void Start()
@@ -172,7 +174,7 @@ public class QuestInfoPanel : MonoBehaviour, IPointerClickHandler
     /// </summary>
     private void QuestClear()
     {
-        GameManager.Instance.QuestManager.clearQuestID.Add(questId);
+        gameManager.clearedQuests.Add(questId);
         QuestClearId?.Invoke(questId);
         Debug.Log("Å¬¸®¾î");
     }

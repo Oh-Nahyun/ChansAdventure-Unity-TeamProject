@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6399079900884637046}
   - component: {fileID: 238719276577904544}
   - component: {fileID: 6309940643137425674}
+  - component: {fileID: 3493083128641654055}
   m_Layer: 0
   m_Name: IronBox
   m_TagString: Untagged
@@ -29,8 +30,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 1.86}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.25, y: 1.25, z: 1.25}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7771146924522653837}
   m_Father: {fileID: 0}
@@ -84,6 +85,7 @@ MonoBehaviour:
   takeDamageAfterThrow: 3
   defencePower: 0
   reactionType: 5
+  mainRenderer: {fileID: 0}
 --- !u!65 &6309940643137425674
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -105,6 +107,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.032, y: 2.032001, z: 2.032001}
   m_Center: {x: 0, y: 1.0160005, z: 0}
+--- !u!114 &3493083128641654055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6098169061222053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fcf4e0412c0d0a46bc894bd279b071a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weigh: 0
 --- !u!1001 &7805320384885534566
 PrefabInstance:
   m_ObjectHideFlags: 0
