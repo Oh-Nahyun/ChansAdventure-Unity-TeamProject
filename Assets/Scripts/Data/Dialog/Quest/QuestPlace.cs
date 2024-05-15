@@ -5,24 +5,12 @@ using UnityEngine;
 public class QuestPlace : MonoBehaviour
 {
     public int qusetId;
-    
-    QuestManager questManager;
-
-    private void Awake()
-    {
-        questManager = FindObjectOfType<QuestManager>();
-    }
-
-    private void Start()
-    {
-        questManager = FindObjectOfType<QuestManager>();
-    }
 
     private void OnTriggerExit(Collider other)
     {
          if (other.CompareTag("Player"))
         {
-            questManager.GetQuestTalkIndex(qusetId, false);
+            QuestManager.Instance.GetQuestTalkIndex(qusetId, false);
         }
     }
 
@@ -30,7 +18,7 @@ public class QuestPlace : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            questManager.GetQuestTalkIndex(qusetId, false);
+            QuestManager.Instance.GetQuestTalkIndex(qusetId, false);
         }
     }
 

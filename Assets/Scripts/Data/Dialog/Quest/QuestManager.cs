@@ -9,6 +9,22 @@ public class QuestManager : Singleton<QuestManager>
 
     private QuestMessage questMessage;
 
+    /// <summary>
+    /// QuestMessage 초기화용 접근 프로퍼티
+    /// </summary>
+    private QuestMessage QuestMessage
+    {
+        get
+        {
+            if(questMessage == null)
+            {
+                questMessage = FindObjectOfType<QuestMessage>();
+            }
+            return questMessage;
+        }
+        set => questMessage = value;
+    }
+
     private List<QuestInfoPanel> questInfoPanels = new List<QuestInfoPanel>();
 
     public GameObject questInfoPanelPrefab; // QuestInfoPanel 프리팹
@@ -16,14 +32,36 @@ public class QuestManager : Singleton<QuestManager>
 
     public QuestInfo questInfo;
 
+    /// <summary>
+    /// QuestInfo 초기화용 프로퍼티
+    /// </summary>
+    public QuestInfo QuestInfo
+    {
+        get
+        {
+            if(questInfo == null)
+            {
+                questInfo = FindObjectOfType<QuestInfo>();
+            }
+            return questInfo;
+        }
+        set => questInfo = value;
+    }
+
     public List<int> onQuestID;
     public List<int> clearQuestID;
 
+    protected override void OnPreInitialize()
+    {
+        base.OnPreInitialize();
+        GenerateData();
+    }
+
     protected override void OnInitialize()
     {
-        questMessage = FindObjectOfType<QuestMessage>();
-        questInfo = FindObjectOfType<QuestInfo>();
-        GenerateData();
+        base.OnInitialize();
+        QuestMessage = FindObjectOfType<QuestMessage>();
+        QuestInfo = FindObjectOfType<QuestInfo>();
     }
 
     /// <summary>
@@ -47,7 +85,7 @@ public class QuestManager : Singleton<QuestManager>
         if (questList.ContainsKey(id))
         {
             QuestData questData = questList[id];
-            questMessage.OnQuestMessage(questData.questName, complete);
+            QuestMessage.OnQuestMessage(questData.questName, complete);
           
             if (!complete)
             {
@@ -105,7 +143,7 @@ public class QuestManager : Singleton<QuestManager>
 
     public void OpenQuest()
     {
-        questInfo.gameObject.SetActive(true);
-        questInfo.OnQuestInfo();
+        QuestInfo.gameObject.SetActive(true);
+        QuestInfo.OnQuestInfo();
     }
 }

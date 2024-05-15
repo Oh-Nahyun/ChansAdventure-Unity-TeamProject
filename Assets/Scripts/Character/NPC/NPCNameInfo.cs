@@ -17,6 +17,11 @@ public class NPCNameInfo : MonoBehaviour
     [SerializeField] private Mode mode;
     private void LateUpdate()
     {
+        if(mainCamera == null)
+        {
+            mainCamera = Camera.main;
+        }
+
         switch (mode)
         {
             case Mode.LookAt:

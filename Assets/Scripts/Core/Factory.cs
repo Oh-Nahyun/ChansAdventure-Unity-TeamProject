@@ -68,6 +68,7 @@ public class Factory : Singleton<Factory>
         if (arrowPool != null)
             arrowPool.Initialize();
 
+        DisableAllObject();
     }
 
     /// <summary>
@@ -284,5 +285,28 @@ public class Factory : Singleton<Factory>
     public FireBall GetFireBall(Vector3 position, float angle = 0.0f)
     {
         return fireballPool.GetObject(position, angle * Vector3.forward);
+    }
+
+    /// <summary>
+    /// 풀에 있는 모든 오브젝트를 비활성화 하는 함수
+    /// </summary>
+    void DisableAllObject()
+    {
+        Transform child;
+        for(int i = 0; i < transform.childCount; i++)
+        {
+            child = transform.GetChild(0);
+
+            for (int j = 0; j < child.childCount; j++)
+            {
+                if(child.gameObject.GetComponent<SwordSkeletonPool>() != null
+                || child.gameObject.GetComponent<NightmareDragonPool>() != null)
+                {
+                    child.GetChild(j + 1).gameObject.SetActive(false);
+                }
+
+                child.GetChild(j).gameObject.SetActive(false);
+            }
+        }
     }
 }

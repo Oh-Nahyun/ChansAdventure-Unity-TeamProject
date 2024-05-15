@@ -52,6 +52,9 @@ public class EnemySpawner : Waypoints
     /// </summary>
     void Spawn()
     {
+        if (!GameManager.Instance.isField)
+            return;
+
         // 적 하나 스폰(waypoint들 중 랜덤으로 하나를 선택해서 생성)
 
         int randPos = Random.Range(0, children.Length);

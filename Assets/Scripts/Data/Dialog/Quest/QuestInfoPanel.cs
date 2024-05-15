@@ -51,24 +51,23 @@ public class QuestInfoPanel : MonoBehaviour, IPointerClickHandler
     {
         textQuestName = GetComponentInChildren<TextMeshProUGUI>();
         questInfoData = FindAnyObjectByType<QuestInfoData>();
-        test = FindAnyObjectByType<TestNPC>();
+        //test = FindAnyObjectByType<TestNPC>();
     }
 
     private void Start()
     {
-        test.EnemyQuestData[0] += (id) => 
+/*        test.EnemyQuestData[0] += (id) => 
         {
             if (id == questObjectID)
             {
                 GetEnemyID();
             }
-        };
+        };*/
     }
 
     private void Update()
     {
-        textQuestName.text = questName;
-        
+        textQuestName.text = questName;        
     }
 
     /// <summary>

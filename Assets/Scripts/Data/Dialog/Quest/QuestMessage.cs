@@ -25,7 +25,7 @@ public class QuestMessage : MonoBehaviour
     {
         questMessage.alpha = 0;
         completeMessage.alpha = 0;
-        completeMessage.gameObject.SetActive(false);
+        //completeMessage.gameObject.SetActive(false);
     }
 
     public void OnQuestMessage(string text, bool complete)

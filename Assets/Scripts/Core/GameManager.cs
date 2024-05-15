@@ -15,7 +15,6 @@ public enum GameState
     Started = 1,
 }
 
-
 [RequireComponent(typeof(CameraManager))]
 [RequireComponent(typeof(ItemDataManager))]
 [RequireComponent(typeof(MapManager))]
@@ -98,7 +97,7 @@ public class GameManager : Singleton<GameManager>
     public List<int> clearedQuests = new List<int>();
 
     /// <summary>
-    /// 스폰 위지 트랜스폼
+    /// 처음 씬의 스폰 위지값
     /// </summary>
     public Vector3 spawnPoint = Vector3.zero;
 
@@ -106,6 +105,11 @@ public class GameManager : Singleton<GameManager>
     /// 로딩하는 중인지 확인하는 bool값
     /// </summary>
     public bool isLoading;
+
+    /// <summary>
+    /// 해당 맵이 필드인지 확인하는 bool값 ( 스포너 제어용 , true : 필드, false : 필드 외 씬)
+    /// </summary>
+    public bool isField = false;
 
     /// <summary>
     /// 이동할 씬의 이름
@@ -142,6 +146,9 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     Inventory savedInventory;
 
+    /// <summary>
+    /// 장착부위 저장용 슬롯
+    /// </summary>
     InventorySlot[] savedEquipParts;
 
     /// <summary>
@@ -260,7 +267,7 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     void ChangeToLoadingScene()
     {
-        SceneManager.LoadScene("02_LoadingScene");
+        SceneManager.LoadScene("LoadingScene");
         isLoading = true;
     }
     #endregion

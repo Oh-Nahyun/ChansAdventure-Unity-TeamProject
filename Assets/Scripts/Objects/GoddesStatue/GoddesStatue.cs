@@ -6,9 +6,9 @@ public class GoddesStatue : MonoBehaviour
 {
 
     /// <summary>
-    /// 틱당 회복할 량
+    /// 틱당 회복할 량 ( 캐릭터 최대 채력 )
     /// </summary>
-    public float tickRegen = GameManager.Instance.Player.MaxHP;
+    public float tickRegen = 10f;
 
     /// <summary>
     /// 틱 인터벌
@@ -19,6 +19,11 @@ public class GoddesStatue : MonoBehaviour
     /// 회복 틱 개수
     /// </summary>
     public uint tickCount = 100;
+
+    private void Start()
+    {
+        tickRegen = GameManager.Instance.Player.MaxHP;
+    }
 
     private void OnTriggerEnter(Collider other)
     {

@@ -26,7 +26,7 @@ public class QuestInfo : MonoBehaviour
     private void Start()
     {
         canvasGroup.alpha = 0;
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -49,6 +49,8 @@ public class QuestInfo : MonoBehaviour
             while (canvasGroup.alpha > 0.0f)
             {
                 canvasGroup.alpha -= Time.deltaTime * alphaChangeSpeed;
+                canvasGroup.interactable = false;
+                canvasGroup.blocksRaycasts = false;
                 yield return null;
             }
             gameObject.SetActive(false);
@@ -58,6 +60,8 @@ public class QuestInfo : MonoBehaviour
             while (canvasGroup.alpha < 1.0f)
             {
                 canvasGroup.alpha += Time.deltaTime * alphaChangeSpeed;
+                canvasGroup.interactable = true;
+                canvasGroup.blocksRaycasts = true;
                 yield return null;
             }
         }
