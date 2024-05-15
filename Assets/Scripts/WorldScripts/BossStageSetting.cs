@@ -11,6 +11,7 @@ public class BossStageSetting : MonoBehaviour
 
     public Transform dropposition;
     public GameObject exitObj;
+    public GameObject chestObj;
 
     void Start()
     {
@@ -27,6 +28,7 @@ public class BossStageSetting : MonoBehaviour
         if(!boss.IsAlive)
         {
             exitObj.SetActive(true);
+            chestObj.SetActive(true);
         }
     }
 

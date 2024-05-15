@@ -59,6 +59,9 @@ public class QuestManager : Singleton<QuestManager>
 
     protected override void OnInitialize()
     {
+        if (GameManager.Instance.gameState == GameState.NotStart)
+            return;
+
         base.OnInitialize();
         QuestMessage = FindObjectOfType<QuestMessage>();
         QuestInfo = FindObjectOfType<QuestInfo>();

@@ -9,6 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7690286402189408352}
+  - component: {fileID: 600404726517202208}
+  - component: {fileID: 8682537671184469549}
   m_Layer: 0
   m_Name: PlayKeyUI
   m_TagString: Untagged
@@ -36,6 +38,30 @@ RectTransform:
   m_AnchoredPosition: {x: 85, y: -100}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0, y: 1}
+--- !u!114 &600404726517202208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6816221892169423845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 767e5447d1e7c9543b4ea8974fbdfab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!225 &8682537671184469549
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6816221892169423845}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &8768390446490671236
 GameObject:
   m_ObjectHideFlags: 0
