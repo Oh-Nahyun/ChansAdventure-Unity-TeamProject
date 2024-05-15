@@ -212,7 +212,7 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// 아이템을 획득하는 인풋 ( F Key )
+    /// 아이템을 획득하는 인풋 ( G Key )
     /// </summary>
     private void OnGetItem(InputAction.CallbackContext context)
     {

@@ -56,11 +56,6 @@ public class TextBox : MonoBehaviour
         textSelet = child.GetComponent<TextSelect>();
 
         interaction = FindObjectOfType<Interaction>();
-
-        textBoxManager = FindObjectOfType<TextBoxManager>();
-        questManager = FindObjectOfType<QuestManager>();
-        warpBase = FindObjectOfType<WarpBase>();
-
     }
     private void OnEnable()
     {
@@ -68,6 +63,24 @@ public class TextBox : MonoBehaviour
     }
 
     private void Start()
+    {
+        textBoxManager = FindObjectOfType<TextBoxManager>();
+        questManager = FindObjectOfType<QuestManager>();
+        warpBase = FindObjectOfType<WarpBase>();
+    }
+
+    private void Update()
+    {
+        if (interaction != null)
+        {
+            scanObject = interaction.scanIbgect; // scanIbgect 값을 가져옴
+        }
+    }
+
+    /// <summary>
+    /// textbox 초기화 함수
+    /// </summary>
+    public void InitializeTextBox()
     {
         gameObject.SetActive(true);
 
@@ -77,7 +90,7 @@ public class TextBox : MonoBehaviour
         canvasGroup.blocksRaycasts = false;
         endImageAnimator.speed = 0.0f;
 
-        controller = FindAnyObjectByType<PlayerController>(FindObjectsInactive.Include);
+        controller = GameManager.Instance.Player.gameObject.GetComponent<PlayerController>();
         controller.onInteraction += () =>
         {
             if (scanObject != null)
@@ -85,14 +98,6 @@ public class TextBox : MonoBehaviour
                 Action();
             }
         };
-    }
-
-    private void Update()
-    {
-        if (interaction != null)
-        {
-            scanObject = interaction.scanIbgect; // scanIbgect 값을 가져옴
-        }
     }
 
     /// <summary>

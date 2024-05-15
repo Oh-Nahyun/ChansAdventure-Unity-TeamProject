@@ -21,6 +21,12 @@ public class Crosshair : MonoBehaviour
         originColor = image.color;
         Close();
     }
+    private void OnEnable()
+    {
+        canvas = GetComponentInParent<Canvas>();
+        image = GetComponent<Image>();
+        rectTransform = GetComponent<RectTransform>();
+    }
 
     public void Open()
     {

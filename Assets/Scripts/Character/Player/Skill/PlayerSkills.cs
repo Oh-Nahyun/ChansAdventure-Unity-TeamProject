@@ -82,7 +82,6 @@ public class PlayerSkills : MonoBehaviour
 
     void Awake()
     {
-
         PlayerSkillRelatedAction relatedAction = GetComponent<PlayerSkillRelatedAction>();
 
         relatedAction.onSkill += OnSkill;

@@ -58,9 +58,7 @@ public class TextBoxItem : MonoBehaviour
         itemCountText = child.GetComponent<TextMeshProUGUI>();
 
         // TextBoxManager에 대한 참조 가져오기
-        textBoxManager = FindObjectOfType<TextBoxManager>();
-        
-        
+        textBoxManager = FindObjectOfType<TextBoxManager>();      
     }
 
     private void OnEnable()
@@ -70,22 +68,7 @@ public class TextBoxItem : MonoBehaviour
 
     private void Start()
     {
-        interaction = GameManager.Instance.Player.GetComponent<Interaction>();
-        gameObject.SetActive(true);
 
-        canvasGroup.alpha = 0.0f;
-        canvasGroup.interactable = false;
-        canvasGroup.blocksRaycasts = false;
-        endImageAnimator.speed = 0.0f;
-
-        controller = FindAnyObjectByType<PlayerController>(FindObjectsInactive.Include);
-        controller.onInteraction += () =>
-        {
-            if (scanObject != null)
-            {
-                Action();
-            }
-        };
     }
 
     private void Update()
@@ -94,6 +77,31 @@ public class TextBoxItem : MonoBehaviour
         {
             scanObject = interaction.scanIbgect; // scanIbgect 값을 가져옴
         }
+    }
+
+    /// <summary>
+    /// textboxitem 초기화 함수
+    /// </summary>
+    public void InitializeTextBoxItem()
+    {
+        gameObject.SetActive(true);
+        interaction = GameManager.Instance.Player.GetComponent<Interaction>();
+        textBoxManager = FindObjectOfType<TextBoxManager>();
+
+
+        canvasGroup.alpha = 0.0f;
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
+        endImageAnimator.speed = 0.0f;
+
+        controller = GameManager.Instance.Player.gameObject.GetComponent<PlayerController>();
+        controller.onInteraction += () =>
+        {
+            if (scanObject != null)
+            {
+                Action();
+            }
+        };
     }
 
     /// <summary>

@@ -18,4 +18,11 @@ public class CameraManager : MonoBehaviour
         skillVcam = GetComponentInChildren<SkillVCam>();
         magnetVcam = GetComponentInChildren<MagnetVCam>();
     }
+
+    public void initialize()
+    {
+        playerVcam = GetComponentInChildren<PlayerVCam>();
+        skillVcam = GetComponentInChildren<SkillVCam>();
+        magnetVcam = GetComponentInChildren<MagnetVCam>();
+    }
 }

@@ -40,9 +40,7 @@ public class NPCBase : MonoBehaviour
 
     protected virtual void Awake()
     { 
-        textBoxManager = FindObjectOfType<TextBoxManager>();
         textViweName = GetComponentInChildren<TextMeshPro>(true);
-        questManager = FindObjectOfType<QuestManager>();
         questInfoPanel = FindObjectOfType<QuestInfoPanel>();
         textbox = FindObjectOfType<TextBox>();
         boxItem = FindAnyObjectByType<TextBoxItem>();
@@ -51,6 +49,9 @@ public class NPCBase : MonoBehaviour
 
     protected virtual void Start()
     {
+        textBoxManager = FindObjectOfType<TextBoxManager>();
+        questManager = FindObjectOfType<QuestManager>();
+
         if (isNPC)
         {
             textViweName.gameObject.SetActive(false);

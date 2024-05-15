@@ -62,6 +62,7 @@ public class QuestManager : Singleton<QuestManager>
         base.OnInitialize();
         QuestMessage = FindObjectOfType<QuestMessage>();
         QuestInfo = FindObjectOfType<QuestInfo>();
+        questInfoPanelParent = questInfo.transform.GetChild(2);
     }
 
     /// <summary>

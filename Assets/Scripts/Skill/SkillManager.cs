@@ -17,6 +17,6 @@ public class SkillManager : MonoBehaviour
 
     public void Initialize()
     {
-        playerSkill = FindAnyObjectByType<PlayerSkills>(FindObjectsInactive.Include);
+        playerSkill = GameManager.Instance.Player.GetComponent<PlayerSkills>(); 
     }
 }

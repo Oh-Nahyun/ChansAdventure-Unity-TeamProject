@@ -194,7 +194,8 @@ public class GameManager : Singleton<GameManager>
         mapManager.InitalizeMapUI();
         questManager = FindAnyObjectByType<QuestManager>();
         textBoxManager = FindAnyObjectByType<TextBoxManager>();
-        
+        textBoxManager.Initialize();
+
         SpawnPlayerAfterLoadScene();
     }
 
@@ -259,6 +260,9 @@ public class GameManager : Singleton<GameManager>
             ItemDataManager.InventoryUI.InitializeInventoryUI(player.Inventory); // 로딩 후 인벤 UI 초기화
 
             mapManager.InitalizeMapUI();                    // 맵 매니저 초기화
+            textBoxManager.Initialize();                    // textBox 초기화
+            skillManager.Initialize();                      // 스킬 매니저 초기화
+            Cam.initialize();
         }
     }
 

@@ -296,13 +296,14 @@ public class Boss : MonoBehaviour, IBattler, IHealth
 
     private void OnEnable()
     {
+        player = GameManager.Instance.Player;
+        HP = maxHP;
         StartCoroutine(StartDelay());
     }
 
     private void Start()
     {
-        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
-        player = playerObject.GetComponent<Player>();
+
     }
 
     IEnumerator StartDelay()

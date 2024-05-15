@@ -8,6 +8,8 @@ public class BossHPSlider : MonoBehaviour
     public Slider hpSlider; // Inspector에서 연결할 슬라이더
     public Boss boss;       // Inspector에서 연결할 Boss 오브젝트
 
+    const float sliderReduceValue = 25f; // 슬라이더 감소 수치
+
     CanvasGroup canvasGroup;
 
     void Start()
@@ -24,7 +26,16 @@ public class BossHPSlider : MonoBehaviour
     void Update()
     {
         // 매 프레임마다 Boss의 HP를 슬라이더에 반영
-        hpSlider.value = boss.HP;
+
+        if(hpSlider.value > boss.HP)
+        {
+            if(!boss.IsAlive) // 보스가 사망했으면 체력바 숨기기
+            {
+                gameObject.SetActive(false);
+            }
+
+            hpSlider.value -= Time.deltaTime * sliderReduceValue;
+        }
     }
 
     /// <summary>

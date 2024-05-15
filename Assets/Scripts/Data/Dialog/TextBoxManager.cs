@@ -23,15 +23,20 @@ public class TextBoxManager : MonoBehaviour
         GenerateData();
     }
 
-    private void Start()
-    {
-        textBox = FindAnyObjectByType<TextBox>();
-        textBoxItem = FindAnyObjectByType<TextBoxItem>();
-    }
-
     private void Update()
     {
         TalkingAction();
+    }
+
+    /// <summary>
+    /// textBoxManager 초기화 함수
+    /// </summary>
+    public void Initialize()
+    {
+        textBox = FindAnyObjectByType<TextBox>();
+        textBox.InitializeTextBox();
+        textBoxItem = FindAnyObjectByType<TextBoxItem>();
+        textBoxItem.InitializeTextBoxItem();
     }
 
     /// <summary>

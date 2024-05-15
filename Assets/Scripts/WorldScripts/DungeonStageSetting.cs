@@ -4,11 +4,30 @@ using UnityEngine;
 
 public class DungeonStageSetting : MonoBehaviour
 {
-    public Transform dropposition;
-    void Start()
+    public NPCBase dungeonNPC;
+
+    public GameObject exitZone;
+
+    public ParticleSystem[] winEffect;
+
+    private void Start()
     {
-        Factory.Instance.GetItemObject(GameManager.Instance.ItemDataManager[4], dropposition.position);
-        Factory.Instance.GetItemObject(GameManager.Instance.ItemDataManager[8], dropposition.position);
-        Factory.Instance.GetItemObjects(GameManager.Instance.ItemDataManager[9], 5, dropposition.position);
+        foreach (var item in winEffect)
+        {
+            item.Stop();
+        }
+    }
+
+    private void Update()
+    {
+        if(dungeonNPC.id == 5001) // NPC의 대화를 맞췄으면 포탈 활성화
+        {
+            exitZone.SetActive(true);
+            
+            foreach(var item in winEffect)
+            {
+                item.Play();
+            }
+        }
     }
 }

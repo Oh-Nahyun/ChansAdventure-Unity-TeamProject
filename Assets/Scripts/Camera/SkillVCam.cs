@@ -28,22 +28,13 @@ public class SkillVCam : MonoBehaviour
         personFollow = vCam.GetCinemachineComponent<Cinemachine3rdPersonFollow>();
     }
 
-    void Start()
+    protected virtual void FollowSelector()
     {
-        player = GameManager.Instance.Player;
-        if (player != null)
+        if (player == null)
         {
-            FllowSelector();
-        }
-        else
-        {
-            Debug.LogWarning("Player가 없습니다.");
+            player = GameManager.Instance.Player;
         }
 
-    }
-
-    protected virtual void FllowSelector()
-    {
         cameraRoot = player.cameraRoot.transform;
         vCam.Follow = cameraRoot;
     }
@@ -57,6 +48,8 @@ public class SkillVCam : MonoBehaviour
 
     public virtual void OnSkillCamera()
     {
+        FollowSelector();
+
         // 스킬 사용하기 위한 카메라 움직임
         VCam.Priority = 20;
     }
