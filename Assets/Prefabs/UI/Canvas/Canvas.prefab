@@ -2286,7 +2286,8 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 253973265519835702, guid: ee6870826f03cee479bdf389bd626a69, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -3189,6 +3190,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SellPanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 7429079865145476088, guid: e8b387725a001bf429f1c7f4b130872f,
+        type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
