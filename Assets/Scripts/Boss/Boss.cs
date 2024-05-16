@@ -309,6 +309,7 @@ public class Boss : MonoBehaviour, IBattler, IHealth
     IEnumerator StartDelay()
     {
         //isActive = false;
+        yield return new WaitForSeconds(1.3f);
         animator.SetTrigger("Roar");
         yield return new WaitForSeconds(StartDelayValue);
         isActive = true;
