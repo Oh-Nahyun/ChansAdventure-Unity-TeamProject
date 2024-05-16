@@ -276,9 +276,15 @@ public class PlayerController : MonoBehaviour
             //}
         }
 
-        playerInputAction.Player.Disable();                 // Player 액션맵 비활성화
+        //playerInputAction.Player.Disable();                 // Player 액션맵 비활성화
+        playerInputAction.Player.Attack.Disable();
+        playerInputAction.Player.Jump.Disable();
+        playerInputAction.Player.Move.Disable();
         yield return new WaitForSeconds(waitingTime);       // waitingTime만큼 딜레이
-        playerInputAction.Player.Enable();                  // Player 액션맵 활성화
+        playerInputAction.Player.Attack.Enable();
+        playerInputAction.Player.Jump.Enable();
+        playerInputAction.Player.Move.Enable();
+        //playerInputAction.Player.Enable();                  // Player 액션맵 활성화
     }
 
     /// <summary>

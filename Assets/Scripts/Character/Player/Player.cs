@@ -604,8 +604,6 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         GameManager.Instance.ItemDataManager.InventoryUI.InitializeInventoryUI(Inventory); // 인벤 UI 초기화
         GameManager.Instance.TextBoxManager.isTalkAction += (talk) => IsTalk(talk);
         EquipPart = new InventorySlot[partCount]; // EquipPart 배열 초기화
-
-        //Test_AddItem();
     }
 
     private void Update()
@@ -800,7 +798,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// </summary>
     void LookRotation()
     {
-        if (!isLook)
+        if (!isLook || IsAnyUIPanelOpened)
             return;
 
         cameraRoot.transform.localRotation *= Quaternion.AngleAxis(lookVector.x * followCamRotatePower, Vector3.up);
@@ -1279,6 +1277,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     void IsTalk(bool talk)
     {
         isTalk = talk;
+        isAnyUIPanelOpened = talk;
     }
 
     /// <summary>
