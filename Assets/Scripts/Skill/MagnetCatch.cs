@@ -106,6 +106,11 @@ public class MagnetCatch : Skill
     const float Interpolation1Value = 0.2f;
     const float Interpolation2Value = 0.7f;
 
+    /// <summary>
+    /// 앞뒤 이동 속도 조절용
+    /// </summary>
+    public float horizontalMoveSpeedRatio = 0.3f;
+
 
     enum MagnetShape
     {
@@ -394,7 +399,7 @@ public class MagnetCatch : Skill
                 break;
         }
 
-        targetMoveZ = SetDistance(directionAxisZ, targetDestination.localPosition.z);   // 이동할 거리가 최대거리 안인지 계산
+        targetMoveZ = SetDistance(directionAxisZ * horizontalMoveSpeedRatio, targetDestination.localPosition.z);   // 이동할 거리가 최대거리 안인지 계산
 
         float finalDistance = targetDestination.localPosition.z + targetMoveZ;          
         if (finalDistance < minDistanceFromUser && directionAxisZ < 0)                  // 가까워 질 경우 최소거리보다 작아지면 이동할 거리 제거
