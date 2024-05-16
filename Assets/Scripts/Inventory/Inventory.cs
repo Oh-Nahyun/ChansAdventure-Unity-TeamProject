@@ -4,64 +4,64 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// ÀÎº¥Åä¸® Å¬·¡½º
+/// ì¸ë²¤í† ë¦¬ í´ë˜ìŠ¤
 /// </summary>
 public class Inventory
 {
     /// <summary>
-    /// ÃÖ´ë ½½·Ô°³¼ö ( »ı¼ºÀÚ¿¡¼­ ÃÊ±âÈ­ )
+    /// ìµœëŒ€ ìŠ¬ë¡¯ê°œìˆ˜ ( ìƒì„±ìì—ì„œ ì´ˆê¸°í™” )
     /// </summary>
     uint maxSlot_size = 0;
 
     /// <summary>
-    /// ÀÎº¥Åä¸® Å©±â Á¢±Ù¿ë ÇÁ·ÎÆÛÆ¼
+    /// ì¸ë²¤í† ë¦¬ í¬ê¸° ì ‘ê·¼ìš© í”„ë¡œí¼í‹°
     /// </summary>
     public uint SlotSize => maxSlot_size;
 
     /// <summary>
-    /// ÀÎº¥Åä¸® ½½·Ôµé
+    /// ì¸ë²¤í† ë¦¬ ìŠ¬ë¡¯ë“¤
     /// </summary>
     InventorySlot[] slots;
 
     /// <summary>
-    /// ÀÎº¥Åä¸® ½½·Ô Á¢±ÙÀ» À§ÇÑ ÀÎµ¦¼­
+    /// ì¸ë²¤í† ë¦¬ ìŠ¬ë¡¯ ì ‘ê·¼ì„ ìœ„í•œ ì¸ë±ì„œ
     /// </summary>
-    /// <param name="index">½½·Ô ÀÎµ¦½º</param>
+    /// <param name="index">ìŠ¬ë¡¯ ì¸ë±ìŠ¤</param>
     /// <returns></returns>
     public InventorySlot this[uint index] => slots[index];
 
     /// <summary>
-    /// ÀÓ½Ã ½½·Ô Å¬·¡½º
+    /// ì„ì‹œ ìŠ¬ë¡¯ í´ë˜ìŠ¤
     /// </summary>
     TempSlot tempSlot;
 
     /// <summary>
-    /// ÀÓ½Ã ½½·Ô Á¢±ÙÀ» À§ÇÑ ÇÁ·ÎÆÛÆ¼
+    /// ì„ì‹œ ìŠ¬ë¡¯ ì ‘ê·¼ì„ ìœ„í•œ í”„ë¡œí¼í‹°
     /// </summary>
     public TempSlot TempSlot => tempSlot;
 
     /// <summary>
-    /// ÀÓ½Ã ½½·Ô ÀÎµ¦½º
+    /// ì„ì‹œ ìŠ¬ë¡¯ ì¸ë±ìŠ¤
     /// </summary>
     const uint tempIndex = 999999;
 
     /// <summary>
-    /// ÇØ´ç ÀÎº¥Åä¸®¸¦ °¡Áø ¿ÀºêÁ§Æ®
+    /// í•´ë‹¹ ì¸ë²¤í† ë¦¬ë¥¼ ê°€ì§„ ì˜¤ë¸Œì íŠ¸
     /// </summary>
     GameObject owner;
 
     /// <summary>
-    /// ÀÎº¥Åä¸®¸¦ °¡Áø ¿ÀºêÁ§Æ®¿¡°Ô Á¢±ÙÇÏ´Â ÇÁ·ÎÆÛÆ¼
+    /// ì¸ë²¤í† ë¦¬ë¥¼ ê°€ì§„ ì˜¤ë¸Œì íŠ¸ì—ê²Œ ì ‘ê·¼í•˜ëŠ” í”„ë¡œí¼í‹°
     /// </summary>
     public GameObject Owner => owner;
 
     /// <summary>
-    /// ÀÎº¥Åä¸®ÀÇ °ñµå
+    /// ì¸ë²¤í† ë¦¬ì˜ ê³¨ë“œ
     /// </summary>
     uint gold = 0;
 
     /// <summary>
-    /// ÀÎº¥Åä¸®ÀÇ °ñµå¸¦ Á¢±ÙÇÏ±â À§ÇÑ ÇÁ·ÎÆÛÆ¼
+    /// ì¸ë²¤í† ë¦¬ì˜ ê³¨ë“œë¥¼ ì ‘ê·¼í•˜ê¸° ìœ„í•œ í”„ë¡œí¼í‹°
     /// </summary>
     public uint Gold
     {
@@ -77,12 +77,12 @@ public class Inventory
     }
 
     /// <summary>
-    /// °ñµå·®ÀÌ º¯°æ‰çÀ» ¶§ ½ÇÇàµÇ´Â ÇÁ·ÎÆÛÆ¼
+    /// ê³¨ë“œëŸ‰ì´ ë³€ê²½ë¬ì„ ë•Œ ì‹¤í–‰ë˜ëŠ” í”„ë¡œí¼í‹°
     /// </summary>
     public Action<uint> onInventoryGoldChange;
 
     /// <summary>
-    /// ÀÎº¥Åä¸® »ı¼ºÀÚ
+    /// ì¸ë²¤í† ë¦¬ ìƒì„±ì
     /// </summary>
     public Inventory(GameObject invenOwner, uint slotSize = 6)
     {
@@ -98,50 +98,50 @@ public class Inventory
     }
 
     /// <summary>
-    /// ¾ÆÀÌÅÛ Ãß°¡ ÇÔ¼ö , °¡Àå ¸ÕÀúÀÖ´Â ½½·ÔÀ» Ã¤¿ò
+    /// ì•„ì´í…œ ì¶”ê°€ í•¨ìˆ˜ , ê°€ì¥ ë¨¼ì €ìˆëŠ” ìŠ¬ë¡¯ì„ ì±„ì›€
     /// </summary>
-    /// <param name="code">¾ÆÀÌÅÛ ÄÚµå</param>
-    /// <param name="count">¾ÆÀÌÅÛ °³¼ö</param>
-    /// <param name="index">½½·Ô ÀÎµ¦½º</param>
+    /// <param name="code">ì•„ì´í…œ ì½”ë“œ</param>
+    /// <param name="count">ì•„ì´í…œ ê°œìˆ˜</param>
+    /// <param name="index">ìŠ¬ë¡¯ ì¸ë±ìŠ¤</param>
     public void AddSlotItem(uint code, int count = 1, uint index = 0)
     {
-        if (index >= maxSlot_size) // ½½·Ô ¿ì¹Â È®ÀÎ
+        if (index >= maxSlot_size) // ìŠ¬ë¡¯ ìš°ë®¤ í™•ì¸
         {
-            Debug.Log($"{index}¹ø ½½·ÔÀº Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log($"{index}ë²ˆ ìŠ¬ë¡¯ì€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
             return;
         }
 
-        if (index == 0) // index°ªÀÌ default°ªÀÌ¸é ÀÚµ¿ Ãß°¡
+        if (index == 0) // indexê°’ì´ defaultê°’ì´ë©´ ìë™ ì¶”ê°€
         {
             uint slotIndex = FindSlot(code);
 
             if(slotIndex >= maxSlot_size)
             {
-                Debug.Log("ÀÎº¥Åä¸®°¡ °¡µæ Â÷ÀÖ½À´Ï´Ù");
+                Debug.Log("ì¸ë²¤í† ë¦¬ê°€ ê°€ë“ ì°¨ìˆìŠµë‹ˆë‹¤");
                 return;
             }
 
              slots[slotIndex].AssignItem(code, count, out int overCount);
 
-            if (overCount > 0) // ³ÑÄ£ ¾ÆÀÌÅÛÀÌ Á¸ÀçÇÑ´Ù¸é
+            if (overCount > 0) // ë„˜ì¹œ ì•„ì´í…œì´ ì¡´ì¬í•œë‹¤ë©´
             {
-                // ÀçÅ½»ö ÈÄ ³Ö±â
+                // ì¬íƒìƒ‰ í›„ ë„£ê¸°
                 slotIndex = FindSlot(code);
                 slots[slotIndex].AssignItem(code, overCount, out _);
             }
         }
-        else // Æ¯Á¤ ÀÎµ¦½º¿¡ Ãß°¡
+        else // íŠ¹ì • ì¸ë±ìŠ¤ì— ì¶”ê°€
         {
             slots[index].AssignItem(code, count, out int overCount);
 
-            if (overCount > 0) // ³ÑÄ£ ¾ÆÀÌÅÛÀÌ Á¸ÀçÇÑ´Ù¸é
+            if (overCount > 0) // ë„˜ì¹œ ì•„ì´í…œì´ ì¡´ì¬í•œë‹¤ë©´
             {
-                //  ÀçÅ½»ö ÈÄ ³Ö±â
+                //  ì¬íƒìƒ‰ í›„ ë„£ê¸°
                 uint slotIndex = FindSlot(code);
 
                 if (slotIndex >= maxSlot_size)
                 {
-                    Debug.Log("ÀÎº¥Åä¸®°¡ °¡µæ Â÷ÀÖ½À´Ï´Ù");
+                    Debug.Log("ì¸ë²¤í† ë¦¬ê°€ ê°€ë“ ì°¨ìˆìŠµë‹ˆë‹¤");
                     return;
                 }
                 else
@@ -153,15 +153,15 @@ public class Inventory
     }
 
     /// <summary>
-    /// ½½·Ô¿¡ ¾ÆÀÌÅÛ Á¦°Å
+    /// ìŠ¬ë¡¯ì— ì•„ì´í…œ ì œê±°
     /// </summary>
-    /// <param name="count">Á¦°ÅÇÒ ½½·Ô °³¼ö</param>
-    /// <param name="index">Á¦°ÅÇÒ ½½·Ô À§Ä¡ ÀÎµ¦½º</param>
+    /// <param name="count">ì œê±°í•  ìŠ¬ë¡¯ ê°œìˆ˜</param>
+    /// <param name="index">ì œê±°í•  ìŠ¬ë¡¯ ìœ„ì¹˜ ì¸ë±ìŠ¤</param>
     public void DiscardSlotItem(int count, uint index = 0)
     {
         if(slots[index].SlotItemData == null)
         {
-            Debug.Log($"½½·ÔÀÌ ºñ¾îÀÖ½À´Ï´Ù.");
+            Debug.Log($"ìŠ¬ë¡¯ì´ ë¹„ì–´ìˆìŠµë‹ˆë‹¤.");
             return;
         }
 
@@ -169,18 +169,18 @@ public class Inventory
     }
 
     /// <summary>
-    /// °¡Àå ºü¸¥¹øÈ£ÀÇ ºñ¾îÀÖ´Â ½½·ÔÀ» Ã£¾ÆÁÖ´Â ÇÔ¼ö
+    /// ê°€ì¥ ë¹ ë¥¸ë²ˆí˜¸ì˜ ë¹„ì–´ìˆëŠ” ìŠ¬ë¡¯ì„ ì°¾ì•„ì£¼ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <param name="code">Ã£´Â ¾ÆÀÌÅÛ ÄÚµå</param>
+    /// <param name="code">ì°¾ëŠ” ì•„ì´í…œ ì½”ë“œ</param>
     uint FindSlot(uint code)
     {
         uint index = 0;
         foreach(var slot in slots)
         {
-            if (slot.SlotItemData == null) // µ¥ÀÌÅÍ°¡ ºñ¾îÀÖ´Ù
+            if (slot.SlotItemData == null) // ë°ì´í„°ê°€ ë¹„ì–´ìˆë‹¤
                 break;
-            else if (slot.SlotItemData.itemCode == (ItemCode)code &&        // ¸Å°³º¯¼ö ¾ÆÀÌÅÛ ÄÚµå¿Í µ¿ÀÏÇÏ°í 
-                     slot.CurrentItemCount < slot.SlotItemData.maxCount)    // ÇØ´ç ½½·ÔÀÇ ¾ÆÀÌÅÛ °³¼ö°¡ ÃÖ´ëÄ¡º¸´Ù ³·´Ù¸é ¹İÈ¯
+            else if (slot.SlotItemData.itemCode == (ItemCode)code &&        // ë§¤ê°œë³€ìˆ˜ ì•„ì´í…œ ì½”ë“œì™€ ë™ì¼í•˜ê³  
+                     slot.CurrentItemCount < slot.SlotItemData.maxCount)    // í•´ë‹¹ ìŠ¬ë¡¯ì˜ ì•„ì´í…œ ê°œìˆ˜ê°€ ìµœëŒ€ì¹˜ë³´ë‹¤ ë‚®ë‹¤ë©´ ë°˜í™˜
                 break;
 
                 index++;
@@ -191,21 +191,21 @@ public class Inventory
     }
 
     /// <summary>
-    /// ½½·Ô ½º¿ÒÇÔ¼ö (aÀÎµ¦½º ½½·Ô°ú bÀÎµ¦½º ½½·ÔÀ» ±³Ã¼ÇÑ´Ù)
+    /// ìŠ¬ë¡¯ ìŠ¤ì™‘í•¨ìˆ˜ (aì¸ë±ìŠ¤ ìŠ¬ë¡¯ê³¼ bì¸ë±ìŠ¤ ìŠ¬ë¡¯ì„ êµì²´í•œë‹¤)
     /// </summary>
-    /// <param name="indexA">½º¿ÒÇÒ ½½·Ô ÀÎµ¦½º 1</param>
-    /// <param name="indexB">½º¿ÒÇÒ ½½·Ô ÀÎµ¦½º 2</param>
+    /// <param name="indexA">ìŠ¤ì™‘í•  ìŠ¬ë¡¯ ì¸ë±ìŠ¤ 1</param>
+    /// <param name="indexB">ìŠ¤ì™‘í•  ìŠ¬ë¡¯ ì¸ë±ìŠ¤ 2</param>
     public void SwapSlot(uint indexA, uint indexB)
     {   
         if(indexA == indexB)
         {
-            Debug.Log($"ÀÎµ¦½º°ªÀÌ µ¿ÀÏÇÕ´Ï´Ù.");
+            Debug.Log($"ì¸ë±ìŠ¤ê°’ì´ ë™ì¼í•©ë‹ˆë‹¤.");
             return;
         }
 
-        uint tempIndex = slots[indexA].SlotIndex;   // ½½·Ô ÀÎµ¦½º          
-        ItemData tempItemdata = slots[indexA].SlotItemData; // ¾ÆÀÌÅÛ µ¥ÀÌÅÍ        
-        int tempItemCount = slots[indexA].CurrentItemCount; // ½½·ÔÀÌ °¡Áø ¾ÆÀÌÅÛ °³¼ö
+        uint tempIndex = slots[indexA].SlotIndex;   // ìŠ¬ë¡¯ ì¸ë±ìŠ¤          
+        ItemData tempItemdata = slots[indexA].SlotItemData; // ì•„ì´í…œ ë°ì´í„°        
+        int tempItemCount = slots[indexA].CurrentItemCount; // ìŠ¬ë¡¯ì´ ê°€ì§„ ì•„ì´í…œ ê°œìˆ˜
 
         slots[indexA].ClearItem();
         slots[indexA].AssignItem((uint)slots[indexB].SlotItemData.itemCode,
@@ -219,13 +219,13 @@ public class Inventory
     }
 
     /// <summary>
-    /// Á¤·ÄÇÏ´Â ÇÔ¼ö
+    /// ì •ë ¬í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <param name="sortMode">Á¤·Ä¹æ½Ä</param>
-    /// <param name="isAcending">¿À¸§Â÷¼ø ¿©ºÎ (treu : ¿À¸§Â÷¼ø, false : ³»¸²Â÷¼ø)</param>
+    /// <param name="sortMode">ì •ë ¬ë°©ì‹</param>
+    /// <param name="isAcending">ì˜¤ë¦„ì°¨ìˆœ ì—¬ë¶€ (treu : ì˜¤ë¦„ì°¨ìˆœ, false : ë‚´ë¦¼ì°¨ìˆœ)</param>
     public void SortSlot(SortMode sortMode, bool isAcending)
     {
-        List<InventorySlot>tempSortList = new List<InventorySlot>(slots); // ¸®½ºÆ® ¾èÀº º¹»ç
+        List<InventorySlot>tempSortList = new List<InventorySlot>(slots); // ë¦¬ìŠ¤íŠ¸ ì–•ì€ ë³µì‚¬
 
         switch (sortMode)
         {
@@ -282,37 +282,37 @@ public class Inventory
                 break;
         }
 
-        List<(ItemData, int, bool)> sortedData = new List<(ItemData, int, bool)>((int)SlotSize); // Á¤·ÄÇÑ ³»¿ë º¹»ç
+        List<(ItemData, int, bool)> sortedData = new List<(ItemData, int, bool)>((int)SlotSize); // ì •ë ¬í•œ ë‚´ìš© ë³µì‚¬
         foreach (var slot in tempSortList)
         {
-            sortedData.Add((slot.SlotItemData, slot.CurrentItemCount, slot.IsEquip));       // Á¤·Ä ³»¿ë º¹»ç
+            sortedData.Add((slot.SlotItemData, slot.CurrentItemCount, slot.IsEquip));       // ì •ë ¬ ë‚´ìš© ë³µì‚¬
         }
 
         int index = 0;
         foreach (var slot in sortedData)
         {
-            // ½½·Ô¿¡ ³»¿ë Ãß°¡ -> ¾ÆÀÌÅÛÀ» Ã¹ ½½·ÔºÎÅÍ Àç¹èÄ¡
-            if (slot.Item1 == null) break;  // Á¤·ÄµÈ ³»¿ëÀ» ´Ù ¿Å°åÀ¸¸é break;
-            slots[index].ClearItem();       // ½½·Ô ³»¿ë Á¤¸® ÈÄ
-            slots[index].AssignItem((uint)slot.Item1.itemCode, (int)slot.Item2, out _);    // º¹»çÇÑ ³»¿ëÀ» ½½·Ô¿¡ ¼³Á¤ ( item1 : ItemDatam , item2 : CurrentItemCount )
-            slots[index].IsEquip = slot.Item3;  // ÀÎº¥Åä¸® ½½·Ô ÀåÂø Á¤º¸ °»½Å
+            // ìŠ¬ë¡¯ì— ë‚´ìš© ì¶”ê°€ -> ì•„ì´í…œì„ ì²« ìŠ¬ë¡¯ë¶€í„° ì¬ë°°ì¹˜
+            if (slot.Item1 == null) break;  // ì •ë ¬ëœ ë‚´ìš©ì„ ë‹¤ ì˜®ê²¼ìœ¼ë©´ break;
+            slots[index].ClearItem();       // ìŠ¬ë¡¯ ë‚´ìš© ì •ë¦¬ í›„
+            slots[index].AssignItem((uint)slot.Item1.itemCode, (int)slot.Item2, out _);    // ë³µì‚¬í•œ ë‚´ìš©ì„ ìŠ¬ë¡¯ì— ì„¤ì • ( item1 : ItemDatam , item2 : CurrentItemCount )
+            slots[index].IsEquip = slot.Item3;  // ì¸ë²¤í† ë¦¬ ìŠ¬ë¡¯ ì¥ì°© ì •ë³´ ê°±ì‹ 
 
-            // Owner ÀåÂø Á¤º¸ °»½Å
+            // Owner ì¥ì°© ì •ë³´ ê°±ì‹ 
             if (slots[index].IsEquip)
             {
-                // ÀåÂøºÎÀ§ Ã£±â
+                // ì¥ì°©ë¶€ìœ„ ì°¾ê¸°
                 ItemData_Equipment item = slots[index].SlotItemData as ItemData_Equipment;
                 int equipPart = (int)item.equipPart;
 
-                // ÀåÂø ¾ÆÀÌÅÛ Á¤º¸ °»½Å
+                // ì¥ì°© ì•„ì´í…œ ì •ë³´ ê°±ì‹ 
                 IEquipTarget target = Owner.gameObject.GetComponent<IEquipTarget>();
                 target.EquipPart[equipPart] = slots[index];
             }
             index++;
         }
-        tempSortList.Clear();   // ÀÓ½Ã ¸®½ºÆ® Á¦°Å
+        tempSortList.Clear();   // ì„ì‹œ ë¦¬ìŠ¤íŠ¸ ì œê±°
 
-        // Àç¹èÄ¡ÈÄ ºÒÇÊ¿äÇÑ ½½·Ô µ¥ÀÌÅÍ Á¦°Å
+        // ì¬ë°°ì¹˜í›„ ë¶ˆí•„ìš”í•œ ìŠ¬ë¡¯ ë°ì´í„° ì œê±°
         for (int i = index; i < SlotSize; i++)
         {
             slots[i].ClearItem(); 
@@ -320,19 +320,19 @@ public class Inventory
     }
 
     /// <summary>
-    /// ÀÓ½Ã ½½·Ô Á¢±Ù ÇÔ¼ö
+    /// ì„ì‹œ ìŠ¬ë¡¯ ì ‘ê·¼ í•¨ìˆ˜
     /// </summary>
-    /// <param name="index">ÀÓ½Ã ½½·Ô¿¡ ¿Å±æ ¾ÆÀÌÅÛ ½½·Ô ÀÎµ¦½º</param>
-    /// <param name="itemCode">ÀÓ½Ã ½½·Ô¿¡ ¿Å±æ ¾ÆÀÌÅÛ ÄÚµå</param>
-    /// <param name="itemCount">ÀÓ½Ã ½½·Ô¿¡ ¿Å±æ ¾ÆÀÌÅÛ ·®</param>
+    /// <param name="index">ì„ì‹œ ìŠ¬ë¡¯ì— ì˜®ê¸¸ ì•„ì´í…œ ìŠ¬ë¡¯ ì¸ë±ìŠ¤</param>
+    /// <param name="itemCode">ì„ì‹œ ìŠ¬ë¡¯ì— ì˜®ê¸¸ ì•„ì´í…œ ì½”ë“œ</param>
+    /// <param name="itemCount">ì„ì‹œ ìŠ¬ë¡¯ì— ì˜®ê¸¸ ì•„ì´í…œ ëŸ‰</param>
     public void AccessTempSlot(uint index, uint itemCode, int itemCount)
     {
-        if(TempSlot.SlotItemData == null) // ÀÓ½Ã ½½·ÔÀÌ ºñ¾îÀÖ´Ù.
+        if(TempSlot.SlotItemData == null) // ì„ì‹œ ìŠ¬ë¡¯ì´ ë¹„ì–´ìˆë‹¤.
         {
             tempSlot.SetTempSlotIndex(index);
-            tempSlot.AssignItem(itemCode, itemCount, out _); // temp½½·Ô ³»¿ë Ãß°¡
+            tempSlot.AssignItem(itemCode, itemCount, out _); // tempìŠ¬ë¡¯ ë‚´ìš© ì¶”ê°€
         }
-        else if(TempSlot.SlotItemData != null)  // ÀÓ½Ã ½½·ÔÀ» »ç¿ëÁßÀÌ´Ù.
+        else if(TempSlot.SlotItemData != null)  // ì„ì‹œ ìŠ¬ë¡¯ì„ ì‚¬ìš©ì¤‘ì´ë‹¤.
         {
             slots[index].AssignItem(itemCode, itemCount, out _);
 
@@ -341,22 +341,22 @@ public class Inventory
     }
 
     /// <summary>
-    /// ¾ÆÀÌÅÛ ³ª´©´Â ÇÔ¼ö
+    /// ì•„ì´í…œ ë‚˜ëˆ„ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <param name="indexA">³ª´­ ½½·Ô</param>
-    /// <param name="indexB">³ª´« ¾ÆÀÌÅÛ ³ÖÀ» ½½·Ô</param>
-    /// <param name="count">¾ÆÀÌÅÛ °³¼ö</param>
+    /// <param name="indexA">ë‚˜ëˆŒ ìŠ¬ë¡¯</param>
+    /// <param name="indexB">ë‚˜ëˆˆ ì•„ì´í…œ ë„£ì„ ìŠ¬ë¡¯</param>
+    /// <param name="count">ì•„ì´í…œ ê°œìˆ˜</param>
     public void DividItem(uint indexA, uint indexB, int count = 1)
     {
-        if(indexA == indexB) // µ¿ÀÏ ÀÎµ¦½º È®ÀÎ
+        if(indexA == indexB) // ë™ì¼ ì¸ë±ìŠ¤ í™•ì¸
         {
-            Debug.Log($"ÀÎµ¦½º°¡ µ¿ÀÏÇÕ´Ï´Ù. ³ª´­ ¼ö ¾ø½À´Ï´Ù.");
+            Debug.Log($"ì¸ë±ìŠ¤ê°€ ë™ì¼í•©ë‹ˆë‹¤. ë‚˜ëˆŒ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
             return;
         }
 
-        if(slots[indexA].CurrentItemCount < 2) // ¾ÆÀÌÅÛ °³¼ö È®ÀÎ ( 1ÀÌÇÏ¸é ½ÇÇà X )
+        if(slots[indexA].CurrentItemCount < 2) // ì•„ì´í…œ ê°œìˆ˜ í™•ì¸ ( 1ì´í•˜ë©´ ì‹¤í–‰ X )
         {
-            Debug.Log($"[{slots[indexA]}]ÀÇ ¾ÆÀÌÅÛ °³¼ö°¡ [{slots[indexA].CurrentItemCount}] ÀÔ´Ï´Ù. ³ª´­ ¼ö ¾ø½À´Ï´Ù.");
+            Debug.Log($"[{slots[indexA]}]ì˜ ì•„ì´í…œ ê°œìˆ˜ê°€ [{slots[indexA].CurrentItemCount}] ì…ë‹ˆë‹¤. ë‚˜ëˆŒ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
             return;
         }
 
@@ -371,83 +371,92 @@ public class Inventory
     }
 
     /// <summary>
-    /// ¾ÆÀÌÅÛ µå·ÓÇÒ ¶§ ½ÇÇàÇÏ´Â ÇÔ¼ö
+    /// ì•„ì´í…œ ë“œë¡­í•  ë•Œ ì‹¤í–‰í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <param name="index">µå·ÓÇÒ ¾ÆÀÌÅÛ ½½·Ô</param>
+    /// <param name="index">ë“œë¡­í•  ì•„ì´í…œ ìŠ¬ë¡¯</param>
     public void DropItem(uint index)
     {
         //GameObject dropItem = UnityEngine.Object.Instantiate(slots[index].SlotItemData.ItemPrefab, Owner.transform);
         ItemData dropItemData = slots[index].SlotItemData;
 
-        GameObject dropItem = Factory.Instance.GetItemObject(dropItemData, Owner.transform.position + Vector3.up * 0.5f); // Factoryï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
+        GameObject dropItem = Factory.Instance.GetItemObject(dropItemData, Owner.transform.position + Vector3.up * 0.5f); // Factoryå ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™å ì™ì˜™ å ì™ì˜™í™˜
 
-        dropItem.name = $"{slots[index].SlotItemData.itemName}";    // ¾ÆÀÌÅÛ ÀÌ¸§ º¯°æ
+        dropItem.name = $"{slots[index].SlotItemData.itemName}";    // ì•„ì´í…œ ì´ë¦„ ë³€ê²½
         //dropItem.transform.SetParent(null);
 
         slots[index].DiscardItem(1);
     }
 
     /// <summary>
-    /// ÇØ´ç ÀÎµ¦½º¿¡ ½½·Ô¿¡ ¾ÆÀÌÅÛÀÌ µé¾î°¥ ¼ö ÀÖ´Â Áö È®ÀÎÇÏ´Â ÇÔ¼ö
+    /// í•´ë‹¹ ì¸ë±ìŠ¤ì— ìŠ¬ë¡¯ì— ì•„ì´í…œì´ ë“¤ì–´ê°ˆ ìˆ˜ ìˆëŠ” ì§€ í™•ì¸í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <param name="index">È®ÀÎÇÒ ÀÎµ¦½º</param>
-    /// <returns>½½·ÔÀÌ Á¸ÀçÇÏ¸é true ¾Æ´Ï¸é false</returns>
+    /// <param name="index">í™•ì¸í•  ì¸ë±ìŠ¤</param>
+    /// <returns>ìŠ¬ë¡¯ì´ ì¡´ì¬í•˜ë©´ true ì•„ë‹ˆë©´ false</returns>
     public bool IsVaildSlot(uint index)
     {
         return slots[index].SlotItemData != null;
     }
 
     /// <summary>
-    /// °ñµå¸¦ È¹µæÇÒ ¶§ ½ÇÇàµÇ´Â ÇÔ¼ö
+    /// ê³¨ë“œë¥¼ íšë“í•  ë•Œ ì‹¤í–‰ë˜ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <param name="price">È¹µæÇÒ °ñµå·®</param>
+    /// <param name="price">íšë“í•  ê³¨ë“œëŸ‰</param>
     public void AddGold(uint price)
     {
         Gold += price;
     }
 
     /// <summary>
-    /// °ñµå¸¦ ¼Ò¸ğÇÒ ¶§ ½ÇÇàµÇ´Â ÇÔ¼ö
+    /// ê³¨ë“œë¥¼ ì†Œëª¨í•  ë•Œ ì‹¤í–‰ë˜ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <param name="price">È¹µæÇÒ °ñµå·®</param>
+    /// <param name="price">íšë“í•  ê³¨ë“œëŸ‰</param>
     public void SubCoin(uint price)
     {
         Gold -= price;
     }
 
     /// <summary>
-    /// ÀÎº¥Åä¸® ¿À³Ê ¼³Á¤ÇÏ´Â ÇÔ¼ö
+    /// ê³¨ë“œë¥¼ ì„¤ì •í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <param name="owerObj">ÀÎº¥Åä¸® ¿À³Ê ¿ÀºêÁ§Æ®</param>
+    /// <param name="price">ì„¤ì •í•  ê³¨ë“œëŸ‰</param>
+    public void SetCoin(uint price)
+    {
+        Gold = price;
+    }
+
+    /// <summary>
+    /// ì¸ë²¤í† ë¦¬ ì˜¤ë„ˆ ì„¤ì •í•˜ëŠ” í•¨ìˆ˜
+    /// </summary>
+    /// <param name="owerObj">ì¸ë²¤í† ë¦¬ ì˜¤ë„ˆ ì˜¤ë¸Œì íŠ¸</param>
     public void SetOwner(GameObject owerObj)
     {
         owner = owerObj;
     }
 
     /// <summary>
-    /// ¾ÆÀÌÅÛµé Áß °¡Àå °­ÇÑ ¾ÆÀÌÅÛÀÇ ¾ÆÀÌÅÛ ½½·ÔÀ» ¹İÈ¯ÇÏ´Â ÇÔ¼ö ( µ¿ÀÏÇÑ ¾ÆÀÌÅÛÀÌ ÀÖÀ¸¸é °¡Àå ¸ÕÀúÀÖ´Â ¾ÆÀÌÅÛÀ» ¹İÈ¯ )
+    /// ì•„ì´í…œë“¤ ì¤‘ ê°€ì¥ ê°•í•œ ì•„ì´í…œì˜ ì•„ì´í…œ ìŠ¬ë¡¯ì„ ë°˜í™˜í•˜ëŠ” í•¨ìˆ˜ ( ë™ì¼í•œ ì•„ì´í…œì´ ìˆìœ¼ë©´ ê°€ì¥ ë¨¼ì €ìˆëŠ” ì•„ì´í…œì„ ë°˜í™˜ )
     /// </summary>
-    /// <param name="weaponType">ÀåÂøÇÒ ¹«±â Å¸ÀÔ</param>
-    /// <returns>¹«±â Å¸ÀÔÀ» °¡Áø ¾ÆÀÌÅÛ °¡Àå Damage°¡ ³ôÀº InventorySlot</returns>
+    /// <param name="weaponType">ì¥ì°©í•  ë¬´ê¸° íƒ€ì…</param>
+    /// <returns>ë¬´ê¸° íƒ€ì…ì„ ê°€ì§„ ì•„ì´í…œ ê°€ì¥ Damageê°€ ë†’ì€ InventorySlot</returns>
     public InventorySlot QuickWeaponEquip(WeaponType weaponType)
     {
-        // ¾ÆÀÌÅÛÀÌ ÀåÂø µÇ¾îÀÖÀ¸¸é ÀåÂø ÇØÁ¦
+        // ì•„ì´í…œì´ ì¥ì°© ë˜ì–´ìˆìœ¼ë©´ ì¥ì°© í•´ì œ
         UnEquipAllItem();
 
-        // ¾ÆÀÌÅÛ Ã£±â
-        InventorySlot resultSlot = null;    // ¹İÈ¯ÇÒ ¾ÆÀÌÅÛ ½½·Ô°ª
-        float weaponDamage = 0;             // È®ÀÎÇÑ ¾ÆÀÌÅÛ Áß °¡Àå ³ôÀº µ¥¹ÌÁö
+        // ì•„ì´í…œ ì°¾ê¸°
+        InventorySlot resultSlot = null;    // ë°˜í™˜í•  ì•„ì´í…œ ìŠ¬ë¡¯ê°’
+        float weaponDamage = 0;             // í™•ì¸í•œ ì•„ì´í…œ ì¤‘ ê°€ì¥ ë†’ì€ ë°ë¯¸ì§€
         
         foreach(var item in slots)
         {
             ItemData_Weapon weaponItem = item.SlotItemData as ItemData_Weapon;
 
-            if (weaponItem != null) // ÇØ´ç ¾ÆÀÌÅÛÀÌ ¹«±â ¾ÆÀÌÅÛÀÌ´Ù
+            if (weaponItem != null) // í•´ë‹¹ ì•„ì´í…œì´ ë¬´ê¸° ì•„ì´í…œì´ë‹¤
             {
-                if(weaponItem.WeaponType == weaponType && weaponItem.Damage > weaponDamage) // Ã£Àº ¹«±â Å¸ÀÔÀÌ°í °¡Àå ³ôÀº µ¥¹ÌÁö¸¦ °¡Áø ¾ÆÀÌÅÛÀÌ´Ù
+                if(weaponItem.WeaponType == weaponType && weaponItem.Damage > weaponDamage) // ì°¾ì€ ë¬´ê¸° íƒ€ì…ì´ê³  ê°€ì¥ ë†’ì€ ë°ë¯¸ì§€ë¥¼ ê°€ì§„ ì•„ì´í…œì´ë‹¤
                 {
                     resultSlot = item;                  
-                    weaponDamage = weaponItem.Damage;   // ÀúÀåÇÑ µ¥¹ÌÁö°ª °»½Å
+                    weaponDamage = weaponItem.Damage;   // ì €ì¥í•œ ë°ë¯¸ì§€ê°’ ê°±ì‹ 
                 }
             }
         }
@@ -457,7 +466,7 @@ public class Inventory
     }
     
     /// <summary>
-    /// ¸ğµç ¾ÆÀÌÅÛ ÀåÂøÀ» ÇØÁ¦ ÇÏ´Â ÇÔ¼ö
+    /// ëª¨ë“  ì•„ì´í…œ ì¥ì°©ì„ í•´ì œ í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
     void UnEquipAllItem()
     {
@@ -473,7 +482,7 @@ public class Inventory
 #if UNITY_EDITOR
 
     /// <summary>
-    /// ÀÎº¥Åä¸® ½½·ÔµéÀÇ Á¤º¸¸¦ º¸¿©ÁÖ´Â ÇÔ¼ö
+    /// ì¸ë²¤í† ë¦¬ ìŠ¬ë¡¯ë“¤ì˜ ì •ë³´ë¥¼ ë³´ì—¬ì£¼ëŠ” í•¨ìˆ˜
     /// </summary>
     public void TestShowInventory()
     {
@@ -483,7 +492,7 @@ public class Inventory
         {
             if(slots[i].SlotItemData == null)
             {
-                str += $"ºóÄ­";
+                str += $"ë¹ˆì¹¸";
             }
             else
             {

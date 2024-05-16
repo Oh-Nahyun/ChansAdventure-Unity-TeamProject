@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// ¼¼ÀÌºê³ª ·ÎµåÇÒ ¶§ È°¼ºÈ­µÇ´Â Ã¢ÀÇ ÄÄÆ÷³ÍÆ®
+/// ì„¸ì´ë¸Œë‚˜ ë¡œë“œí•  ë•Œ í™œì„±í™”ë˜ëŠ” ì°½ì˜ ì»´í¬ë„ŒíŠ¸
 /// </summary>
 public class SaveCheckUI : MonoBehaviour
 {
@@ -18,14 +18,19 @@ public class SaveCheckUI : MonoBehaviour
     Button cancelBtn;
 
     /// <summary>
-    /// ¼¼ÀÌºêÇÒ ¶§ ½ÇÇàÇÏ´Â µ¨¸®°ÔÀÌµå ( OK ¹öÆ° ´©¸£¸é ½ÇÇà )
+    /// ì„¸ì´ë¸Œí•  ë•Œ ì‹¤í–‰í•˜ëŠ” ë¸ë¦¬ê²Œì´ë“œ ( OK ë²„íŠ¼ ëˆ„ë¥´ë©´ ì‹¤í–‰ )
     /// </summary>
     public Action<int> onSave;
 
     /// <summary>
-    /// ·ÎµåÇÒ ¶§ ½ÇÇàÇÏ´Â µ¨¸®°ÔÀÌÆ® ( OK ¹öÆ° ´©¸£¸é ½ÇÇà )
+    /// ë¡œë“œí•  ë•Œ ì‹¤í–‰í•˜ëŠ” ë¸ë¦¬ê²Œì´íŠ¸ ( OK ë²„íŠ¼ ëˆ„ë¥´ë©´ ì‹¤í–‰ )
     /// </summary>
     public Action<int> onLoad;
+
+    /// <summary>
+    /// ë¦¬ì…‹í•  ë•Œ ì‹¤í–‰í•˜ëŠ” ë¸ë¦¬ê²Œì´íŠ¸ ( Ok ë²„íŠ¼ ëˆ„ë¥´ë©´ ì´ˆê¸°í™” ì‹¤í–‰)
+    /// </summary>
+    public Action onReset;
 
     void Awake()
     {
@@ -47,13 +52,13 @@ public class SaveCheckUI : MonoBehaviour
     }
 
     /// <summary>
-    /// ¼¼ÀÌºêÇÒ ¶§ È®ÀÎ ÇÏ´Â Ã¢À» ¶ç¿ì´Â ÇÔ¼ö
+    /// ì„¸ì´ë¸Œí•  ë•Œ í™•ì¸ í•˜ëŠ” ì°½ì„ ë„ìš°ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <param name="slotIndex">½½·Ô ÀÎµ¦½º</param>
+    /// <param name="slotIndex">ìŠ¬ë¡¯ ì¸ë±ìŠ¤</param>
     public void ShowSaveCheck(int slotIndex)
     {
         OpenPanel();
-        uiText.text = $"{slotIndex}¹ø¿¡ ¼¼ÀÌºê¸¦ ÇÏ½Ã°Ú½À´Ï±î?";
+        uiText.text = $"{slotIndex}ë²ˆì— ì„¸ì´ë¸Œë¥¼ í•˜ì‹œê² ìŠµë‹ˆê¹Œ?";
 
         okBtn.onClick.RemoveAllListeners();
         okBtn.onClick.AddListener(() =>
@@ -64,13 +69,13 @@ public class SaveCheckUI : MonoBehaviour
     }
 
     /// <summary>
-    /// ·ÎµåÇÒ ¶§ È®ÀÎÇÏ´Â Ã¢À» ¶ç¿ì´Â ÇÔ¼ö
+    /// ë¡œë“œí•  ë•Œ í™•ì¸í•˜ëŠ” ì°½ì„ ë„ìš°ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <param name="slotIndex">½½·Ô ÀÎµ¦½º</param>
+    /// <param name="slotIndex">ìŠ¬ë¡¯ ì¸ë±ìŠ¤</param>
     public void ShowLoadCheck(int slotIndex)
     {
         OpenPanel();
-        uiText.text = $"{slotIndex}¹ø µ¥ÀÌÅÍ¸¦ ·Îµå ÇÏ½Ã°Ú½À´Ï±î?";
+        uiText.text = $"{slotIndex}ë²ˆ ë°ì´í„°ë¥¼ ë¡œë“œ í•˜ì‹œê² ìŠµë‹ˆê¹Œ?";
 
         okBtn.onClick.RemoveAllListeners();
         okBtn.onClick.AddListener(() =>
@@ -81,7 +86,23 @@ public class SaveCheckUI : MonoBehaviour
     }
 
     /// <summary>
-    /// ÆĞ³ÎÀ» ¿­ ¶§ ½ÇÇàÇÏ´Â ÇÔ¼ö
+    /// ë¦¬ì…‹í• ì§€ í™•ì¸í•˜ëŠ” ì°½ì„ ë„ìš°ëŠ” í•¨ìˆ˜
+    /// </summary>
+    public void ShowResetCheck()
+    {
+        OpenPanel();
+        uiText.text = $"ëª¨ë“  ì„¸ì´ë¸Œ ë°ì´í„°ë¥¼ ì´ˆê¸°í™” í•˜ì‹œê² ìŠµë‹ˆê¹Œ?";
+
+        okBtn.onClick.RemoveAllListeners();
+        okBtn.onClick.AddListener(() =>
+        {
+            onReset?.Invoke();
+            ClosePanel();
+        });
+    }
+
+    /// <summary>
+    /// íŒ¨ë„ì„ ì—´ ë•Œ ì‹¤í–‰í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
     private void OpenPanel()
     {
@@ -91,7 +112,7 @@ public class SaveCheckUI : MonoBehaviour
     }
 
     /// <summary>
-    /// ÆĞ³ÎÀ» ´İÀ» ¶§ ½ÇÇàÇÏ´Â ÇÔ¼ö
+    /// íŒ¨ë„ì„ ë‹«ì„ ë•Œ ì‹¤í–‰í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
     private void ClosePanel()
     {
