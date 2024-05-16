@@ -15,7 +15,6 @@ public class Test_GetItemToPlayer : TestBase
 
     private void Start()
     {
-        // √ ±‚»≠
         GetObjectRange = GetComponent<SphereCollider>();
         GetObjectRange.isTrigger = true;
         GetObjectRange.radius = range;
