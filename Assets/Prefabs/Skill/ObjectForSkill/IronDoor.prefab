@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5252615696199536422}
   - component: {fileID: 2042022637998488034}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: IronDoor_Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -64,7 +64,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1215480226242625484}
   - component: {fileID: 7006824089884972562}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: IronDoor_Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -119,9 +119,9 @@ GameObject:
   - component: {fileID: 2828290618178611649}
   - component: {fileID: 2015016165475224811}
   - component: {fileID: 6984869681017472266}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: IronDoor
-  m_TagString: Untagged
+  m_TagString: ReactObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -136,8 +136,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 5, z: 5.79}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.85, y: 1.85, z: 1.85}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5252615696199536422}
   - {fileID: 1215480226242625484}
@@ -192,6 +192,8 @@ MonoBehaviour:
   takeDamageAfterThrow: 3
   defencePower: 0
   reactionType: 4
+  mainRenderer: {fileID: 0}
+  hitMovementPower: 2
 --- !u!1001 &6055716553142861072
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -250,10 +252,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 90
       objectReference: {fileID: 0}
+    - target: {fileID: -6787636002156409750, guid: 3d2ba7433f2d24244bdcac80881bfd1e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3d2ba7433f2d24244bdcac80881bfd1e,
         type: 3}
       propertyPath: m_Name
       value: DgnObj_DoorIronL_A_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3d2ba7433f2d24244bdcac80881bfd1e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 5332809968238436118, guid: 3d2ba7433f2d24244bdcac80881bfd1e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -339,10 +356,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 90
       objectReference: {fileID: 0}
+    - target: {fileID: -6787636002156409750, guid: 3d2ba7433f2d24244bdcac80881bfd1e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3d2ba7433f2d24244bdcac80881bfd1e,
         type: 3}
       propertyPath: m_Name
       value: DgnObj_DoorIronL_A_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3d2ba7433f2d24244bdcac80881bfd1e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 5332809968238436118, guid: 3d2ba7433f2d24244bdcac80881bfd1e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
