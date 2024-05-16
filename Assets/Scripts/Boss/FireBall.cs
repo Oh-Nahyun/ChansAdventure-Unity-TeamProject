@@ -26,9 +26,11 @@ public class FireBall : RecycleObject
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        Debug.Log("감지");
+        if (other.CompareTag("Player"))
         {
-            IBattler target = other.GetComponentInParent<IBattler>();
+            Debug.Log("플레이어 감지");
+            IBattler target = other.GetComponent<IBattler>();
             if (target != null)
             {
                 Debug.Log("파이어볼 공격 맞음");
