@@ -410,7 +410,7 @@ public class Boss : MonoBehaviour, IBattler, IHealth
 
     private void Update()
     {
-        fireBallSpawnPosition = transform.TransformPoint(new Vector3(-0.1f, 1.35f, 1.6f));
+        fireBallSpawnPosition = transform.TransformPoint(new Vector3(-0.1f, 1.0f, 1.6f));
         difference = player.transform.position - transform.position;
         sqrDistance = difference.sqrMagnitude;
 
