@@ -192,15 +192,17 @@ public class MagnetCatch : Skill
 
             if (isTarget_Door)
             {
-                float angle = Vector3.Angle(user.forward, target.forward);
-                float dir = Mathf.Sign(target.localScale.x);    // 회전값은 스케일(문의 방향)에 따라 영향을 받음
+                Vector3 dir = user.position - target.position;
+                bool isForward = Vector3.Dot(dir, target.forward) > 0;
+                int sign = 1;
 
-                if(angle > 90)
+                if(isForward)
                 {
-                    dir = -dir;     // 문과 유저의 방향이 반대면 회전값 반대로 (원래 가까워지면 커짐 -> 가까워지면 작아짐)
+                    sign = -1;
                 }
                 float sqrDistance = (user.position - target.position).sqrMagnitude;
                 float distanceDiff = sqrDistance - preSqrDistance;          // 가까워지면 양수, 멀어지면 음수
+
                 if(distanceDiff > 0f)
                 {
                     distanceDiff = 1;
@@ -214,11 +216,12 @@ public class MagnetCatch : Skill
                     distanceDiff = 0;
                 }
 
-                float rotate = dir * distanceDiff * Time.fixedDeltaTime * doorRotateAngle;
+                float rotate = sign * distanceDiff * Time.fixedDeltaTime * doorRotateAngle;
 
-                float specialRotate = -directionAxisZ * dir * Time.fixedDeltaTime * doorRotateAngle;
+                float specialRotate = -directionAxisZ * sign * Time.fixedDeltaTime * doorRotateAngle;
 
-                reactionTarget.AttachRotate((rotate + specialRotate - resultY) * Vector3.up);              // 문 회전
+                reactionTarget.AttachRotate((rotate + specialRotate) * Vector3.up);              // 문 회전
+                reactionTarget.AttachRotate(-resultY * Vector3.up);              // 문 회전
 
                 preSqrDistance = sqrDistance;
                 preUserPosition = user.position;
