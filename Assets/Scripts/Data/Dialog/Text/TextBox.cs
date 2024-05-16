@@ -171,9 +171,16 @@ public class TextBox : MonoBehaviour
 
             while (canvasGroup.alpha < 1.0f)
             {
-                canvasGroup.alpha += Time.deltaTime * alphaChangeSpeed;
+                if (NPCdata.isTalk)
+                {
+                    canvasGroup.alpha += Time.deltaTime * alphaChangeSpeed;
+                }
+                else
+                {
+                    canvasGroup.alpha = 0;
+                }
                 yield return null;
-            }
+            }        
         }
         else if (talking && !talkingEnd)
         {
@@ -189,13 +196,7 @@ public class TextBox : MonoBehaviour
                 canvasGroup.alpha -= Time.deltaTime * alphaChangeSpeed;
                 yield return null;
             }
-            canvasGroup.interactable = false;
-            canvasGroup.blocksRaycasts = false;
-            talkText.text = "";
-            nameText.text = "";
-            talkIndex = 0;
-            talking = false;
-            NPCdata.isTalk = false;
+            TalkEnd();
         }
     }
 
@@ -289,6 +290,10 @@ public class TextBox : MonoBehaviour
     /// <param name="selectId">받아온 선택지</param>
     public void OnSelect(int selectId)
     {
+        if (typingTalk)
+        {
+            return;
+        }
         NPCdata.id += selectId; // 받아온 선택지에 따라 Id값을 증가시켜 다음 대사로 진행
         talkingEnd = false;
         Action();
@@ -318,6 +323,18 @@ public class TextBox : MonoBehaviour
         {
             lever.Use();
         }
+    }
+
+    void TalkEnd()
+    {
+        StopCoroutine(TalkStart());
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
+        talkText.text = "";
+        nameText.text = "";
+        talkIndex = 0;
+        talking = false;
+        NPCdata.isTalk = false;    
     }
 
 }

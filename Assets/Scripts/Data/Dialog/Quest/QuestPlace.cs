@@ -8,10 +8,11 @@ public class QuestPlace : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-         if (other.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
             QuestManager.Instance.GetQuestTalkIndex(qusetId, false);
         }
+        gameObject.SetActive(false);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -20,6 +21,7 @@ public class QuestPlace : MonoBehaviour
         {
             QuestManager.Instance.GetQuestTalkIndex(qusetId, false);
         }
+        gameObject.SetActive(false);
     }
 
 }
