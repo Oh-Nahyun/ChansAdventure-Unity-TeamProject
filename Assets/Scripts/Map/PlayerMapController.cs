@@ -80,8 +80,8 @@ public class PlayerMapController : MonoBehaviour
         playerLineRenderer.positionCount = 0;
 
         // LineRenderer 넓이 설정
-        playerLineRenderer.startWidth = LineWidth;
-        playerLineRenderer.endWidth = LineWidth;
+        //playerLineRenderer.startWidth = LineWidth;
+        //playerLineRenderer.endWidth = LineWidth;
     }
 
     /// <summary>
@@ -105,11 +105,11 @@ public class PlayerMapController : MonoBehaviour
             float maxLength = 5f;                                       // 각 Vertex의 최대 거리
             if (betweenVertex > maxLength * maxLength)                  // betweenVertex보다 거리가 크다
             {
-                if (playerLineRenderer.positionCount > 10)
+                if (playerLineRenderer.positionCount > 50)
                 {
                     playerPos = new Vector3(transform.position.x, lineY, transform.position.z);
                     AddLine(playerPos);
-                    ResetLines(playerLineRenderer.positionCount);
+                    //ResetLines(playerLineRenderer.positionCount);
                 }
 
                 AddLine(playerPos);
