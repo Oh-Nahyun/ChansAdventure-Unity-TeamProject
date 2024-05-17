@@ -6,7 +6,7 @@ using UnityEngine;
 public class TextBoxManager : MonoBehaviour
 {
     /// <summary>
-    /// ´ë»ç °ü¸®¸¦ À§ÇÑ µñ¼Å³Ê¸®
+    /// ëŒ€ì‚¬ ê´€ë¦¬ë¥¼ ìœ„í•œ ë”•ì…”ë„ˆë¦¬
     /// </summary>
     Dictionary<int, string[]> talkData;
 
@@ -29,7 +29,7 @@ public class TextBoxManager : MonoBehaviour
     }
 
     /// <summary>
-    /// textBoxManager ÃÊ±âÈ­ ÇÔ¼ö
+    /// textBoxManager ì´ˆê¸°í™” í•¨ìˆ˜
     /// </summary>
     public void Initialize()
     {
@@ -40,77 +40,77 @@ public class TextBoxManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ´ë»ç¸¦ °ü¸®ÇÏ´Â ÇÔ¼ö
+    /// ëŒ€ì‚¬ë¥¼ ê´€ë¦¬í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
     void GenerateData()
     {
-        talkData.Add(0, new string[] { "ÃÊ±â°ª" });
-        // ¹°Ã¼ ¿ÀºêÁ§Æ®
-        talkData.Add(100, new string[] { "³ì»öÀ¸·Î ¹İÂ¦¹İÂ¦ ºû³ª´Â ·çÇÇ" });
-        talkData.Add(199, new string[] { "ÀÌ¹Ì ¾ÆÀÌÅÛÀ» È¹µæÇÑ »óÀÚÀÌ´Ù" });
-        talkData.Add(298, new string[] { "¹®ÀÌ ¿­·È´Ù" });
-        talkData.Add(299, new string[] { "Àá°ÜÀÖ´Â ¹®ÀÌ´Ù" });
+        talkData.Add(0, new string[] { "ì´ˆê¸°ê°’" });
+        // ë¬¼ì²´ ì˜¤ë¸Œì íŠ¸
+        talkData.Add(100, new string[] { "ë…¹ìƒ‰ìœ¼ë¡œ ë°˜ì§ë°˜ì§ ë¹›ë‚˜ëŠ” ë£¨í”¼" });
+        talkData.Add(199, new string[] { "ì´ë¯¸ ì•„ì´í…œì„ íšë“í•œ ìƒìì´ë‹¤" });
+        talkData.Add(298, new string[] { "ë¬¸ì´ ì—´ë ¸ë‹¤" });
+        talkData.Add(299, new string[] { "ì ê²¨ìˆëŠ” ë¬¸ì´ë‹¤" });
 
-        talkData.Add(300, new string[] { "ÀÌ¹Ì È¹µæÇÑ ½ºÅ³ÀÌ´Ù" });
-        talkData.Add(301, new string[] { "Æø¹ß·Î ¸ó½ºÅÍ¿¡°Ô ´ë¹ÌÁö¸¦ ÁÖ°Å³ª ¹°°ÇÀ» ºÎ¼ú ¼öµµ ÀÖ´Ù" });
-        talkData.Add(302, new string[] { "¼ö¸é¿¡ ¾óÀ½ ±âµÕÀ» ¸¸µé¾î ¹°°¡¿¡¼­ ¹ßÆÇÀÌ³ª Àå¾Ö¹°·Î ÀÌ¿ëÇÒ ¼ö ÀÖ´Ù" });
-        talkData.Add(303, new string[] { "¹ß»çµÇ´Â ÀÚ·ÂÀ» ¸ÂÈ÷¸é ±İ¼Ó ¹°°ÇÀ» ÀâÀ» ¼ö ÀÖ´Ù" });
-        talkData.Add(304, new string[] { "¹°Ã¼ÀÇ ½Ã°£À» ¸ØÃç ´ë»ó¿¡ Ãæ°İÀ» ÃàÀû½ÃÅ³ ¼ö ÀÖ´Ù" });
+        talkData.Add(300, new string[] { "ì´ë¯¸ íšë“í•œ ìŠ¤í‚¬ì´ë‹¤" });
+        talkData.Add(301, new string[] { "í­ë°œë¡œ ëª¬ìŠ¤í„°ì—ê²Œ ëŒ€ë¯¸ì§€ë¥¼ ì£¼ê±°ë‚˜ ë¬¼ê±´ì„ ë¶€ìˆ  ìˆ˜ë„ ìˆë‹¤" });
+        talkData.Add(302, new string[] { "ìˆ˜ë©´ì— ì–¼ìŒ ê¸°ë‘¥ì„ ë§Œë“¤ì–´ ë¬¼ê°€ì—ì„œ ë°œíŒì´ë‚˜ ì¥ì• ë¬¼ë¡œ ì´ìš©í•  ìˆ˜ ìˆë‹¤" });
+        talkData.Add(303, new string[] { "ë°œì‚¬ë˜ëŠ” ìë ¥ì„ ë§íˆë©´ ê¸ˆì† ë¬¼ê±´ì„ ì¡ì„ ìˆ˜ ìˆë‹¤" });
+        talkData.Add(304, new string[] { "ë¬¼ì²´ì˜ ì‹œê°„ì„ ë©ˆì¶° ëŒ€ìƒì— ì¶©ê²©ì„ ì¶•ì ì‹œí‚¬ ìˆ˜ ìˆë‹¤" });
 
 
         // NPC
-        // ³ëÀÎ
-        talkData.Add(1000, new string[] { "ÇãÇãÇã", "ÀÌ°÷¿¡ »õ·Î¿î »ç¶÷ÀÌ Ã£¾Æ¿À´Ù´Ï º°ÀÏÀÌ±º" });
-        talkData.Add(1010, new string[] { "´ÙÀ½´ë»ç" });
-        talkData.Add(1011, new string[] { "¼±ÅÃÁö 11 ¼±ÅÃ¿Ï·á", "AAAAA" });
-        talkData.Add(1012, new string[] { "¼±ÅÃÁö 12 ¼±ÅÃ¿Ï·á", "BBBBB" });
-        talkData.Add(1013, new string[] { "¼±ÅÃÁö 13 ¼±ÅÃ¿Ï·á", "CCCCC" });
+        // ë…¸ì¸
+        talkData.Add(1000, new string[] { "í—ˆí—ˆí—ˆ", "ì´ê³³ì— ìƒˆë¡œìš´ ì‚¬ëŒì´ ì°¾ì•„ì˜¤ë‹¤ë‹ˆ ë³„ì¼ì´êµ°" });
+        talkData.Add(1010, new string[] { "ë‹¤ìŒëŒ€ì‚¬" });
+        talkData.Add(1011, new string[] { "ì„ íƒì§€ 11 ì„ íƒì™„ë£Œ", "AAAAA" });
+        talkData.Add(1012, new string[] { "ì„ íƒì§€ 12 ì„ íƒì™„ë£Œ", "BBBBB" });
+        talkData.Add(1013, new string[] { "ì„ íƒì§€ 13 ì„ íƒì™„ë£Œ", "CCCCC" });
 
-        talkData.Add(1014, new string[] { "¼±ÅÃÁö1", "¼±ÅÃÁö2", "³ª°¡±â" });
+        talkData.Add(1014, new string[] { "ì„ íƒì§€1", "ì„ íƒì§€2", "ë‚˜ê°€ê¸°" });
 
-        talkData.Add(1020, new string[] { "´Ù´ÙÀ½´ë»ç" });
-        talkData.Add(1021, new string[] { "¼±ÅÃÁö 21 ¼±ÅÃ¿Ï·á", "AAAAA" });
-        talkData.Add(1022, new string[] { "¼±ÅÃÁö 22 ¼±ÅÃ¿Ï·á", "BBBBB" });
-        talkData.Add(1023, new string[] { "¼±ÅÃÁö 23 ¼±ÅÃ¿Ï·á", "CCCCC" });
-        talkData.Add(1024, new string[] { "¼±ÅÃÁö1", "¼±ÅÃÁö2", "³ª°¡±â" });
+        talkData.Add(1020, new string[] { "ë‹¤ë‹¤ìŒëŒ€ì‚¬" });
+        talkData.Add(1021, new string[] { "ì„ íƒì§€ 21 ì„ íƒì™„ë£Œ", "AAAAA" });
+        talkData.Add(1022, new string[] { "ì„ íƒì§€ 22 ì„ íƒì™„ë£Œ", "BBBBB" });
+        talkData.Add(1023, new string[] { "ì„ íƒì§€ 23 ì„ íƒì™„ë£Œ", "CCCCC" });
+        talkData.Add(1024, new string[] { "ì„ íƒì§€1", "ì„ íƒì§€2", "ë‚˜ê°€ê¸°" });
 
-        talkData.Add(1030, new string[] { "´Ù´ÙÀ½´ë»ç" });
+        talkData.Add(1030, new string[] { "ë‹¤ë‹¤ìŒëŒ€ì‚¬" });
 
-        talkData.Add(1100, new string[] { "¼±ÅÃÁö ¾ø´Â ´ÙÀ½´ë»ç" });
-        talkData.Add(1110, new string[] { "¼±ÅÃÁö ÀÖ´Â ´Ù´ÙÀ½´ë»ç" });
-        talkData.Add(1111, new string[] { "¼±ÅÃÁö 111 ¼±ÅÃ¿Ï·á", "AAAAA" });
-        talkData.Add(1112, new string[] { "¼±ÅÃÁö 112 ¼±ÅÃ¿Ï·á", "BBBBB" });
-        talkData.Add(1113, new string[] { "¼±ÅÃÁö 113 ¼±ÅÃ¿Ï·á", "CCCCC" });
-        talkData.Add(1114, new string[] { "¼±ÅÃÁö1", "¼±ÅÃÁö2", "³ª°¡±â" });
-        talkData.Add(1200, new string[] { "¼±ÅÃÁö ¾ø´Â ´Ù´ÙÀ½´ë»ç" });
+        talkData.Add(1100, new string[] { "ì„ íƒì§€ ì—†ëŠ” ë‹¤ìŒëŒ€ì‚¬" });
+        talkData.Add(1110, new string[] { "ì„ íƒì§€ ìˆëŠ” ë‹¤ë‹¤ìŒëŒ€ì‚¬" });
+        talkData.Add(1111, new string[] { "ì„ íƒì§€ 111 ì„ íƒì™„ë£Œ", "AAAAA" });
+        talkData.Add(1112, new string[] { "ì„ íƒì§€ 112 ì„ íƒì™„ë£Œ", "BBBBB" });
+        talkData.Add(1113, new string[] { "ì„ íƒì§€ 113 ì„ íƒì™„ë£Œ", "CCCCC" });
+        talkData.Add(1114, new string[] { "ì„ íƒì§€1", "ì„ íƒì§€2", "ë‚˜ê°€ê¸°" });
+        talkData.Add(1200, new string[] { "ì„ íƒì§€ ì—†ëŠ” ë‹¤ë‹¤ìŒëŒ€ì‚¬" });
 
-        // ½Ã¹Î
-        talkData.Add(2000, new string[] { "°¡³ª´Ù¶ó¸¶¹Ù»ç  ¾ÆÀÚÂ÷Ä«Å¸ÆÄÇÏ  °¡³ª´Ù¶ó¸¶¹Ù»ç  ¾ÆÀÚÂ÷Ä«Å¸ÆÄÇÏ  °¡³ª´Ù¶ó¸¶¹Ù»ç  ¾ÆÀÚÂ÷Ä«Å¸ÆÄÇÏ" });
+        // ì‹œë¯¼
+        talkData.Add(2000, new string[] { "ê°€ë‚˜ë‹¤ë¼ë§ˆë°”ì‚¬  ì•„ìì°¨ì¹´íƒ€íŒŒí•˜  ê°€ë‚˜ë‹¤ë¼ë§ˆë°”ì‚¬  ì•„ìì°¨ì¹´íƒ€íŒŒí•˜  ê°€ë‚˜ë‹¤ë¼ë§ˆë°”ì‚¬  ì•„ìì°¨ì¹´íƒ€íŒŒí•˜" });
 
-        // ½Ã¹Î
-        talkData.Add(3000, new string[] { "³» ºÎÅ¹Á» µé¾îÁÙ·¡?" });
-        talkData.Add(3001, new string[] { "¾ÆÁ÷" });
-        talkData.Add(3002, new string[] { "¿Ï·á" });
-        talkData.Add(3003, new string[] { "³¯¾¾°¡ Âü ÁÁ±¸³ª..." });
+        // ì‹œë¯¼
+        talkData.Add(3000, new string[] { "ë‚´ ë¶€íƒì¢€ ë“¤ì–´ì¤„ë˜?" });
+        talkData.Add(3001, new string[] { "ì•„ì§" });
+        talkData.Add(3002, new string[] { "ì™„ë£Œ" });
+        talkData.Add(3003, new string[] { "ë‚ ì”¨ê°€ ì°¸ ì¢‹êµ¬ë‚˜..." });
 
-        // »óÀÎ
-        talkData.Add(4000, new string[] { "¾î¼­¿É¼î!!" });
-        talkData.Add(4010, new string[] { "¾î¼­¿É¼î!!" });
-        talkData.Add(4011, new string[] { "±¸¸Å"});
-        talkData.Add(4012, new string[] { "ÆÇ¸Å"});
-        talkData.Add(4013, new string[] { "¾È³çÈ÷ °¡½Ê¼î!!" });
+        // ìƒì¸
+        talkData.Add(4000, new string[] { "ì–´ì„œì˜µì‡¼!!" });
+        talkData.Add(4010, new string[] { "ì–´ì„œì˜µì‡¼!!" });
+        talkData.Add(4011, new string[] { "êµ¬ë§¤"});
+        talkData.Add(4012, new string[] { "íŒë§¤"});
+        talkData.Add(4013, new string[] { "ì•ˆë…•íˆ ê°€ì‹­ì‡¼!!" });
 
-        talkData.Add(4014, new string[] { "±¸¸ÅÇÏ±â", "ÆÇ¸ÅÇÏ±â","³ª°¡±â" });
+        talkData.Add(4014, new string[] { "êµ¬ë§¤í•˜ê¸°", "íŒë§¤í•˜ê¸°","ë‚˜ê°€ê¸°" });
 
-        // µµ»ç
+        // ë„ì‚¬
         talkData.Add(5000, new string[] { "....." });
         talkData.Add(5001, new string[] { "....." });
     }
 
     /// <summary>
-    /// °¢ id¿¡ ÇØ´çÇÏ´Â ´ëÈ­ ³»¿ë °¡Á®¿À´Â ÇÔ¼ö
+    /// ê° idì— í•´ë‹¹í•˜ëŠ” ëŒ€í™” ë‚´ìš© ê°€ì ¸ì˜¤ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <param name="id">ÇØ´ç ¿ÀºêÁ§Æ®ÀÇ Id Å°°ª</param>
+    /// <param name="id">í•´ë‹¹ ì˜¤ë¸Œì íŠ¸ì˜ Id í‚¤ê°’</param>
     /// <returns></returns>
     public string[] GetTalkData(int id)
     {
@@ -118,7 +118,7 @@ public class TextBoxManager : MonoBehaviour
             return talkData[id];
         else
         {
-            //Debug.LogError("ÇØ´ç ID¿¡ ´ëÇÑ ´ëÈ­ µ¥ÀÌÅÍ¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù: " + id);
+            //Debug.LogError("í•´ë‹¹ IDì— ëŒ€í•œ ëŒ€í™” ë°ì´í„°ë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤: " + id);
             return null;
         }
     }
@@ -126,10 +126,10 @@ public class TextBoxManager : MonoBehaviour
     private void TalkingAction()
     {
         GameState state = GameManager.Instance.CurrnetGameState;
-        if (state == GameState.NotStart || textBox == null || textBoxItem != null)
+        if (state == GameState.NotStart || textBox == null || textBoxItem == null)
             return;
 
-        if (!textBox.TalkingEnd && !textBoxItem.Talking)
+        if (!textBox.TalkingEnd && !textBoxItem.Talking && !textBox.TalkingStart)
         {
             isTalkAction?.Invoke(false);
             for(int i = 0; i < setActiveObjs.Length; i++)
