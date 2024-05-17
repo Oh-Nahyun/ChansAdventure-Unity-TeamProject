@@ -36,7 +36,7 @@ public class TextInteraction : MonoBehaviour
             case "NPC":
                 TagText.SetText("말하기");
                 break;
-            case "Item":
+            case "DropItem":
                 TagText.SetText("줍기");
                 break;
             case "Chest":
