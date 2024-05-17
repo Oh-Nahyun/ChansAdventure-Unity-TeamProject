@@ -1088,6 +1088,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     public void Die()
     {
         animator.SetTrigger(DieHash);
+        controller.DisableInput();
         onDie?.Invoke();
         Debug.Log("플레이어 사망");
     }

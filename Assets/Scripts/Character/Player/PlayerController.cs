@@ -318,4 +318,11 @@ public class PlayerController : MonoBehaviour
         isTalk = talk;
     }
 
+    /// <summary>
+    /// Player 액션맵 인풋을 비활성화 하는 함수
+    /// </summary>
+    public void DisableInput()
+    {
+        playerInputAction.Player.Disable();
+    }
 }

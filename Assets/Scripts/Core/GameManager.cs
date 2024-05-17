@@ -183,6 +183,7 @@ public class GameManager : Singleton<GameManager>
         }
 
         if (player == null) player = FindAnyObjectByType<Player>();
+
         cameraManager = GetComponent<CameraManager>();
         itemDataManager = GetComponent<ItemDataManager>();
         mapManager = GetComponent<MapManager>();
@@ -195,6 +196,8 @@ public class GameManager : Singleton<GameManager>
         questManager = FindAnyObjectByType<QuestManager>();
         textBoxManager = FindAnyObjectByType<TextBoxManager>();
         textBoxManager.Initialize();
+
+        player.onDie += MapManager.CloseMiniMapUI;
 
         SpawnPlayerAfterLoadScene();
     }
