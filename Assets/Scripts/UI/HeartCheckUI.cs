@@ -38,13 +38,9 @@ public class HeartCheckUI : MonoBehaviour
     /// </summary>
     Player player;
 
-    private void Awake()
-    {
-        player = GameManager.Instance.Player;
-    }
-
     private void Start()
     {
+        player = GameManager.Instance.Player;
         // 배열 초기화
         Array.Resize(ref heartImages, Hearts.Length);
 
@@ -54,12 +50,22 @@ public class HeartCheckUI : MonoBehaviour
             Transform child = Hearts[i].transform.GetChild(1);
             heartImages[i] = child.GetComponent<Image>();
         }
+
+        player.onDie += DisableUI;
     }
 
     private void Update()
     {
         player = GameManager.Instance.Player;   
         PrintHearts();
+    }
+
+    /// <summary>
+    /// UI 비활성화 함수
+    /// </summary>
+    void DisableUI()
+    {
+        this.gameObject.SetActive(false);
     }
 
     /// <summary>

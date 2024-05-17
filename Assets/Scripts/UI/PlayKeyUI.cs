@@ -16,6 +16,7 @@ public class PlayKeyUI : MonoBehaviour
     private void Start()
     {
         player = GameManager.Instance.Player;
+        player.onDie += DisableUI;
     }
 
     private void LateUpdate()
@@ -28,5 +29,10 @@ public class PlayKeyUI : MonoBehaviour
         {
             canvasGroup.alpha = 1;
         }
+    }
+
+    void DisableUI()
+    {
+        gameObject.SetActive(false);
     }
 }

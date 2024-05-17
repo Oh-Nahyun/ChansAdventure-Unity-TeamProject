@@ -5,12 +5,12 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// ÅØ½ºÆ® UI¸¦ ÆäÀÌµå ÀÎ ¾Æ¿ô ÇÏ´Â Å¬·¡½º
+/// í…ìŠ¤íŠ¸ UIë¥¼ í˜ì´ë“œ ì¸ ì•„ì›ƒ í•˜ëŠ” í´ë˜ìŠ¤
 /// </summary>
 public class FadeInOutTextUI : MonoBehaviour
 {
     /// <summary>
-    /// ÆäÀÌµå ÀÎ ¾Æ¿ô ÇÒ ÅØ½ºÆ® 
+    /// í˜ì´ë“œ ì¸ ì•„ì›ƒ í•  í…ìŠ¤íŠ¸ 
     /// </summary>
     public TextMeshProUGUI text;
 
@@ -36,9 +36,19 @@ public class FadeInOutTextUI : MonoBehaviour
     }
 
     /// <summary>
-    /// ÆäÀÌµå ÀÎ ÇÒ ¶§ ½ÇÇàÇÏ´Â ÇÔ¼ö
+    /// í˜ì´ë“œ ì¸, í˜ì´ë“œ ì•„ì›ƒ í•  ë•Œ ì‹¤í–‰í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
     public void StartFadeInOut()
+    {
+        StopAllCoroutines();
+        StartCoroutine(FadeIn());        
+        StartCoroutine(FadeOut());
+    }
+
+    /// <summary>
+    /// í˜ì´ë“œ ì¸ë§Œ í•  ë•Œ í˜¸ì¶œë˜ëŠ” í•¨ìˆ˜
+    /// </summary>
+    public void StartFadeIn()
     {
         StopAllCoroutines();
         StartCoroutine(FadeIn());        
@@ -50,14 +60,12 @@ public class FadeInOutTextUI : MonoBehaviour
         while (timeElapsed < fadeIntime)
         {
             timeElapsed += Time.deltaTime;
-            Alpha = timeElapsed;
+            Alpha += Time.deltaTime / fadeIntime;
             text.faceColor = new Color(1f, 1f, 1f, Alpha);
             text.outlineColor = new Color(1f, 1f, 1f, Alpha);
 
             yield return null;
         }
-
-        StartCoroutine(FadeOut());
     }
 
     IEnumerator FadeOut()
@@ -66,7 +74,7 @@ public class FadeInOutTextUI : MonoBehaviour
         while (timeElapsed < fadeOutTime)
         {
             timeElapsed += Time.deltaTime;
-            Alpha -= timeElapsed;
+            Alpha -= Time.deltaTime / fadeOutTime;
             text.faceColor = new Color(1f, 1f, 1f, Alpha);
             text.outlineColor = new Color(1f, 1f, 1f, Alpha);
 
