@@ -53,8 +53,7 @@ public class SkillDownloader : NPCBase
                 GameManager.Instance.Skill.PlayerSkill.SkillAcquisition(SkillName.TimeLock);
                 Debug.Log("타임록 등록");
             }
-
-            id = 300;
+            gameObject.layer = 0;
         }
     }
 }
