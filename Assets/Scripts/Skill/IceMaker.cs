@@ -124,19 +124,17 @@ public class IceMaker : Skill
         layerMask_PlayerIgnore = ~layerMask_PlayerIgnore;
     }
 
-    protected override void OnEnable()
+    private void Start()
     {
-        base.OnEnable();
-        if(crosshair != null)
+        if (crosshair != null)
         {
             crosshairPositionChange += (isSpecialAction, worldPosition) => crosshair.SetPosition(isSpecialAction, worldPosition);
         }
-        if (isSpecialAction)
-        {
-            Vector3 userPos = user.position;
-            userPos.y += YpositionForCrosshair;
-            crosshairPositionChange?.Invoke(!isSpecialAction, userPos);
-        }
+    }
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
     }
 
     protected override void OnDisable()
@@ -172,7 +170,6 @@ public class IceMaker : Skill
             isUnderUser = false;
         }
     }
-
 
     protected override void OnSKillAction()
     {
@@ -259,6 +256,10 @@ public class IceMaker : Skill
                 Vector3 pos = user.position;
                 pos.y += startRayPoint;
                 ray = new Ray(pos, -user.up);
+
+                Vector3 userPos = user.position;
+                userPos.y += YpositionForCrosshair;
+                crosshairPositionChange?.Invoke(!isSpecialAction, userPos);
             }
 
             if (Physics.Raycast(ray, out RaycastHit hitInfo, skillDistance, layerMask_PlayerIgnore))

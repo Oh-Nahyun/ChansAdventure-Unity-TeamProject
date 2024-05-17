@@ -8,53 +8,58 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 /// <summary>
-/// ÇÃ·¹ÀÌ¾îÀÇ Á¤º¸¸¦ ÀúÀåÇÏ´Â Å¬·¡½º
+/// í”Œë ˆì´ì–´ì˜ ì •ë³´ë¥¼ ì €ì¥í•˜ëŠ” í´ë˜ìŠ¤
 /// </summary>
 public class SaveHandler_Base : MonoBehaviour
 {
-    // ÄÄÆ÷³ÍÆ® ================================================================
+    // ì»´í¬ë„ŒíŠ¸ ================================================================
     CanvasGroup canvasGroup;
 
     /// <summary>
-    /// ¼¼ÀÌºê µ¥ÀÌÅÍ ½½·Ôµé
+    /// ì„¸ì´ë¸Œ ë°ì´í„° ìŠ¬ë¡¯ë“¤
     /// </summary>
     protected SaveDataSlot[] saveSlots;
 
     /// <summary>
-    /// ¼¼ÀÌºê µ¥ÀÌÅÍ ½½·Ô Á¢±Ù ÇÁ·ÎÆÛÆ¼
+    /// ì„¸ì´ë¸Œ ë°ì´í„° ìŠ¬ë¡¯ ì ‘ê·¼ í”„ë¡œí¼í‹°
     /// </summary>
     public SaveDataSlot[] SaveSlots => saveSlots;
 
     /// <summary>
-    /// ¼¼ÀÌºê, ·Îµå È®ÀÎÃ¢
+    /// ì„¸ì´ë¸Œ, ë¡œë“œ í™•ì¸ì°½
     /// </summary>
     SaveCheckUI saveCheckUI;
 
-    // ½½·Ôµ¥ÀÌÅÍ ===============================================================
     /// <summary>
-    /// ¾À µ¥ÀÌÅÍ
+    /// ë¦¬ì…‹UI
+    /// </summary>
+    SaveResetUI saveResetUI;
+
+    // ìŠ¬ë¡¯ë°ì´í„° ===============================================================
+    /// <summary>
+    /// ì”¬ ë°ì´í„°
     /// </summary>
     protected int[] SceneDatas;
 
     /// <summary>
-    /// ÇÃ·¹ÀÌ¾î µ¥ÀÌÅÍ
+    /// í”Œë ˆì´ì–´ ë°ì´í„°
     /// </summary>
     protected PlayerData[] playerDatas;
 
     protected Player player;
 
     /// <summary>
-    /// µ¥ÀÌÅÍ ÃÖ´ë »çÀÌÁî
+    /// ë°ì´í„° ìµœëŒ€ ì‚¬ì´ì¦ˆ
     /// </summary>
     const int DATA_SIZE = 5;
 
     /// <summary>
-    /// ½½·ÔÀ» ¿ŞÂÊ Å¬¸¯ÇßÀ» ¶§ ½ÇÇàÇÏ´Â µ¨¸®°ÔÀÌÆ®
+    /// ìŠ¬ë¡¯ì„ ì™¼ìª½ í´ë¦­í–ˆì„ ë•Œ ì‹¤í–‰í•˜ëŠ” ë¸ë¦¬ê²Œì´íŠ¸
     /// </summary>
     public Action<int> onClickSaveSlot;
 
     /// <summary>
-    /// ½½·ÔÀ» ¿À¸¥ÂÊ Å¬¸¯ÇßÀ» ¶§ ½ÇÇàÇÏ´Â µ¨¸®°ÔÀÌÆ®
+    /// ìŠ¬ë¡¯ì„ ì˜¤ë¥¸ìª½ í´ë¦­í–ˆì„ ë•Œ ì‹¤í–‰í•˜ëŠ” ë¸ë¦¬ê²Œì´íŠ¸
     /// </summary>
     public Action<int> onClickLoadSlot;
 
@@ -83,9 +88,15 @@ public class SaveHandler_Base : MonoBehaviour
 
         saveCheckUI.onSave += SavePlayerData;
         saveCheckUI.onLoad += LoadPlayerData;
+        saveCheckUI.onReset += SetDefaultData;
 
         onClickSaveSlot += saveCheckUI.ShowSaveCheck;
         onClickLoadSlot += saveCheckUI.ShowLoadCheck;
+
+        child = transform.GetChild(2);
+        saveResetUI = child.GetComponent<SaveResetUI>();
+
+        saveResetUI.onReset += saveCheckUI.ShowResetCheck;
     }
 
     void OnEnable()
@@ -99,7 +110,7 @@ public class SaveHandler_Base : MonoBehaviour
     }
 
     /// <summary>
-    /// ¼¼ÀÌºê µ¥ÀÌÅÍ¸¦ Default°ªÀ¸·Î µÇµ¹¸®´Â ÇÔ¼ö
+    /// ì„¸ì´ë¸Œ ë°ì´í„°ë¥¼ Defaultê°’ìœ¼ë¡œ ë˜ëŒë¦¬ëŠ” í•¨ìˆ˜
     /// </summary>
     void SetDefaultData()
     {
@@ -107,20 +118,24 @@ public class SaveHandler_Base : MonoBehaviour
         {
             SceneDatas[i] = 0;
             playerDatas[i] = new PlayerData(Vector3.zero, Vector3.zero, null);
+
+            SavePlayerData(i); // ë¹ˆ ë°ì´í„° ì €ì¥
         }
+
+        RefreshSaveData();
     }
 
     /// <summary>
-    /// ÀúÀåµÈ µ¥ÀÌÅÍ(JsonÆÄÀÏ)¸¦ ºÒ·¯¿Í¼­ °»½ÅÇÏ´Â ÇÔ¼ö 
+    /// ì €ì¥ëœ ë°ì´í„°(JsoníŒŒì¼)ë¥¼ ë¶ˆëŸ¬ì™€ì„œ ê°±ì‹ í•˜ëŠ” í•¨ìˆ˜ 
     /// </summary>
     void RefreshSaveData()
     {
-        // Json ÆÄÀÏ ºÒ·¯¿À±â
+        // Json íŒŒì¼ ë¶ˆëŸ¬ì˜¤ê¸°
         string path = $"{Application.dataPath}/Save/";
-        if (System.IO.Directory.Exists(path))   // Save µğ·º·ÎÆ¼¶ó Á¸ÀçÇÏ¸é 
+        if (System.IO.Directory.Exists(path))   // Save ë””ë ‰ë¡œí‹°ë¼ ì¡´ì¬í•˜ë©´ 
         {
             string fullPath = $"{path}Save.json";
-            if (System.IO.File.Exists(fullPath))    // json ÆÄÀÏÀÌ Á¸ÀçÇÏ¸é ºÒ·¯¿À±â
+            if (System.IO.File.Exists(fullPath))    // json íŒŒì¼ì´ ì¡´ì¬í•˜ë©´ ë¶ˆëŸ¬ì˜¤ê¸°
             {
                 string json = System.IO.File.ReadAllText(fullPath);
 
@@ -133,7 +148,7 @@ public class SaveHandler_Base : MonoBehaviour
 
         for(int i = 0; i < SaveSlots.Length; i++)
         {
-            if (SceneDatas[i] == 0) // ¾À µ¥ÀÌÅÍ°¡ ¾ø´Ù == ¼¼ÀÌºê µ¥ÀÌÅÍ°¡ Á¸ÀçÇÏÁö ¾Ê´Â´Ù.
+            if (SceneDatas[i] == 0) // ì”¬ ë°ì´í„°ê°€ ì—†ë‹¤ == ì„¸ì´ë¸Œ ë°ì´í„°ê°€ ì¡´ì¬í•˜ì§€ ì•ŠëŠ”ë‹¤.
             {
                 SaveSlots[i].CheckSave(true, SceneDatas[i]);
             }
@@ -145,46 +160,46 @@ public class SaveHandler_Base : MonoBehaviour
     }
 
     /// <summary>
-    /// ÇÃ·¹ÀÌ¾î µ¥ÀÌÅÍ¸¦ ÀúÀåÇÏ´Â ÇÔ¼ö
+    /// í”Œë ˆì´ì–´ ë°ì´í„°ë¥¼ ì €ì¥í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <param name="saveIndex">¼¼ÀÌºêÇÒ ½½·Ô ÀÎµ¦½º</param>
+    /// <param name="saveIndex">ì„¸ì´ë¸Œí•  ìŠ¬ë¡¯ ì¸ë±ìŠ¤</param>
     protected virtual void SavePlayerData(int saveIndex)
     {
-        SaveData data = new SaveData(); // ÀúÀå¿ë Å¬·¡½º ÀÎ½ºÅÏ½º »ı¼º
-        // ÀúÀå¿ë °´Ã¼¿¡ µ¥ÀÌÅÍ ÀúÀå
-        // Scene ¹øÈ£ ÀúÀå
+        SaveData data = new SaveData(); // ì €ì¥ìš© í´ë˜ìŠ¤ ì¸ìŠ¤í„´ìŠ¤ ìƒì„±
+        // ì €ì¥ìš© ê°ì²´ì— ë°ì´í„° ì €ì¥
+        // Scene ë²ˆí˜¸ ì €ì¥
         SceneDatas[saveIndex] = SceneManager.GetActiveScene().buildIndex;
         data.SceneNumber = SceneDatas;
 
-        // Player Á¤º¸ ÀúÀå
+        // Player ì •ë³´ ì €ì¥
         Vector3 curPos = player.gameObject.transform.position;
         Vector3 curRot = player.gameObject.transform.eulerAngles;
         Inventory curInven = player.Inventory;
 
-        //data.playerInfos = new List<PlayerData>[DATA_SIZE]; // ÀúÀåÇÒ µ¥ÀÌÅÍ ÃÊ±âÈ­
-        data.playerInfos = new PlayerData[DATA_SIZE]; // ÀúÀåÇÒ µ¥ÀÌÅÍ ÃÊ±âÈ­
-        PlayerData playerData = new PlayerData(curPos, curRot, curInven); // ÀúÀåÇÒ µ¥ÀÌÅÍ°ª
-        playerDatas[saveIndex] = playerData;    // ÇÃ·¹ÀÌ¾î µ¥ÀÌÅÍ°ª ÀúÀå
+        //data.playerInfos = new List<PlayerData>[DATA_SIZE]; // ì €ì¥í•  ë°ì´í„° ì´ˆê¸°í™”
+        data.playerInfos = new PlayerData[DATA_SIZE]; // ì €ì¥í•  ë°ì´í„° ì´ˆê¸°í™”
+        PlayerData playerData = new PlayerData(curPos, curRot, curInven); // ì €ì¥í•  ë°ì´í„°ê°’
+        playerDatas[saveIndex] = playerData;    // í”Œë ˆì´ì–´ ë°ì´í„°ê°’ ì €ì¥
 
-        // ÀúÀå¿ë Å¬·¡½º ÀÎ½ºÅÏ½º¿¡ ÇöÀç ÀúÀåµÈ °ª °»½Å
+        // ì €ì¥ìš© í´ë˜ìŠ¤ ì¸ìŠ¤í„´ìŠ¤ì— í˜„ì¬ ì €ì¥ëœ ê°’ ê°±ì‹ 
         for (int i = 0; i < DATA_SIZE; i++)
         {
             data.playerInfos[i] = playerDatas[i];
         }
 
-        //data.playerInfos[saveIndex].Insert(saveIndex, playerDatas[saveIndex]); // SaveData Å¬·¡½º¿¡ ÀúÀå
+        //data.playerInfos[saveIndex].Insert(saveIndex, playerDatas[saveIndex]); // SaveData í´ë˜ìŠ¤ì— ì €ì¥
 
         // save Data file
-        string jsonText = JsonUtility.ToJson(data, true); // json Çü½Ä ¹®ÀÚ¿­·Î º¯°æ
+        string jsonText = JsonUtility.ToJson(data, true); // json í˜•ì‹ ë¬¸ìì—´ë¡œ ë³€ê²½
         string path = $"{Application.dataPath}/Save/";
         if (!System.IO.Directory.Exists(path))
         {
-            // path Æú´õ°¡ ¾ø´Ù
-            System.IO.Directory.CreateDirectory(path); // Æú´õ »ı¼º
+            // path í´ë”ê°€ ì—†ë‹¤
+            System.IO.Directory.CreateDirectory(path); // í´ë” ìƒì„±
         }
 
-        string fullPath = $"{path}Save.json";               // ÀüÁ¦ °æ·Î ¸¸µé±â
-        System.IO.File.WriteAllText(fullPath, jsonText);    // ÆÄÀÏ·Î ÀúÀå
+        string fullPath = $"{path}Save.json";               // ì „ì œ ê²½ë¡œ ë§Œë“¤ê¸°
+        System.IO.File.WriteAllText(fullPath, jsonText);    // íŒŒì¼ë¡œ ì €ì¥
 
         RefreshSaveData();
         Debug.Log("Player Data convert complete");
@@ -192,41 +207,42 @@ public class SaveHandler_Base : MonoBehaviour
 
 
     /// <summary>
-    /// ÇÃ·¹ÀÌ¾î µ¥ÀÌÅÍ ·Îµå
+    /// í”Œë ˆì´ì–´ ë°ì´í„° ë¡œë“œ
     /// </summary>
-    /// <param name="loadIndex">·ÎµåÇÒ ÆÄÀÏ ¹øÈ£</param>
-    /// <returns>·Îµå¿¡ ¼º°øÇßÀ¸¸é true ¾Æ´Ï¸é false</returns>
+    /// <param name="loadIndex">ë¡œë“œí•  íŒŒì¼ ë²ˆí˜¸</param>
+    /// <returns>ë¡œë“œì— ì„±ê³µí–ˆìœ¼ë©´ true ì•„ë‹ˆë©´ false</returns>
     protected virtual void LoadPlayerData(int loadIndex)
     {
-        // ÀúÀåÇÑ µ¥ÀÌÅÍ ºÒ·¯¿À±â   
-        GameManager.Instance.spawnPoint = playerDatas[loadIndex].position; // ÇÃ·¹ÀÌ¾î À§Ä¡ Àâ±â
+        // ì €ì¥í•œ ë°ì´í„° ë¶ˆëŸ¬ì˜¤ê¸°   
+        GameManager.Instance.spawnPoint = playerDatas[loadIndex].position; // í”Œë ˆì´ì–´ ìœ„ì¹˜ ì¡ê¸°
         player.transform.rotation = Quaternion.Euler(playerDatas[loadIndex].rotation);
 
-        Inventory inventory = player.Inventory; // ÀúÀåÇÒ ÇÃ·¹ÀÌ¾î ÀÎº¥Åä¸® ºÒ·¯¿À±â
+        Inventory inventory = player.Inventory; // ì €ì¥í•  í”Œë ˆì´ì–´ ì¸ë²¤í† ë¦¬ ë¶ˆëŸ¬ì˜¤ê¸°
         for (int i = 0; i < inventory.SlotSize; i++)
         {
-            if (playerDatas[loadIndex].itemDataClass[i].count == 0) // ¾ÆÀÌÅÛ °³¼ö°¡ ¾øÀ¸¸é ¹«½Ã
+            if (playerDatas[loadIndex].itemDataClass[i].count == 0) // ì•„ì´í…œ ê°œìˆ˜ê°€ ì—†ìœ¼ë©´ ë¬´ì‹œ
             {
                 continue;
             }
-            else // ¾ÆÀÌÅÛÀÌ Á¸ÀçÇÏ¸é ¾ÆÀÌÅÛ Ãß°¡
+            else // ì•„ì´í…œì´ ì¡´ì¬í•˜ë©´ ì•„ì´í…œ ì¶”ê°€
             {
-                uint itemCode = (uint)playerDatas[loadIndex].itemDataClass[i].itemCode; // ¾ÆÀÌÅÛ ÄÚµå
-                int itemCount = playerDatas[loadIndex].itemDataClass[i].count;            // ¾ÆÀÌÅÛ °³¼ö
+                uint itemCode = (uint)playerDatas[loadIndex].itemDataClass[i].itemCode; // ì•„ì´í…œ ì½”ë“œ
+                int itemCount = playerDatas[loadIndex].itemDataClass[i].count;            // ì•„ì´í…œ ê°œìˆ˜
 
                 player.Inventory.AddSlotItem(itemCode, itemCount, (uint)i);
+                player.Inventory.SetCoin(playerDatas[loadIndex].gold);
             }
         }
 
         //CloseSavePanel();
 
-        // ¾À ºÒ·¯¿À±â
-        string sceneName = System.IO.Path.GetFileNameWithoutExtension(UnityEngine.SceneManagement.SceneUtility.GetScenePathByBuildIndex(SceneDatas[loadIndex])); // ÀúÀåÇÑ ¾À ÀÎµ¦½º·Î ¾À ÀúÀå
+        // ì”¬ ë¶ˆëŸ¬ì˜¤ê¸°
+        string sceneName = System.IO.Path.GetFileNameWithoutExtension(UnityEngine.SceneManagement.SceneUtility.GetScenePathByBuildIndex(SceneDatas[loadIndex])); // ì €ì¥í•œ ì”¬ ì¸ë±ìŠ¤ë¡œ ì”¬ ì €ì¥
         GameManager.Instance.ChangeToTargetScene(sceneName, GameManager.Instance.Player.gameObject);
     }
 
     /// <summary>
-    /// ÆĞ³ÎÀ» º¸¿©ÁÖ´Â ÇÔ¼ö
+    /// íŒ¨ë„ì„ ë³´ì—¬ì£¼ëŠ” í•¨ìˆ˜
     /// </summary>
     public void ShowSavePanel()
     {
@@ -236,11 +252,11 @@ public class SaveHandler_Base : MonoBehaviour
     }
 
     /// <summary>
-    /// ÆĞ³ÎÀ» ¼û±â´Â ÇÔ¼ö
+    /// íŒ¨ë„ì„ ìˆ¨ê¸°ëŠ” í•¨ìˆ˜
     /// </summary>
     public void CloseSavePanel()
     {
-        if (canvasGroup == null) Debug.Log($"Á¢±ÙÇÏ´Â Ä·¹ö½º°¡ NULLÀÔ´Ï´Ù");
+        if (canvasGroup == null) Debug.Log($"ì ‘ê·¼í•˜ëŠ” ìº ë²„ìŠ¤ê°€ NULLì…ë‹ˆë‹¤");
         canvasGroup.alpha = 0;
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;

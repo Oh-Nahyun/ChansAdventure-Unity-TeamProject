@@ -309,6 +309,7 @@ public class Boss : MonoBehaviour, IBattler, IHealth
     IEnumerator StartDelay()
     {
         //isActive = false;
+        yield return new WaitForSeconds(1.3f);
         animator.SetTrigger("Roar");
         yield return new WaitForSeconds(StartDelayValue);
         isActive = true;
@@ -410,7 +411,7 @@ public class Boss : MonoBehaviour, IBattler, IHealth
 
     private void Update()
     {
-        fireBallSpawnPosition = transform.TransformPoint(new Vector3(-0.1f, 1.35f, 1.6f));
+        fireBallSpawnPosition = transform.TransformPoint(new Vector3(-0.1f, 1.0f, 1.6f));
         difference = player.transform.position - transform.position;
         sqrDistance = difference.sqrMagnitude;
 

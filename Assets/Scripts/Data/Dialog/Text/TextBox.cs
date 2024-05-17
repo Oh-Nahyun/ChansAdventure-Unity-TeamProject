@@ -35,7 +35,7 @@ public class TextBox : MonoBehaviour
 
     public NPCBase NPCdata;
 
-    TextBoxManager textBoxManager; // TextBoxManager¿¡ ´ëÇÑ ÂüÁ¶
+    TextBoxManager textBoxManager; // TextBoxManagerì— ëŒ€í•œ ì°¸ì¡°
     QuestManager questManager;
 
     private void Awake()
@@ -73,12 +73,12 @@ public class TextBox : MonoBehaviour
     {
         if (interaction != null)
         {
-            scanObject = interaction.scanIbgect; // scanIbgect °ªÀ» °¡Á®¿È
+            scanObject = interaction.scanIbgect; // scanIbgect ê°’ì„ ê°€ì ¸ì˜´
         }
     }
 
     /// <summary>
-    /// textbox ÃÊ±âÈ­ ÇÔ¼ö
+    /// textbox ì´ˆê¸°í™” í•¨ìˆ˜
     /// </summary>
     public void InitializeTextBox()
     {
@@ -101,11 +101,10 @@ public class TextBox : MonoBehaviour
     }
 
     /// <summary>
-    /// »óÈ£ÀÛ¿ë ÀÔ·Â½Ã ´ë»ó ºĞº° ÇÔ¼ö
+    /// ìƒí˜¸ì‘ìš© ì…ë ¥ì‹œ ëŒ€ìƒ ë¶„ë³„ í•¨ìˆ˜
     /// </summary>
     public void Action()
-    {
-        
+    {        
         talkText.text = "";
         nameText.text = "";
         if (scanObject != null)
@@ -147,12 +146,12 @@ public class TextBox : MonoBehaviour
         }
         else
         {
-            Debug.Log("´ë»óÀÌ ¾øÀ½");
+            Debug.Log("ëŒ€ìƒì´ ì—†ìŒ");
         }
     }
 
     /// <summary>
-    /// ´ëÈ­ ½ÃÀÛ, ÁøÇà, Á¾·á ÄÚ·çÆ¾
+    /// ëŒ€í™” ì‹œì‘, ì§„í–‰, ì¢…ë£Œ ì½”ë£¨í‹´
     /// </summary>
     /// <returns></returns>
     IEnumerator TalkStart()
@@ -201,9 +200,9 @@ public class TextBox : MonoBehaviour
     }
 
     /// <summary>
-    /// ´ë»ç Å¸ÀÌÇÎ È¿°ú ÄÚ·çÆ¾
+    /// ëŒ€ì‚¬ íƒ€ì´í•‘ íš¨ê³¼ ì½”ë£¨í‹´
     /// </summary>
-    /// <param name="text">Å¸ÀÌÇÎ È¿°ú¸¦ ÁÙ ÅØ½ºÆ®</param>
+    /// <param name="text">íƒ€ì´í•‘ íš¨ê³¼ë¥¼ ì¤„ í…ìŠ¤íŠ¸</param>
     /// <returns></returns>
     IEnumerator TypingText(string text)
     {
@@ -229,7 +228,7 @@ public class TextBox : MonoBehaviour
     }
 
     /// <summary>
-    /// ÀÌ¸§ ¹× ´ë»ç Ãâ·Â ÇÔ¼ö
+    /// ì´ë¦„ ë° ëŒ€ì‚¬ ì¶œë ¥ í•¨ìˆ˜
     /// </summary>
     void SetTalkText()
     {
@@ -268,9 +267,9 @@ public class TextBox : MonoBehaviour
     }
 
     /// <summary>
-    /// ´ÙÀ½ ´ëÈ­ ³»¿ë ºÒ·¯¿À´Â ÇÔ¼ö
+    /// ë‹¤ìŒ ëŒ€í™” ë‚´ìš© ë¶ˆëŸ¬ì˜¤ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <param name="id">´ëÈ­ ´ë»óÀÇ ID</param>
+    /// <param name="id">ëŒ€í™” ëŒ€ìƒì˜ ID</param>
     void Talk(int id)
     {
         if ((talkIndex + 1) == textBoxManager.GetTalkData(id).Length)
@@ -285,23 +284,23 @@ public class TextBox : MonoBehaviour
     }
 
     /// <summary>
-    /// ¼±ÅÃÁö ¹Ş¾Æ¿À´Â ÇÔ¼ö
+    /// ì„ íƒì§€ ë°›ì•„ì˜¤ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <param name="selectId">¹Ş¾Æ¿Â ¼±ÅÃÁö</param>
+    /// <param name="selectId">ë°›ì•„ì˜¨ ì„ íƒì§€</param>
     public void OnSelect(int selectId)
     {
         if (typingTalk)
         {
             return;
         }
-        NPCdata.id += selectId; // ¹Ş¾Æ¿Â ¼±ÅÃÁö¿¡ µû¶ó Id°ªÀ» Áõ°¡½ÃÄÑ ´ÙÀ½ ´ë»ç·Î ÁøÇà
+        NPCdata.id += selectId; // ë°›ì•„ì˜¨ ì„ íƒì§€ì— ë”°ë¼ Idê°’ì„ ì¦ê°€ì‹œì¼œ ë‹¤ìŒ ëŒ€ì‚¬ë¡œ ì§„í–‰
         talkingEnd = false;
         Action();
         textSelet.onSeletEnd();
     }
 
     /// <summary>
-    /// ´ë»çÃ¢À» Ãâ·ÂÇÏÁö ¾Ê´Â ¿ÀºêÁ§Æ® Ã³¸® ÇÔ¼ö
+    /// ëŒ€ì‚¬ì°½ì„ ì¶œë ¥í•˜ì§€ ì•ŠëŠ” ì˜¤ë¸Œì íŠ¸ ì²˜ë¦¬ í•¨ìˆ˜
     /// </summary>
     void isOtherObject()
     {
@@ -310,7 +309,7 @@ public class TextBox : MonoBehaviour
         Lever lever = scanObject.GetComponent<Lever>();
         if (warpBase != null)
         {
-            Debug.Log("¿öÇÁ");
+            Debug.Log("ì›Œí”„");
             warpBase.WarpToWarpPoint();
         }
 

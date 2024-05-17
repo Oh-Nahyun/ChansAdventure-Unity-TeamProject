@@ -5,52 +5,57 @@ using System.IO;
 using UnityEngine;
 
 /// <summary>
-/// ¾ÆÀÌÅÛÄÚµå¿Í °³¼ö¸¦ ÀúÀåÇÏ´Â Å¬·¡½º
+/// ì•„ì´í…œì½”ë“œì™€ ê°œìˆ˜ë¥¼ ì €ì¥í•˜ëŠ” í´ë˜ìŠ¤
 /// </summary>
 [System.Serializable]
 public class ItemDataClass
 {
     /// <summary>
-    /// ÀúÀåµÈ ¾ÆÀÌÅÛ ÄÚµå
+    /// ì €ì¥ëœ ì•„ì´í…œ ì½”ë“œ
     /// </summary>
     public int itemCode;
 
     /// <summary>
-    /// ÀúÀåµÈ ¾ÆÀÌÅÛ °³¼ö
+    /// ì €ì¥ëœ ì•„ì´í…œ ê°œìˆ˜
     /// </summary>
     public int count;
 }
 
 /// <summary>
-/// ÇÃ·¹ÀÌ¾î µ¥ÀÌÅÍ ±¸Á¶Ã¼
+/// í”Œë ˆì´ì–´ ë°ì´í„° êµ¬ì¡°ì²´
 /// </summary>
 [System.Serializable]
 public struct PlayerData
 {
     /// <summary>
-    /// ÇÃ·¹ÀÌ¾î À§Ä¡°ª
+    /// í”Œë ˆì´ì–´ ìœ„ì¹˜ê°’
     /// </summary>
     public Vector3 position;
 
     /// <summary>
-    /// ÇÃ·¹ÀÌ¾î È¸Àü°ª
+    /// í”Œë ˆì´ì–´ íšŒì „ê°’
     /// </summary>
     public Vector3 rotation;
 
     /// <summary>
-    /// ÇÃ·¹ÀÌ¾î ÀÎº¥Åä¸® - ÇÃ·¹ÀÌ¾î ÀÎº¥Åä¸® ÀúÀå¿ë
+    /// í”Œë ˆì´ì–´ ì¸ë²¤í† ë¦¬ - í”Œë ˆì´ì–´ ì¸ë²¤í† ë¦¬ ì €ì¥ìš©
     /// </summary>
     Inventory inventory;
 
     /// <summary>
-    /// ÇÃ·¹ÀÌ¾î ÀÎº¥Åä¸® ½½·Ô
+    /// í”Œë ˆì´ì–´ ì¸ë²¤í† ë¦¬ ìŠ¬ë¡¯
     /// </summary>
     InventorySlot[] slots;
 
     public ItemDataClass[] itemDataClass;
 
     /// <summary>
-    /// ¼¼ÀÌºê µ¥ÀÌÅÍ Ä­ ¼ö
+    /// ì €ì¥ëœ ê³¨ë“œëŸ‰
+    /// </summary>
+    public uint gold;
+
+    /// <summary>
+    /// ì„¸ì´ë¸Œ ë°ì´í„° ì¹¸ ìˆ˜
     /// </summary>
     const int saveCount = 5;
 
@@ -60,25 +65,26 @@ public struct PlayerData
         this.rotation = rot;  
         this.inventory = inven;
 
-        // ÀÎº¥Åä¸®°¡ NULLÀÌ¸é ÀÓ½Ã ½½·Ô °³¼ö ºÎ¿© ( 1°³ )
+        // ì¸ë²¤í† ë¦¬ê°€ NULLì´ë©´ ì„ì‹œ ìŠ¬ë¡¯ ê°œìˆ˜ ë¶€ì—¬ ( 1ê°œ )
         uint slotSize = this.inventory == null ? 1 : this.inventory.SlotSize;
-        this.slots = new InventorySlot[slotSize];                       // ½½·Ô ÃÊ±âÈ­
+        this.slots = new InventorySlot[slotSize];                       // ìŠ¬ë¡¯ ì´ˆê¸°í™”
         this.itemDataClass = new ItemDataClass[slotSize];
 
-        if(slotSize == 1) // ÀÎº¥Åä¸®°¡ NULLÀÌ¸é
+        if(slotSize == 1) // ì¸ë²¤í† ë¦¬ê°€ NULLì´ë©´
         {
             this.slots[0] = new InventorySlot(0);
             this.itemDataClass[0] = new ItemDataClass();
+            this.gold = 0;
         }
-        else // ÀÎº¥Åä¸®°¡ NULLÀÌ ¾Æ´Ï¸é
+        else // ì¸ë²¤í† ë¦¬ê°€ NULLì´ ì•„ë‹ˆë©´
         {
-            // ÀÎº¥Åä¸® ½½·Ô µ¥ÀÌÅÍ ÃÊ±âÈ­
+            // ì¸ë²¤í† ë¦¬ ìŠ¬ë¡¯ ë°ì´í„° ì´ˆê¸°í™”
             for (int i = 0; i < slotSize; i++)
             {
-                this.slots[i] = inventory[(uint)i]; // ½½·Ô µ¥ÀÌÅÍ Ãß°¡
+                this.slots[i] = inventory[(uint)i]; // ìŠ¬ë¡¯ ë°ì´í„° ì¶”ê°€
             }
 
-            // ¾ÆÀÌÅÛ µ¥ÀÌÅÍ ÃÊ±âÈ­
+            // ì•„ì´í…œ ë°ì´í„° ì´ˆê¸°í™”
             for(int i = 0; i < saveCount; i++)
             {
                 if (slots[i].SlotItemData == null)
@@ -92,18 +98,20 @@ public struct PlayerData
                     itemDataClass[i].count = slots[i].CurrentItemCount;
                 }
             }
+
+            gold = inven.Gold;
         }
     }
 }
 
 /// <summary>
-/// json ÆÄÀÏ ÀúÀå¿ë Å¬·¡½º ( Scene¹øÈ£, ÇÃ·¹ÀÌ¾î À§Ä¡, ÇÃ·¹ÀÌ¾î ÀÎº¥Åä¸®)
+/// json íŒŒì¼ ì €ì¥ìš© í´ë˜ìŠ¤ ( Sceneë²ˆí˜¸, í”Œë ˆì´ì–´ ìœ„ì¹˜, í”Œë ˆì´ì–´ ì¸ë²¤í† ë¦¬)
 /// </summary>
 [Serializable]
 public class SaveData
 {
     /// <summary>
-    /// ÀúÀåµÈ ¾À ¹øÈ£
+    /// ì €ì¥ëœ ì”¬ ë²ˆí˜¸
     /// </summary>
     public int[] SceneNumber;
 

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 /// <summary>
-/// Map UIÀÇ °¢Á¾ °ªÀ» ´Ù·ç´Â Manager Å¬·¡½º ( À§Ä¡°ª ¸ÊÀÇ ¿ŞÂÊ ¹Ø¿¡ °íÁ¤ )
+/// Map UIì˜ ê°ì¢… ê°’ì„ ë‹¤ë£¨ëŠ” Manager í´ë˜ìŠ¤ ( ìœ„ì¹˜ê°’ ë§µì˜ ì™¼ìª½ ë°‘ì— ê³ ì • )
 /// </summary>
 public class MapManager : Singleton<MapManager>
 {
@@ -14,12 +14,12 @@ public class MapManager : Singleton<MapManager>
 
     [Header("Map Object Info")]
     /// <summary>
-    /// ¸Ê ÆĞ³Î UI
+    /// ë§µ íŒ¨ë„ UI
     /// </summary>
     MapPanelUI largeMapPanelUI;
 
     /// <summary>
-    /// ¸Ê ÆĞ³Î UI¸¦ Á¢±ÙÇÏ±â À§ÇÑ ÇÁ·ÎÆÛÆ¼
+    /// ë§µ íŒ¨ë„ UIë¥¼ ì ‘ê·¼í•˜ê¸° ìœ„í•œ í”„ë¡œí¼í‹°
     /// </summary>
     public MapPanelUI LargeMapPanelUI => largeMapPanelUI;
 
@@ -29,42 +29,52 @@ public class MapManager : Singleton<MapManager>
     CanvasGroup largeMapCanvasGroup;
 
     /// <summary>
-    /// ¹Ì´Ï¸Ê ÆĞ³Î
+    /// ë¯¸ë‹ˆë§µ íŒ¨ë„
     /// </summary>
     CanvasGroup miniMapPanelUI;
 
     /// <summary>
-    /// ¹Ì´Ï¸Ê ÆĞ³Î Á¢±ÙÀ» À§ÇÑ ÇÁ·ÎÆÛÆ¼
+    /// ë¯¸ë‹ˆë§µ íŒ¨ë„ ì ‘ê·¼ì„ ìœ„í•œ í”„ë¡œí¼í‹°
     /// </summary>
     public CanvasGroup MiniMapPanelUI => miniMapPanelUI;
 
     /// <summary>
-    /// Map»ó¿¡ ÇÃ·¹ÀÌ¾î ÀÌµ¿ÈçÀûÀ» Ç¥½ÃÇÒ Linerenderer
+    /// Mapìƒì— í”Œë ˆì´ì–´ ì´ë™í”ì ì„ í‘œì‹œí•  Linerenderer
     /// </summary>
     LineRenderer playerLineRenderer;
 
     /// <summary>
-    /// playerLineRendererÀ» Á¢±ÙÇÏ±â À§ÇÑ ÇÁ·ÎÆÛÆ¼
+    /// playerLineRendererì„ ì ‘ê·¼í•˜ê¸° ìœ„í•œ í”„ë¡œí¼í‹°
     /// </summary>
     public LineRenderer PlayerLineRendere => playerLineRenderer;
 
     /// <summary>
-    /// Map UI¿ë Ä«¸Ş¶ó
+    /// Map UIìš© ì¹´ë©”ë¼
     /// </summary>
     Camera mapCamera;
 
     /// <summary>
-    /// mapCamera¸¦ Á¢±ÙÇÏ±â À§ÇÑ ÇÁ·ÎÆÛÆ¼
+    /// mapCameraë¥¼ ì ‘ê·¼í•˜ê¸° ìœ„í•œ í”„ë¡œí¼í‹°
     /// </summary>
     public Camera MapCamera => mapCamera;
 
     /// <summary>
-    /// ¸Ê Ä«¸Ş¶óÀÇ y °íÁ¤ ÁÂÇ¥°ª
+    /// ë¼ì¸ëœë”ëŸ¬ ë¨¸í„°ë¦¬ì–¼
+    /// </summary>
+    public Material lineMaterial;
+
+    /// <summary>
+    /// ë¼ì¸ëœë”ëŸ¬ ë¹„í™œì„±í™” ë¨¸í„°ë¦¬ì–¼
+    /// </summary>
+    public Material disableLineMaterial;
+
+    /// <summary>
+    /// ë§µ ì¹´ë©”ë¼ì˜ y ê³ ì • ì¢Œí‘œê°’
     /// </summary>
     const float mapCameraY = 100f;
 
     /// <summary>
-    /// ¸Ê UI¸¦ ¿­¿´´ÂÁö È®ÀÎÇÏ´Â º¯¼ö
+    /// ë§µ UIë¥¼ ì—´ì˜€ëŠ”ì§€ í™•ì¸í•˜ëŠ” ë³€ìˆ˜
     /// </summary>
     public bool IsOpenedLargeMap = false;
 
@@ -74,7 +84,7 @@ public class MapManager : Singleton<MapManager>
 
         if(largeMapPanelUI == null)
         {
-            Debug.LogWarning("[MapManager] : MapPanelUI°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.LogWarning("[MapManager] : MapPanelUIê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
@@ -85,33 +95,34 @@ public class MapManager : Singleton<MapManager>
 
         if (miniMapPanelUI == null)
         {
-            Debug.LogWarning("[MapManager] : miniMapPanelUI Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù." +
-                "/ ¿ÀºêÁ§Æ® ÀÌ¸§À» È®ÀÎÇØÁÖ¼¼¿ä (MiniMapPanel)");
+            Debug.LogWarning("[MapManager] : miniMapPanelUI ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤." +
+                "/ ì˜¤ë¸Œì íŠ¸ ì´ë¦„ì„ í™•ì¸í•´ì£¼ì„¸ìš” (MiniMapPanel)");
         }
 
         playerLineRenderer = GameObject.Find("PlayerFollowLine")?.GetComponent<LineRenderer>();
 
         if(playerLineRenderer == null)
         {
-            Debug.LogWarning("[MapManager] : playerlineRenderer°¡ Á¸Àç ÇÏÁö¾Ê½À´Ï´Ù. " +
-                "/ ¿ÀºêÁ§Æ® ÀÌ¸§À» È®ÀÎÇØÁÖ¼¼¿ä (PlayerFollowLine)");            
+            Debug.LogWarning("[MapManager] : playerlineRendererê°€ ì¡´ì¬ í•˜ì§€ì•ŠìŠµë‹ˆë‹¤. " +
+                "/ ì˜¤ë¸Œì íŠ¸ ì´ë¦„ì„ í™•ì¸í•´ì£¼ì„¸ìš” (PlayerFollowLine)");            
         }
 
         mapCamera = GameObject.Find("MapCamera")?.GetComponent<Camera>();
         if (playerLineRenderer == null)
         {
-            Debug.LogWarning("[MapManager] : mapCamera Á¸Àç ÇÏÁö¾Ê½À´Ï´Ù. " +
-                "/ ¿ÀºêÁ§Æ® ÀÌ¸§À» È®ÀÎÇØÁÖ¼¼¿ä (MapCamera)");
+            Debug.LogWarning("[MapManager] : mapCamera ì¡´ì¬ í•˜ì§€ì•ŠìŠµë‹ˆë‹¤. " +
+                "/ ì˜¤ë¸Œì íŠ¸ ì´ë¦„ì„ í™•ì¸í•´ì£¼ì„¸ìš” (MapCamera)");
         }
     }
 
     #region MapPanelMethods
 
     /// <summary>
-    /// large ¸ÊÀ» Å°´Â ÇÔ¼ö ( largeMap ÄÑÁü, miniMap ²¨Áü )
+    /// large ë§µì„ í‚¤ëŠ” í•¨ìˆ˜ ( largeMap ì¼œì§, miniMap êº¼ì§ )
     /// </summary>
     public void OpenMapUI()
     {
+        EnableMaterial();
         largeMapCanvasGroup.alpha = 1.0f;
         largeMapCanvasGroup.interactable = true;
         largeMapCanvasGroup.blocksRaycasts = true;
@@ -121,10 +132,11 @@ public class MapManager : Singleton<MapManager>
     }
 
     /// <summary>
-    /// large ¸ÊÀ» ²ô´Â ÇÔ¼ö ( largeMap ²¨Áü, miniMap ÄÑÁü )
+    /// large ë§µì„ ë„ëŠ” í•¨ìˆ˜ ( largeMap êº¼ì§, miniMap ì¼œì§ )
     /// </summary>
     public void CloseMapUI()
     {
+        DisableMaterial();
         largeMapCanvasGroup.alpha = 0.0f;
         largeMapCanvasGroup.interactable = false;
         largeMapCanvasGroup.blocksRaycasts = false;
@@ -134,7 +146,7 @@ public class MapManager : Singleton<MapManager>
     }
 
     /// <summary>
-    /// ¹Ì´Ï¸Ê ¿­ ¶§ ½ÇÇàÇÏ´Â ÇÔ¼ö
+    /// ë¯¸ë‹ˆë§µ ì—´ ë•Œ ì‹¤í–‰í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
     public void OpenMiniMapUI()
     {
@@ -142,11 +154,21 @@ public class MapManager : Singleton<MapManager>
     }
 
     /// <summary>
-    /// ¹Ì´Ï¸Ê ²ø ¶§ ½ÇÇàÇÏ´Â ÇÔ¼ö
+    /// ë¯¸ë‹ˆë§µ ëŒ ë•Œ ì‹¤í–‰í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
     public void CloseMiniMapUI()
     {
         miniMapPanelUI.alpha = 0.0f;        
+    }
+
+    public void DisableMaterial()
+    {
+        playerLineRenderer.material = disableLineMaterial;
+    }
+
+    public void EnableMaterial()
+    {
+        playerLineRenderer.material = lineMaterial;
     }
 
     #endregion
@@ -154,23 +176,23 @@ public class MapManager : Singleton<MapManager>
     #region ObjectSetting
 
     /// <summary>
-    /// Ä«¸Ş¶ó À§Ä¡¸¦ Á¶ÀıÇÏ´Â ÇÔ¼ö
+    /// ì¹´ë©”ë¼ ìœ„ì¹˜ë¥¼ ì¡°ì ˆí•˜ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <param name="position"> Ãß°¡ÇÒ Ä«¸Ş¶ó À§Ä¡°ª ( yÁÂÇ¥°ªÀº 100À¸·Î °íÁ¤ ) </param>
+    /// <param name="position"> ì¶”ê°€í•  ì¹´ë©”ë¼ ìœ„ì¹˜ê°’ ( yì¢Œí‘œê°’ì€ 100ìœ¼ë¡œ ê³ ì • ) </param>
     public void SetCameraPosition(Vector3 position)
     {
         //Transform child = transform.GetChild(0); // MapObject
 
-        float minX = mapSizeX * -0.5f; // MapManager´Â ¸ÊÀÇ ÁÂÃø ÇÏ´Ü¿¡ ÀÖ´Ù.
+        float minX = mapSizeX * -0.5f; // MapManagerëŠ” ë§µì˜ ì¢Œì¸¡ í•˜ë‹¨ì— ìˆë‹¤.
         float minY = mapSizeY * -0.5f;
-        float maxX = mapSizeX * 0.5f; // ¿ìÃø »ó´ÜÀÇ Panel ÁÂÇ¥°ª
+        float maxX = mapSizeX * 0.5f; // ìš°ì¸¡ ìƒë‹¨ì˜ Panel ì¢Œí‘œê°’
         float maxY = mapSizeY * 0.5f;
-        //float maxX = child.GetChild(child.childCount - 1).position.x; // ¿ìÃø »ó´ÜÀÇ Panel ÁÂÇ¥°ª
+        //float maxX = child.GetChild(child.childCount - 1).position.x; // ìš°ì¸¡ ìƒë‹¨ì˜ Panel ì¢Œí‘œê°’
         //float maxY = child.GetChild(child.childCount - 1).position.z;
         
-        mapCamera.transform.position += position; // Ä«¸Ş¶ó À§Ä¡ ¼³Á¤
+        mapCamera.transform.position += position; // ì¹´ë©”ë¼ ìœ„ì¹˜ ì„¤ì •
         
-        // Ä«¸Ş¶ó À§Ä¡°ª ¹üÀ§ ¼³Á¤
+        // ì¹´ë©”ë¼ ìœ„ì¹˜ê°’ ë²”ìœ„ ì„¤ì •
         mapCamera.transform.position = new Vector3
                 (Mathf.Clamp(position.x, minX, maxX),
                 mapCameraY,

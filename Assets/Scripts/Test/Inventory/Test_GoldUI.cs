@@ -9,6 +9,6 @@ public class Test_GoldUI : TestBase
 
     protected override void OnTest1(InputAction.CallbackContext context)
     {
-        //ItemDataManager.Instance.InventoryUI.Test_GoldChange(value); // »ç¿ëÇÏÁö ¾Ê´Â ÄÚµå
+        //ItemDataManager.Instance.InventoryUI.Test_GoldChange(value); // ê³¨ë“œëŸ‰ ë³€ê²½
     }
 }

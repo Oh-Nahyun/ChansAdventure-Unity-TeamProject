@@ -11,16 +11,16 @@ public class Test_Inventory : TestBase
 
     public InventoryUI inventoryUI;
 
-    [Header("½½·Ô Á¤º¸")]
+    [Header("ì•„ì´í…œ ì •ë³´")]
 
-    [Tooltip("¾ÆÀÌÅÛ ÄÚµå ÀÔ·Â")]
+    [Tooltip("ì•„ì´í…œì½”ë“œ")]
     public uint code;
-    [Tooltip("½½·Ô ÀÎµ¦½º")]
+    [Tooltip("ë³€ê²½í•  ìœ„ì¹˜ ìŠ¬ë¡¯")]
     [Range(0,5)]
     public uint indexA = 0;
     [Range(0,5)]
     public uint indexB = 0;
-    [Tooltip("°³¼ö")]
+    [Tooltip("ì•„ì´í…œ ê°œìˆ˜")]
     [Range(1,10)]
     public int count = 1;
 
