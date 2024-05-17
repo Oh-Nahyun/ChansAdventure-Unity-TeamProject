@@ -26,8 +26,11 @@ public class TextBox : MonoBehaviour
     public int talkIndex = 0;
     public float charPerSeconds = 0.05f;
 
+    private bool talkingStart = false;
     private bool talkingEnd;
     private bool talking;
+
+    public bool TalkingStart => talkingStart;
     public bool TalkingEnd => talkingEnd;
 
     private bool typingTalk;
@@ -158,7 +161,7 @@ public class TextBox : MonoBehaviour
     {
         if (!talking && !talkingEnd)
         {
-
+            talkingStart = true;
             canvasGroup.interactable = true;
             canvasGroup.blocksRaycasts = true;
 
@@ -167,7 +170,6 @@ public class TextBox : MonoBehaviour
             SetTalkText();
 
             NPCdata.isTalk = true;
-
             while (canvasGroup.alpha < 1.0f)
             {
                 if (NPCdata.isTalk)
@@ -183,12 +185,13 @@ public class TextBox : MonoBehaviour
         }
         else if (talking && !talkingEnd)
         {
+            talkingStart = false;
             Talk(NPCdata.id);
-
             SetTalkText();
         }
         else
         {
+            talkingStart = false;
             talkingEnd = false;
             while (canvasGroup.alpha > 0.0f)
             {
