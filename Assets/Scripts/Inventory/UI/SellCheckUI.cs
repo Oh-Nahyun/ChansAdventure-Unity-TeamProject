@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,17 +10,17 @@ public class SellCheckUI : MonoBehaviour
     CanvasGroup canvasGroup;
 
     /// <summary>
-    /// È®ÀÎ ³»¿ë ÅØ½ºÆ® 
+    /// í™•ì¸ ë‚´ìš© í…ìŠ¤íŠ¸ 
     /// </summary>
     TextMeshProUGUI checkText;
 
     /// <summary>
-    /// È®ÀÎ ¹öÆ° 
+    /// í™•ì¸ ë²„íŠ¼ 
     /// </summary>
     Button okButton;
 
     /// <summary>
-    /// Ãë¼Ò ¹öÆ° 
+    /// ì·¨ì†Œ ë²„íŠ¼ 
     /// </summary>
     Button cancelButton;
 
@@ -63,17 +62,17 @@ public class SellCheckUI : MonoBehaviour
     }
 
     /// <summary>
-    /// ÅØ½ºÆ®¸¦ ¼³Á¤ÇÏ´Â ÇÔ¼ö
+    /// í…ìŠ¤íŠ¸ë¥¼ ì„¤ì •í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <param name="slot">¼³Á¤ÇÒ ³»¿ëÀÌ ÀÖ´Â slot</param>
+    /// <param name="slot">ì„¤ì •í•  ë‚´ìš©ì´ ìˆëŠ” slot</param>
     public void SetText(InventorySlot slot, int count)
     {
         ItemData itemData = slot.SlotItemData;
         string name = itemData.itemName;
         uint price = itemData.price;
 
-        checkText.text = $"[{name}]À» [{count}]¸¸Å­ »ì²² \n" +
-                         $"[{price * count}]À» ¹ŞÀ» ¼ö ÀÖÀ»²¨¾ß";
+        checkText.text = $"[{name}]ì„ [{count}]ë§Œí¼ ì‚´ê»˜ \n" +
+                         $"[{price * count}]ì„ ë°›ì„ ìˆ˜ ìˆì„êº¼ì•¼";
     }
 
     public void ShowCheckPanel()
