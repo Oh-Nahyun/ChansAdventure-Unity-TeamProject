@@ -6,6 +6,8 @@ using UnityEngine.InputSystem;
 
 public class Test_01_Interaction : TestBase
 {
+#if UNITY_EDITOR
+
     Player player;
     private void Start()
     {
@@ -26,7 +28,6 @@ public class Test_01_Interaction : TestBase
         player.transform.position = new Vector3(0,0,0);
     }
 
-#if UNITY_EDITOR
     public bool isNPC = false;
     public Action onTalkNPC;
     public Action onTalkObj;
@@ -37,12 +38,12 @@ public class Test_01_Interaction : TestBase
         if (!isNPC)
         {
             onTalkNPC?.Invoke();
-            Debug.Log("»óÈ£ÀÛ¿ë Å° ´©¸§");
+            Debug.Log("ìƒí˜¸ì‘ìš© í‚¤ ëˆ„ë¦„");
         }
         else
         {
             onTalkObj?.Invoke();
-            Debug.Log("¿ÀºêÁ§Æ®¿Í ´ëÈ­");
+            Debug.Log("ì˜¤ë¸Œì íŠ¸ì™€ ëŒ€í™”");
         }
     }
 

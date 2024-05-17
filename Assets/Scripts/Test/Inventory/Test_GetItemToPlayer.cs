@@ -6,6 +6,8 @@ using UnityEngine.InputSystem;
 
 public class Test_GetItemToPlayer : TestBase
 {
+#if UNITY_EDITOR
+
     Player player;
     SphereCollider GetObjectRange;
 
@@ -50,4 +52,6 @@ public class Test_GetItemToPlayer : TestBase
     {
         Handles.DrawWireDisc(transform.position, Vector3.up, range);
     }
+
+#endif
 }

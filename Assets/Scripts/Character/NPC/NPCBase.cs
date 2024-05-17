@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class NPCBase : MonoBehaviour
 {
+    GameManager gameManager;
     protected TextBoxManager textBoxManager;
     protected QuestManager questManager;
     protected TextBox textbox;
@@ -13,12 +14,12 @@ public class NPCBase : MonoBehaviour
     protected readonly int Talk_Hash = Animator.StringToHash("IsTalk");
 
     /// <summary>
-    /// Äù½ºÆ® ¼ö¶ôÀ» ¾Ë¸®´Â µ¨¸®°ÔÀÌÆ®
+    /// í€˜ìŠ¤íŠ¸ ìˆ˜ë½ì„ ì•Œë¦¬ëŠ” ë¸ë¦¬ê²Œì´íŠ¸
     /// </summary>
     public Action onQuestAccept;
 
     /// <summary>
-    /// Äù½ºÆ® ¿Ï·á¸¦ ¾Ë¸®´Â µ¨¸®°ÔÀÌÆ®
+    /// í€˜ìŠ¤íŠ¸ ì™„ë£Œë¥¼ ì•Œë¦¬ëŠ” ë¸ë¦¬ê²Œì´íŠ¸
     /// </summary>
     public Action onQuestCompleted;
 
@@ -49,6 +50,8 @@ public class NPCBase : MonoBehaviour
 
     protected virtual void Start()
     {
+        gameManager = GameManager.Instance;
+
         textBoxManager = FindObjectOfType<TextBoxManager>();
         questManager = FindObjectOfType<QuestManager>();
 
@@ -57,10 +60,6 @@ public class NPCBase : MonoBehaviour
             textViweName.gameObject.SetActive(false);
             StartCoroutine(ViewName());
         }
-        GameManager.Instance.onNextTalk += () =>
-        {
-            TalkNext();
-        };
         // questInfoPanel.QuestClearId += (id) => IsQusetClear(id);
 
         animator = GetComponent<Animator>();
@@ -82,12 +81,12 @@ public class NPCBase : MonoBehaviour
     }
 
     /// <summary>
-    /// ´ÙÀ½ idÀÇ ´ë»ç¸¦ °¡Á®¿À´Â ÇÔ¼ö
+    /// ë‹¤ìŒ idì˜ ëŒ€ì‚¬ë¥¼ ê°€ì ¸ì˜¤ëŠ” í•¨ìˆ˜
     /// </summary>
     public void TalkNext()
     {
-        int ones = id % 10; // 1ÀÇ ÀÚ¸®
-        int tens = (id / 10) % 10; // 10ÀÇ ÀÚ¸®
+        int ones = id % 10; // 1ì˜ ìë¦¬
+        int tens = (id / 10) % 10; // 10ì˜ ìë¦¬
 
         if (ones != 0)
         {
@@ -111,12 +110,12 @@ public class NPCBase : MonoBehaviour
     }
 
     /// <summary>
-    /// °¢ ¼±ÅÃÁöÀÇ ÇØ´çÇÏ´Â ´ÙÀ½ ´ë»ç¸¦ °¡Á®¿À´Â ÇÔ¼ö
+    /// ê° ì„ íƒì§€ì˜ í•´ë‹¹í•˜ëŠ” ë‹¤ìŒ ëŒ€ì‚¬ë¥¼ ê°€ì ¸ì˜¤ëŠ” í•¨ìˆ˜
     /// </summary>
     public void SelectId()
     {
-        int tens = (id / 10) % 10; // 10ÀÇ ÀÚ¸®
-        int ones = id % 10; // 1ÀÇ ÀÚ¸®
+        int tens = (id / 10) % 10; // 10ì˜ ìë¦¬
+        int ones = id % 10; // 1ì˜ ìë¦¬
         if (tens != 0 && ones == 0)
         {
 
@@ -130,7 +129,7 @@ public class NPCBase : MonoBehaviour
     }
 
     /// <summary>
-    /// ¿ÀºêÁ§Æ® À§¿¡ ÀÌ¸§À» Ç¥±âÇÏ´Â ÄÚ·çÆ¾
+    /// ì˜¤ë¸Œì íŠ¸ ìœ„ì— ì´ë¦„ì„ í‘œê¸°í•˜ëŠ” ì½”ë£¨í‹´
     /// </summary>
     /// <returns></returns>
     IEnumerator ViewName()
@@ -180,7 +179,7 @@ public class NPCBase : MonoBehaviour
     }
 
     /// <summary>
-    /// °¢Á¾ ´ëÈ­¸¦ °ü¸®ÇØÁÙ ÇÔ¼ö
+    /// ê°ì¢… ëŒ€í™”ë¥¼ ê´€ë¦¬í•´ì¤„ í•¨ìˆ˜
     /// </summary>
     private void TalkData()
     {

@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 public class Test_LoadItemDrop : TestBase
 {
+#if UNITY_EDITOR
+
     Player player;
 
     private void Start()
@@ -16,4 +18,6 @@ public class Test_LoadItemDrop : TestBase
     {
         player.Test_AddItem();
     }
+
+#endif
 }

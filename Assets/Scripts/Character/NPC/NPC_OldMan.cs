@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class NPC_OldMan : NPCBase
 {
+    GameManager gameManager;
+
     private bool isStanding = false;
     private bool isGesture = false;
 
@@ -26,7 +28,7 @@ public class NPC_OldMan : NPCBase
     protected override void Update()
     {
         selectNextTalk();
-        SetAnimation(); // ¾Ö´Ï¸ŞÀÌ¼Ç ¼³Á¤ ¸Ş¼­µå È£Ãâ
+        SetAnimation(); // ì• ë‹ˆë©”ì´ì…˜ ì„¤ì • ë©”ì„œë“œ í˜¸ì¶œ
         base.Update();
         SetAnimationBasedOnID(id);
     }
@@ -69,6 +71,8 @@ public class NPC_OldMan : NPCBase
 
     void SetAnimationBasedOnID(int id)
     {
+        gameManager = GameManager.Instance;
+
         string[] talkData = textBoxManager.GetTalkData(id);
 
         if (talkData != null && talkData.Length > 0)
@@ -83,21 +87,18 @@ public class NPC_OldMan : NPCBase
                     if (!isTalk)
                     {
                         questManager.GetQuestTalkIndex(10, false);
-                        GameManager.Instance.NextTalk();
                     }
                     break;
                 case 1021:
                     if (!isTalk)
                     {
                         questManager.GetQuestTalkIndex(20, false);  
-                        GameManager.Instance.NextTalk();
                     }
                     break;
                 case 1022:
                     if (!isTalk)
                     {
                         questManager.GetQuestTalkIndex(10, true);
-                        GameManager.Instance.NextTalk();
                     }
                     break;
                 case 1100:
@@ -113,8 +114,8 @@ public class NPC_OldMan : NPCBase
         }
         else
         {
-            Debug.LogError("´ëÈ­ µ¥ÀÌÅÍ¸¦ Ã£À» ¼ö ¾øÀ½ ID: " + id);
+            Debug.LogError("ëŒ€í™” ë°ì´í„°ë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŒ ID: " + id);
         }
-        SetAnimation(); // ¾Ö´Ï¸ŞÀÌ¼Ç ¼³Á¤ ¸Ş¼­µå È£Ãâ
+        SetAnimation(); // ì• ë‹ˆë©”ì´ì…˜ ì„¤ì • ë©”ì„œë“œ í˜¸ì¶œ
     }
 }

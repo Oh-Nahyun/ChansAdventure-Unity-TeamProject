@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 public class Test_ItemDrop : TestBase
 {
+#if UNITY_EDITOR
+
     public GameObject Test_Player;
     public uint index;
     Inventory inven;
@@ -30,4 +32,6 @@ public class Test_ItemDrop : TestBase
     {
         Factory.Instance.GetItemObject(inven[index].SlotItemData, target.position);
     }
+
+#endif
 }

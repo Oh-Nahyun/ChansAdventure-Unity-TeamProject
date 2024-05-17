@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 public class Test_Inventory2 : TestBase
 {
+#if UNITY_EDITOR
+
     public GameObject Test_Player;
 
     Inventory inven;
@@ -72,4 +74,5 @@ public class Test_Inventory2 : TestBase
             inven.SortSlot((SortMode)2, false);
         }
     }
+#endif
 }

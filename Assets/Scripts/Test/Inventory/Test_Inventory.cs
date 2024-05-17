@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 public class Test_Inventory : TestBase
 {
+#if UNITY_EDITOR
     public GameObject Test_Player;
      
     Inventory inven;
@@ -77,4 +78,5 @@ public class Test_Inventory : TestBase
             inven.TestShowInventory();
         }
     }
+#endif
 }

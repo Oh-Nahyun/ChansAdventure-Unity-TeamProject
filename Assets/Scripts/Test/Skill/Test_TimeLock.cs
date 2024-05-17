@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 public class Test_TimeLock : TestBase
 {
+#if UNITY_EDITOR
+
     public ReactionObject target;
     public ReactionObject bomb;
     Vector3 targetPos;
@@ -55,4 +57,5 @@ public class Test_TimeLock : TestBase
         bomb.TestBoom();
     }
 
+#endif
 }
