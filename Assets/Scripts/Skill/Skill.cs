@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Timeline.Actions;
 using UnityEngine;
 public enum SkillName
 {
@@ -118,16 +119,9 @@ public class Skill : ReactionObject
 
         if (crosshair == null)
         {
-            crosshair = FindAnyObjectByType<Crosshair>();
-            if (crosshair == null)
-            {
-                Debug.LogWarning("크로스헤어 찾지 못함");
-            }
-            else
-            {
-                OnCrosshair += crosshair.Open;
-                OffCrosshair += crosshair.Close;
-            }
+            crosshair = FindAnyObjectByType<Crosshair>(FindObjectsInactive.Include);
+            OnCrosshair = crosshair.Open;
+            OffCrosshair = crosshair.Close;
         }
     }
 

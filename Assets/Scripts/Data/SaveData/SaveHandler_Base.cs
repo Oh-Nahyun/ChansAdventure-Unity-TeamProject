@@ -86,7 +86,12 @@ public class SaveHandler_Base : MonoBehaviour
         child = transform.GetChild(1);
         saveCheckUI = child.GetComponent<SaveCheckUI>();
 
-        saveCheckUI.onSave += SavePlayerData;
+        saveCheckUI.onSave += (index) =>
+        {
+            Player curPlayer = GameManager.Instance.Player; // 현재 플레이어 찾기
+            if(curPlayer.IsAlive) SavePlayerData(index);
+        };
+
         saveCheckUI.onLoad += LoadPlayerData;
         saveCheckUI.onReset += SetDefaultData;
 

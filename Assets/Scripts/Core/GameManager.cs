@@ -127,6 +127,10 @@ public class GameManager : Singleton<GameManager>
             if(targetSceneName != value)
             {
                 targetSceneName = value;
+
+                if (targetSceneName == "Main_Map")
+                    isField = true;
+
                 ChangeToLoadingScene();
             }
             else

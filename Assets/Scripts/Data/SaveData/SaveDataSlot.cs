@@ -12,27 +12,27 @@ public class SaveDataSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
     SaveHandler_Base handler;
 
     /// <summary>
-    /// ½½·Ô ÀÎµ¦½º
+    /// ìŠ¬ë¡¯ ì¸ë±ìŠ¤
     /// </summary>
     int saveIndex;
 
     /// <summary>
-    /// ½½·Ô ÀÌ¸§ ÅØ½ºÆ®
+    /// ìŠ¬ë¡¯ ì´ë¦„ í…ìŠ¤íŠ¸
     /// </summary>
     TextMeshProUGUI saveName;
 
     /// <summary>
-    /// ½½·Ô ³»¿ë
+    /// ìŠ¬ë¡¯ ë‚´ìš©
     /// </summary>
     TextMeshProUGUI saveDesc;
 
     /// <summary>
-    /// È­»ìÇ¥ ÀÌ¹ÌÁö
+    /// í™”ì‚´í‘œ ì´ë¯¸ì§€
     /// </summary>
     Image arrowImg;
 
     /// <summary>
-    /// ½½·ÔÀ» ÃÊ±âÈ­ ÇÏ´Â ÇÔ¼ö
+    /// ìŠ¬ë¡¯ì„ ì´ˆê¸°í™” í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
     public void InitializeComponent()
     {
@@ -51,15 +51,15 @@ public class SaveDataSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
     {
         PointerEventData.InputButton buttonValue = eventData.button;
         
-        if(buttonValue == PointerEventData.InputButton.Left) // ¿ŞÂÊ Å¬¸¯ÇÏ¸é ¼¼ÀÌºê
+        if(buttonValue == PointerEventData.InputButton.Left) // ì™¼ìª½ í´ë¦­í•˜ë©´ ì„¸ì´ë¸Œ
         {
-            Debug.Log($"{saveIndex}¹ø¿¡ ÀúÀåµÊ");
+            //Debug.Log($"{saveIndex}ë²ˆì— ì €ì¥ë¨");
             handler.onClickSaveSlot?.Invoke(saveIndex);
         }
         
         if(buttonValue == PointerEventData.InputButton.Right)
         {
-            Debug.Log($"{saveIndex}¹ø ·ÎµåÇÔ");
+            //Debug.Log($"{saveIndex}ë²ˆ ë¡œë“œí•¨");
             handler.onClickLoadSlot?.Invoke(saveIndex);
         }
     }
@@ -75,9 +75,9 @@ public class SaveDataSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
     }
 
     /// <summary>
-    /// ¼¼ÀÌºê ½½·Ô ÃÊ±âÈ­ ÇÔ¼ö
+    /// ì„¸ì´ë¸Œ ìŠ¬ë¡¯ ì´ˆê¸°í™” í•¨ìˆ˜
     /// </summary>
-    /// <param name="index">½½·Ô ÀÎµ¦½º</param>
+    /// <param name="index">ìŠ¬ë¡¯ ì¸ë±ìŠ¤</param>
     public void SlotInitialize(int index)
     {
         saveIndex = index;
@@ -85,9 +85,9 @@ public class SaveDataSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
     }
 
     /// <summary>
-    /// ¼¼ÀÌºê µ¥ÀÌÅÍ°¡ Á¸ÀçÇÏ´ÂÁö È®ÀÎÇÏ´Â ÇÔ¼ö
+    /// ì„¸ì´ë¸Œ ë°ì´í„°ê°€ ì¡´ì¬í•˜ëŠ”ì§€ í™•ì¸í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <param name="isEmtpy">ºñ¾îÀÖÀ¸¸é true ¾Æ´Ï¸é false</param>
+    /// <param name="isEmtpy">ë¹„ì–´ìˆìœ¼ë©´ true ì•„ë‹ˆë©´ false</param>
     public void CheckSave(bool isEmtpy, int sceneNumber)
     {
         if(isEmtpy)

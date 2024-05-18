@@ -49,19 +49,18 @@ public class MainMenuUI : MonoBehaviour
         playerInputAcitons.UI.Disable();        
     }
 
-    // °ÔÀÓ ½ºÅ¸Æ® ¹öÆ°
+    // ê²Œì„ ìŠ¤íƒ€íŠ¸ ë²„íŠ¼
     void OnStart()
     {
-        // °ÔÀÓ Ã³À½¸ŞÀÎ ¾ÀÀ¸·Î ÀÌµ¿
+        // ê²Œì„ ì²˜ìŒë©”ì¸ ì”¬ìœ¼ë¡œ ì´ë™
         string sceneName = $"Main_Map";
         GameManager.Instance.ChangeToTargetScene(sceneName, GameManager.Instance.Player.gameObject);
         GameManager.Instance.gameState = GameState.Started;
-        GameManager.Instance.isField = true;
         GameManager.Instance.spawnPoint = new Vector3(11f, -11f, 3f);
     }
 
     /// <summary>
-    /// °ÔÀÓ ·Îµå ¹öÆ°
+    /// ê²Œì„ ë¡œë“œ ë²„íŠ¼
     /// </summary>
     void OnLoad()
     {
@@ -69,7 +68,7 @@ public class MainMenuUI : MonoBehaviour
     }
 
     /// <summary>
-    /// °ÔÀÓ Á¾·á ¹öÆ°
+    /// ê²Œì„ ì¢…ë£Œ ë²„íŠ¼
     /// </summary>
     void OnExit()
     {
