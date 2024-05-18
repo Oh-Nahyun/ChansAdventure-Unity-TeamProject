@@ -155,6 +155,8 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     InventorySlot[] savedEquipParts;
 
+    float SavedMaxHp;
+
     /// <summary>
     /// 플레이어 프리팹
     /// </summary>
@@ -169,6 +171,8 @@ public class GameManager : Singleton<GameManager>
 
         GameObject playerObj = Instantiate(playerPrefab, spawnPoint, Quaternion.identity);
         player = playerObj.GetComponent<Player>();
+        player.MaxHP = 300f;
+        player.HP = player.MaxHP;
 
         cameraManager = GetComponent<CameraManager>();
         itemDataManager = GetComponent<ItemDataManager>();
@@ -217,6 +221,7 @@ public class GameManager : Singleton<GameManager>
         obj.transform.position = Vector3.zero;                                      // 오브젝트 위치 초기화
         savedInventory = playerObject.GetComponent<Player>().Inventory;             // 인벤토리 저장
         savedEquipParts = playerObject.GetComponent<Player>().EquipPart;            // 장착부위 정보 저장
+        SavedMaxHp = playerObject.GetComponent<Player>().MaxHP;                     // 최대 체력 저장
 
         loadPlayerGameObject.SetActive(false);
 
@@ -270,6 +275,9 @@ public class GameManager : Singleton<GameManager>
             textBoxManager.Initialize();                    // textBox 초기화
             skillManager.Initialize();                      // 스킬 매니저 초기화
             Cam.initialize();
+
+            player.MaxHP = SavedMaxHp;
+            player.HP = player.MaxHP;
         }
     }
 

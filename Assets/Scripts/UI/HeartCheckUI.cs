@@ -42,7 +42,13 @@ public class HeartCheckUI : MonoBehaviour
     {
         player = GameManager.Instance.Player;
         // 배열 초기화
-        Array.Resize(ref heartImages, Hearts.Length);
+        Array.Resize(ref heartImages, (int)(player.MaxHP * 0.01f) + 1);
+        Hearts = new GameObject[(int)(player.MaxHP * 0.01f) + 1];
+
+        for(int i = 0; i < transform.childCount; i++)
+        {
+            Hearts[i] = transform.GetChild(i).gameObject;
+        }
 
         // 하트 이미지 배열 채우기
         for (int i = 0; i < Hearts.Length; i++)
@@ -76,6 +82,10 @@ public class HeartCheckUI : MonoBehaviour
         if (player == null)
         {
             return;
+        }
+        else // 플레이어 체력이 초기 값보다 높으면
+        {
+            UpdatePlayerHP();
         }
 
         // 하트 수 초기화
@@ -132,8 +142,12 @@ public class HeartCheckUI : MonoBehaviour
     public void PlusHeart()
     {
         int newSize = heartImages.Length + 1;   // 증가된 배열 크기
-        Array.Resize(ref heartImages, newSize); // 배열 크기 증가
         Instantiate(heartPrefab, transform);    // 프리팹 추가
+
+        Array.Resize(ref Hearts, newSize);      // 오브젝트 배열 확장
+        Hearts[newSize - 1] = transform.GetChild(newSize - 1).gameObject; // 배열에 저장
+
+        Array.Resize(ref heartImages, newSize); // 하트 이미지 배열 확장
 
         // 이미지 배열에 추가
         Transform child = transform.GetChild(newSize - 1);
@@ -143,5 +157,29 @@ public class HeartCheckUI : MonoBehaviour
         // 플레이어 체력 설정
         player.MaxHP = heartImages.Length * 100.0f; // 플레이어의 최대 체력 증가
         player.HP = player.MaxHP;                   // 함수가 실행될 때, 플레이어의 체력 채우기
+    }
+
+    /// <summary>
+    /// 플레이어 HP가 UI랑 다르면 업데이트 해주는 함수
+    /// </summary>
+    void UpdatePlayerHP()
+    {
+        for (int i = 0; i < player.MaxHP * 0.01f; i++) // 체력 배열 확인
+        {
+            if (Hearts[i] == null)
+            {
+                Instantiate(heartPrefab, transform);    // 프리팹 추가
+                Hearts[i] = transform.GetChild(i).gameObject;   // 추가한 프리팹 배열에 저장
+            }
+        }
+
+        for (int i = 0; i < player.MaxHP * 0.01f; i++) // 체력 이미지 배열 확인
+        {
+            if (heartImages[i] == null)
+            {
+                Transform child = Hearts[i].transform.GetChild(1);
+                heartImages[i] = child.GetComponent<Image>();   // 컴포넌트 추가
+            }
+        }
     }
 }

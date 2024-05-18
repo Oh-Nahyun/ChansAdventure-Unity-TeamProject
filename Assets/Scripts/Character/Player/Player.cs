@@ -343,7 +343,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// <summary>
     /// 오브젝트가 가지고 있는 현재 체력
     /// </summary>
-    public float hp = 300.0f;
+    float hp = 1;
 
     /// <summary>
     /// 체력을 접근하기 위한 프로퍼티
@@ -369,7 +369,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// <summary>
     /// 최대 HP
     /// </summary>
-    float maxHP = 300.0f;
+    float maxHP;
 
     /// <summary>
     /// 최대 HP 접근 프로퍼티

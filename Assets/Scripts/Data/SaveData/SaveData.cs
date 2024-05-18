@@ -55,6 +55,11 @@ public struct PlayerData
     public uint gold;
 
     /// <summary>
+    /// 저장된 플레이어 최대 체력 ( 최대 채력 갱신 )
+    /// </summary>
+    public float playerHP;
+
+    /// <summary>
     /// 세이브 데이터 칸 수
     /// </summary>
     const int saveCount = 5;
@@ -75,6 +80,7 @@ public struct PlayerData
             this.slots[0] = new InventorySlot(0);
             this.itemDataClass[0] = new ItemDataClass();
             this.gold = 0;
+            playerHP = 300;
         }
         else // 인벤토리가 NULL이 아니면
         {
@@ -100,6 +106,7 @@ public struct PlayerData
             }
 
             gold = inven.Gold;
+            playerHP = inven.Owner.GetComponent<Player>().MaxHP;
         }
     }
 }

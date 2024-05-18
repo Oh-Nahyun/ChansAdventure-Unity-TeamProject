@@ -236,6 +236,7 @@ public class SaveHandler_Base : MonoBehaviour
 
                 player.Inventory.AddSlotItem(itemCode, itemCount, (uint)i);
                 player.Inventory.SetCoin(playerDatas[loadIndex].gold);
+                player.MaxHP = playerDatas[loadIndex].playerHP;
             }
         }
 
