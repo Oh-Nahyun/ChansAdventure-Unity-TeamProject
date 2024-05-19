@@ -51,6 +51,16 @@ public class Weapon : MonoBehaviour
     /// </summary>
     public bool IsZoomIn = false;
 
+    /// <summary>
+    /// 공격 버튼을 누르고 있는지 확인하는 변수
+    /// </summary>
+    public bool isPressed = false;
+
+    /// <summary>
+    /// 누르고 있는 시간값
+    /// </summary>
+    float pressTime = 0f;
+
     // 애니메이션 클립의 리소스 경로
     public string clipPath_None = "PlayerAnimations/N_Attack";
     public string clipPath_Sword1 = "PlayerAnimations/S_Attack1";
@@ -136,6 +146,7 @@ public class Weapon : MonoBehaviour
         inputActions.Weapon.Enable();
         inputActions.Player.Attack.performed += OnAttackInput;
         inputActions.Weapon.Attack.performed += OnAttackInput;
+        inputActions.Weapon.Attack.canceled += OnAttackInputRelease;
 
         inputActions.Weapon.NormalMode.performed += OnNormalModeInput;
         inputActions.Weapon.SwordMode.performed += OnSwordModeInput;
@@ -159,6 +170,15 @@ public class Weapon : MonoBehaviour
         inputActions.Weapon.Disable();
     }
 
+    private void Update()
+    {
+        if(isPressed)
+        {
+            pressTime += Time.deltaTime;
+            pressTime = Mathf.Clamp(pressTime, 0f, 3f);
+        }
+    }
+
     /// <summary>
     /// 무기 모드에 따른 공격 함수
     /// </summary>
@@ -167,6 +187,8 @@ public class Weapon : MonoBehaviour
     {
         if (player.SkillRelatedAction.IsPickUp || player.isTalk || player.IsAnyUIPanelOpened) // 물건을 들고 있거나 대화중일 때 입력 막기
             return;
+
+        isPressed = true;
 
         animator.SetTrigger(IsAttackHash);
 
@@ -216,6 +238,14 @@ public class Weapon : MonoBehaviour
         }
 
         SetBasedamage();
+    }
+
+    /// <summary>
+    /// 공격 버튼을 땠을 때 실행하는 함수
+    /// </summary>
+    private void OnAttackInputRelease(InputAction.CallbackContext context)
+    {
+        isPressed = false;
     }
 
     /// <summary>
@@ -598,7 +628,8 @@ public class Weapon : MonoBehaviour
 
         arrowCount--;
         arrowSlot.DiscardItem(1); // 인벤토리에서 화살 개수 소비
-        arrowFirePoint.GetFireArrow(PoolObjectType.Arrow, arrowPrefab); // 화살 Factory에서 생성
+        arrowFirePoint.GetFireArrow(PoolObjectType.Arrow, arrowPrefab, pressTime); // 화살 Factory에서 생성
+        pressTime = 0f; // 발사하고 시간 초기화
     }
 
     /// <summary>

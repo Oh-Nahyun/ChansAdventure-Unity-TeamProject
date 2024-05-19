@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7698263007081958087}
   - component: {fileID: 9149487348340305512}
   - component: {fileID: 1632448655666844138}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Arrow_stick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,7 +92,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3272330558985385060}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Arrowhead_place
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -125,7 +125,7 @@ GameObject:
   - component: {fileID: 2360295922027075155}
   - component: {fileID: 8825827165122371783}
   - component: {fileID: 3669588819105558842}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: arrowhead
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -208,10 +208,9 @@ GameObject:
   - component: {fileID: 3069249378802290602}
   - component: {fileID: 864647884579392229}
   - component: {fileID: 5816701780807924989}
-  - component: {fileID: 1111182317278467180}
   - component: {fileID: 6881745611177954039}
   - component: {fileID: 1068339663200857957}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Arrow
   m_TagString: Arrow
   m_Icon: {fileID: 0}
@@ -244,7 +243,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6823261134279805181}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 0.3
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -279,29 +278,6 @@ CapsuleCollider:
     m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.01
-  m_Height: 0.66
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.36, z: 0}
---- !u!136 &1111182317278467180
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6823261134279805181}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2

@@ -61,22 +61,25 @@ public class Arrow : RecycleObject
     // 플레이어가 화살로 적을 공격했을 때 ---------------------------------------------------------------------------
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("BodyPoint"))
+        if (other.gameObject.layer == 11) // 11 : hitpoint layer
         {
-            // 몸에 화살을 맞췄을 경우
-            IBattler target = other.GetComponentInParent<IBattler>();
-            if (target != null)
+            if (other.CompareTag("BodyPoint"))
             {
-                player.Attack(target, false);
+                // 몸에 화살을 맞췄을 경우
+                IBattler target = other.GetComponentInParent<IBattler>();
+                if (target != null)
+                {
+                    player.Attack(target, false);
+                }
             }
-        }
-        else if (other.CompareTag("WeakPoint"))
-        {
-            // 적에게 화살을 맞췄을 경우
-            IBattler target = other.GetComponentInParent<IBattler>();
-            if (target != null)
+            else if (other.CompareTag("WeakPoint"))
             {
-                player.Attack(target, true);
+                // 적에게 화살을 맞췄을 경우
+                IBattler target = other.GetComponentInParent<IBattler>();
+                if (target != null)
+                {
+                    player.Attack(target, true);
+                }
             }
         }
     }
@@ -85,10 +88,15 @@ public class Arrow : RecycleObject
     /// <summary>
     /// 발사 되었을 때 실행되는 함수
     /// </summary>
-    public void Fired()
+    public void Fired(float pressedTime)
     {
         transform.rotation = Quaternion.Euler(90f, 0f, -player.transform.localEulerAngles.y); // 카메라 회전과 동일 시 하기 ( 기본 회전값 90,0,0 )
-        rigid.AddForce( transform.up * arrowRange * arrowSpeed, ForceMode.Impulse);
+        rigid.AddForce( transform.up * arrowRange * arrowSpeed * pressedTime, ForceMode.Impulse);
+    }
+
+    public void SetArrowSpeed(float drawTime)
+    {
+        arrowSpeed *= drawTime;
     }
 
     /// <summary>

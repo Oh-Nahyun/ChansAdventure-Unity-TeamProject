@@ -66,9 +66,9 @@ public class ArrowFirePoint : MonoBehaviour
     /// 인벤토리의 화살을 발사하는 함수
     /// </summary>
     /// <param name="arrow">화살 아이템 오브젝트</param>
-    public void GetFireArrow(PoolObjectType type, GameObject arrow)
+    public void GetFireArrow(PoolObjectType type, GameObject arrow, float time)
     {
         GameObject arrowObj = Factory.Instance.GetObject(type, fireTransform.position, new Vector3(90.0f, 0f, 0f));
-        arrowObj.GetComponent<Arrow>().Fired();
+        arrowObj.GetComponent<Arrow>().Fired(time);
     }
 }
