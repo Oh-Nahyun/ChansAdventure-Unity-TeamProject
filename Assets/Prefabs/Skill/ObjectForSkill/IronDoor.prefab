@@ -187,12 +187,15 @@ MonoBehaviour:
     forceY: 5
     boomRange: 3
     damage: 3
+    particle: {fileID: 0}
   weight: 1
   objectMaxHp: 1
   takeDamageAfterThrow: 3
   defencePower: 0
   reactionType: 4
-  mainRenderer: {fileID: 0}
+  skillAvailableMaterial: {fileID: 2100000, guid: 2816397eb4373134ba9a9e74af518d4b,
+    type: 2}
+  mainRenderer: {fileID: 1730068776496587307}
   hitMovementPower: 2
 --- !u!1001 &6055716553142861072
 PrefabInstance:
@@ -277,6 +280,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3d2ba7433f2d24244bdcac80881bfd1e, type: 3}
+--- !u!137 &1730068776496587307 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -3744661193342935237, guid: 3d2ba7433f2d24244bdcac80881bfd1e,
+    type: 3}
+  m_PrefabInstance: {fileID: 6055716553142861072}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6016953566146927355 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3d2ba7433f2d24244bdcac80881bfd1e,

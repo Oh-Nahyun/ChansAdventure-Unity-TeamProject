@@ -171,19 +171,27 @@ MonoBehaviour:
     forceY: 5
     boomRange: 3
     damage: 3
+    particle: {fileID: 0}
   weight: 1
   objectMaxHp: 1
   takeDamageAfterThrow: 3
   defencePower: 1
   reactionType: 64
+  skillAvailableMaterial: {fileID: 0}
+  mainRenderer: {fileID: 0}
+  hitMovementPower: 2
   skillDistance: 50
   skillName: 2
   cooltime: 0
   skillSprite: {fileID: 21300000, guid: ab61be82311c2f847ad29812a15e94e9, type: 3}
+  fieldColor: {r: 1, g: 0, b: 0, a: 0}
+  fieldMaterial: {fileID: 2100000, guid: 10fe753e870e6aa479c40bbe6dfca824, type: 2}
   targetMoveSpeed: 10
   maxDistanceFromUser: 30
   minDistanceFromUser: 5
   doorRotateAngle: 90
+  horizontalMoveSpeedRatio: 0.3
+  MagnetObjectColor: {fileID: 2100000, guid: a252eacb190fbcd49b3737ce770364cc, type: 2}
 --- !u!54 &5038291860599361447
 Rigidbody:
   m_ObjectHideFlags: 0

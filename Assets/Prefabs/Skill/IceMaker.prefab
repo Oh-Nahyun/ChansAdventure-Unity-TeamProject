@@ -80,15 +80,21 @@ MonoBehaviour:
     forceY: 5
     boomRange: 3
     damage: 3
+    particle: {fileID: 0}
   weight: 1
   objectMaxHp: 1
+  takeDamageAfterThrow: 3
   defencePower: 1
   reactionType: 64
-  MaxTimeLockDamage: 50
+  skillAvailableMaterial: {fileID: 0}
+  mainRenderer: {fileID: 0}
+  hitMovementPower: 2
   skillDistance: 50
   skillName: 3
   cooltime: 5
   skillSprite: {fileID: 21300000, guid: 0e4be62b4a71ae543bca5edac482af7f, type: 3}
+  fieldColor: {r: 0, g: 0.3799498, b: 1, a: 0}
+  fieldMaterial: {fileID: 2100000, guid: 10fe753e870e6aa479c40bbe6dfca824, type: 2}
   destroyMaxDistance: 50
   icePrefab: {fileID: 6155930451979324055, guid: 7a2841a551c058942a3bd66eddb3f381,
     type: 3}

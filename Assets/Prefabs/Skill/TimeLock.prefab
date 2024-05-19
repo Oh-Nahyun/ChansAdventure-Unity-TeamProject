@@ -78,16 +78,22 @@ MonoBehaviour:
     forceY: 5
     boomRange: 3
     damage: 3
+    particle: {fileID: 0}
   weight: 1
   objectMaxHp: 1
-  afterThrowDamage: 3
+  takeDamageAfterThrow: 3
   defencePower: 1
   reactionType: 64
+  skillAvailableMaterial: {fileID: 0}
+  mainRenderer: {fileID: 0}
+  hitMovementPower: 2
   skillDistance: 50
   skillName: 4
   cooltime: 10
   skillSprite: {fileID: 1736511792, guid: c9e6230870acb9d4594bf5d40e01664d, type: 3}
-  timeLockColor: {fileID: 2100000, guid: 2cded8c8bba11fc4fb8e337d56cf6ef7, type: 2}
+  fieldColor: {r: 1, g: 0.9527312, b: 0, a: 0}
+  fieldMaterial: {fileID: 2100000, guid: 10fe753e870e6aa479c40bbe6dfca824, type: 2}
+  timeLockColor: {fileID: 2100000, guid: a252eacb190fbcd49b3737ce770364cc, type: 2}
   duration: 10
   maxAccumulateDamage: 50
 --- !u!1001 &8695982624494759801

@@ -1,9 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using Unity.VisualScripting;
 using UnityEditor.Timeline.Actions;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 public enum SkillName
 {
     RemoteBomb = 0,
@@ -11,6 +14,12 @@ public enum SkillName
     MagnetCatch,
     IceMaker,
     TimeLock
+}
+
+public enum RendererName
+{
+    Defualt = 0,
+    Skill
 }
 
 public class Skill : ReactionObject
@@ -83,14 +92,27 @@ public class Skill : ReactionObject
     public Action<bool> onMotionChange;
 
     /// <summary>
+    /// 스킬 사용시 변경될 필드의 색상 (리모컨폭탄: x, 마그넷캐치: 빨간색, 아이스메이커: 파란색, 타임록: 노란색)
+    /// </summary>
+    public Color fieldColor;
+
+    /// <summary>
+    /// 스킬 사용시 변경될 필드 머티리얼
+    /// </summary>
+    public Material fieldMaterial;
+
+    /// <summary>
     /// 카메라 중앙
     /// </summary>
     protected readonly Vector3 Center = new Vector3(0.5f, 0.5f, 0.0f);
 
     protected Crosshair crosshair;
 
+    RendererName rendererName;
+
     Action OnCrosshair;
     Action OffCrosshair;
+
 
     protected override void Awake()
     {
@@ -100,6 +122,7 @@ public class Skill : ReactionObject
         //cooltime = maxCooltime;
         isRecycle = true;
     }
+
 
     protected override void OnEnable()
     {
@@ -155,6 +178,7 @@ public class Skill : ReactionObject
     /// </summary>
     protected virtual void OnSKillAction()
     {
+        SetRenderer(RendererName.Skill);
         camOn?.Invoke();
         OnCrosshair?.Invoke();
     }
@@ -192,6 +216,7 @@ public class Skill : ReactionObject
     /// </summary>
     protected virtual void OffSKillAction()
     {
+        SetRenderer(RendererName.Defualt);
         camOff?.Invoke();
         OffCrosshair?.Invoke();
         isActivate = false;
@@ -211,5 +236,15 @@ public class Skill : ReactionObject
 
     public virtual void InputSpecialKey(PlayerSkills.SpecialKey key)
     {
+    }
+
+    protected void SetRenderer(RendererName rendererName)
+    {
+        if (rendererName != RendererName.Defualt)
+        {
+            fieldMaterial.SetColor("_Color", fieldColor);
+        }
+        UniversalAdditionalCameraData urp = Camera.main.GetUniversalAdditionalCameraData();
+        urp.SetRenderer((int)rendererName);
     }
 }

@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 1085791549576019986}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.3, z: 0}
   m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -93,7 +93,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3945198711380477321}
   - component: {fileID: 5880022596329921298}
-  - component: {fileID: 5893956242279325749}
+  - component: {fileID: 6469151010860272886}
   - component: {fileID: 7903323959094361683}
   m_Layer: 6
   m_Name: RemoteBomb
@@ -111,7 +111,7 @@ Transform:
   m_GameObject: {fileID: 6731784966498643628}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.41, y: 1.94, z: 7.78}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -129,7 +129,7 @@ Rigidbody:
   serializedVersion: 4
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -146,8 +146,8 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &5893956242279325749
-BoxCollider:
+--- !u!135 &6469151010860272886
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -165,8 +165,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.4, y: 0.4, z: 0.4}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 0.3
+  m_Center: {x: 0, y: 0.3, z: 0}
 --- !u!114 &7903323959094361683
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,15 +184,22 @@ MonoBehaviour:
     forceY: 5
     boomRange: 3
     damage: 3
+    particle: {fileID: 1042568182720088615, guid: 6232b4aae05502f4fa706c095f0159aa,
+      type: 3}
   weight: 1
   objectMaxHp: 1
   takeDamageAfterThrow: 3
   defencePower: 1
   reactionType: 91
+  skillAvailableMaterial: {fileID: 0}
+  mainRenderer: {fileID: 0}
+  hitMovementPower: 2
   skillDistance: 50
   skillName: 0
   cooltime: 5
   skillSprite: {fileID: 1005310513, guid: 45e92f7b5edf7e74dbe0002b63669beb, type: 3}
+  fieldColor: {r: 0, g: 0, b: 0, a: 0}
+  fieldMaterial: {fileID: 0}
 --- !u!1001 &5500500636137007972
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -111,6 +111,7 @@ public class MagnetCatch : Skill
     /// </summary>
     public float horizontalMoveSpeedRatio = 0.3f;
 
+    public Material MagnetObjectColor;
 
     enum MagnetShape
     {
@@ -196,18 +197,18 @@ public class MagnetCatch : Skill
                 bool isForward = Vector3.Dot(dir, target.forward) > 0;
                 int sign = 1;
 
-                if(isForward)
+                if (isForward)
                 {
                     sign = -1;
                 }
                 float sqrDistance = (user.position - target.position).sqrMagnitude;
                 float distanceDiff = sqrDistance - preSqrDistance;          // 가까워지면 양수, 멀어지면 음수
 
-                if(distanceDiff > 0f)
+                if (distanceDiff > 0f)
                 {
                     distanceDiff = 1;
                 }
-                else if(distanceDiff < 0f)
+                else if (distanceDiff < 0f)
                 {
                     distanceDiff = -1;
                 }
@@ -236,7 +237,7 @@ public class MagnetCatch : Skill
                 reactionTarget.AttachMagnetMove(targetDestination.position);    // 타겟 이동
                 reactionTarget.AttachRotate((resultY * Vector3.up));              // 타겟 회전
             }
-           
+
         }
     }
 
@@ -256,13 +257,13 @@ public class MagnetCatch : Skill
     /// </summary>
     protected override void UseSkillAction()
     {
-        onMotionChange?.Invoke(true);
-        Shape = MagnetShape.Magnet;
         // 붙을 타겟이 적절하면
-        if (isMagnetActivate)
+        if (isMagnetActivate && reactionTarget != null)
         {
             StopAllCoroutines();                                // 타겟 탐지용 코루틴 정지
             // TODO: 끝까지 날아가게
+            onMotionChange?.Invoke(true);
+            Shape = MagnetShape.Magnet;
 
             base.UseSkillAction();
 
@@ -279,7 +280,7 @@ public class MagnetCatch : Skill
             interpolation2.localPosition = targetDestination.localPosition * Interpolation2Value;
 
             // 타겟 관련 설정
-            reactionTarget.AttachMagnet(targetMoveSpeed);       // 타겟 붙이기
+            reactionTarget.AttachMagnet(targetMoveSpeed, MagnetObjectColor);       // 타겟 붙이기
 
             targetGroup.m_Targets[0].target = target;           // 타겟 그룹에 타겟 추가
 
@@ -287,7 +288,7 @@ public class MagnetCatch : Skill
             preMousePos = Mouse.current.position.value;         // y축 이동을 위한 마우스 초기값 설정 (현재 위치)
             preAngleY = Camera.main.transform.eulerAngles.y;    // 타겟과 사용자의 y축 회전(좌우)을 맞추기 위한 카메라각도 설정
             preSqrDistance = (user.position - target.position).sqrMagnitude;
-            preUserPosition = user.position;    
+            preUserPosition = user.position;
 
             targetMoveY = 0f;
             targetMoveZ = 0f;
@@ -322,6 +323,8 @@ public class MagnetCatch : Skill
     /// </summary>
     void OnMagnetAction()
     {
+        SetRenderer(RendererName.Defualt);
+
         magnetVcam.OnSkillCamera();                               // 마그넷카메라 실행
         magnetVcam.SetLookAtTransform(targetGroup.transform);     // 물체와 사용자의 그룹 바라보기
 
@@ -404,7 +407,7 @@ public class MagnetCatch : Skill
 
         targetMoveZ = SetDistance(directionAxisZ * horizontalMoveSpeedRatio, targetDestination.localPosition.z);   // 이동할 거리가 최대거리 안인지 계산
 
-        float finalDistance = targetDestination.localPosition.z + targetMoveZ;          
+        float finalDistance = targetDestination.localPosition.z + targetMoveZ;
         if (finalDistance < minDistanceFromUser && directionAxisZ < 0)                  // 가까워 질 경우 최소거리보다 작아지면 이동할 거리 제거
         {
             targetMoveZ = 0;
@@ -446,7 +449,7 @@ public class MagnetCatch : Skill
             if (target != null)                                                             // 부딪친 물체가 있으면
             {
                 reactionTarget = target.GetComponent<ReactionObject>();                     // 반응형 오브젝트인지 확인
-                if(reactionTarget != null)
+                if (reactionTarget != null)
                 {
                     isMagnetActivate = reactionTarget.IsMagnetic; // 자석에 반응하는 오브젝트면 자석 활성화
                     isTarget_Door = reactionTarget is ReactionDoor;

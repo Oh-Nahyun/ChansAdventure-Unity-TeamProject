@@ -80,12 +80,16 @@ MonoBehaviour:
     forceY: 5
     boomRange: 3
     damage: 3
+    particle: {fileID: 0}
   weight: 1
   objectMaxHp: 1
   takeDamageAfterThrow: 3
   defencePower: 0
   reactionType: 5
+  skillAvailableMaterial: {fileID: 2100000, guid: 2816397eb4373134ba9a9e74af518d4b,
+    type: 2}
   mainRenderer: {fileID: 0}
+  hitMovementPower: 2
 --- !u!65 &6309940643137425674
 BoxCollider:
   m_ObjectHideFlags: 0

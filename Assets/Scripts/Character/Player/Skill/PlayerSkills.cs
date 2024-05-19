@@ -63,6 +63,9 @@ public class PlayerSkills : MonoBehaviour
 
     public Action<SkillName> onSkillAcquisition;
 
+    public Action<SkillName> onSKillSuccess;
+    public Action offSkill;
+
     float[] maxCooltimes;
     float[] cooltimes;
 
@@ -120,7 +123,14 @@ public class PlayerSkills : MonoBehaviour
 
         onDrop += relatedAction.Drop;
 
-        onSkillMotionChange = relatedAction.SetSkillUseAnimation;
+        onSkillMotionChange += (isUse) =>
+        {
+            relatedAction.SetSkillUseAnimation(isUse);
+            if (isUse)
+            {
+                offSkill?.Invoke();
+            }
+        };
 
         skills = new Skill[SkillCount];
         cooltimes = new float[SkillCount];
@@ -170,6 +180,7 @@ public class PlayerSkills : MonoBehaviour
                 skill = Factory.Instance.GetSkill(currentSkillName).GetComponent<Skill>();  // 팩토리에서 해당 스킬 가져오기
                 skill.OnSKillInitialize(transform);                                         // 사용자는 이스크립트를 가진 트랜스폼 (= 플레이어)
                 skills[CurrentSkillIndex] = skill;
+                onSKillSuccess?.Invoke(CurrentSkillName);
             }
 
             ConnectSkill(CurrentSkillName);
@@ -218,7 +229,7 @@ public class PlayerSkills : MonoBehaviour
     void CancelSkill(SkillName skillName)
     {
         onDrop?.Invoke();
-
+        offSkill?.Invoke();
 
         onSKillAction = null;
         useSkillAction = null;

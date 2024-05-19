@@ -44,6 +44,13 @@ public class ReactionObject : RecycleObject, IBattler
         /// 폭발 데미지
         /// </summary>
         public float damage = 3.0f;
+        /// <summary>
+        /// 폭발 이펙트
+        /// </summary>
+        public ParticleSystem particle;
+
+        // 쉐이더 그래프 추가
+
     }
 
     [Header("반응형오브젝트 데이터")]
@@ -156,6 +163,8 @@ public class ReactionObject : RecycleObject, IBattler
     /// 지속시간 체크 코루틴용 변수
     /// </summary>
     IEnumerator durationCoroutine;
+
+    IEnumerator skillAvailableColorChangeCoroutine;
 
     /// <summary>
     /// 방어력 (0)
@@ -289,6 +298,11 @@ public class ReactionObject : RecycleObject, IBattler
     bool isAttachMagnet = false;
 
     /// <summary>
+    /// 스킬이 사용가능한지 표시하는 머티리얼
+    /// </summary>
+    public Material skillAvailableMaterial;
+
+    /// <summary>
     /// 기본 머티리얼 들
     /// </summary>
     Material[] originMaterials;
@@ -308,9 +322,10 @@ public class ReactionObject : RecycleObject, IBattler
     /// </summary>
     bool isFollowMagnetRotate = true;
 
-    ParticleSystem particle;
 
     Transform objectShape;
+
+    ParticleSystem explosionParticle;
 
     /// <summary>
     /// 재활용 여부를 결정하는 변수 (true: 재활용)
@@ -329,23 +344,40 @@ public class ReactionObject : RecycleObject, IBattler
 
         originParent = transform.parent;    // 원래 부모 설정
         rigid.mass = weight;
+        originDrag = rigid.drag;
         //reducePower = 1.0f / Weight;        // TODO: 감소량 결정 (리지드바디의 mess로 정할지 결정)
 
         if (mainRenderer == null)
         {
             mainRenderer = GetComponentInChildren<Renderer>();
         }
-        
+
         originMaterials = mainRenderer.materials;
-        
+
 
         durationCoroutine = DurationCoroutine();
         blinkCoroutine = BlinkCoroutine();
+        skillAvailableColorChangeCoroutine = SkillAvailableColorChangeCoroutine();
         if (transform.childCount != 0)
         {
             objectShape = transform.GetChild(0);
         }
-        particle = GetComponentInChildren<ParticleSystem>();
+
+        if (IsExplosive)
+        {
+            if (explosiveInfo.particle != null)
+            {
+                explosionParticle = Instantiate(explosiveInfo.particle, transform);
+                explosionParticle.transform.localScale = explosiveInfo.boomRange * Vector3.one;
+            }
+        }
+    }
+
+    private void Start()
+    {
+        PlayerSkills skill = GameManager.Instance.Skill.PlayerSkill;
+        skill.onSKillSuccess += OnSkill;
+        skill.offSkill += OffSKill;
     }
 
     protected override void OnEnable()
@@ -429,7 +461,7 @@ public class ReactionObject : RecycleObject, IBattler
     /// </summary>
     /// <param name="destination">자석으로 옮기고자하는 목적지</param>
     /// <param name="moveSpeed">자석에 붙어서 이동할 때 속도</param>
-    public void AttachMagnet(float moveSpeed)
+    public virtual void AttachMagnet(float moveSpeed, Material skillColor)
     {
         if (IsMagnetic)
         {
@@ -440,13 +472,17 @@ public class ReactionObject : RecycleObject, IBattler
             isAttachMagnet = true;
             attachMoveSpeed = moveSpeed;
             isFollowMagnetRotate = true;
+
+            originMaterials = mainRenderer.materials;
+            skillMaterial = skillColor;
+            SetSkillColor(skillMaterial);
         }
     }
 
     /// <summary>
     /// 자석에서 떨어질 때 동작하는 메서드
     /// </summary>
-    public void DettachMagnet()
+    public virtual void DettachMagnet()
     {
         if (IsMagnetic)
         {
@@ -456,6 +492,9 @@ public class ReactionObject : RecycleObject, IBattler
             rigid.angularDrag = originAngularDrag;
             isAttachMagnet = false;
             isFollowMagnetRotate = false;
+
+            mainRenderer.materials = originMaterials;
+            SetSkillColor(null);
         }
     }
 
@@ -524,7 +563,7 @@ public class ReactionObject : RecycleObject, IBattler
         AccumulateDamage = 0;
     }
 
-    public void SetSkillColor(Material material)
+    public void SetSkillColor(Material material = null)
     {
         // TODO: 나중에 셰이더로 바꾸기
         if (material == null)
@@ -553,6 +592,47 @@ public class ReactionObject : RecycleObject, IBattler
         AccumulateDamage += power.magnitude;    // 실제 수치가 필요해서 sqr 사용 x
 
         onTimeLockDamageChange?.Invoke(accumulateDirection, AccumulateDamage);
+    }
+
+    protected virtual void OnSkill(SkillName skillName)
+    {
+        switch(skillName)
+        {
+            case SkillName.MagnetCatch:
+                if (IsMagnetic)
+                {
+                    StartCoroutine(skillAvailableColorChangeCoroutine);
+                }
+                break;
+            case SkillName.TimeLock:
+                if (IsMoveable)
+                {
+                    StartCoroutine(skillAvailableColorChangeCoroutine);
+                }
+                break;
+        }
+    }
+
+    protected virtual void OffSKill()
+    {
+        StopCoroutine(skillAvailableColorChangeCoroutine);
+        isAvailableColorChange = false;
+        SetSkillColor();
+    }
+
+    bool isAvailableColorChange = false;
+
+    IEnumerator SkillAvailableColorChangeCoroutine()
+    {
+        while (true)
+        {
+            if(mainRenderer.isVisible && !isAvailableColorChange)
+            {
+                isAvailableColorChange = true;
+                SetSkillColor(skillAvailableMaterial);
+            }
+            yield return null;
+        }
     }
 
     /// <summary>
@@ -584,11 +664,13 @@ public class ReactionObject : RecycleObject, IBattler
         pickUpUser = null;              // 부딪치면 들고 있는 사용자 없애기
         currentState = StateType.None;  // 현재 상태를 기본 상태로
         ObjectHP -= takeDamageAfterThrow;
+        rigid.drag = originDrag;
     }
     protected virtual void CollisionActionAfterDrop()
     {
         pickUpUser = null;              // 부딪치면 들고 있는 사용자 없애기
         currentState = StateType.None;  // 현재 상태를 기본 상태로
+        rigid.drag = originDrag;
     }
     #endregion
 
@@ -638,7 +720,8 @@ public class ReactionObject : RecycleObject, IBattler
     {
         TryHit(damage);
 
-        if(IsMoveable)
+
+        if (IsMoveable)
         {
             if (currentState == StateType.TimeLock)
             {
@@ -648,7 +731,7 @@ public class ReactionObject : RecycleObject, IBattler
             {
                 rigid.AddForce(power, ForceMode.Impulse);
             }
-        }  
+        }
     }
 
     /// <summary>
@@ -678,7 +761,6 @@ public class ReactionObject : RecycleObject, IBattler
         // 폭발가능한 오브젝트이고 현재 폭발중이 아닐 때(폭발물 끼리 폭발 범위가 겹쳤을 때 무한 호출 방지)
         if (IsExplosive && currentState != StateType.Boom)
         {
-            Debug.Log("터짐");
             currentState = StateType.Boom;  // 현재 상태 폭발중으로 설정
             // -- 폭발 동작 코루틴 추가해야됨
             Collider[] objects = Physics.OverlapSphere(transform.position, explosiveInfo.boomRange);    // 범위 내 모든 물체 검사
@@ -709,10 +791,10 @@ public class ReactionObject : RecycleObject, IBattler
         {
             objectShape.gameObject.SetActive(false);
         }
-        if (particle != null)
+        if (explosionParticle != null)
         {
-            particle.Play();
-            StartCoroutine(ReturnActionWait(particle.main.duration));
+            explosionParticle.Play();
+            StartCoroutine(ReturnActionWait(explosionParticle.main.duration));
         }
         else
         {
@@ -761,6 +843,7 @@ public class ReactionObject : RecycleObject, IBattler
 
                 currentState = StateType.PickUp;
                 rigid.isKinematic = true;
+                rigid.drag = 0;
 
                 lifter.PickUp(this);
             }
@@ -794,7 +877,6 @@ public class ReactionObject : RecycleObject, IBattler
             transform.parent = originParent;
             currentState = StateType.Drop;
             rigid.isKinematic = false;
-            pickUpUser = null;
         }
     }
     #endregion

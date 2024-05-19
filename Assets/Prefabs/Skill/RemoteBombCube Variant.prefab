@@ -11,17 +11,17 @@ PrefabInstance:
     - target: {fileID: 3945198711380477321, guid: 5357befead7529840918c0b0c1e05995,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.41
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3945198711380477321, guid: 5357befead7529840918c0b0c1e05995,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.94
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3945198711380477321, guid: 5357befead7529840918c0b0c1e05995,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 7.78
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3945198711380477321, guid: 5357befead7529840918c0b0c1e05995,
         type: 3}
@@ -58,6 +58,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5877283521861868790, guid: 5357befead7529840918c0b0c1e05995,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 6326012717509574903, guid: 5357befead7529840918c0b0c1e05995,
         type: 3}
       propertyPath: m_Mesh
@@ -70,6 +75,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7903323959094361683, guid: 5357befead7529840918c0b0c1e05995, type: 3}
+    - {fileID: 6469151010860272886, guid: 5357befead7529840918c0b0c1e05995, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -77,6 +83,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: -3562974027467459833}
+    - targetCorrespondingSourceObject: {fileID: 6731784966498643628, guid: 5357befead7529840918c0b0c1e05995,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9042183961853825046}
   m_SourcePrefab: {fileID: 100100000, guid: 5357befead7529840918c0b0c1e05995, type: 3}
 --- !u!1 &5673038610984017870 stripped
 GameObject:
@@ -101,12 +111,36 @@ MonoBehaviour:
     forceY: 5
     boomRange: 3
     damage: 3
+    particle: {fileID: 0}
   weight: 1
   objectMaxHp: 1
+  takeDamageAfterThrow: 3
   defencePower: 1
   reactionType: 91
-  MaxTimeLockDamage: 50
+  mainRenderer: {fileID: 0}
+  hitMovementPower: 2
   skillDistance: 50
   skillName: 1
   cooltime: 5
   skillSprite: {fileID: -435851196, guid: 45e92f7b5edf7e74dbe0002b63669beb, type: 3}
+--- !u!65 &9042183961853825046
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5673038610984017870}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.6, y: 0.6, z: 0.6}
+  m_Center: {x: 0, y: 0.3, z: 0}
