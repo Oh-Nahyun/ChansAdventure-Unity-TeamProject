@@ -9,7 +9,7 @@ public class Bow : MonoBehaviour
     /// </summary>
     Collider bowCollider;
 
-    void Start()
+    void OnEnable()
     {
         bowCollider = GetComponent<Collider>();
     }

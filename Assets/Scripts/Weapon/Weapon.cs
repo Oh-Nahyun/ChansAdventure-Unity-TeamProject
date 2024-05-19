@@ -311,6 +311,7 @@ public class Weapon : MonoBehaviour
                 break;
             case WeaponMode.Sword:
                 ShowWeapon(true, false);
+                sword.SwordColliderDisable();
                 IsBowEquip = false;
                 break;
             case WeaponMode.Bow:
@@ -654,6 +655,7 @@ public class Weapon : MonoBehaviour
                 return;
         }
         InventorySlot slot = player.Inventory.QuickWeaponEquip(weaponType); // 아이템 슬롯
+
         if (slot == null) 
             return;   // 반환한 슬롯이 없으면 리턴
         else

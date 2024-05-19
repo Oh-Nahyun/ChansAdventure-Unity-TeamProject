@@ -14,7 +14,7 @@ public class Sword : MonoBehaviour
         player = GameManager.Instance.Player;   // 플레이어 찾기
     }
 
-    void Start()
+    void OnEnable()
     {
         swordCollider = GetComponent<Collider>();
     }

@@ -28,14 +28,14 @@ public class Arrow : RecycleObject
 
     private void Awake()
     {
-        arrowCollider = GetComponent<Collider>();
-        rigid = GetComponent<Rigidbody>();
         //ps = GetComponent<ParticleSystem>();
     }
 
     protected override void OnEnable()
     {
         base.OnEnable();
+        rigid = GetComponent<Rigidbody>();
+        arrowCollider = GetComponent<Collider>();
         StartCoroutine(LifeOver(lifeTime));                         // 수명 설정
         rigid.angularVelocity = Vector3.zero;                       // 이전의 회전력 제거
 
@@ -47,7 +47,7 @@ public class Arrow : RecycleObject
         {
             arrowFirePoint = FindAnyObjectByType<ArrowFirePoint>();
             arrowRange = arrowFirePoint.arrowFireRange;
-            rigid.velocity = player.transform.forward * arrowSpeed * arrowRange;    // 발사 방향과 속도 설정 // transform.up        }
+            //rigid.velocity = player.transform.forward * arrowSpeed * arrowRange;    // 발사 방향과 속도 설정 // transform.up        }
         }
 
     }
@@ -81,6 +81,15 @@ public class Arrow : RecycleObject
         }
     }
     // --------------------------------------------------------------------------------------------------------------
+
+    /// <summary>
+    /// 발사 되었을 때 실행되는 함수
+    /// </summary>
+    public void Fired()
+    {
+        transform.rotation = Quaternion.Euler(90f, 0f, -player.transform.localEulerAngles.y); // 카메라 회전과 동일 시 하기 ( 기본 회전값 90,0,0 )
+        rigid.AddForce( transform.up * arrowRange * arrowSpeed, ForceMode.Impulse);
+    }
 
     /// <summary>
     /// 화살의 Collider를 켜는 함수 (Animation 설정용)

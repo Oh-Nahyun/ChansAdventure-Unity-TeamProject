@@ -68,6 +68,7 @@ public class ArrowFirePoint : MonoBehaviour
     /// <param name="arrow">화살 아이템 오브젝트</param>
     public void GetFireArrow(PoolObjectType type, GameObject arrow)
     {
-        Factory.Instance.GetObject(type, fireTransform.position, new Vector3(90.0f, 0f, 0f));
+        GameObject arrowObj = Factory.Instance.GetObject(type, fireTransform.position, new Vector3(90.0f, 0f, 0f));
+        arrowObj.GetComponent<Arrow>().Fired();
     }
 }
