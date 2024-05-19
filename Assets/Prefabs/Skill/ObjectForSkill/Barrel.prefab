@@ -45,7 +45,7 @@ Rigidbody:
   serializedVersion: 4
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -79,11 +79,16 @@ MonoBehaviour:
     forceY: 5
     boomRange: 3
     damage: 3
+    particle: {fileID: 0}
   weight: 1
   objectMaxHp: 1
+  takeDamageAfterThrow: 3
   defencePower: 0
   reactionType: 43
-  MaxTimeLockDamage: 50
+  skillAvailableMaterial: {fileID: 2100000, guid: 2816397eb4373134ba9a9e74af518d4b,
+    type: 2}
+  mainRenderer: {fileID: 0}
+  hitMovementPower: 2
 --- !u!136 &5414673265454870909
 CapsuleCollider:
   m_ObjectHideFlags: 0

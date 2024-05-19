@@ -124,7 +124,7 @@ public class IceMaker : Skill
         layerMask_PlayerIgnore = ~layerMask_PlayerIgnore;
     }
 
-    private void Start()
+    void Start()
     {
         if (crosshair != null)
         {
