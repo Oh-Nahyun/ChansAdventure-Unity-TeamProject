@@ -1275,8 +1275,12 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// <returns></returns>
     void IsTalk(bool talk)
     {
+        if(isTalk != talk)
+        {
+            isAnyUIPanelOpened = talk;
+        }
+
         isTalk = talk;
-        isAnyUIPanelOpened = talk;
     }
 
     /// <summary>
