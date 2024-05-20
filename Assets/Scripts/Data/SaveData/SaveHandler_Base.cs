@@ -221,6 +221,7 @@ public class SaveHandler_Base : MonoBehaviour
         // 저장한 데이터 불러오기   
         GameManager.Instance.spawnPoint = playerDatas[loadIndex].position; // 플레이어 위치 잡기
         player.transform.rotation = Quaternion.Euler(playerDatas[loadIndex].rotation);
+        player.Inventory.InventoryClear();
 
         Inventory inventory = player.Inventory; // 저장할 플레이어 인벤토리 불러오기
         for (int i = 0; i < inventory.SlotSize; i++)

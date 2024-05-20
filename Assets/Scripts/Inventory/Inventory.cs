@@ -434,6 +434,17 @@ public class Inventory
     }
 
     /// <summary>
+    /// 인벤토리를 비우는 함수
+    /// </summary>
+    public void InventoryClear()
+    {
+        for(int i = 0; i < maxSlot_size; i++)
+        {
+            slots[i].ClearItem();
+        }
+    }
+
+    /// <summary>
     /// 아이템들 중 가장 강한 아이템의 아이템 슬롯을 반환하는 함수 ( 동일한 아이템이 있으면 가장 먼저있는 아이템을 반환 )
     /// </summary>
     /// <param name="weaponType">장착할 무기 타입</param>
