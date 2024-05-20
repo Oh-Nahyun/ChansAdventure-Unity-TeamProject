@@ -20,8 +20,8 @@ public class BossStageSetting : MonoBehaviour
 
         Factory.Instance.GetItemObject(GameManager.Instance.ItemDataManager[4], dropposition.position);
         Factory.Instance.GetItemObject(GameManager.Instance.ItemDataManager[8], dropposition.position);
-        Factory.Instance.GetItemObjects(GameManager.Instance.ItemDataManager[9],5 ,dropposition.position);
-        Factory.Instance.GetItemObjects(GameManager.Instance.ItemDataManager[9],5 ,dropposition.position);
+        Factory.Instance.GetItemObjects(GameManager.Instance.ItemDataManager[9],5 ,dropposition.position, false);
+        Factory.Instance.GetItemObjects(GameManager.Instance.ItemDataManager[9],5 ,dropposition.position, false);
     }
 
     private void Update()

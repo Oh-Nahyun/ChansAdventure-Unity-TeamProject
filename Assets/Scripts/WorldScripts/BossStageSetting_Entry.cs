@@ -3,27 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// º¸½º ½ºÅ×ÀÌÁö ÀÔ±¸ ½ºÅ©¸³Æ®
+/// ë³´ìŠ¤ ìŠ¤í…Œì´ì§€ ì…êµ¬ ìŠ¤í¬ë¦½íŠ¸
 /// </summary>
 public class BossStageSetting_Entry : MonoBehaviour
 {
     /// <summary>
-    /// ½ºÅ×ÀÌÁö ¼¼ÆÃ
+    /// ìŠ¤í…Œì´ì§€ ì„¸íŒ…
     /// </summary>
     BossStageSetting stageSetting;
 
     /// <summary>
-    /// º¸½º ¿¬Ãâ Ä«¸Ş¶ó
+    /// ë³´ìŠ¤ ì—°ì¶œ ì¹´ë©”ë¼
     /// </summary>
     BossCamera bossCamera;
 
     /// <summary>
-    /// º¸½º ÀÌ¸§
+    /// ë³´ìŠ¤ ì´ë¦„
     /// </summary>
     FadeInOutTextUI bossNameUI;
 
     /// <summary>
-    /// º¸½º Ã¼·Â¹Ù
+    /// ë³´ìŠ¤ ì²´ë ¥ë°”
     /// </summary>
     BossHPSlider bossHPSlider;
 
@@ -48,7 +48,7 @@ public class BossStageSetting_Entry : MonoBehaviour
     }
 
     /// <summary>
-    /// ½ºÅ×ÀÌÁö ÁøÀÔÇÒ ¶§ ½ÇÇàÇÏ´Â ÇÔ¼ö
+    /// ìŠ¤í…Œì´ì§€ ì§„ì…í•  ë•Œ ì‹¤í–‰í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
     void OnStageEnter()
     {
@@ -60,7 +60,7 @@ public class BossStageSetting_Entry : MonoBehaviour
 
         bossHPSlider.ShowPanel();
 
-        collider.isTrigger = false; // Æ®¸®°Å ºñÈ°¼ºÈ­
+        collider.isTrigger = false; // íŠ¸ë¦¬ê±° ë¹„í™œì„±í™”
         transform.localPosition += Vector3.left * 2f;
     }
 }
