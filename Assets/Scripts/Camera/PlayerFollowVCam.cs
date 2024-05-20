@@ -48,8 +48,8 @@ public class PlayerFollowVCam : MonoBehaviour
         if (state == GameState.NotStart)
             return;
 
-        player = FindAnyObjectByType<Player>();
-        weapon = FindAnyObjectByType<Weapon>();
+        player = GameManager.Instance.Player;
+        weapon = player.GetComponent<Weapon>();
         vcam = GetComponent<CinemachineVirtualCamera>();
         follow = vcam.GetCinemachineComponent<Cinemachine3rdPersonFollow>();
         //lookAtPosition = GameObject.FindWithTag("LookAtPosition").transform;

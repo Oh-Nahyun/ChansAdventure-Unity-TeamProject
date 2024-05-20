@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// º¸½º ½ºÅ×ÀÌÁö ¼¼ÆÃ ½ºÅ©¸³Æ®
+/// ë³´ìŠ¤ ìŠ¤í…Œì´ì§€ ì„¸íŒ… ìŠ¤í¬ë¦½íŠ¸
 /// </summary>
 public class BossStageSetting : MonoBehaviour
 {
@@ -15,12 +15,13 @@ public class BossStageSetting : MonoBehaviour
 
     void Start()
     {
-        boss = FindAnyObjectByType<Boss>(); // º¸½º Ã£±â
-        boss.gameObject.SetActive(false);   // º¸½º ºñÈ°¼ºÈ­
+        boss = FindAnyObjectByType<Boss>(); // ë³´ìŠ¤ ì°¾ê¸°
+        boss.gameObject.SetActive(false);   // ë³´ìŠ¤ ë¹„í™œì„±í™”
 
         Factory.Instance.GetItemObject(GameManager.Instance.ItemDataManager[4], dropposition.position);
         Factory.Instance.GetItemObject(GameManager.Instance.ItemDataManager[8], dropposition.position);
-        Factory.Instance.GetItemObjects(GameManager.Instance.ItemDataManager[9],5 ,dropposition.position);
+        Factory.Instance.GetItemObjects(GameManager.Instance.ItemDataManager[9],5 ,dropposition.position, false);
+        Factory.Instance.GetItemObjects(GameManager.Instance.ItemDataManager[9],5 ,dropposition.position, false);
     }
 
     private void Update()
@@ -36,7 +37,7 @@ public class BossStageSetting : MonoBehaviour
     {
         if (boss == null)
         {
-            Debug.LogWarning($"BossStageSetting : Boss ¿ÀºêÁ§Æ®¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù");
+            Debug.LogWarning($"BossStageSetting : Boss ì˜¤ë¸Œì íŠ¸ë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤");
         }
 
         return boss;

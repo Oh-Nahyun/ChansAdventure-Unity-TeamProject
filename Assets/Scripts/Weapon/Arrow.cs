@@ -81,6 +81,14 @@ public class Arrow : RecycleObject
                     player.Attack(target, true);
                 }
             }
+            else
+            {
+                IBattler target = other.GetComponentInParent<IBattler>();
+                if (target != null)
+                {
+                    player.Attack(target, false);
+                }
+            }
         }
     }
     // --------------------------------------------------------------------------------------------------------------

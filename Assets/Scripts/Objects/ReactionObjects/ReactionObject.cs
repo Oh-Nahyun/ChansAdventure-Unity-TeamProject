@@ -596,20 +596,23 @@ public class ReactionObject : RecycleObject, IBattler
 
     protected virtual void OnSkill(SkillName skillName)
     {
-        switch(skillName)
+        if (gameObject.activeSelf)
         {
-            case SkillName.MagnetCatch:
-                if (IsMagnetic)
-                {
-                    StartCoroutine(skillAvailableColorChangeCoroutine);
-                }
-                break;
-            case SkillName.TimeLock:
-                if (IsMoveable)
-                {
-                    StartCoroutine(skillAvailableColorChangeCoroutine);
-                }
-                break;
+            switch (skillName)
+            {
+                case SkillName.MagnetCatch:
+                    if (IsMagnetic)
+                    {
+                        StartCoroutine(skillAvailableColorChangeCoroutine);
+                    }
+                    break;
+                case SkillName.TimeLock:
+                    if (IsMoveable)
+                    {
+                        StartCoroutine(skillAvailableColorChangeCoroutine);
+                    }
+                    break;
+            }
         }
     }
 
@@ -888,6 +891,7 @@ public class ReactionObject : RecycleObject, IBattler
     {
         pickUpUser = null;
         transform.SetParent(originParent);
+        StopAllCoroutines();
         ReturnAction();
     }
 

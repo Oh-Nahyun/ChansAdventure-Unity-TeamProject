@@ -33,7 +33,9 @@ public class EnemyHealthBar : MonoBehaviour
         if (GameManager.Instance.isLoading)
             return;
 
-        transform.rotation = Camera.main.transform.rotation;    // 빌보드로 만들기(카메라의 회전과 일치시켜서 항상 카메라에 정면으로 비치게 만들기)
-        //transform.forward = Camera.main.transform.forward;
+        if(Camera.main != null)
+        {
+            transform.rotation = Camera.main.transform.rotation;    // 빌보드로 만들기(카메라의 회전과 일치시켜서 항상 카메라에 정면으로 비치게 만들기)
+        }
     }
 }
