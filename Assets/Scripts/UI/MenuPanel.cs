@@ -26,6 +26,7 @@ public class MenuPanel : MonoBehaviour
     PlayerinputActions inputActions;
 
     SaveHandler_Base saveHandler;
+    NormalPanelUI normalPanel;
 
     /// <summary>
     /// 현재 패널 상태
@@ -83,6 +84,9 @@ public class MenuPanel : MonoBehaviour
         child = topPanel.transform.GetChild(4);
         nextPanelName = child.GetComponent<TextMeshProUGUI>();
 
+        topPanel = transform.GetChild(1);
+        normalPanel = topPanel.GetComponent<NormalPanelUI>();
+
         inputActions = new PlayerinputActions();
     }
 
@@ -139,6 +143,7 @@ public class MenuPanel : MonoBehaviour
         GameManager.Instance.ItemDataManager.InventoryUI.CloseInventory();
         GameManager.Instance.MapManager.CloseMapUI();
         saveHandler.CloseSavePanel(); // 세이브 패널 닫기
+        normalPanel.ShowUI();
 
         GameManager.Instance.MapManager.CloseMiniMapUI();
     }
@@ -152,6 +157,7 @@ public class MenuPanel : MonoBehaviour
         GameManager.Instance.ItemDataManager.CharaterRenderCameraPoint.transform.eulerAngles = new Vector3(0, 180f, 0); // RenderTexture 플레이어 위치 초기화
         GameManager.Instance.MapManager.CloseMapUI();
         saveHandler.CloseSavePanel(); // 세이브 패널 닫기
+        normalPanel.CloseUI();
 
         GameManager.Instance.MapManager.CloseMiniMapUI();
     }
@@ -164,6 +170,7 @@ public class MenuPanel : MonoBehaviour
         GameManager.Instance.ItemDataManager.InventoryUI.CloseInventory();
         GameManager.Instance.MapManager.OpenMapUI();
         saveHandler.CloseSavePanel(); // 세이브 패널 닫기
+        normalPanel.CloseUI();
 
         GameManager.Instance.MapManager.CloseMiniMapUI();
     }
@@ -176,6 +183,7 @@ public class MenuPanel : MonoBehaviour
         GameManager.Instance.ItemDataManager.InventoryUI.CloseInventory();
         GameManager.Instance.MapManager.CloseMapUI();
         saveHandler.ShowSavePanel(); // 세이브 패널 열기
+        normalPanel.CloseUI();
 
         GameManager.Instance.MapManager.CloseMiniMapUI();
     }

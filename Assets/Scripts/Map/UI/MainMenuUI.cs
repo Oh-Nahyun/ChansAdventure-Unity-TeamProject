@@ -21,7 +21,6 @@ public class MainMenuUI : MonoBehaviour
 
     private void Start()
     {
-
         Transform child = transform.GetChild(0);
         StartBtn = child.GetComponent<Button>();
         StartBtn.onClick.AddListener(OnStart);

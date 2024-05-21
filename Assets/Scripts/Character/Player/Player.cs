@@ -379,7 +379,15 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         get => maxHP;
         set
         {
-            maxHP = value;
+            if(maxHP != 0)
+            {
+                maxHP = value;
+            }
+            else
+            {
+                maxHP = 300;
+                HP = maxHP;
+            }
         }
     }
 

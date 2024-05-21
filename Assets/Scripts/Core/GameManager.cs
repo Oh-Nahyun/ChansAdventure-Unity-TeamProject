@@ -219,9 +219,9 @@ public class GameManager : Singleton<GameManager>
     {
         GameObject obj = Instantiate(playerObject, loadPlayerGameObject.transform); // 플레이어를 로딩 오브젝트에 복제
         obj.transform.position = Vector3.zero;                                      // 오브젝트 위치 초기화
-        savedInventory = playerObject.GetComponent<Player>().Inventory;             // 인벤토리 저장
-        savedEquipParts = playerObject.GetComponent<Player>().EquipPart;            // 장착부위 정보 저장
-        SavedMaxHp = playerObject.GetComponent<Player>().MaxHP;                     // 최대 체력 저장
+        savedInventory = obj.GetComponent<Player>().Inventory;             // 인벤토리 저장
+        savedEquipParts = obj.GetComponent<Player>().EquipPart;            // 장착부위 정보 저장
+        SavedMaxHp = obj.GetComponent<Player>().MaxHP;                     // 최대 체력 저장
 
         loadPlayerGameObject.SetActive(false);
 
