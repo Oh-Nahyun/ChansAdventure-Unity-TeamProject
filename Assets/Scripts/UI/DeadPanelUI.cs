@@ -44,8 +44,11 @@ public class DeadPanelUI : MonoBehaviour
 
     void Initialize()
     {
-        vignette.color.value = Color.clear;
-        vignette.intensity.value = 0f;
+        if(vignette != null)
+        {
+            vignette.color.value = Color.clear;
+            vignette.intensity.value = 0f;
+        }
 
         button.gameObject.SetActive(false);
 

@@ -217,11 +217,11 @@ public class GameManager : Singleton<GameManager>
     /// <param name="SceneName"> 변경할 씬 이름</param>
     public void ChangeToTargetScene(string SceneName, GameObject playerObject)
     {
-        GameObject obj = Instantiate(playerObject, loadPlayerGameObject.transform); // 플레이어를 로딩 오브젝트에 복제
-        obj.transform.position = Vector3.zero;                                      // 오브젝트 위치 초기화
-        savedInventory = obj.GetComponent<Player>().Inventory;             // 인벤토리 저장
-        savedEquipParts = obj.GetComponent<Player>().EquipPart;            // 장착부위 정보 저장
-        SavedMaxHp = obj.GetComponent<Player>().MaxHP;                     // 최대 체력 저장
+        Instantiate(playerObject, loadPlayerGameObject.transform); // 플레이어를 로딩 오브젝트에 복제
+        //obj.transform.position = Vector3.zero;                                      // 오브젝트 위치 초기화
+        savedInventory = playerObject.GetComponent<Player>().Inventory;             // 인벤토리 저장
+        savedEquipParts = playerObject.GetComponent<Player>().EquipPart;            // 장착부위 정보 저장
+        SavedMaxHp = playerObject.GetComponent<Player>().MaxHP;                     // 최대 체력 저장
 
         loadPlayerGameObject.SetActive(false);
 
@@ -264,7 +264,7 @@ public class GameManager : Singleton<GameManager>
             Destroy(loadPlayerGameObject.transform.GetChild(0).gameObject); // 저장된 플레이어 오브젝트 제거
 
             player = loadingPlayer.GetComponent<Player>();  // 플레이어 초기화
-            player.GetInventoryData(savedInventory);        // 플레이어 인벤토리 데이터 받기
+            if (savedInventory != null) player.GetInventoryData(savedInventory);        // 플레이어 인벤토리 데이터 받기
 
             itemDataManager.InitializeItemDataUI();         // 아이템 데이터 매니저 초기화 후
 
@@ -276,7 +276,7 @@ public class GameManager : Singleton<GameManager>
             skillManager.Initialize();                      // 스킬 매니저 초기화
             Cam.initialize();
 
-            player.MaxHP = SavedMaxHp;
+            if(SavedMaxHp != 0) player.MaxHP = SavedMaxHp;
             player.HP = player.MaxHP;
         }
     }

@@ -10,7 +10,7 @@ public class QuestManager : Singleton<QuestManager>
     private QuestMessage questMessage;
 
     /// <summary>
-    /// QuestMessage ÃÊ±âÈ­¿ë Á¢±Ù ÇÁ·ÎÆÛÆ¼
+    /// QuestMessage ì´ˆê¸°í™”ìš© ì ‘ê·¼ í”„ë¡œí¼í‹°
     /// </summary>
     private QuestMessage QuestMessage
     {
@@ -27,13 +27,13 @@ public class QuestManager : Singleton<QuestManager>
 
     private List<QuestInfoPanel> questInfoPanels = new List<QuestInfoPanel>();
 
-    public GameObject questInfoPanelPrefab; // QuestInfoPanel ÇÁ¸®ÆÕ
-    public Transform questInfoPanelParent;  // QuestInfoPanelÀÌ »ı¼ºµÉ ºÎ¸ğ Transform
+    public GameObject questInfoPanelPrefab; // QuestInfoPanel í”„ë¦¬íŒ¹
+    public Transform questInfoPanelParent;  // QuestInfoPanelì´ ìƒì„±ë  ë¶€ëª¨ Transform
 
     public QuestInfo questInfo;
 
     /// <summary>
-    /// QuestInfo ÃÊ±âÈ­¿ë ÇÁ·ÎÆÛÆ¼
+    /// QuestInfo ì´ˆê¸°í™”ìš© í”„ë¡œí¼í‹°
     /// </summary>
     public QuestInfo QuestInfo
     {
@@ -69,18 +69,18 @@ public class QuestManager : Singleton<QuestManager>
     }
 
     /// <summary>
-    /// Dictionary questList¿¡ Äù½ºÆ® Data¸¦ Ãß°¡ÇÏ´Â ÇÔ¼ö (Å°°ª / QuestData(Äù½ºÆ® Á¾·ù, ÀÌ¸§, ³»¿ë, ¸ñÇ¥ ID))
+    /// Dictionary questListì— í€˜ìŠ¤íŠ¸ Dataë¥¼ ì¶”ê°€í•˜ëŠ” í•¨ìˆ˜ (í‚¤ê°’ / QuestData(í€˜ìŠ¤íŠ¸ ì¢…ë¥˜, ì´ë¦„, ë‚´ìš©, ëª©í‘œ ID))
     /// </summary>
     private void GenerateData()
     {
-        questList.Add(0, new QuestData(QuestData.QuestType.None, "Äù½ºÆ® ÀÌ¸§", "Äù½ºÆ® ³»¿ë", "Äù½ºÆ® ¸ñÇ¥", 1, 0));
-        questList.Add(10, new QuestData(QuestData.QuestType.Hunt, "Äù½ºÆ® »ç³É", "Äù½ºÆ® ³»¿ë »ç³É", "Äù½ºÆ® ¸ñÇ¥ 10¸¶¸®", 10, 1));
-        questList.Add(20, new QuestData(QuestData.QuestType.GiveItem, "Äù½ºÆ® ¾ÆÀÌÅÛ ±âºÎ", "Äù½ºÆ® ³»¿ë ¾ÆÀÌÅÛ ±âºÎ", "Äù½ºÆ® ¸ñÇ¥ 10°³", 10, 100));
-        questList.Add(30, new QuestData(QuestData.QuestType.ClearDungeon, "»ç´ç µ¹ÆÄÇÏ±â", "»ç´çÀ» ³¡±îÁö µ¹ÆÄÇÏ¶ó", "»ç´ç Å¬¸®¾î", 1, 0));
+        questList.Add(0, new QuestData(QuestData.QuestType.None, "í€˜ìŠ¤íŠ¸ ì´ë¦„", "í€˜ìŠ¤íŠ¸ ë‚´ìš©", "í€˜ìŠ¤íŠ¸ ëª©í‘œ", 1, 0));
+        questList.Add(10, new QuestData(QuestData.QuestType.Hunt, "í€˜ìŠ¤íŠ¸ ì‚¬ëƒ¥", "í€˜ìŠ¤íŠ¸ ë‚´ìš© ì‚¬ëƒ¥", "í€˜ìŠ¤íŠ¸ ëª©í‘œ 10ë§ˆë¦¬", 10, 1));
+        questList.Add(20, new QuestData(QuestData.QuestType.GiveItem, "í€˜ìŠ¤íŠ¸ ì•„ì´í…œ ê¸°ë¶€", "í€˜ìŠ¤íŠ¸ ë‚´ìš© ì•„ì´í…œ ê¸°ë¶€", "í€˜ìŠ¤íŠ¸ ëª©í‘œ 10ê°œ", 10, 100));
+        questList.Add(30, new QuestData(QuestData.QuestType.ClearDungeon, "ì‚¬ë‹¹ ëŒíŒŒí•˜ê¸°", "ì‚¬ë‹¹ì„ ëê¹Œì§€ ëŒíŒŒí•˜ë¼", "ì‚¬ë‹¹ í´ë¦¬ì–´", 1, 0));
     }
 
     /// <summary>
-    /// Quest°ü·Ã ´ëÈ­°¡ ÁøÇàµÇ¾úÀ»¶§ ½ÇÇàµÇ´Â ÇÔ¼ö
+    /// Questê´€ë ¨ ëŒ€í™”ê°€ ì§„í–‰ë˜ì—ˆì„ë•Œ ì‹¤í–‰ë˜ëŠ” í•¨ìˆ˜
     /// </summary>
     /// <param name="id"></param>
     /// <param name="complete"></param>
@@ -94,23 +94,23 @@ public class QuestManager : Singleton<QuestManager>
             if (!complete)
             {
 
-                // Äù½ºÆ® ½ÃÀÛÀÏ ¶§
-                // ÇØ´ç Äù½ºÆ®¿¡ ´ëÇÑ QuestInfoPanelÀÌ ÀÌ¹Ì »ı¼ºµÇ¾ú´ÂÁö È®ÀÎ
+                // í€˜ìŠ¤íŠ¸ ì‹œì‘ì¼ ë•Œ
+                // í•´ë‹¹ í€˜ìŠ¤íŠ¸ì— ëŒ€í•œ QuestInfoPanelì´ ì´ë¯¸ ìƒì„±ë˜ì—ˆëŠ”ì§€ í™•ì¸
                 QuestInfoPanel existingPanel = questInfoPanels.Find(panel => panel.questId == id);
                 if (existingPanel == null)
                 {
-                    // QuestInfoPanel µ¿Àû »ı¼º ¹× ÃÊ±âÈ­
+                    // QuestInfoPanel ë™ì  ìƒì„± ë° ì´ˆê¸°í™”
                     QuestInfoPanel newQuestInfoPanel = CreateQuestInfoPanel();
                     newQuestInfoPanel.Initialize(questData.questType , id, questData.questName, questData.questContents, questData.questObjectivesText, questData.questObjectivesCount, questData.questObjectID);
 
-                    // »ı¼ºµÈ QuestInfoPanelÀ» ¸®½ºÆ®¿¡ Ãß°¡
+                    // ìƒì„±ëœ QuestInfoPanelì„ ë¦¬ìŠ¤íŠ¸ì— ì¶”ê°€
                     questInfoPanels.Add(newQuestInfoPanel);
                 }
             }
             else
             {
-                // Äù½ºÆ® ¿Ï·áÀÏ ¶§
-                // id¿¡ ÇØ´çÇÏ´Â QuestInfoPanel Ã£¾Æ¼­ Á¦°Å
+                // í€˜ìŠ¤íŠ¸ ì™„ë£Œì¼ ë•Œ
+                // idì— í•´ë‹¹í•˜ëŠ” QuestInfoPanel ì°¾ì•„ì„œ ì œê±°
                 QuestInfoPanel panelToRemove = questInfoPanels.Find(panel => panel.questId == id);
                 if (panelToRemove != null)
                 {
@@ -122,12 +122,12 @@ public class QuestManager : Singleton<QuestManager>
     }
 
     /// <summary>
-    /// QuestInfoPanel»ı¼ºÀ» À§ÇÑ ÇÔ¼ö
+    /// QuestInfoPanelìƒì„±ì„ ìœ„í•œ í•¨ìˆ˜
     /// </summary>
     /// <returns></returns>
     private QuestInfoPanel CreateQuestInfoPanel()
     {
-        // QuestInfoPanel ÇÁ¸®ÆÕÀ» InstantiateÇÏ¿© »ı¼º
+        // QuestInfoPanel í”„ë¦¬íŒ¹ì„ Instantiateí•˜ì—¬ ìƒì„±
         GameObject newPanelObject = Instantiate(questInfoPanelPrefab, questInfoPanelParent);
         QuestInfoPanel newQuestInfoPanel = newPanelObject.GetComponent<QuestInfoPanel>();
 
@@ -135,12 +135,12 @@ public class QuestManager : Singleton<QuestManager>
     }
 
     /// <summary>
-    /// QuestInfoPanel»èÁ¦¸¦ À§ÇÑ ÇÔ¼ö
+    /// QuestInfoPanelì‚­ì œë¥¼ ìœ„í•œ í•¨ìˆ˜
     /// </summary>
     /// <param name="panel"></param>
     private void DestroyQuestInfoPanel(QuestInfoPanel panel)
     {
-        // ¸®½ºÆ®¿¡¼­ Á¦°ÅÇÏ°í GameObject¸¦ ÆÄ±«
+        // ë¦¬ìŠ¤íŠ¸ì—ì„œ ì œê±°í•˜ê³  GameObjectë¥¼ íŒŒê´´
         questInfoPanels.Remove(panel);
         Destroy(panel.gameObject);
     }

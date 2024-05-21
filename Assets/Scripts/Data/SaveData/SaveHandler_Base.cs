@@ -46,8 +46,6 @@ public class SaveHandler_Base : MonoBehaviour
     /// </summary>
     protected PlayerData[] playerDatas;
 
-    protected Player player;
-
     /// <summary>
     /// 데이터 최대 사이즈
     /// </summary>
@@ -79,8 +77,6 @@ public class SaveHandler_Base : MonoBehaviour
         }
 
         RefreshSaveData();
-
-        player = GameManager.Instance.Player;
 
         // Check UI =====================================
         child = transform.GetChild(1);
@@ -177,6 +173,7 @@ public class SaveHandler_Base : MonoBehaviour
         data.SceneNumber = SceneDatas;
 
         // Player 정보 저장
+        Player player = GameManager.Instance.Player;
         Vector3 curPos = player.gameObject.transform.position;
         Vector3 curRot = player.gameObject.transform.eulerAngles;
         Inventory curInven = player.Inventory;
@@ -219,6 +216,7 @@ public class SaveHandler_Base : MonoBehaviour
     protected virtual void LoadPlayerData(int loadIndex)
     {
         // 저장한 데이터 불러오기   
+        Player player = GameManager.Instance.Player;
         GameManager.Instance.spawnPoint = playerDatas[loadIndex].position; // 플레이어 위치 잡기
         player.transform.rotation = Quaternion.Euler(playerDatas[loadIndex].rotation);
         player.Inventory.InventoryClear();
@@ -245,7 +243,7 @@ public class SaveHandler_Base : MonoBehaviour
 
         // 씬 불러오기
         string sceneName = System.IO.Path.GetFileNameWithoutExtension(UnityEngine.SceneManagement.SceneUtility.GetScenePathByBuildIndex(SceneDatas[loadIndex])); // 저장한 씬 인덱스로 씬 저장
-        GameManager.Instance.ChangeToTargetScene(sceneName, GameManager.Instance.Player.gameObject);
+        GameManager.Instance.ChangeToTargetScene(sceneName, player.gameObject);
     }
 
     /// <summary>

@@ -369,7 +369,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// <summary>
     /// 최대 HP
     /// </summary>
-    float maxHP;
+    float maxHP = 1;
 
     /// <summary>
     /// 최대 HP 접근 프로퍼티
@@ -379,15 +379,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         get => maxHP;
         set
         {
-            if(maxHP != 0)
-            {
-                maxHP = value;
-            }
-            else
-            {
-                maxHP = 300;
-                HP = maxHP;
-            }
+            maxHP = value;
         }
     }
 
@@ -563,6 +555,11 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
 
     void OnEnable()
     {
+        if(MaxHP < 2) // 체력 설정이 안되어있음
+        {
+            MaxHP = 300f;
+            HP = MaxHP;
+        }
         menuPanel = FindAnyObjectByType<MenuPanel>();
 
         // 게임 시작 전이면 비활성화
