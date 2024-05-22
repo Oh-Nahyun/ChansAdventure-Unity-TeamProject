@@ -774,6 +774,7 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
     /// </summary>
     public void Die()
     {
+        StopAllCoroutines();
         State = EnemyState.Dead;        // 상태 변경
         StartCoroutine(DeadSquence());  // 사망 연출 시작
         onDie?.Invoke();                // 죽었다고 알림 보내기
