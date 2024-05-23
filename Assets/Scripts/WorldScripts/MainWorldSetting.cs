@@ -11,15 +11,13 @@ public class MainWorldSetting : MonoBehaviour
     {
         //for(int i = 0; i < 3; i++)
         //{
-        //    Vector3 noisePosition = Random.onUnitSphere.normalized * 5f;  // ±¸ ¹üÀ§³× ·£´ý À§Ä¡ ¼³Á¤
+        //    Vector3 noisePosition = Random.onUnitSphere.normalized * 5f;  // êµ¬ ë²”ìœ„ë„¤ ëžœë¤ ìœ„ì¹˜ ì„¤ì •
         //}
 
-        // ¾ÆÀÌÅÛ ¼ÒÈ¯
+        // ì•„ì´í…œ ì†Œí™˜
         ItemDataManager dataManager = GameManager.Instance.ItemDataManager;
 
-        Factory.Instance.GetItemObject(dataManager[ItemCode.Sword], ItemDropPosition.position);
-        Factory.Instance.GetItemObject(dataManager[ItemCode.Bow], ItemDropPosition.position);
+        Factory.Instance.GetItemObject(dataManager[ItemCode.Coin], ItemDropPosition.position);
         Factory.Instance.GetItemObjects(dataManager[ItemCode.Arrow], 10, ItemDropPosition.position, true);
-        Factory.Instance.GetItemObjects(dataManager[ItemCode.HP_portion_Tick], 2, ItemDropPosition.position);
     }
 }

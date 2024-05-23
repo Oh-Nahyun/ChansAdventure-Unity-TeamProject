@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5bfea0f0595a8184db67d502cc336078, type: 3}
-  m_Name: 03_Hammer
+  m_Name: 10_MasterSword
   m_EditorClassIdentifier: 
-  itemCode: 3
-  itemName: "\uB9DD\uCE58"
-  itemIcon: {fileID: 21300000, guid: 74b95f8fcc76fcc4cb42a25e8d3cdbe0, type: 3}
-  desc: "\uB9DD\uCE58\uB2E4"
+  itemCode: 4
+  itemName: "\uCE7C"
+  itemIcon: {fileID: 21300000, guid: c0ea4b6e528e7fe4aa6cdc94d38691a1, type: 3}
+  desc: 
   price: 10000
   maxCount: 1
-  ItemPrefab: {fileID: 3700501417689858615, guid: 737c7e56aeb37ca4f8dd119d0dd87654,
+  ItemPrefab: {fileID: 7296186294563206238, guid: 62f958e218c00e344b9c15c923fd5958,
     type: 3}
-  EqiupPrefab: {fileID: 2915590125227777304, guid: 739b731f4d1c35941a3486c5aeaebb3b,
+  EqiupPrefab: {fileID: 7296186294563206238, guid: 53b987a268ea64c47818a05fd14ef05b,
     type: 3}
   equipPart: 0
-  Damage: 10
+  Damage: 100
   WeaponType: 0
