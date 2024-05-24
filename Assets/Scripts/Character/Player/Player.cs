@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Animations;
 using UnityEngine.InputSystem;
-using UnityEngine.Windows;
+
 
 public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
 {
@@ -534,6 +535,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     public bool IsAnyUIPanelOpened => isAnyUIPanelOpened;
 
     MenuPanel menuPanel;
+
     #endregion
 
     // 함수 ==========================================================================================================================
@@ -661,7 +663,9 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
 
         if(weapon.IsZoomIn)
         {
-            transform.rotation = Quaternion.Slerp(transform.rotation, Camera.main.transform.rotation, Time.fixedDeltaTime * turnSpeed); // 카메라 회전 방향과 동일하게 설정 ( Set the same as the camera rotation direction ) / 0524      
+            // set target position
+            Quaternion cameraRotation = Quaternion.Euler(0, Camera.main.transform.eulerAngles.y, Camera.main.transform.eulerAngles.z);
+            transform.rotation = Quaternion.Slerp(transform.rotation, cameraRotation, Time.fixedDeltaTime * turnSpeed); // 목표 회전으로 변경            
         }
         else
         {
