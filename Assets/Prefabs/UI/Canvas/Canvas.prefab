@@ -2251,6 +2251,18 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4843429083510398068, guid: 61124d27d4ac6af46a274a0670c9a18c,
+        type: 3}
+      propertyPath: itemData
+      value: 
+      objectReference: {fileID: 11400000, guid: bedee43c36775b445b6c6d0fa68a81ec,
+        type: 2}
+    - target: {fileID: 5774123834040924486, guid: 61124d27d4ac6af46a274a0670c9a18c,
+        type: 3}
+      propertyPath: itemData
+      value: 
+      objectReference: {fileID: 11400000, guid: 26764ef1ae7ad6a47bf75f6eba901eae,
+        type: 2}
     - target: {fileID: 5922588242549490501, guid: 61124d27d4ac6af46a274a0670c9a18c,
         type: 3}
       propertyPath: m_Pivot.x
@@ -2431,6 +2443,12 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7140289991405939880, guid: 61124d27d4ac6af46a274a0670c9a18c,
+        type: 3}
+      propertyPath: itemData
+      value: 
+      objectReference: {fileID: 11400000, guid: 5ca45c1a8b0027a4290f089f99b2b1c9,
+        type: 2}
     - target: {fileID: 8272710832971970804, guid: 61124d27d4ac6af46a274a0670c9a18c,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -3503,6 +3521,21 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2765958922881653032, guid: c2448a5d7265540ba8063c9aa095d5ad,
+        type: 3}
+      propertyPath: Hearts.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2765958922881653032, guid: c2448a5d7265540ba8063c9aa095d5ad,
+        type: 3}
+      propertyPath: Hearts.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2765958922881653032, guid: c2448a5d7265540ba8063c9aa095d5ad,
+        type: 3}
+      propertyPath: Hearts.Array.data[2]
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 3400104938527127003, guid: c2448a5d7265540ba8063c9aa095d5ad,
         type: 3}
       propertyPath: m_Name
@@ -3639,7 +3672,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 4862531997642517355, guid: c2448a5d7265540ba8063c9aa095d5ad, type: 3}
+    - {fileID: 4677273444237731443, guid: c2448a5d7265540ba8063c9aa095d5ad, type: 3}
+    - {fileID: 5941167821277487772, guid: c2448a5d7265540ba8063c9aa095d5ad, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c2448a5d7265540ba8063c9aa095d5ad, type: 3}

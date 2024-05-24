@@ -71,7 +71,7 @@ public class PlayerSkills : MonoBehaviour
 
     bool[] isUsableSkills;
 
-    public bool[] IsUableSkills => isUsableSkills;
+    public bool[] IsUableSkills => isUsableSkills; // 사용 가능한 스킬 배열
 
     bool isEmptySkill = true;
 
@@ -137,8 +137,8 @@ public class PlayerSkills : MonoBehaviour
         maxCooltimes = new float[SkillCount];
 
         int skillCount = Enum.GetValues(typeof(SkillName)).Length;
-        isUsableSkills = new bool[skillCount];
 
+        isUsableSkills = new bool[skillCount];
     }
 
     private void Start()
@@ -153,6 +153,11 @@ public class PlayerSkills : MonoBehaviour
             cooltimes[i] = maxCooltimes[i];
         }
 
+        // 저장된 스킬 불러오기
+        for (int i = 0; i < 5; i++)
+        {
+            if (GameManager.Instance.ActivatedSkill[i]) SkillAcquisition((SkillName)i);
+        }
     }
 
     private void Update()
@@ -258,6 +263,8 @@ public class PlayerSkills : MonoBehaviour
             isUsableSkills[(int)name] = true;
             onSkillAcquisition?.Invoke(name);
             CurrentSkillName = name;
+
+            GameManager.Instance.ActivatedSkill[(int)name] = true;
         }
     }
 }

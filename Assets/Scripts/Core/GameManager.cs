@@ -162,6 +162,8 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     public GameObject playerPrefab;
 
+    public bool[] ActivatedSkill;
+
     protected override void OnPreInitialize()
     {
         base.OnPreInitialize();
@@ -173,10 +175,12 @@ public class GameManager : Singleton<GameManager>
         player = playerObj.GetComponent<Player>();
         player.MaxHP = 300f;
         player.HP = player.MaxHP;
+        ActivatedSkill = new bool[5];
 
         cameraManager = GetComponent<CameraManager>();
         itemDataManager = GetComponent<ItemDataManager>();
         mapManager = GetComponent<MapManager>();
+
     }
 
     protected override void OnInitialize()

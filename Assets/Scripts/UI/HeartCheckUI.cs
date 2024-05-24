@@ -45,7 +45,9 @@ public class HeartCheckUI : MonoBehaviour
         Array.Resize(ref heartImages, (int)(player.MaxHP * 0.01f) + 1);
         Hearts = new GameObject[(int)(player.MaxHP * 0.01f) + 1];
 
-        for(int i = 0; i < transform.childCount; i++)
+        PrintHearts();  // 처음 하트 갱신 
+
+        for (int i = 0; i < transform.childCount; i++)
         {
             Hearts[i] = transform.GetChild(i).gameObject;
         }
@@ -62,7 +64,7 @@ public class HeartCheckUI : MonoBehaviour
 
     private void Update()
     {
-        player = GameManager.Instance.Player;   
+        //player = GameManager.Instance.Player;   
         PrintHearts();
     }
 
