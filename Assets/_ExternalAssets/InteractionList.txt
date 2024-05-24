@@ -1,0 +1,28 @@
+상호작용 가능 목록
+
+보물상자 Chest
+ChestBase.cs로 동작
+
+저울 Scale
+Scale.cs로 동작, ScaleObj.cs로 무게 감지
+
+철큐브 MiniIronBox
+Weighable.cs로 저울 상호작용, ReactionObject.cs 반응형 오브젝트 및 스킬 상호작용
+
+래버 Lever_Prefab
+Lever로 상호작용
+
+문 Door_Prefab_Opened
+DoorBase로 상호작용
+
+잠긴문 Door_Prefab_Switch
+DoorSwitch로 상호작용
+
+오크통 Barrel, BarrelBomb
+ReactionObject.cs 반응형 오브젝트 및 스킬 상호작용
+
+부숴지는 판자 WoodBoard Variant
+ReactionObject.cs 반응형 오브젝트 및 스킬 상호작용
+
+스킬 다운로더 SkillDownloader_RemoteBomb, SkillDownloader_IceMaker, SkillDownloader_MagnetCatch, SkillDownloader_TimeLock
+SkillDownloader.cs로 상호작용

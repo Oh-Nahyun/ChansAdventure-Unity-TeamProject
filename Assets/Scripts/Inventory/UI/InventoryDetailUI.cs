@@ -7,6 +7,8 @@ using TMPro;
 
 public class InventoryDetailUI : MonoBehaviour
 {
+    Image itemImage;
+
     TextMeshProUGUI itemName;
     TextMeshProUGUI itemDesc;
     TextMeshProUGUI itemPrice;
@@ -14,7 +16,7 @@ public class InventoryDetailUI : MonoBehaviour
     CanvasGroup canvasGroup;
 
     /// <summary>
-    /// ÀÓ½Ã ½½·Ô UIÃ¢ÀÌ ¿­·È´ÂÁö È®ÀÎÇÏ´Â ÇÁ·ÎÆÛÆ¼ ( true : ¿­·ÁÀÖÀ½ , false : ´İÇôÀÖÀ½ )
+    /// ì„ì‹œ ìŠ¬ë¡¯ UIì°½ì´ ì—´ë ¸ëŠ”ì§€ í™•ì¸í•˜ëŠ” í”„ë¡œí¼í‹° ( true : ì—´ë ¤ìˆìŒ , false : ë‹«í˜€ìˆìŒ )
     /// </summary>
     bool IsOpen => transform.localScale == Vector3.one;
 
@@ -24,15 +26,17 @@ public class InventoryDetailUI : MonoBehaviour
     {
         canvasGroup = GetComponent<CanvasGroup>();
 
-        Transform child = transform.GetChild(0);
-        itemName = child.GetComponent<TextMeshProUGUI>();
-        child = transform.GetChild(1);
-        itemDesc = child.GetComponent<TextMeshProUGUI>();
+        Transform child = transform.GetChild(1);
+        itemImage = child.GetComponent<Image>();
         child = transform.GetChild(2);
-        itemPrice = child.GetChild(1).GetComponent<TextMeshProUGUI>();
+        itemName = child.GetComponent<TextMeshProUGUI>();
+        child = transform.GetChild(3);
+        itemDesc = child.GetComponent<TextMeshProUGUI>();
+        child = transform.GetChild(4);
+        itemPrice = child.GetComponent<TextMeshProUGUI>();
 
-        itemName.text = $"¾ÆÀÌÅÛ ¸í";
-        itemDesc.text = $"¾ÆÀÌÅÛ ¼³¸í";
+        itemName.text = $"ì•„ì´í…œ ëª…";
+        itemDesc.text = $"ì•„ì´í…œ ì„¤ëª…";
         itemPrice.text = $"999999999";
 
         CloseItemDetail();
@@ -47,7 +51,7 @@ public class InventoryDetailUI : MonoBehaviour
         RectTransform rect = (RectTransform)transform;
 
         rect.position = mousePosition;
-        // ÇöÀç Æ÷Áö¼Ç + width > maxwidth ³ÑÀ¸¸é = maxwidth
+        // í˜„ì¬ í¬ì§€ì…˜ + width > maxwidth ë„˜ìœ¼ë©´ = maxwidth
         int overWidth = (int)(rect.position.x + rect.sizeDelta.x);
 
         overWidth = Mathf.Max(0, overWidth);
@@ -59,29 +63,30 @@ public class InventoryDetailUI : MonoBehaviour
     }
 
     /// <summary>
-    /// ¾ÆÀÌÅÛ ¼³¸í ÅØ½ºÆ®¸¦ ¼³Á¤ÇÏ´Â ÇÔ¼ö
+    /// ì•„ì´í…œ ì„¤ëª… í…ìŠ¤íŠ¸ë¥¼ ì„¤ì •í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <param name="name">¾ÆÀÌÅÛ ÀÌ¸§</param>
-    /// <param name="desc">¾ÆÀÌÅÛ ¼³¸í</param>
-    /// <param name="price">¾ÆÀÌÅÛ °¡°İ</param>
-    public void SetDetailText(string name, string desc, uint price)
+    /// <param name="name">ì•„ì´í…œ ì´ë¦„</param>
+    /// <param name="desc">ì•„ì´í…œ ì„¤ëª…</param>
+    /// <param name="price">ì•„ì´í…œ ê°€ê²©</param>
+    public void SetDetailText(string name, string desc, uint price, Sprite icon)
     {
+        itemImage.sprite = icon;
         itemName.text = $"{name}";
         itemDesc.text = $"{desc}";
         itemPrice.text = price.ToString("N0");
     }
 
     /// <summary>
-    /// ¾ÆÀÌÅÛ ¼³¸í ÃÊ±âÈ­ ÇÔ¼ö
+    /// ì•„ì´í…œ ì„¤ëª… ì´ˆê¸°í™” í•¨ìˆ˜
     /// </summary>
     public void ClearText()
     {
-        itemName.text = $"¾ÆÀÌÅÛ ¸í";
-        itemDesc.text = $"¾ÆÀÌÅÛ ¼³¸í";
+        itemName.text = $"ì•„ì´í…œ ëª…";
+        itemDesc.text = $"ì•„ì´í…œ ì„¤ëª…";
         itemPrice.text = $"999999999";
     }
     /// <summary>
-    /// ÀÓ½Ã ½½·ÔÀ» ¿©´Â ÇÔ¼ö
+    /// ì„ì‹œ ìŠ¬ë¡¯ì„ ì—¬ëŠ” í•¨ìˆ˜
     /// </summary>
     public void ShowItemDetail()
     {
@@ -90,7 +95,7 @@ public class InventoryDetailUI : MonoBehaviour
     }
 
     /// <summary>
-    /// ÀÓ½Ã ½½·ÔÀ» ´İ´Â ÇÔ¼ö
+    /// ì„ì‹œ ìŠ¬ë¡¯ì„ ë‹«ëŠ” í•¨ìˆ˜
     /// </summary>
     public void CloseItemDetail()
     {

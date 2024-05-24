@@ -71,8 +71,9 @@ public class SellCheckUI : MonoBehaviour
         string name = itemData.itemName;
         uint price = itemData.price;
 
-        checkText.text = $"[{name}]을 [{count}]만큼 살께 \n" +
-                         $"[{price * count}]을 받을 수 있을꺼야";
+
+        checkText.text = $"정말로 {name} {count}개를 \n" +
+                         $"{price * count}루피에 판매하시겠습니까?";
     }
 
     public void ShowCheckPanel()
