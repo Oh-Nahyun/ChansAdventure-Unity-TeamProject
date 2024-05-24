@@ -76,7 +76,7 @@ public class ArrowAimUI : MonoBehaviour
     /// </summary>
     void PrintArrowAim()
     {
-        if (weapon.IsZoomIn)
+        if (weapon.IsZoomIn && weapon.isPressed)
         {
             StopAllCoroutines();
             StartCoroutine(ZoomInArrowAim());

@@ -110,6 +110,23 @@ public class Weapon : MonoBehaviour
     /// </summary>
     GameObject arrowPrefab;
 
+    /// <summary>
+    /// 활 줌했을 때 실행하는 델리게이트 / 0524
+    /// Delegate executed when on zoomIn
+    /// </summary>
+    public Action OnBowZoomIn;
+
+    /// <summary>
+    /// 활 줌 아웃 했을 때 실행하는 델리게이트 / 0524
+    /// Delegate executed when on zoomOut
+    /// </summary>
+    public Action OnBowZoomOut;
+
+    /// <summary>
+    /// 공격 버튼을 떼었을 때 실행하는 델리게이트
+    /// </summary>
+    public Action OnReleaseAttackButton;
+
     private void Awake()
     {
         playerController = GetComponent<PlayerController>();
@@ -147,6 +164,8 @@ public class Weapon : MonoBehaviour
         inputActions.Player.Attack.performed += OnAttackInput;
         inputActions.Weapon.Attack.performed += OnAttackInput;
         inputActions.Weapon.Attack.canceled += OnAttackInputRelease;
+        inputActions.Weapon.Zoom.performed += OnZoomIn;
+        inputActions.Weapon.Zoom.canceled += OnZoomOut;
 
         inputActions.Weapon.NormalMode.performed += OnNormalModeInput;
         inputActions.Weapon.SwordMode.performed += OnSwordModeInput;
@@ -165,6 +184,8 @@ public class Weapon : MonoBehaviour
         inputActions.Weapon.SwordMode.performed -= OnSwordModeInput;
         inputActions.Weapon.NormalMode.performed -= OnNormalModeInput;
 
+        inputActions.Weapon.Zoom.canceled -= OnZoomOut;
+        inputActions.Weapon.Zoom.performed -= OnZoomIn;
         inputActions.Weapon.Attack.performed -= OnAttackInput;
         inputActions.Player.Attack.performed -= OnAttackInput;
         inputActions.Weapon.Disable();
@@ -172,10 +193,17 @@ public class Weapon : MonoBehaviour
 
     private void Update()
     {
-        if(isPressed)
+        if(isPressed)   // 공격키 누르는 중, pressed attack key / 0524
         {
             pressTime += Time.deltaTime;
             pressTime = Mathf.Clamp(pressTime, 0f, 3f);
+        }
+        else            // 공격키 땠을 때, release attack Key
+        {
+            UpdateArrow();
+            animator.SetBool(ZoomInHash, false);        // 활 시위 해제  
+            animator.SetBool(HaveArrowHash, false);
+            IsArrowEquip = false;
         }
     }
 
@@ -221,7 +249,8 @@ public class Weapon : MonoBehaviour
                 // 갱신한 화살이 존재할 경우 ( 1개 이상 ) >> 화살 자동 장전 후 공격
                 if (ArrowCount > 0) //
                 {
-                    OnLoad();
+                    OnLoad();               // reload / 0524
+                    LoadArrowAfter();       // Shot   / 0524
                 }
 
                 // 인벤토리에 화살 개수가 0이고, 화살 장전이 안되어있는 경우 >> 활 자체 공격
@@ -246,6 +275,7 @@ public class Weapon : MonoBehaviour
     private void OnAttackInputRelease(InputAction.CallbackContext context)
     {
         isPressed = false;
+        OnReleaseAttackButton?.Invoke();
     }
 
     /// <summary>
@@ -283,6 +313,24 @@ public class Weapon : MonoBehaviour
         currentWeaponMode = WeaponMode.None;
         ChangeWeaponMode(currentWeaponMode);
         Debug.Log("WeaponMode : None");
+    }
+
+    /// <summary>
+    /// 줌 인 했을 때 실행하는 함수 / 0524
+    /// Function executed when on zoomIn
+    /// </summary>
+    private void OnZoomIn(InputAction.CallbackContext context)
+    {
+        OnBowZoomIn?.Invoke();
+    }
+
+    /// <summary>
+    /// 줌 아웃 했을 때 실행하는 함수 / 0524
+    /// Function executed when on zoomOut
+    /// </summary>
+    private void OnZoomOut(InputAction.CallbackContext context)
+    {
+        OnBowZoomOut?.Invoke();
     }
 
     /// <summary>
@@ -427,16 +475,16 @@ public class Weapon : MonoBehaviour
         if (IsArrowEquip) // 화살이 장전된 상태인 경우
         {
             // Debug.Log($"IsZoomIn : {IsZoomIn}");
-            animator.SetBool(ZoomInHash, IsZoomIn); // 카메라 줌 설정
+            animator.SetBool(ZoomInHash, IsZoomIn); // 카메라 줌 설정 , 활 시위 당기는 중
 
-            if (!IsZoomIn) // 카메라 줌아웃인 경우 ( = 화살을 쐈다.)
-            {
-                // 장전되었던 화살 사용 표시
-                UpdateArrow();
-                animator.SetBool(HaveArrowHash, false);
-                IsArrowEquip = false;
-                // Debug.Log($"IsArrowEquip : {IsArrowEquip}");
-            }
+            //if (!isPressed) // isPressed = false , 공격키를 땠다( 화살을 쐈다.), release Attack button -> shot arrow / 0524
+            //{
+            //    // 장전되었던 화살 사용 표시
+            //    UpdateArrow();
+            //    animator.SetBool(HaveArrowHash, false);
+            //    IsArrowEquip = false;
+            //    // Debug.Log($"IsArrowEquip : {IsArrowEquip}");
+            //}
         }
     }
 

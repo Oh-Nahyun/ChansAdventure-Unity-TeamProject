@@ -648,16 +648,24 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     {
         characterController.Move(Time.fixedDeltaTime * currentSpeed * inputDirection);      // 캐릭터의 움직임
 
-        if (weapon.IsZoomIn)
+        //if (weapon.IsZoomIn)
+        //{
+        //    // 카메라가 줌을 당긴 경우
+        //    transform.rotation = Quaternion.Slerp(transform.rotation, followCamY, 0.0f);    // 회전을 적용하지 않는다.
+        //    targetRotation = transform.rotation;
+        //}
+        //else
+        //{
+        //    // 카메라가 줌을 당기지 않을 경우
+        //}
+
+        if(weapon.IsZoomIn)
         {
-            // 카메라가 줌을 당긴 경우
-            transform.rotation = Quaternion.Slerp(transform.rotation, followCamY, 0.0f);    // 회전을 적용하지 않는다.
-            targetRotation = transform.rotation;
+            transform.rotation = Quaternion.Slerp(transform.rotation, Camera.main.transform.rotation, Time.fixedDeltaTime * turnSpeed); // 카메라 회전 방향과 동일하게 설정 ( Set the same as the camera rotation direction ) / 0524      
         }
         else
         {
-            // 카메라가 줌을 당기지 않을 경우
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * turnSpeed); // 목표 회전으로 변경
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * turnSpeed); // 목표 회전으로 변경            
         }
     }
 

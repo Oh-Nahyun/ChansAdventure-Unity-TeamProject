@@ -12,7 +12,7 @@ public class Arrow : RecycleObject
     /// <summary>
     /// 화살 사거리
     /// </summary>
-    float arrowRange = 1.0f;
+    float arrowRange = 5.0f;
 
     /// <summary>
     /// 화살 수명

@@ -156,7 +156,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void OnLookInput(InputAction.CallbackContext context)
     {
-        if (weapon.IsZoomIn || isTalk)
+        if (/*weapon.IsZoomIn || */isTalk)
         {
             // 카메라가 줌을 당길 경우 => 카메라 회전 중지
             onLook?.Invoke(context.ReadValue<Vector2>(), !context.performed);
@@ -173,7 +173,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void OnJumpInput(InputAction.CallbackContext context)
     {
-        if (weapon.IsZoomIn || isTalk)
+        if (/*weapon.IsZoomIn || */isTalk)
         {
             // 카메라가 줌을 당길 경우 => 점프 불가능
             onJump?.Invoke(!context.performed);
@@ -189,7 +189,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void OnSlideInput(InputAction.CallbackContext context)
     {
-        if (weapon.IsZoomIn || isTalk)
+        if (/*weapon.IsZoomIn || */isTalk)
         {
             // 카메라가 줌을 당길 경우 => 슬라이드 불가능
             onSlide?.Invoke(!context.performed);
