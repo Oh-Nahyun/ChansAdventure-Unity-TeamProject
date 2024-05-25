@@ -33,27 +33,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Interaction",
-                    "type": "Button",
-                    "id": "be555053-79c5-450a-b69b-466b0526c112",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Use",
                     "type": "Button",
                     "id": "44b17fe2-f56a-4e98-96ad-96cc24303dad",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Skill",
-                    "type": "Button",
-                    "id": "ab5893d2-dcd0-4e7d-9e79-e3a133d99ff5",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -221,34 +203,12 @@
                 },
                 {
                     "name": "",
-                    "id": "2e78072a-cb23-4280-abbd-f4cf71d143e3",
-                    "path": "<Mouse>/rightButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KM",
-                    "action": "Interaction",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "c10011a2-a60e-4673-b040-4f3ce0b03d8d",
                     "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": "KM",
                     "action": "Use",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "4b4b7224-3c85-44b4-9ba4-f04399ac18aa",
-                    "path": "<Keyboard>/1",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KM",
-                    "action": "Skill",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -392,6 +352,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Zoom",
+                    "type": "Button",
+                    "id": "c596dedd-67f2-4dd6-8836-ff9e181db2bd",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -436,6 +405,17 @@
                     "processors": "",
                     "groups": "KM",
                     "action": "Normal Mode",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "452277b7-4120-48ae-a977-44f0225827c3",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Zoom",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

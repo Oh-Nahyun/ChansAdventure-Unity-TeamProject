@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Animations;
 using UnityEngine.InputSystem;
-using UnityEngine.Windows;
+
 
 public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
 {
@@ -534,6 +535,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     public bool IsAnyUIPanelOpened => isAnyUIPanelOpened;
 
     MenuPanel menuPanel;
+
     #endregion
 
     // 함수 ==========================================================================================================================
@@ -648,16 +650,26 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     {
         characterController.Move(Time.fixedDeltaTime * currentSpeed * inputDirection);      // 캐릭터의 움직임
 
-        if (weapon.IsZoomIn)
+        //if (weapon.IsZoomIn)
+        //{
+        //    // 카메라가 줌을 당긴 경우
+        //    transform.rotation = Quaternion.Slerp(transform.rotation, followCamY, 0.0f);    // 회전을 적용하지 않는다.
+        //    targetRotation = transform.rotation;
+        //}
+        //else
+        //{
+        //    // 카메라가 줌을 당기지 않을 경우
+        //}
+
+        if(weapon.IsZoomIn)
         {
-            // 카메라가 줌을 당긴 경우
-            transform.rotation = Quaternion.Slerp(transform.rotation, followCamY, 0.0f);    // 회전을 적용하지 않는다.
-            targetRotation = transform.rotation;
+            // set target position
+            Quaternion cameraRotation = Quaternion.Euler(0, Camera.main.transform.eulerAngles.y, Camera.main.transform.eulerAngles.z);
+            transform.rotation = Quaternion.Slerp(transform.rotation, cameraRotation, Time.fixedDeltaTime * turnSpeed); // 목표 회전으로 변경            
         }
         else
         {
-            // 카메라가 줌을 당기지 않을 경우
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * turnSpeed); // 목표 회전으로 변경
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * turnSpeed); // 목표 회전으로 변경            
         }
     }
 

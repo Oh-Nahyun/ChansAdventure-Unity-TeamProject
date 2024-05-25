@@ -55,27 +55,9 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Interaction"",
-                    ""type"": ""Button"",
-                    ""id"": ""be555053-79c5-450a-b69b-466b0526c112"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Use"",
                     ""type"": ""Button"",
                     ""id"": ""44b17fe2-f56a-4e98-96ad-96cc24303dad"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Skill"",
-                    ""type"": ""Button"",
-                    ""id"": ""ab5893d2-dcd0-4e7d-9e79-e3a133d99ff5"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -243,34 +225,12 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""2e78072a-cb23-4280-abbd-f4cf71d143e3"",
-                    ""path"": ""<Mouse>/rightButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KM"",
-                    ""action"": ""Interaction"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""c10011a2-a60e-4673-b040-4f3ce0b03d8d"",
                     ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KM"",
                     ""action"": ""Use"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""4b4b7224-3c85-44b4-9ba4-f04399ac18aa"",
-                    ""path"": ""<Keyboard>/1"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KM"",
-                    ""action"": ""Skill"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -414,6 +374,15 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Zoom"",
+                    ""type"": ""Button"",
+                    ""id"": ""c596dedd-67f2-4dd6-8836-ff9e181db2bd"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -458,6 +427,17 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""KM"",
                     ""action"": ""Normal Mode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""452277b7-4120-48ae-a977-44f0225827c3"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Zoom"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -864,9 +844,7 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
-        m_Player_Interaction = m_Player.FindAction("Interaction", throwIfNotFound: true);
         m_Player_Use = m_Player.FindAction("Use", throwIfNotFound: true);
-        m_Player_Skill = m_Player.FindAction("Skill", throwIfNotFound: true);
         m_Player_MoveModeChange = m_Player.FindAction("MoveModeChange", throwIfNotFound: true);
         m_Player_Slide = m_Player.FindAction("Slide", throwIfNotFound: true);
         m_Player_LookAround = m_Player.FindAction("LookAround", throwIfNotFound: true);
@@ -882,6 +860,7 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         m_Weapon_SwordMode = m_Weapon.FindAction("Sword Mode", throwIfNotFound: true);
         m_Weapon_BowMode = m_Weapon.FindAction("Bow Mode", throwIfNotFound: true);
         m_Weapon_NormalMode = m_Weapon.FindAction("Normal Mode", throwIfNotFound: true);
+        m_Weapon_Zoom = m_Weapon.FindAction("Zoom", throwIfNotFound: true);
         // Skill
         m_Skill = asset.FindActionMap("Skill", throwIfNotFound: true);
         m_Skill_LeftClick = m_Skill.FindAction("LeftClick", throwIfNotFound: true);
@@ -968,9 +947,7 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Attack;
-    private readonly InputAction m_Player_Interaction;
     private readonly InputAction m_Player_Use;
-    private readonly InputAction m_Player_Skill;
     private readonly InputAction m_Player_MoveModeChange;
     private readonly InputAction m_Player_Slide;
     private readonly InputAction m_Player_LookAround;
@@ -987,9 +964,7 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Attack => m_Wrapper.m_Player_Attack;
-        public InputAction @Interaction => m_Wrapper.m_Player_Interaction;
         public InputAction @Use => m_Wrapper.m_Player_Use;
-        public InputAction @Skill => m_Wrapper.m_Player_Skill;
         public InputAction @MoveModeChange => m_Wrapper.m_Player_MoveModeChange;
         public InputAction @Slide => m_Wrapper.m_Player_Slide;
         public InputAction @LookAround => m_Wrapper.m_Player_LookAround;
@@ -1017,15 +992,9 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
             @Attack.started += instance.OnAttack;
             @Attack.performed += instance.OnAttack;
             @Attack.canceled += instance.OnAttack;
-            @Interaction.started += instance.OnInteraction;
-            @Interaction.performed += instance.OnInteraction;
-            @Interaction.canceled += instance.OnInteraction;
             @Use.started += instance.OnUse;
             @Use.performed += instance.OnUse;
             @Use.canceled += instance.OnUse;
-            @Skill.started += instance.OnSkill;
-            @Skill.performed += instance.OnSkill;
-            @Skill.canceled += instance.OnSkill;
             @MoveModeChange.started += instance.OnMoveModeChange;
             @MoveModeChange.performed += instance.OnMoveModeChange;
             @MoveModeChange.canceled += instance.OnMoveModeChange;
@@ -1066,15 +1035,9 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
             @Attack.started -= instance.OnAttack;
             @Attack.performed -= instance.OnAttack;
             @Attack.canceled -= instance.OnAttack;
-            @Interaction.started -= instance.OnInteraction;
-            @Interaction.performed -= instance.OnInteraction;
-            @Interaction.canceled -= instance.OnInteraction;
             @Use.started -= instance.OnUse;
             @Use.performed -= instance.OnUse;
             @Use.canceled -= instance.OnUse;
-            @Skill.started -= instance.OnSkill;
-            @Skill.performed -= instance.OnSkill;
-            @Skill.canceled -= instance.OnSkill;
             @MoveModeChange.started -= instance.OnMoveModeChange;
             @MoveModeChange.performed -= instance.OnMoveModeChange;
             @MoveModeChange.canceled -= instance.OnMoveModeChange;
@@ -1127,6 +1090,7 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Weapon_SwordMode;
     private readonly InputAction m_Weapon_BowMode;
     private readonly InputAction m_Weapon_NormalMode;
+    private readonly InputAction m_Weapon_Zoom;
     public struct WeaponActions
     {
         private @PlayerinputActions m_Wrapper;
@@ -1135,6 +1099,7 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         public InputAction @SwordMode => m_Wrapper.m_Weapon_SwordMode;
         public InputAction @BowMode => m_Wrapper.m_Weapon_BowMode;
         public InputAction @NormalMode => m_Wrapper.m_Weapon_NormalMode;
+        public InputAction @Zoom => m_Wrapper.m_Weapon_Zoom;
         public InputActionMap Get() { return m_Wrapper.m_Weapon; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1156,6 +1121,9 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
             @NormalMode.started += instance.OnNormalMode;
             @NormalMode.performed += instance.OnNormalMode;
             @NormalMode.canceled += instance.OnNormalMode;
+            @Zoom.started += instance.OnZoom;
+            @Zoom.performed += instance.OnZoom;
+            @Zoom.canceled += instance.OnZoom;
         }
 
         private void UnregisterCallbacks(IWeaponActions instance)
@@ -1172,6 +1140,9 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
             @NormalMode.started -= instance.OnNormalMode;
             @NormalMode.performed -= instance.OnNormalMode;
             @NormalMode.canceled -= instance.OnNormalMode;
+            @Zoom.started -= instance.OnZoom;
+            @Zoom.performed -= instance.OnZoom;
+            @Zoom.canceled -= instance.OnZoom;
         }
 
         public void RemoveCallbacks(IWeaponActions instance)
@@ -1423,9 +1394,7 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
-        void OnInteraction(InputAction.CallbackContext context);
         void OnUse(InputAction.CallbackContext context);
-        void OnSkill(InputAction.CallbackContext context);
         void OnMoveModeChange(InputAction.CallbackContext context);
         void OnSlide(InputAction.CallbackContext context);
         void OnLookAround(InputAction.CallbackContext context);
@@ -1442,6 +1411,7 @@ public partial class @PlayerinputActions: IInputActionCollection2, IDisposable
         void OnSwordMode(InputAction.CallbackContext context);
         void OnBowMode(InputAction.CallbackContext context);
         void OnNormalMode(InputAction.CallbackContext context);
+        void OnZoom(InputAction.CallbackContext context);
     }
     public interface ISkillActions
     {

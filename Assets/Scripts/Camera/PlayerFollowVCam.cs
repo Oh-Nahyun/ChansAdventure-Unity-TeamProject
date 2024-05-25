@@ -18,7 +18,7 @@ public class PlayerFollowVCam : MonoBehaviour
     /// <summary>
     /// 카메라 Zoom 정도
     /// </summary>
-    readonly Vector3 zoomIn = new Vector3(0.25f, 0.0f, 2.0f);
+    readonly Vector3 zoomIn = new Vector3(0.5f, 0.25f, -2.0f);
     readonly Vector3 zoomOut = new Vector3(0.0f, 0.25f, -2.0f);
 
     /// <summary>
@@ -52,17 +52,21 @@ public class PlayerFollowVCam : MonoBehaviour
         weapon = player.GetComponent<Weapon>();
         vcam = GetComponent<CinemachineVirtualCamera>();
         follow = vcam.GetCinemachineComponent<Cinemachine3rdPersonFollow>();
-        //lookAtPosition = GameObject.FindWithTag("LookAtPosition").transform;
         cameraRoot = GameObject.FindWithTag("CameraRoot").transform;
         arrowAimUI = GameObject.FindWithTag("ArrowAimUI").GetComponent<ArrowAimUI>();
         arrowAimUI.gameObject.SetActive(false);
 
         vcam.Follow = cameraRoot; // cameraRoot 연결
+
+        // Add Function to weapon delegates
+        weapon.OnBowZoomIn += CameraZoomIn;
+        weapon.OnBowZoomOut += CameraZoomOut;
+        weapon.OnReleaseAttackButton += arrowAimUI.ZoomOutArrowAim;
     }
 
     private void Update()
     {
-        ChangeCameraZoom();
+        //ChangeCameraZoom();
     }
 
     /// <summary>
@@ -140,5 +144,42 @@ public class PlayerFollowVCam : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    /// <summary>
+    /// 조준 할 때 실행하는 함수 / 0524
+    /// Function execute when ZoomIn
+    /// </summary>
+    void CameraZoomIn()
+    {
+        GameState state = GameManager.Instance.CurrnetGameState;    // 게임 실행전 카메라 움직임 방지 ( Block Camera move at Before startgame )
+        if (state == GameState.NotStart || weapon == null)          // 무기가 있을 때만 줌 인 가능 ( ZoomIn can only when player has weapon )
+            return;
+
+        if(weapon.IsBowEquip)   // 활을 가지고 있는지 확인 ( Check player has bow )
+        {
+            vcam.m_Lens.FieldOfView = 20f;
+            follow.ShoulderOffset = zoomIn;
+
+            arrowAimUI.gameObject.SetActive(true);                  // UI 활성화 ( Active UI )
+            weapon.LoadArrowAfter();
+            weapon.IsZoomIn = true;
+        }
+    }
+
+    /// <summary>
+    /// 조준 끝날 때 실행하는 함수 / 0524
+    /// Function execute when ZoomOut
+    /// </summary>
+    void CameraZoomOut()
+    {
+        vcam.m_Lens.FieldOfView = 60f;
+        follow.ShoulderOffset = zoomOut;
+
+        arrowAimUI.gameObject.SetActive(false); // UI 비활성화 ( Deactive UI )
+        arrowAimUI.ZoomOutArrowAim();
+        //weapon.LoadArrowAfter();
+
+        weapon.IsZoomIn = false;
     }
 }
