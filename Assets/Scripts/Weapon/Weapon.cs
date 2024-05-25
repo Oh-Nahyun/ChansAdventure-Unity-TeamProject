@@ -476,15 +476,6 @@ public class Weapon : MonoBehaviour
         {
             // Debug.Log($"IsZoomIn : {IsZoomIn}");
             animator.SetBool(ZoomInHash, IsZoomIn); // 카메라 줌 설정 , 활 시위 당기는 중
-
-            //if (!isPressed) // isPressed = false , 공격키를 땠다( 화살을 쐈다.), release Attack button -> shot arrow / 0524
-            //{
-            //    // 장전되었던 화살 사용 표시
-            //    UpdateArrow();
-            //    animator.SetBool(HaveArrowHash, false);
-            //    IsArrowEquip = false;
-            //    // Debug.Log($"IsArrowEquip : {IsArrowEquip}");
-            //}
         }
     }
 
