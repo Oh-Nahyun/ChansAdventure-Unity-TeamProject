@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.InputSystem;
@@ -131,7 +132,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// <summary>
     /// 중력값
     /// </summary>
-    float gravity = -15f;
+    float gravity = -12f;
 
     /// <summary>
     /// 점프 시간 제한
@@ -1267,9 +1268,6 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
 
     void OnQusetShow()
     {
-        if (isAnyUIPanelOpened)
-            return;
-
         GameManager.Instance.QuestManager.OpenQuest();
         isAnyUIPanelOpened = !isAnyUIPanelOpened;
     }
@@ -1286,8 +1284,11 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// <returns></returns>
     void IsTalk(bool talk)
     {
-        isTalk = talk;
-        isAnyUIPanelOpened = talk;
+        if(isTalk != talk)
+        {
+            isTalk = talk;
+            isAnyUIPanelOpened = !isAnyUIPanelOpened;
+        }
     }
 
     /// <summary>

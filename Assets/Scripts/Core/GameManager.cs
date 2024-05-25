@@ -283,6 +283,11 @@ public class GameManager : Singleton<GameManager>
 
             if (SavedMaxHp != 0) player.MaxHP = SavedMaxHp;
             player.HP = player.MaxHP;
+
+            for(int i = 0; i < loadPlayerGameObject.transform.childCount; i++)
+            {
+                Destroy(loadPlayerGameObject.transform.GetChild(i).gameObject);
+            }
         }
     }
 

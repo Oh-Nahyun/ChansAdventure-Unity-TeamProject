@@ -56,6 +56,7 @@ public class MainMenuUI : MonoBehaviour
         GameManager.Instance.ChangeToTargetScene(sceneName, GameManager.Instance.Player.gameObject);
         GameManager.Instance.gameState = GameState.Started;
         GameManager.Instance.spawnPoint = new Vector3(16f, -11f, -7f);
+        GameManager.Instance.isField = true;
     }
 
     /// <summary>

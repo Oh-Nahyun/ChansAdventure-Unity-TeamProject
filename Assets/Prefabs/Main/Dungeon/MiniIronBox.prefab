@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8525423480963031664}
   m_Layer: 0
   m_Name: MiniIronBox
-  m_TagString: Untagged
+  m_TagString: ReactObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -80,12 +80,15 @@ MonoBehaviour:
     forceY: 5
     boomRange: 3
     damage: 3
+    particle: {fileID: 0}
   weight: 1
   objectMaxHp: 1
   takeDamageAfterThrow: 3
   defencePower: 0
   reactionType: 5
+  skillAvailableMaterial: {fileID: 0}
   mainRenderer: {fileID: 0}
+  hitMovementPower: 2
 --- !u!65 &2617961498882608
 BoxCollider:
   m_ObjectHideFlags: 0

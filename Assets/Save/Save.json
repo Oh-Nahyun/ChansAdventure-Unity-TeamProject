@@ -1,7 +1,7 @@
 {
     "SceneNumber": [
         2,
-        2,
+        5,
         2,
         0,
         0
@@ -9,35 +9,35 @@
     "playerInfos": [
         {
             "position": {
-                "x": 9.479888916015625,
+                "x": -12.275360107421875,
                 "y": -12.482807159423829,
-                "z": 4.961383819580078
+                "z": 5.697144985198975
             },
             "rotation": {
                 "x": 0.0,
-                "y": 92.8095703125,
+                "y": 86.13639831542969,
                 "z": 0.0
             },
             "itemDataClass": [
                 {
                     "itemCode": 9,
-                    "count": 5
+                    "count": 1
                 },
                 {
-                    "itemCode": 9,
-                    "count": 3
+                    "itemCode": 6,
+                    "count": 5
                 },
                 {
                     "itemCode": 8,
                     "count": 1
                 },
                 {
-                    "itemCode": 0,
-                    "count": 0
+                    "itemCode": 4,
+                    "count": 1
                 },
                 {
-                    "itemCode": 0,
-                    "count": 0
+                    "itemCode": 2,
+                    "count": 5
                 },
                 {
                     "itemCode": 0,
@@ -88,44 +88,44 @@
                 false,
                 false,
                 false,
-                false,
-                false,
-                false
+                true,
+                true,
+                true
             ],
-            "gold": 7500,
-            "playerHP": 300.0
+            "gold": 6300,
+            "playerHP": 400.0
         },
         {
             "position": {
-                "x": 20.812355041503908,
-                "y": -12.482807159423829,
-                "z": 6.183221340179443
+                "x": -4.167895793914795,
+                "y": 0.0004999041557312012,
+                "z": -5.106768608093262
             },
             "rotation": {
                 "x": 0.0,
-                "y": 23.242910385131837,
+                "y": 225.57972717285157,
                 "z": 0.0
             },
             "itemDataClass": [
                 {
                     "itemCode": 9,
+                    "count": 5
+                },
+                {
+                    "itemCode": 9,
+                    "count": 5
+                },
+                {
+                    "itemCode": 8,
                     "count": 1
                 },
                 {
-                    "itemCode": 0,
-                    "count": 0
+                    "itemCode": 4,
+                    "count": 1
                 },
                 {
-                    "itemCode": 0,
-                    "count": 0
-                },
-                {
-                    "itemCode": 0,
-                    "count": 0
-                },
-                {
-                    "itemCode": 0,
-                    "count": 0
+                    "itemCode": 2,
+                    "count": 5
                 },
                 {
                     "itemCode": 0,
@@ -180,40 +180,40 @@
                 false,
                 false
             ],
-            "gold": 0,
+            "gold": 6300,
             "playerHP": 400.0
         },
         {
             "position": {
-                "x": 16.0,
-                "y": -12.451448440551758,
-                "z": -7.0
+                "x": -43.39092254638672,
+                "y": -11.134306907653809,
+                "z": 1.5966180562973023
             },
             "rotation": {
                 "x": 0.0,
-                "y": 0.0,
+                "y": 285.1031494140625,
                 "z": 0.0
             },
             "itemDataClass": [
                 {
-                    "itemCode": 0,
-                    "count": 0
+                    "itemCode": 6,
+                    "count": 5
                 },
                 {
-                    "itemCode": 0,
-                    "count": 0
+                    "itemCode": 2,
+                    "count": 5
                 },
                 {
-                    "itemCode": 0,
-                    "count": 0
+                    "itemCode": 8,
+                    "count": 1
                 },
                 {
-                    "itemCode": 0,
-                    "count": 0
+                    "itemCode": 4,
+                    "count": 1
                 },
                 {
-                    "itemCode": 0,
-                    "count": 0
+                    "itemCode": 6,
+                    "count": 2
                 },
                 {
                     "itemCode": 0,
@@ -260,9 +260,16 @@
                     "count": 0
                 }
             ],
-            "questClear": [],
-            "gold": 0,
-            "playerHP": 300.0
+            "questClear": [
+                false,
+                false,
+                false,
+                true,
+                true,
+                true
+            ],
+            "gold": 5300,
+            "playerHP": 400.0
         },
         {
             "position": {
