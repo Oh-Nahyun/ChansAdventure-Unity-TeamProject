@@ -1048,6 +1048,9 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// </summary>
     public void OnInventoryShow()
     {
+        if (isAnyUIPanelOpened)
+            return;
+
         menuPanel.ShowMenu((MenuState)1);
         isAnyUIPanelOpened = true;
     }
@@ -1245,6 +1248,9 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     #region Etc Method
     public void OnMapShow()
     {
+        if (isAnyUIPanelOpened)
+            return;
+
         menuPanel.ShowMenu((MenuState)2);
         isAnyUIPanelOpened = true;
 
@@ -1252,12 +1258,18 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
 
     void OnOpenMenuPanel()
     {
+        if (isAnyUIPanelOpened)
+            return;
+
         menuPanel.ShowMenu((MenuState)0);
         isAnyUIPanelOpened = true;
     }
 
     void OnQusetShow()
     {
+        if (isAnyUIPanelOpened)
+            return;
+
         GameManager.Instance.QuestManager.OpenQuest();
         isAnyUIPanelOpened = !isAnyUIPanelOpened;
     }
