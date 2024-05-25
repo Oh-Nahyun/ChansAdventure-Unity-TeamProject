@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class NPC_OldMan : NPCBase
 {
-    GameManager gameManager;
-
     private bool isStanding = false;
     private bool isGesture = false;
 

@@ -55,7 +55,7 @@ public class MainMenuUI : MonoBehaviour
         string sceneName = $"Main_Map";
         GameManager.Instance.ChangeToTargetScene(sceneName, GameManager.Instance.Player.gameObject);
         GameManager.Instance.gameState = GameState.Started;
-        GameManager.Instance.spawnPoint = new Vector3(11f, -11f, 3f);
+        GameManager.Instance.spawnPoint = new Vector3(16f, -11f, -7f);
     }
 
     /// <summary>

@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class NPCBase : MonoBehaviour
 {
-    GameManager gameManager;
+    protected GameManager gameManager;
     protected TextBoxManager textBoxManager;
     protected QuestManager questManager;
     protected TextBox textbox;
