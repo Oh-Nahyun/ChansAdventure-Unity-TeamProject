@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 public class Test_ThirdPersonView : TestBase
 {
+#if UNITY_EDITOR
     Transform spawnTarget;
 
     protected override void OnTest1(InputAction.CallbackContext context)
@@ -16,4 +17,5 @@ public class Test_ThirdPersonView : TestBase
         Factory.Instance.GetItemObjects(dataManager[ItemCode.Arrow], 10, spawnTarget.position, true);
         Factory.Instance.GetItemObjects(dataManager[ItemCode.HP_portion_Tick], 2, spawnTarget.position);
     }
+#endif
 }

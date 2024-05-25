@@ -55,12 +55,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameState: 1
   clearedQuests: 
-  spawnPoint: {x: 16, y: -11, z: -7}
+  spawnPoint: {x: -80, y: 5.5, z: 0}
   isLoading: 0
   isField: 0
   loadPlayerGameObject: {fileID: 0}
   playerPrefab: {fileID: 7973622836142104029, guid: 01eee89cde26bf04aa9194d5dd3ca811,
     type: 3}
+  ActivatedSkill: 
   isNPC: 0
 --- !u!114 &7616533183204277396
 MonoBehaviour:
@@ -97,6 +98,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d4ffee2bd0191214ea867cb3133356ac, type: 2}
   - {fileID: 11400000, guid: 5ca45c1a8b0027a4290f089f99b2b1c9, type: 2}
   - {fileID: 11400000, guid: dff38b7caa0efcf4681509cffc3735ae, type: 2}
+  - {fileID: 11400000, guid: 79ccb630129672342991d899d71f1977, type: 2}
   CharaterRenderCameraPoint: {fileID: 0}
 --- !u!114 &8413078663783774573
 MonoBehaviour:

@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 /// <summary>
-/// ¾ÆÀÌÅÛ ÄÚµå
+/// ì•„ì´í…œ ì½”ë“œ
 /// </summary>
 public enum ItemCode
 {
@@ -17,11 +17,12 @@ public enum ItemCode
     HP_portion_Tick,
     Coin,
     Bow,
-    Arrow
+    Arrow,
+    MasterSword
 }
 
 /// <summary>
-/// Á¤·Ä ¹æ½Ä
+/// ì •ë ¬ ë°©ì‹
 /// </summary>
 public enum SortMode
 {
@@ -31,7 +32,7 @@ public enum SortMode
 }
 
 /// <summary>
-/// IEquipTargetÀÌ °¡Áö´Â Àåºñ ÆÄÃ÷ ºÎÀ§
+/// IEquipTargetì´ ê°€ì§€ëŠ” ì¥ë¹„ íŒŒì¸  ë¶€ìœ„
 /// </summary>
 public enum EquipPart
 {
@@ -40,7 +41,7 @@ public enum EquipPart
 }
 
 /// <summary>
-/// ¹«±â ¾ÆÀÌÅÛÀÇ ¾ÆÀÌÅÛ Å¸ÀÔ enum
+/// ë¬´ê¸° ì•„ì´í…œì˜ ì•„ì´í…œ íƒ€ì… enum
 /// </summary>
 public enum WeaponType
 {

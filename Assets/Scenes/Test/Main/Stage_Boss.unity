@@ -2622,6 +2622,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4373850109779588581, guid: b213b24ebf348464685f7fc098b02f5d,
+        type: 3}
+      propertyPath: m_Radius
+      value: 0.82
+      objectReference: {fileID: 0}
     - target: {fileID: 7240195563237092782, guid: b213b24ebf348464685f7fc098b02f5d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3164,26 +3169,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: GameManager
-      objectReference: {fileID: 0}
-    - target: {fileID: 7525014269693007579, guid: 03e3a0de6a355401a8754d70887c467b,
-        type: 3}
-      propertyPath: isLoading
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7525014269693007579, guid: 03e3a0de6a355401a8754d70887c467b,
-        type: 3}
-      propertyPath: spawnPoint.x
-      value: -80
-      objectReference: {fileID: 0}
-    - target: {fileID: 7525014269693007579, guid: 03e3a0de6a355401a8754d70887c467b,
-        type: 3}
-      propertyPath: spawnPoint.y
-      value: 5.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7525014269693007579, guid: 03e3a0de6a355401a8754d70887c467b,
-        type: 3}
-      propertyPath: spawnPoint.z
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9214185627190435623, guid: 03e3a0de6a355401a8754d70887c467b,
         type: 3}
