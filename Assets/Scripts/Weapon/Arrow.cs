@@ -25,6 +25,7 @@ public class Arrow : RecycleObject
     Rigidbody rigid;
     //ParticleSystem ps;
     Player player;
+    TrailRenderer trailRenderer;
 
     private void Awake()
     {
@@ -36,8 +37,11 @@ public class Arrow : RecycleObject
         base.OnEnable();
         rigid = GetComponent<Rigidbody>();
         arrowCollider = GetComponent<Collider>();
+        trailRenderer = GetComponent<TrailRenderer>();
         StartCoroutine(LifeOver(lifeTime));                         // 수명 설정
         rigid.angularVelocity = Vector3.zero;                       // 이전의 회전력 제거
+        rigid.velocity = Vector3.zero;
+        trailRenderer.Clear();
 
         if (player == null)
         {
