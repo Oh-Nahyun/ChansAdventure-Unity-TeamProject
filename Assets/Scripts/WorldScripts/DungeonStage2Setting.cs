@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static QuestData;
 
 public class DungeonStage2Setting : MonoBehaviour
 {
@@ -55,6 +56,8 @@ public class DungeonStage2Setting : MonoBehaviour
     {
         isClear_Room4 = true;
         ExitPortal.SetActive(true);
+        QuestManager.Instance.GetQuestTalkIndex((int)QuestType.ClearDungeon2 * 10, true, true);
+        QuestManager.Instance.checkClearQuests[(int)QuestType.ClearDungeon2] = true;
     }
 
     private void LateUpdate()

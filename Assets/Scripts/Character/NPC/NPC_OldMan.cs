@@ -86,19 +86,19 @@ public class NPC_OldMan : NPCBase
                 case 1011:
                     if (!isTalk)
                     {
-                        questManager.GetQuestTalkIndex(10, false);
+                        questManager.GetQuestTalkIndex(10, false, true);
                     }
                     break;
                 case 1021:
                     if (!isTalk)
                     {
-                        questManager.GetQuestTalkIndex(20, false);  
+                        questManager.GetQuestTalkIndex(20, false, true);  
                     }
                     break;
                 case 1022:
                     if (!isTalk)
                     {
-                        questManager.GetQuestTalkIndex(10, true);
+                        questManager.GetQuestTalkIndex(10, true, true);
                     }
                     break;
                 case 1100:

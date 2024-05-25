@@ -10,7 +10,7 @@ public class QuestPlace : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            QuestManager.Instance.GetQuestTalkIndex(qusetId, false);
+            QuestManager.Instance.GetQuestTalkIndex(qusetId, false, true);
         }
         gameObject.SetActive(false);
     }
@@ -19,7 +19,7 @@ public class QuestPlace : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            QuestManager.Instance.GetQuestTalkIndex(qusetId, false);
+            QuestManager.Instance.GetQuestTalkIndex(qusetId, false, true);
         }
         gameObject.SetActive(false);
     }

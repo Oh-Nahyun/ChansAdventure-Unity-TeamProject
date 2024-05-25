@@ -5,6 +5,16 @@ using UnityEngine;
 
 public class QuestManager : Singleton<QuestManager>
 {
+    /// <summary>
+    /// 퀘스트 클리어 여부
+    /// </summary>
+    public bool[] checkClearQuests;
+
+    /// <summary>
+    /// check get Quests
+    /// </summary>
+    public bool[] checkQuests;
+
     private Dictionary<int, QuestData> questList = new Dictionary<int, QuestData>();
 
     private QuestMessage questMessage;
@@ -65,7 +75,19 @@ public class QuestManager : Singleton<QuestManager>
         base.OnInitialize();
         QuestMessage = FindObjectOfType<QuestMessage>();
         QuestInfo = FindObjectOfType<QuestInfo>();
+    }
+
+    /// <summary>
+    /// 씬 로딩 이후에 실행할 함수
+    /// </summary>
+    public void AfterSceneLoad()
+    {
         questInfoPanelParent = questInfo.transform.GetChild(2);
+        for (int i = 3; i < checkQuests.Length; i++)
+        {
+            if (checkQuests[i] && !checkClearQuests[i]) // 퀘스트가 존재하면 갱신
+                GetQuestTalkIndex(i * 10, checkClearQuests[i], false);
+        }
     }
 
     /// <summary>
@@ -77,6 +99,18 @@ public class QuestManager : Singleton<QuestManager>
         questList.Add(10, new QuestData(QuestData.QuestType.Hunt, "퀘스트 사냥", "퀘스트 내용 사냥", "퀘스트 목표 10마리", 10, 1));
         questList.Add(20, new QuestData(QuestData.QuestType.GiveItem, "퀘스트 아이템 기부", "퀘스트 내용 아이템 기부", "퀘스트 목표 10개", 10, 100));
         questList.Add(30, new QuestData(QuestData.QuestType.ClearDungeon, "사당 돌파하기", "사당을 끝까지 돌파하라", "사당 클리어", 1, 0));
+        questList.Add(40, new QuestData(QuestData.QuestType.ClearDungeon2, "사당2 돌파하기", "사당2을 끝까지 돌파하라", "사당 클리어", 1, 0));
+        questList.Add(50, new QuestData(QuestData.QuestType.ClearBoss, "보스 처치하기", "보스를 처치해라", "보스 클리어", 1, 0));
+
+        // 퀘스트 클리어 여부 초기화
+        checkClearQuests = new bool[questList.Count];
+        checkQuests = new bool[questList.Count];
+
+        for (int i = 0; i < checkQuests.Length; i++)
+        {
+            checkClearQuests[i] = false;
+            checkQuests[i] = false;
+        }
     }
 
     /// <summary>
@@ -84,16 +118,16 @@ public class QuestManager : Singleton<QuestManager>
     /// </summary>
     /// <param name="id"></param>
     /// <param name="complete"></param>
-    public void GetQuestTalkIndex(int id, bool complete)
+    public void GetQuestTalkIndex(int id, bool complete, bool isShowMwssage)
     {
         if (questList.ContainsKey(id))
         {
             QuestData questData = questList[id];
-            QuestMessage.OnQuestMessage(questData.questName, complete);
+            if(isShowMwssage) QuestMessage.OnQuestMessage(questData.questName, complete);
           
             if (!complete)
             {
-
+                checkQuests[(int)(id * 0.1f)] = true;
                 // 퀘스트 시작일 때
                 // 해당 퀘스트에 대한 QuestInfoPanel이 이미 생성되었는지 확인
                 QuestInfoPanel existingPanel = questInfoPanels.Find(panel => panel.questId == id);

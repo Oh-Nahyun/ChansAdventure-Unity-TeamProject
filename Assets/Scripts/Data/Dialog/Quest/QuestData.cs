@@ -6,38 +6,40 @@ public class QuestData
 {
 
     /// <summary>
-    /// Äù½ºÆ® Á¾·ù
+    /// í€˜ìŠ¤íŠ¸ ì¢…ë¥˜
     /// </summary>
     public enum QuestType
     {
         None = 0,
         Hunt,
         GiveItem,
-        ClearDungeon
+        ClearDungeon,
+        ClearDungeon2,
+        ClearBoss,
     }
 
     public QuestType questType;
 
     /// <summary>
-    /// Äù½ºÆ® ÀÌ¸§
+    /// í€˜ìŠ¤íŠ¸ ì´ë¦„
     /// </summary>
     public string questName;
     /// <summary>
-    /// Äù½ºÆ® ¼³¸í/³»¿ë
+    /// í€˜ìŠ¤íŠ¸ ì„¤ëª…/ë‚´ìš©
     /// </summary>
     public string questContents;
     /// <summary>
-    /// Äù½ºÆ® ¸ñÇ¥ ³»¿ë
+    /// í€˜ìŠ¤íŠ¸ ëª©í‘œ ë‚´ìš©
     /// </summary>
     public string questObjectivesText;
 
     /// <summary>
-    /// Äù½ºÆ® ¸ñÇ¥ ¼öÇà È½¼ö
+    /// í€˜ìŠ¤íŠ¸ ëª©í‘œ ìˆ˜í–‰ íšŸìˆ˜
     /// </summary>
     public int questObjectivesCount;
 
     /// <summary>
-    /// Äù½ºÆ® ¸ñÇ¥ °ÔÀÓ ¿ÀºêÁ§Æ® ID
+    /// í€˜ìŠ¤íŠ¸ ëª©í‘œ ê²Œì„ ì˜¤ë¸Œì íŠ¸ ID
     /// </summary>
     public int questObjectID;
 

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static QuestData;
 
 /// <summary>
 /// 보스 스테이지 세팅 스크립트
@@ -26,10 +27,13 @@ public class BossStageSetting : MonoBehaviour
 
     private void Update()
     {
-        if(!boss.IsAlive)
+        if(!boss.IsAlive)   // 보스가 사망하면
         {
             exitObj.SetActive(true);
             chestObj.SetActive(true);
+
+            QuestManager.Instance.GetQuestTalkIndex((int)QuestType.ClearBoss * 10, true, true);
+            QuestManager.Instance.checkClearQuests[(int)QuestType.ClearBoss] = true;
         }
     }
 

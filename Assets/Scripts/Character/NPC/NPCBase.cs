@@ -187,7 +187,8 @@ public class NPCBase : MonoBehaviour
         {
             if (isTalk)
             {
-                questManager.GetQuestTalkIndex(30, true);
+                QuestManager.Instance.GetQuestTalkIndex(30, true, true);
+                QuestManager.Instance.checkClearQuests[3] = true;
                 heartCheckUI.PlusHeart();
                 id = 5001;
             }

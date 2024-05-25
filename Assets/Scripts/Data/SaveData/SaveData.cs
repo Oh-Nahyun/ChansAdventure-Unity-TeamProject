@@ -49,6 +49,8 @@ public struct PlayerData
 
     public ItemDataClass[] itemDataClass;
 
+    public bool[] questClear;
+
     /// <summary>
     /// 저장된 골드량
     /// </summary>
@@ -69,6 +71,7 @@ public struct PlayerData
         this.position = pos;
         this.rotation = rot;  
         this.inventory = inven;
+        questClear = new bool[QuestManager.Instance.checkQuests.Length];
 
         // 인벤토리가 NULL이면 임시 슬롯 개수 부여 ( 1개 )
         uint slotSize = this.inventory == null ? 1 : this.inventory.SlotSize;
@@ -107,6 +110,11 @@ public struct PlayerData
 
             gold = inven.Gold;
             playerHP = inven.Owner.GetComponent<Player>().MaxHP;
+            
+            for(int i = 0; i < questClear.Length; i++)
+            {
+                questClear[i] = QuestManager.Instance.checkClearQuests[i];
+            }
         }
     }
 }

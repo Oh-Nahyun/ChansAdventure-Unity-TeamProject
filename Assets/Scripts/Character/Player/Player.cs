@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.InputSystem;
@@ -128,9 +129,9 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     public float turnSpeed = 10.0f;
 
     /// <summary>
-    /// 중력값 9.8f 
+    /// 중력값
     /// </summary>
-    const float gravity = 9.8f;
+    float gravity = -15f;
 
     /// <summary>
     /// 점프 시간 제한
@@ -644,23 +645,13 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         }
 
         // Debug.Log($"Player's Stamina : {Stamina}");
+
+        inputDirection.y += gravity * Time.deltaTime;
+        characterController.Move(Time.deltaTime * currentSpeed * inputDirection);      // 캐릭터의 움직임
     }
 
     private void FixedUpdate()
-    {
-        characterController.Move(Time.fixedDeltaTime * currentSpeed * inputDirection);      // 캐릭터의 움직임
-
-        //if (weapon.IsZoomIn)
-        //{
-        //    // 카메라가 줌을 당긴 경우
-        //    transform.rotation = Quaternion.Slerp(transform.rotation, followCamY, 0.0f);    // 회전을 적용하지 않는다.
-        //    targetRotation = transform.rotation;
-        //}
-        //else
-        //{
-        //    // 카메라가 줌을 당기지 않을 경우
-        //}
-
+    {        
         if(weapon.IsZoomIn)
         {
             // set target position
@@ -672,7 +663,6 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * turnSpeed); // 목표 회전으로 변경            
         }
     }
-
     #endregion
 
     #region Player Movement Method
@@ -796,12 +786,12 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         switch (mode)
         {
             case MoveMode.Walk:
-                jumpPower = 1.0f;
+                //jumpPower = 1.0f;
                 currentSpeed = walkSpeed;
                 animator.SetFloat(SpeedHash, AnimatorWalkSpeed);
                 break;
             case MoveMode.Run:
-                jumpPower = 1.25f;
+                //jumpPower = 1.25f;
                 currentSpeed = runSpeed;
                 animator.SetFloat(SpeedHash, AnimatorRunSpeed);
                 break;
@@ -889,7 +879,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         }
         
         isJumping = true;
-        characterController.Move(playerJump * Time.fixedDeltaTime); // 점프 실행
+        //characterController.Move(playerJump * Time.fixedDeltaTime); // 점프 실행
     }
 
     /// <summary>
@@ -897,17 +887,8 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// </summary>
     IEnumerator JumpProcess()
     {
-        jumpTime = 0.0f;                                            // 변수 초기화
-        yield return new WaitForSeconds(0.1f);                      // 0.1초 딜레이
-
-        while (jumpTime < jumpTimeLimit)
-        {
-            jumpTime += Time.deltaTime;                             // 점프 시간 갱신
-            playerJump.y = jumpTime * jumpPower * gravity;          // 플레이어의 y값
-            characterController.Move(playerJump * Time.deltaTime);  // 점프 실행
-
-            yield return null;
-        }
+        yield return new WaitForSeconds(0.2f); // 애니메이션 딜레이
+        inputDirection.y = jumpPower;
     }
 
     /// <summary>
@@ -1278,6 +1259,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     void OnQusetShow()
     {
         GameManager.Instance.QuestManager.OpenQuest();
+        isAnyUIPanelOpened = !isAnyUIPanelOpened;
     }
 
     public void SetTransform(Vector3 position)

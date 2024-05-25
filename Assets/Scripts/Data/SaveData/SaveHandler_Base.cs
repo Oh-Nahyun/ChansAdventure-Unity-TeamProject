@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static QuestData;
 
 /// <summary>
 /// 플레이어의 정보를 저장하는 클래스
@@ -236,6 +237,12 @@ public class SaveHandler_Base : MonoBehaviour
                 player.Inventory.AddSlotItem(itemCode, itemCount, (uint)i);
                 player.Inventory.SetCoin(playerDatas[loadIndex].gold);
                 player.MaxHP = playerDatas[loadIndex].playerHP;
+
+                for(int j = 0; j < System.Enum.GetValues(typeof(QuestType)).Length; j++)
+                {
+                    QuestManager.Instance.checkClearQuests[j] = playerDatas[loadIndex].questClear[j];
+
+                }
             }
         }
 
