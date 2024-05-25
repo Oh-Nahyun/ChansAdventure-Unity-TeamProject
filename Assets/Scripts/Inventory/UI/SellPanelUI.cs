@@ -8,73 +8,73 @@ using UnityEngine.UI;
 public class SellPanelUI : MonoBehaviour
 {
     /// <summary>
-    /// ¾ÆÀÌÅÛ Á¤º¸ UI
+    /// ì•„ì´í…œ ì •ë³´ UI
     /// </summary>
     InventoryDetailUI detailUI;
 
     /// <summary>
-    /// ¾ÆÀÌÅÛ ÆÄ´Â °³¼ö¸¦ ¼³Á¤ÇÏ´Â UI
+    /// ì•„ì´í…œ íŒŒëŠ” ê°œìˆ˜ë¥¼ ì„¤ì •í•˜ëŠ” UI
     /// </summary>
     SellCountUI sellCountUI;
 
     /// <summary>
-    /// Check ÆĞ³Î
+    /// Check íŒ¨ë„
     /// </summary>
     SellCheckUI sellCheckUI;
 
     /// <summary>
-    /// ¸ñÇ¥ ¿ÀºêÁ§Æ®ÀÇ ÀÎº¥Åä¸® Å¬·¡½º
+    /// ëª©í‘œ ì˜¤ë¸Œì íŠ¸ì˜ ì¸ë²¤í† ë¦¬ í´ë˜ìŠ¤
     /// </summary>
     Inventory targetInventory;
 
     /// <summary>
-    /// ¾ÆÀÌÅÛ ¸ñ·Ï ÀúÀå º¯¼ö
+    /// ì•„ì´í…œ ëª©ë¡ ì €ì¥ ë³€ìˆ˜
     /// </summary>
     SellSlotUI[] slots;
 
     /// <summary>
-    /// ÆÇ¸ÅÇÒ·Á´Â ¾ÆÀÌÅÛÀÇ ½½·Ô
+    /// íŒë§¤í• ë ¤ëŠ” ì•„ì´í…œì˜ ìŠ¬ë¡¯
     /// </summary>
     InventorySlot targetSlot;
 
     /// <summary>
-    /// ÆĞ³Î ´İ´Â ¹öÆ°
+    /// íŒ¨ë„ ë‹«ëŠ” ë²„íŠ¼
     /// </summary>
     Button closeButton;
 
     /// <summary>
-    /// ÀÎº¥Åä¸® ½½·Ô ÇÁ¸®ÆÕ
+    /// ì¸ë²¤í† ë¦¬ ìŠ¬ë¡¯ í”„ë¦¬íŒ¹
     /// </summary>
     public GameObject invenSlotPrefab;
     CanvasGroup canvasGroup;
 
     /// <summary>
-    /// targetÀÇ ÀÎº¥Åä¸® »çÀÌÁî
+    /// targetì˜ ì¸ë²¤í† ë¦¬ ì‚¬ì´ì¦ˆ
     /// </summary>
     uint inventorySize = 0;
 
     /// <summary>
-    /// ¹Ş°ÔµÉ ÃÖÁ¾ °ñµå¼ö
+    /// ë°›ê²Œë  ìµœì¢… ê³¨ë“œìˆ˜
     /// </summary>
     uint totalGetGold = 0;
 
     /// <summary>
-    /// ÆÈ°ÔµÉ ÃÖÁ¾ ¾ÆÀÌÅÛ ¼ö
+    /// íŒ”ê²Œë  ìµœì¢… ì•„ì´í…œ ìˆ˜
     /// </summary>
     int totalSellItemCount = 0;
 
     /// <summary>
-    /// Ã¹ ½ÇÇàÀÎÁö È®ÀÎÇÏ´Â º¯¼ö (½ÇÇà ¾ÊÇßÀ¸¸é true, ÇÑ¹øÀÌ¶óµµ ½ÇÇàÇßÀ¸¸é false)
+    /// ì²« ì‹¤í–‰ì¸ì§€ í™•ì¸í•˜ëŠ” ë³€ìˆ˜ (ì‹¤í–‰ ì•Ší–ˆìœ¼ë©´ true, í•œë²ˆì´ë¼ë„ ì‹¤í–‰í–ˆìœ¼ë©´ false)
     /// </summary>
     bool isFirst = true;
 
     /// <summary>
-    /// ÇöÀç ÆÇ¸Å°¡ ÁøÇàÁßÀÎÁö È®ÀÎÇÏ´Â º¯¼ö (ÆÇ¸Å°¡ ÁøÇàÁßÀÌ¸é true ¾Æ´Ï¸é false)
+    /// í˜„ì¬ íŒë§¤ê°€ ì§„í–‰ì¤‘ì¸ì§€ í™•ì¸í•˜ëŠ” ë³€ìˆ˜ (íŒë§¤ê°€ ì§„í–‰ì¤‘ì´ë©´ true ì•„ë‹ˆë©´ false)
     /// </summary>
     bool isProcess = false;
 
     /// <summary>
-    /// isProcess¸¦ Á¢±ÙÇÏ±âÀ§ÇÑ ÇÁ·ÎÆÛÆ¼ (ÆÇ¸Å°¡ ÁøÇàÁßÀÌ¸é true ¾Æ´Ï¸é false)
+    /// isProcessë¥¼ ì ‘ê·¼í•˜ê¸°ìœ„í•œ í”„ë¡œí¼í‹° (íŒë§¤ê°€ ì§„í–‰ì¤‘ì´ë©´ true ì•„ë‹ˆë©´ false)
     /// </summary>
     public bool IsProcess => isProcess;
 
@@ -111,9 +111,9 @@ public class SellPanelUI : MonoBehaviour
     }
 
     /// <summary>
-    /// ¾ÆÀÌÅÛ Á¤º¸¸¦ ºÒ·¯¿Í¼­ Ãâ·ÂÇÏ´Â ÇÔ¼ö
+    /// ì•„ì´í…œ ì •ë³´ë¥¼ ë¶ˆëŸ¬ì™€ì„œ ì¶œë ¥í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <param name="index">ÀÎº¥Åä¸® ÀÎµ¦½º</param>
+    /// <param name="index">ì¸ë²¤í† ë¦¬ ì¸ë±ìŠ¤</param>
     public void OnShowDetail(uint index)
     {
         if (slots[index].InventorySlotData.SlotItemData != null)
@@ -121,14 +121,15 @@ public class SellPanelUI : MonoBehaviour
             string name = slots[index].InventorySlotData.SlotItemData.itemName;
             string desc = slots[index].InventorySlotData.SlotItemData.desc;
             uint price = slots[index].InventorySlotData.SlotItemData.price;
+            Sprite icon = slots[index].InventorySlotData.SlotItemData.itemIcon;
 
-            detailUI.SetDetailText(name, desc, price);
+            detailUI.SetDetailText(name, desc, price, icon);
             detailUI.ShowItemDetail();
         }
     }
 
     /// <summary>
-    /// ¾ÆÀÌÅÛ Á¤º¸Ã¢À» ´İ´Â ÇÔ¼ö
+    /// ì•„ì´í…œ ì •ë³´ì°½ì„ ë‹«ëŠ” í•¨ìˆ˜
     /// </summary>
     public void OnCloseDetail()
     {
@@ -137,7 +138,7 @@ public class SellPanelUI : MonoBehaviour
     }
 
     /// <summary>
-    /// ÆÇ¸ÅÃ¢À» ¿©´Â ÇÔ¼ö
+    /// íŒë§¤ì°½ì„ ì—¬ëŠ” í•¨ìˆ˜
     /// </summary>
     public void OpenSellUI()
     {
@@ -148,7 +149,7 @@ public class SellPanelUI : MonoBehaviour
     }
 
     /// <summary>
-    /// ÆÇ¸ÅÃ¢À» ´İ´Â ÇÔ¼ö
+    /// íŒë§¤ì°½ì„ ë‹«ëŠ” í•¨ìˆ˜
     /// </summary>
     public void CloseSellUI()
     {
@@ -160,7 +161,7 @@ public class SellPanelUI : MonoBehaviour
     }
 
     /// <summary>
-    /// SellCountUI ´İÀ» ¶§ ½ÇÇàÇÏ´Â ÇÔ¼ö
+    /// SellCountUI ë‹«ì„ ë•Œ ì‹¤í–‰í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
     private void OnSellClose()
     {
@@ -168,9 +169,9 @@ public class SellPanelUI : MonoBehaviour
     }
 
     /// <summary>
-    /// SellCount ÆĞ³ÎÀ» ¿©´Â ÇÔ¼ö
+    /// SellCount íŒ¨ë„ì„ ì—¬ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <param name="index">ÆÇ¸ÅÇÒ ¾ÆÀÌÅÛ ½½·Ô</param>
+    /// <param name="index">íŒë§¤í•  ì•„ì´í…œ ìŠ¬ë¡¯</param>
     public void OnShowSellCount(uint index)
     {
         if (IsProcess)
@@ -178,38 +179,38 @@ public class SellPanelUI : MonoBehaviour
 
         if(targetInventory[index] == null)
         {
-            Debug.Log("¾ÆÀÌÅÛÀÌ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ì•„ì´í…œì´ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
             return; 
         }
 
         if (targetInventory[index].IsEquip)
         {
-            Debug.Log("ÇØ´ç ¾ÆÀÌÅÛÀº ÀåÂø ÁßÀÔ´Ï´Ù. ÆÇ¸ÅÇÒ ¼ö ¾ø½À´Ï´Ù.");
+            Debug.Log("í•´ë‹¹ ì•„ì´í…œì€ ì¥ì°© ì¤‘ì…ë‹ˆë‹¤. íŒë§¤í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
             return;
         }
 
         isProcess = true;
 
-        // ¾ÆÀÌÅÛÀÌ ¿©·¯°³¸é ³ª´©´Â Ã¢ ¶ç¿ì±â
+        // ì•„ì´í…œì´ ì—¬ëŸ¬ê°œë©´ ë‚˜ëˆ„ëŠ” ì°½ ë„ìš°ê¸°
         if (targetInventory[index].CurrentItemCount > 1)
         {
             sellCountUI.InitializeValue(targetInventory[index], 1, targetInventory[index].CurrentItemCount);
             sellCountUI.SellCountUIOpen();
         }
-        else // ¾ÆÀÌÅÛÀÌ 1°³¸é
+        else // ì•„ì´í…œì´ 1ê°œë©´
         {
             OnSellCheck(targetInventory[index], 1);
         }
     }
 
     /// <summary>
-    /// È®ÀÎ Ã¢À» º¸ÀÌ°ÔÇÏ´Â ÇÔ¼ö
+    /// í™•ì¸ ì°½ì„ ë³´ì´ê²Œí•˜ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <param name="slot">ÆÇ¸ÅÇÒ ¾ÆÀÌÅÛ ½½·Ô</param>
-    /// <param name="count">ÆÇ¸ÅÇÒ °³¼ö</param>
+    /// <param name="slot">íŒë§¤í•  ì•„ì´í…œ ìŠ¬ë¡¯</param>
+    /// <param name="count">íŒë§¤í•  ê°œìˆ˜</param>
     private void OnSellCheck(InventorySlot slot, int count)
     {
-        // È®ÀÎ Ã¢ ¶ç¿ì±â
+        // í™•ì¸ ì°½ ë„ìš°ê¸°
         sellCheckUI.ShowCheckPanel();
         sellCheckUI.onCheckSell(slot, count);
 
@@ -219,7 +220,7 @@ public class SellPanelUI : MonoBehaviour
     }
 
     /// <summary>
-    /// ¾ÆÀÌÅÛ »ç´Â°É È®ÀÎ ÇÔ¼ö
+    /// ì•„ì´í…œ ì‚¬ëŠ”ê±¸ í™•ì¸ í•¨ìˆ˜
     /// </summary>
     private void OnConformSellItem()
     {
@@ -229,17 +230,17 @@ public class SellPanelUI : MonoBehaviour
 
 
     /// <summary>
-    /// °ÔÀÓ ¿ÀºêÁ§Æ®ÀÇ ÀÎº¥Åä¸®¸¦ Ã£´Â ÇÔ¼ö
+    /// ê²Œì„ ì˜¤ë¸Œì íŠ¸ì˜ ì¸ë²¤í† ë¦¬ë¥¼ ì°¾ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <param name="target">ÀÎº¥Åä¸® °´Ã¼°¡ ÀÖ´Â °ÔÀÓ ¿ÀºêÁ§Æ® ( Player )</param>
+    /// <param name="target">ì¸ë²¤í† ë¦¬ ê°ì²´ê°€ ìˆëŠ” ê²Œì„ ì˜¤ë¸Œì íŠ¸ ( Player )</param>
     public void GetTarget(Inventory inventory)
     {
-        targetInventory = inventory; // targetÀÇ ÀÎº¥Åä¸® ¿¬°á
+        targetInventory = inventory; // targetì˜ ì¸ë²¤í† ë¦¬ ì—°ê²°
     }
 
 
     /// <summary>
-    /// ½½·ÔÀ» »ı¼ºÇÏ´Â ÇÔ¼ö
+    /// ìŠ¬ë¡¯ì„ ìƒì„±í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
     void SetSlot()
     {

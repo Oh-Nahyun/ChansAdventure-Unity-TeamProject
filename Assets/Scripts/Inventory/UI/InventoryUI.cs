@@ -308,8 +308,9 @@ public class InventoryUI : MonoBehaviour
             string name = Inventory[index].SlotItemData.itemName;
             string desc = Inventory[index].SlotItemData.desc;
             uint price = Inventory[index].SlotItemData.price;
+            Sprite icon = Inventory[index].SlotItemData.itemIcon;
 
-            detailUI.SetDetailText(name, desc, price);
+            detailUI.SetDetailText(name, desc, price, icon);
             detailUI.ShowItemDetail();
         }
     }
