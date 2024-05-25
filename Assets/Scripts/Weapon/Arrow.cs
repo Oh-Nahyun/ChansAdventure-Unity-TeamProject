@@ -98,8 +98,10 @@ public class Arrow : RecycleObject
     /// </summary>
     public void Fired(float pressedTime)
     {
-        transform.rotation = Quaternion.Euler(90f, 0f, -player.transform.localEulerAngles.y); // 카메라 회전과 동일 시 하기 ( 기본 회전값 90,0,0 )
-        rigid.AddForce( transform.up * arrowRange * arrowSpeed * pressedTime, ForceMode.Impulse);
+        transform.rotation = Quaternion.Euler(90f + (player.cameraRoot.transform.localEulerAngles.x * -1), 0f, -player.transform.localEulerAngles.y); // 카메라 회전과 동일 시 하기 ( 기본 회전값 90,0,0 )
+        Vector3 dir = player.cameraRoot.transform.forward;
+
+        rigid.AddForce( dir.normalized * arrowRange * arrowSpeed * pressedTime, ForceMode.Impulse);
     }
 
     public void SetArrowSpeed(float drawTime)
