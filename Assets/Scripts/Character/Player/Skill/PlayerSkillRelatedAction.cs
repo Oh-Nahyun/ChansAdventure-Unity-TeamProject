@@ -104,7 +104,7 @@ public class PlayerSkillRelatedAction : MonoBehaviour, ILifter
             {
                 isPickUp = value;
                 animator.SetBool(Hash_IsPickUp, isPickUp);
-                if(reaction is Skill)
+                if(reaction is Skill && !(reaction is RemoteBomb))
                 {
                     animator.SetInteger(Hash_SkillNumber, (int)SelectSkill);
                 }
