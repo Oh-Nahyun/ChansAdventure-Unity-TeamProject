@@ -32,7 +32,6 @@ public class NPC_Trader : NPCBase
     {
         base.Start();
         getInventory();
-        sellPanelUI.onCloseButton += sellPanelUIClose;
     }
 
     protected override void Update()
@@ -42,13 +41,13 @@ public class NPC_Trader : NPCBase
     }
 
     /// <summary>
-    /// »óÀÎ°ú ´ëÈ­½Ã ½ÇÇàµÉ ÇÔ¼ö
+    /// ìƒì¸ê³¼ ëŒ€í™”ì‹œ ì‹¤í–‰ë  í•¨ìˆ˜
     /// </summary>
     public void openShopinfo()
     {
         if(id == 4011)
         {
-            // ±¸¸Å ¿­±â
+            // êµ¬ë§¤ ì—´ê¸°
             shop.gameObject.SetActive(true);
             shop.CanvasGroup.alpha = 1;
             if (!textBox.TalkingEnd)
@@ -59,7 +58,7 @@ public class NPC_Trader : NPCBase
         {
             getInventory();
             GameManager.Instance.ItemDataManager.SellPanelUI.OpenSellUI();
-            // ÆÇ¸Å ¿­±â
+            // íŒë§¤ ì—´ê¸°
             if (!textBox.TalkingEnd || !isSellClose)
             {   
                 id = 4010;
@@ -69,7 +68,7 @@ public class NPC_Trader : NPCBase
         }
         else
         {
-            // ³ª°¡±â
+            // ë‚˜ê°€ê¸°
             if (!textBox.TalkingEnd)
             {
                 id = 4010;

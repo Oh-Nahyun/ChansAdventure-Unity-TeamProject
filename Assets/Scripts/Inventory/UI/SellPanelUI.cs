@@ -38,11 +38,6 @@ public class SellPanelUI : MonoBehaviour
     InventorySlot targetSlot;
 
     /// <summary>
-    /// 패널 닫는 버튼
-    /// </summary>
-    Button closeButton;
-
-    /// <summary>
     /// 인벤토리 슬롯 프리팹
     /// </summary>
     public GameObject invenSlotPrefab;
@@ -82,19 +77,12 @@ public class SellPanelUI : MonoBehaviour
     public Action onCloseDetail;
     public Action<uint> onShowCheckPanel;
 
-    public Action onCloseButton;
-
     private void Awake()
     {
         canvasGroup = GetComponent<CanvasGroup>();
         detailUI = GetComponentInChildren<InventoryDetailUI>();
         sellCountUI = GetComponentInChildren<SellCountUI>();
         sellCheckUI = GetComponentInChildren<SellCheckUI>();
-        closeButton = transform.GetChild(4).GetComponent<Button>();
-        closeButton.onClick.AddListener(() =>
-        {
-            onCloseButton?.Invoke();
-        });
 
         onShowDetail += OnShowDetail;
         onCloseDetail += OnCloseDetail;

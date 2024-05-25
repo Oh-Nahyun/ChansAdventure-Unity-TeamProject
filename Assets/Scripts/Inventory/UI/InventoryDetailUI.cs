@@ -34,6 +34,10 @@ public class InventoryDetailUI : MonoBehaviour
         itemDesc = child.GetComponent<TextMeshProUGUI>();
         child = transform.GetChild(4);
         itemPrice = child.GetComponent<TextMeshProUGUI>();
+        if(itemPrice == null) // 판매 패널이 아님
+        {
+            itemPrice = child.GetChild(1).GetComponent<TextMeshProUGUI>();  
+        }
 
         itemName.text = $"아이템 명";
         itemDesc.text = $"아이템 설명";
