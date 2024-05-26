@@ -8,20 +8,29 @@ using UnityEngine.UI;
 public class SkillCooltimeUI : MonoBehaviour
 {
     Image cooltimeImage;
+    Image[] allImage;
+    Color[] originColors;
+    const float VisibleAlpha = 1.0f;
+    const float UnvisibleAlpha = 0.0f;
 
     private void Awake()
     {
         Transform child = transform.GetChild(0); 
         cooltimeImage = child.GetComponent<Image>();
+        allImage = GetComponentsInChildren<Image>();
+        originColors = new Color[allImage.Length];
+        for(int i = 0; i < allImage.Length; i++)
+        {
+            originColors[i] = allImage[i].color;
+        }
+
+        SetAllImage(UnvisibleAlpha);
     }
 
     private void Start()
     {
         SkillManager skillManager = GameManager.Instance.Skill;
         skillManager.PlayerSkill.onCooltimeChange += CooltimeRefresh;
-
-        gameObject.SetActive(false);
-        
     }
 
 
@@ -29,12 +38,22 @@ public class SkillCooltimeUI : MonoBehaviour
     {
         if(ratio > 0.99f)
         {
-            gameObject.SetActive(false);
+            SetAllImage(UnvisibleAlpha);
         }
         else
         {
-            gameObject.SetActive(true);
+            SetAllImage(VisibleAlpha);
         }
         cooltimeImage.fillAmount = ratio;
+    }
+
+    void SetAllImage(float alpha)
+    {
+        for(int i = 0; i < allImage.Length; i++)
+        {
+            Color color = originColors[i];
+            color.a = alpha;
+            allImage[i].color = color;
+        }
     }
 }
