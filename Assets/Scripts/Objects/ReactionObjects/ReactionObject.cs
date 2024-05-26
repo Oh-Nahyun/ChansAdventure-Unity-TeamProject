@@ -376,8 +376,8 @@ public class ReactionObject : RecycleObject, IBattler
     private void Start()
     {
         PlayerSkills skill = GameManager.Instance.Skill.PlayerSkill;
-        skill.onSKillSuccess = OnSkill;
-        skill.offSkill = OffSKill;
+        skill.onSKillSuccess += OnSkill;
+        skill.offSkill += OffSKill;
     }
 
     protected override void OnEnable()
