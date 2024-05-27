@@ -164,6 +164,9 @@ public class ReactionObject : RecycleObject, IBattler
     /// </summary>
     IEnumerator durationCoroutine;
 
+    /// <summary>
+    /// 현재 사용된 스킬과 반응하는 오브젝트의 색 변경용 코루틴(화면에 보이는 오브젝트만 변경됨)
+    /// </summary>
     IEnumerator skillAvailableColorChangeCoroutine;
 
     /// <summary>
@@ -322,15 +325,25 @@ public class ReactionObject : RecycleObject, IBattler
     /// </summary>
     bool isFollowMagnetRotate = true;
 
-
+    /// <summary>
+    /// 폭파시 폭발 이펙트 진행동안 모양 제거용
+    /// </summary>
     Transform objectShape;
 
+    /// <summary>
+    /// 폭발 이펙트
+    /// </summary>
     ParticleSystem explosionParticle;
 
     /// <summary>
     /// 재활용 여부를 결정하는 변수 (true: 재활용)
     /// </summary>
     protected bool isRecycle = false;
+
+    /// <summary>
+    /// 플레이어 스킬 컨트롤러 저장용
+    /// </summary>
+    PlayerSkills playerSkills;
 
     // TODO: 플레이어 배틀 머지 완료되면 타격 데미지 저장되는 메서드 구현
     #region 유니티 이벤트 함수
@@ -375,14 +388,25 @@ public class ReactionObject : RecycleObject, IBattler
 
     private void Start()
     {
-        PlayerSkills skill = GameManager.Instance.Skill.PlayerSkill;
-        skill.onSKillSuccess += OnSkill;
-        skill.offSkill += OffSKill;
+        if (playerSkills == null)
+        {
+            playerSkills = GameManager.Instance.Skill.PlayerSkill;
+            playerSkills.onSKillSuccess += OnSkill;
+            playerSkills.offSkill += OffSKill;
+        }
     }
 
     protected override void OnEnable()
     {
         base.OnEnable();
+
+        // 델리게이트 += 로 연결하지만 비활성화 할 때 제거해 중복으로 델리게이트와 연결될 일 없앰
+        if (playerSkills != null)
+        {
+            playerSkills.onSKillSuccess += OnSkill;
+            playerSkills.offSkill += OffSKill;
+        }
+
         if (objectShape != null)
         {
             objectShape.gameObject.SetActive(true);
@@ -908,6 +932,12 @@ public class ReactionObject : RecycleObject, IBattler
     {
         WaitForSeconds wait = new WaitForSeconds(time);
         yield return wait;
+
+        if (playerSkills != null)
+        {
+            playerSkills.onSKillSuccess -= OnSkill;
+            playerSkills.offSkill -= OffSKill;
+        }
         if (isRecycle)
         {
             ReturnToPool();
