@@ -823,6 +823,7 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
     /// </summary>
     void MakeDropItems()
     {
+        ItemDataManager dataManager = GameManager.Instance.ItemDataManager;
         // dropItems; 이 정보를 바탕으로 아이템을 드랍
         foreach (var item in dropItems)
         {
@@ -830,6 +831,7 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
             {
                 uint count = (uint)UnityEngine.Random.Range(0, item.dropCount) + 1;     // 개수 결정
                 // 실제 생성 // 펙토리 스크립트에 아이템 생성함수 작성해야됨
+                Factory.Instance.GetItemObjects(dataManager[item.code], count, transform.position, true);
             }
         }
     }
