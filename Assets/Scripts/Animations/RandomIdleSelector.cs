@@ -11,6 +11,7 @@ public class RandomIdleSelector : StateMachineBehaviour
 
     // 애니메이션용 해시값
     readonly int IdleModeHash = Animator.StringToHash("IdleMode");
+    readonly int SpeedHash = Animator.StringToHash("Speed");
 
     // 플레이어
     Player player;

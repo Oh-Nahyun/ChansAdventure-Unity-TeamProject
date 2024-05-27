@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
     public Action onMoveRunMode;
     public Action onMoveWalkMode;
     public Action<Vector2, bool> onLook;
-    public Action<bool> onJump;
+    public Action onJump; // 0527
     public Action<bool> onSlide;
     public Action onSkillModeChange;
 
@@ -174,14 +174,9 @@ public class PlayerController : MonoBehaviour
     private void OnJumpInput(InputAction.CallbackContext context)
     {
         if (/*weapon.IsZoomIn || */isTalk)
-        {
-            // 카메라가 줌을 당길 경우 => 점프 불가능
-            onJump?.Invoke(!context.performed);
-        }
-        else
-        {
-            onJump?.Invoke(context.performed);
-        }
+            return;
+            
+           onJump?.Invoke(); // 0527
     }
 
     /// <summary>
