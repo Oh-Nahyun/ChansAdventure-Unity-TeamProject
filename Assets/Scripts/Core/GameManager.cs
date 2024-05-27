@@ -180,7 +180,7 @@ public class GameManager : Singleton<GameManager>
         cameraManager = GetComponent<CameraManager>();
         itemDataManager = GetComponent<ItemDataManager>();
         mapManager = GetComponent<MapManager>();
-
+        questManager = GetComponentInChildren<QuestManager>();
     }
 
     protected override void OnInitialize()
@@ -205,7 +205,6 @@ public class GameManager : Singleton<GameManager>
         itemDataManager.InitializeItemDataUI();
 
         mapManager.InitalizeMapUI();
-        questManager = FindAnyObjectByType<QuestManager>();
         textBoxManager = FindAnyObjectByType<TextBoxManager>();
         textBoxManager.Initialize();
 
@@ -279,7 +278,7 @@ public class GameManager : Singleton<GameManager>
             textBoxManager.Initialize();                    // textBox 초기화
             skillManager.Initialize();                      // 스킬 매니저 초기화
             Cam.initialize();
-            QuestManager.Instance.AfterSceneLoad();         // 퀘스트 로딩
+            questManager.AfterSceneLoad();                  // 퀘스트 로딩
 
             if (SavedMaxHp != 0) player.MaxHP = SavedMaxHp;
             player.HP = player.MaxHP;

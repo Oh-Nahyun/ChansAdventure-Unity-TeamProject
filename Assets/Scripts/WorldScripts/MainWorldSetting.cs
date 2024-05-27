@@ -4,20 +4,21 @@ using UnityEngine;
 
 public class MainWorldSetting : MonoBehaviour
 {
-    public Transform EnemySpawnPosition;
-    public Transform ItemDropPosition;
+    Vector3 itemDropVector;
+    Vector3 enemySpawnVector;
+
+    private void Awake()
+    {
+        itemDropVector = new Vector3(16.49f, -11.8f, -7.56f);
+        enemySpawnVector = new Vector3(-69.3f, -12.7f, 1.66f);
+    }
 
     private void Start()
     {
-        //for(int i = 0; i < 3; i++)
-        //{
-        //    Vector3 noisePosition = Random.onUnitSphere.normalized * 5f;  // 구 범위네 랜덤 위치 설정
-        //}
-
         // 아이템 소환
         ItemDataManager dataManager = GameManager.Instance.ItemDataManager;
 
-        Factory.Instance.GetItemObject(dataManager[ItemCode.Coin], ItemDropPosition.position);
-        Factory.Instance.GetItemObjects(dataManager[ItemCode.Arrow], 10, ItemDropPosition.position, true);
+        Factory.Instance.GetItemObject(dataManager[ItemCode.Coin], itemDropVector);
+        Factory.Instance.GetItemObjects(dataManager[ItemCode.Arrow], 10, itemDropVector, true);
     }
 }

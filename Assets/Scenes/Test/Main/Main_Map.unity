@@ -879,21 +879,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3522438839426405803, guid: 03e3a0de6a355401a8754d70887c467b,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3522438839426405803, guid: 03e3a0de6a355401a8754d70887c467b,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3522438839426405803, guid: 03e3a0de6a355401a8754d70887c467b,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4259061661310028882, guid: 03e3a0de6a355401a8754d70887c467b,
         type: 3}
       propertyPath: m_Name
@@ -1283,8 +1268,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09732e33f018eb442886567ee9a3821e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemySpawnPosition: {fileID: 1848935264}
-  ItemDropPosition: {fileID: 1421759849}
 --- !u!1 &807081165
 GameObject:
   m_ObjectHideFlags: 0

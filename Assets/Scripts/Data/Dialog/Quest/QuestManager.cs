@@ -82,6 +82,9 @@ public class QuestManager : Singleton<QuestManager>
     /// </summary>
     public void AfterSceneLoad()
     {
+        QuestMessage = FindObjectOfType<QuestMessage>();
+        QuestInfo = FindObjectOfType<QuestInfo>();
+
         questInfoPanelParent = questInfo.transform.GetChild(2);
         for (int i = 3; i < checkQuests.Length; i++)
         {
