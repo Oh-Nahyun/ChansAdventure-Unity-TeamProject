@@ -1624,16 +1624,15 @@ MonoBehaviour:
   farSightRange: 10
   sightHalfAngle: 50
   nearSightRange: 1.5
-  attackPower: 10
-  defencePower: 3
-  weaknessDefence: 1.2
+  attackPower: 35
+  defencePower: 10
+  weaknessDefence: 1.7
   attackInterval: 1
-  maxHP: 50
+  maxHP: 100
   dropItems:
   - code: 7
     dropRatio: 1
     dropCount: 1
-  timeElapsed: 1
 --- !u!1 &8606157925966157816
 GameObject:
   m_ObjectHideFlags: 0

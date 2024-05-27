@@ -165,12 +165,6 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
     public float DefencePower => defencePower;
 
     /// <summary>
-    /// 약점 맞을때 추가 데미지 배율
-    /// </summary>
-
-    public float weaknessDefence = 1.2f;
-
-    /// <summary>
     /// 공격 속도
     /// </summary>
     public float attackInterval = 1.0f;

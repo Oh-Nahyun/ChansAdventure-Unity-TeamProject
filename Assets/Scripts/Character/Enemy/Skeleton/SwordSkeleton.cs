@@ -163,12 +163,6 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
     public float DefencePower => defencePower;
 
     /// <summary>
-    /// 약점 맞을때 추가 데미지 배율
-    /// </summary>
-
-    public float weaknessDefence = 1.2f;
-
-    /// <summary>
     /// 공격 속도
     /// </summary>
     public float attackInterval = 1.0f;
@@ -625,8 +619,6 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
         
     }
 
-    [Header("invinvible Time")]
-    public float timeElapsed = 0.0f;
     /// <summary>
     /// 무적용 코루틴
     /// </summary>
@@ -638,7 +630,7 @@ public class SwordSkeleton : RecycleObject, IBattler, IHealth
         bodyPoint.gameObject.layer = LayerMask.NameToLayer("Invincible"); // 몸체 오브젝트의 레이어를 Invincible로 바꾸기
 
         //float timeElapsed = 0.0f;
-        timeElapsed = 0.0f;
+        float timeElapsed = 0.0f;
         while (timeElapsed < invincibleTime) // Invincible 무적시간 동안만
         {
             timeElapsed += Time.deltaTime;
