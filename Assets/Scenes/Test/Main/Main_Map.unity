@@ -488,6 +488,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Shop Mark
       objectReference: {fileID: 0}
+    - target: {fileID: 995808691850724471, guid: 4232aecde6efa5b43b01ec1b113914d9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2469,6 +2474,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: MapCamera
       objectReference: {fileID: 0}
+    - target: {fileID: 5332143035152593830, guid: d548a5015b64235489ee4d63965c0863,
+        type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 16912
+      objectReference: {fileID: 0}
     - target: {fileID: 7504259197626575637, guid: d548a5015b64235489ee4d63965c0863,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3439,6 +3449,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1271448401304027782, guid: 5d515b54a3a3ef843b974e807c54e043,
+        type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 16793591
+      objectReference: {fileID: 0}
     - target: {fileID: 3131259944175733433, guid: 5d515b54a3a3ef843b974e807c54e043,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4146,6 +4161,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Npc Mark
+      objectReference: {fileID: 0}
+    - target: {fileID: 6438258045945552263, guid: 2648ca7e23c782a44b26603d25569d27,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5539,6 +5559,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Npc Mark
+      objectReference: {fileID: 0}
+    - target: {fileID: 6438258045945552263, guid: 2648ca7e23c782a44b26603d25569d27,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -17,5 +17,10 @@ public class Test_ThirdPersonView : TestBase
         Factory.Instance.GetItemObjects(dataManager[ItemCode.Arrow], 10, spawnTarget.position, true);
         Factory.Instance.GetItemObjects(dataManager[ItemCode.HP_portion_Tick], 2, spawnTarget.position);
     }
+
+    protected override void OnTest2(InputAction.CallbackContext context)
+    {
+        GameManager.Instance.Player.Stamina = 0.0f;
+    }
 #endif
 }

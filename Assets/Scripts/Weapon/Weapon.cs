@@ -114,7 +114,7 @@ public class Weapon : MonoBehaviour
     /// 활 줌했을 때 실행하는 델리게이트 / 0524
     /// Delegate executed when on zoomIn
     /// </summary>
-    public Action OnBowZoomIn;
+    public Action<bool> OnBowZoomIn;
 
     /// <summary>
     /// 활 줌 아웃 했을 때 실행하는 델리게이트 / 0524
@@ -276,6 +276,7 @@ public class Weapon : MonoBehaviour
     {
         isPressed = false;
         OnReleaseAttackButton?.Invoke();
+        OnBowZoomOut?.Invoke();
     }
 
     /// <summary>
@@ -321,7 +322,10 @@ public class Weapon : MonoBehaviour
     /// </summary>
     private void OnZoomIn(InputAction.CallbackContext context)
     {
-        OnBowZoomIn?.Invoke();
+        if (currentWeaponMode != WeaponMode.Bow)
+            return;
+
+        OnBowZoomIn?.Invoke(true);
     }
 
     /// <summary>
@@ -332,49 +336,6 @@ public class Weapon : MonoBehaviour
     {
         OnBowZoomOut?.Invoke();
     }
-
-    /// <summary>
-    /// 무기 모드를 바꾸는 함수
-    /// </summary>
-    /*
-    private void OnWeaponChange()
-    {
-        if (player.SkillRelatedAction.IsPickUp || player.isTalk || player.IsAnyUIPanelOpened) // 물건을 들고 있거나 대화중일 때 입력 막기
-            return;
-
-        if (currentWeaponMode == WeaponMode.None
-            && player.EquipPart[0] != null) // 현재 오른손에 무기가 있으면 아이템 장착
-        {
-            // 무기를 들고 있지 않는 경우 => 칼을 들도록 한다.
-            currentWeaponMode = WeaponMode.Sword;
-            ShowWeapon(true, false);
-            Debug.Log("WeaponMode_Change : None >> Sword");
-        }
-        else if (currentWeaponMode == WeaponMode.Sword
-            && player.EquipPart[1] != null) // 현재 왼손에 무기가 있으면 아이템 장착
-        {
-            // 칼을 무기로 사용하고 있던 경우 => 활을 들도록 한다.
-            currentWeaponMode = WeaponMode.Bow;
-            ShowWeapon(false, true);
-            Debug.Log("WeaponMode_Change : Sword >> Bow");
-        }
-        else if (currentWeaponMode == WeaponMode.Bow
-              || currentWeaponMode == WeaponMode.Sword) // 무기를 장착하고 있으면 해제한다
-        {
-            // 활을 무기로 사용하고 있던 경우 => 무기를 넣도록 한다.
-            currentWeaponMode = WeaponMode.None;
-            Debug.Log("WeaponMode_Change : Bow(Sword) >> None");
-        }
-        else if(currentWeaponMode == WeaponMode.None // 맨손에서 활 장착 ( 칼없을 때 )
-            && player.EquipPart[1] != null && player.EquipPart[0] == null)
-        {
-            currentWeaponMode = WeaponMode.Bow;
-            Debug.Log("WeaponMode_Change : None >> Bow");
-        }
-
-        ChangeWeaponMode(currentWeaponMode);
-    }
-    */
 
     /// <summary>
     /// 무기 모드에 따라 보여줄 무기이 변경되는 함수
@@ -475,7 +436,9 @@ public class Weapon : MonoBehaviour
         if (IsArrowEquip) // 화살이 장전된 상태인 경우
         {
             // Debug.Log($"IsZoomIn : {IsZoomIn}");
-            animator.SetBool(ZoomInHash, IsZoomIn); // 카메라 줌 설정 , 활 시위 당기는 중
+            //animator.SetBool(ZoomInHash, IsZoomIn); // 카메라 줌 설정 , 활 시위 당기는 중
+            animator.SetBool(ZoomInHash, isPressed);
+            if(!IsZoomIn) OnBowZoomIn?.Invoke(false);
         }
     }
 

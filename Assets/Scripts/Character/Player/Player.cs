@@ -147,7 +147,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// <summary>
     /// 점프 정도
     /// </summary>
-    public float jumpPower = 5.0f;
+    public float jumpPower = 10.0f;
 
     // 0527
     Vector3 playerVelocity;
@@ -545,7 +545,6 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         weapon = GetComponent<Weapon>();
 
         //isJumping = true; / 0527
-        jumpVelocity = Mathf.Sqrt(jumpPower * -3.0f * gravity);
 
         skillRelatedAction = GetComponent<PlayerSkillRelatedAction>();
         cameraRoot = FindAnyObjectByType<PlayerLookVCam>().gameObject;
@@ -655,11 +654,13 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
 
     private void FixedUpdate()
     {        
-        if(weapon.IsZoomIn)
+        if(weapon.isPressed)
         {
             // set target position
             Quaternion cameraRotation = Quaternion.Euler(0, Camera.main.transform.eulerAngles.y, Camera.main.transform.eulerAngles.z);
             transform.rotation = Quaternion.Slerp(transform.rotation, cameraRotation, Time.fixedDeltaTime * turnSpeed); // 목표 회전으로 변경            
+
+            targetRotation = cameraRotation;
         }
         else
         {
@@ -854,13 +855,10 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         if (isGrounded)
         {
             StopAllCoroutines();
-            isJumpPressed = true;
             animator.SetTrigger(IsJumpHash); // 점프 애니메이션 재생
             StartCoroutine(JumpCoroutine());
         }
     }
-
-    float jumpVelocity;
 
     /// <summary>
     /// 점프 처리 함수
@@ -869,11 +867,11 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     {
         if (isJumpPressed) // 점프버튼을 눌렀을 때 실행
         {
-            playerVelocity.y = Mathf.Sqrt(jumpPower * -3.0f * gravity);
+            playerVelocity.y = Mathf.Sqrt(jumpPower * Mathf.Abs(gravity));
 
             if (isGrounded && playerVelocity.y > 0)
             {
-                isJumpPressed = false;
+                isJumpPressed = false;               
             }
         }
     }
@@ -882,6 +880,15 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     {
         yield return new WaitForSeconds(1.2f); 
         isJumpPressed = false;
+    }
+
+
+    /// <summary>
+    /// 점프여부 활성화 시키는 함수 (animator 이벤트 함수)
+    /// </summary>
+    public void StartJump()
+    {
+        isJumpPressed = true;
     }
 
     /// <summary>
@@ -1171,15 +1178,6 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// <returns></returns>
     IEnumerator DecreaseSpeedForChargingStamina()
     {
-        //float timeElapsed = 0.0f;
-        //float waitingTime = controller.GetAnimationLegth(clipPath_SpendAllStamina); // 애니메이션 클립 로드
-
-        //while (timeElapsed < waitingTime)                       // 애니메이션 길이만큼 시간 투자
-        //{
-        //    timeElapsed += Time.deltaTime;                      // timeElapsed 갱신
-        //    animator.SetFloat(SpeedHash, AnimatorSlowSpeed);    // Slow Speed 설정
-        //    yield return null;
-        //}
         CurrentMoveMode = MoveMode.Walk;
 
         while (stamina < MaxStamina)
@@ -1192,8 +1190,8 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
             yield return null;
         }
 
-        currentSpeed = walkSpeed;
-        animator.SetFloat(SpeedHash, AnimatorWalkSpeed);        // Walk Speed 설정
+        currentSpeed = 0f;
+        animator.SetFloat(SpeedHash, AnimatorStopSpeed);        // 속도 초기화
     }
 
     // IBatter 인터페이스 상속 --------------------------------------------------------------------------------------------------

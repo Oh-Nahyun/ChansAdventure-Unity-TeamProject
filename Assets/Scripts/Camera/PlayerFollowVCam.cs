@@ -150,7 +150,7 @@ public class PlayerFollowVCam : MonoBehaviour
     /// 조준 할 때 실행하는 함수 / 0524
     /// Function execute when ZoomIn
     /// </summary>
-    void CameraZoomIn()
+    void CameraZoomIn(bool isZoomIn)
     {
         GameState state = GameManager.Instance.CurrnetGameState;    // 게임 실행전 카메라 움직임 방지 ( Block Camera move at Before startgame )
         if (state == GameState.NotStart || weapon == null)          // 무기가 있을 때만 줌 인 가능 ( ZoomIn can only when player has weapon )
@@ -158,11 +158,11 @@ public class PlayerFollowVCam : MonoBehaviour
 
         if(weapon.IsBowEquip)   // 활을 가지고 있는지 확인 ( Check player has bow )
         {
-            vcam.m_Lens.FieldOfView = 20f;
+            vcam.m_Lens.FieldOfView = isZoomIn ? 20f : 60f;
             follow.ShoulderOffset = zoomIn;
 
             arrowAimUI.gameObject.SetActive(true);                  // UI 활성화 ( Active UI )
-            weapon.LoadArrowAfter();
+            //weapon.LoadArrowAfter();
             weapon.IsZoomIn = true;
         }
     }
