@@ -158,9 +158,9 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     bool isGrounded = false;
 
     /// <summary>
-    /// 점프버튼을 눌렀는지 확인하는 변수 ( check is Pressed jump button )
+    /// 점프 중인지 확인하는 변수
     /// </summary>
-    bool isJumpPressed = false;
+    bool isJumping = false;
 
     /// <summary>
     /// 슬라이드 시간 제한
@@ -585,6 +585,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
 
         isMoving = false;
         isSliding = true;
+        isJumping = false;
         
         // controller
         controller.onMove += OnMove;
@@ -609,9 +610,6 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
 
     private void Update()
     {
-        isGrounded = characterController.isGrounded;
-        animator.SetBool(IsGroundedHash, isGrounded);
-
         LookRotation();
         Jump();
         Slide();
@@ -648,7 +646,11 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         characterController.Move(Time.deltaTime * currentSpeed * inputDirection);
 
         // player gravity velocity / 0527
-        playerVelocity.y += gravity * Time.deltaTime;
+        if (playerVelocity.y > gravity)
+        {
+            playerVelocity.y += gravity * Time.deltaTime;
+        }
+
         characterController.Move(Time.deltaTime * playerVelocity);
     }
 
@@ -854,41 +856,62 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
 
         if (isGrounded)
         {
-            StopAllCoroutines();
             animator.SetTrigger(IsJumpHash); // 점프 애니메이션 재생
-            StartCoroutine(JumpCoroutine());
+            isReadyToJump = true;
         }
     }
+
+    /// <summary>
+    /// 점프를 준비중인지 확인하는 변수 / 0528
+    /// </summary>
+    bool isReadyToJump = true;
 
     /// <summary>
     /// 점프 처리 함수
     /// </summary>
     void Jump()
     {
-        if (isJumpPressed) // 점프버튼을 눌렀을 때 실행
+        isGrounded = characterController.isGrounded;
+        if (isGrounded && !isJumping && playerVelocity.y > -5f)
+        {
+            animator.SetBool(IsGroundedHash, true); // 착지 모션 실행
+        }
+
+        if (isReadyToJump) // 점프 준비중일 때 무시
+            return;
+
+        if(isJumping) // 점프 중이다
         {
             playerVelocity.y = Mathf.Sqrt(jumpPower * Mathf.Abs(gravity));
-
-            if (isGrounded && playerVelocity.y > 0)
-            {
-                isJumpPressed = false;               
-            }
         }
     }
 
-    IEnumerator JumpCoroutine()
+    /// <summary>
+    /// 점프 버튼 확인버튼 리셋 (animator 이벤트 함수)
+    /// </summary>
+    public void ResetJumpPressed()
     {
-        yield return new WaitForSeconds(1.2f); 
-        isJumpPressed = false;
+        isJumping = false;
+        isReadyToJump = true;
     }
 
+    /// <summary>
+    /// 점프 실행 함수 (animator 이벤트 함수)
+    /// </summary>
+    public void ReleaseJump()
+    {
+        isJumping = true;
+        isReadyToJump = false;
+
+        isGrounded = false;
+    }
 
     /// <summary>
-    /// 점프여부 활성화 시키는 함수 (animator 이벤트 함수)
+    /// 애니메이션 파라미터 초기화 함수 (animator 이벤트 함수)
     /// </summary>
-    public void StartJump()
+    public void ResetIsGrounded()
     {
-        isJumpPressed = true;
+        animator.SetBool(IsGroundedHash, false); // 파라미터 초기화
     }
 
     /// <summary>
@@ -1167,6 +1190,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     public void SpendAllStamina()
     {
         animator.SetTrigger(SpendAllStaminaHash);   // 애니메이션 재생
+        isJumping = false;                      // 점프 실행 취소
         onSpendAllStamina?.Invoke();                // 스태미나 모두 사용했다고 알림
         //Debug.Log("플레이어 스테미너 모두 사용");
     }

@@ -5,31 +5,31 @@ using UnityEngine.UI;
 
 public class BossHPSlider : MonoBehaviour
 {
-    public Slider hpSlider; // Inspector¿¡¼­ ¿¬°áÇÒ ½½¶óÀÌ´õ
-    public Boss boss;       // Inspector¿¡¼­ ¿¬°áÇÒ Boss ¿ÀºêÁ§Æ®
+    public Slider hpSlider; // Inspectorì—ì„œ ì—°ê²°í•  ìŠ¬ë¼ì´ë”
+    public Boss boss;       // Inspectorì—ì„œ ì—°ê²°í•  Boss ì˜¤ë¸Œì íŠ¸
 
-    const float sliderReduceValue = 25f; // ½½¶óÀÌ´õ °¨¼Ò ¼öÄ¡
+    const float sliderReduceValue = 25f; // ìŠ¬ë¼ì´ë” ê°ì†Œ ìˆ˜ì¹˜
 
     CanvasGroup canvasGroup;
 
     void Start()
     {
         hpSlider = GetComponent<Slider>();
-        boss = FindObjectOfType<Boss>();
+        boss = FindObjectOfType<Boss>(true);
         canvasGroup = GetComponent<CanvasGroup>();
 
-        // °ÔÀÓ ½ÃÀÛ ½Ã ½½¶óÀÌ´õ ÃÖ´ë°ªÀ» ¼³Á¤
+        // ê²Œì„ ì‹œì‘ ì‹œ ìŠ¬ë¼ì´ë” ìµœëŒ€ê°’ì„ ì„¤ì •
         hpSlider.maxValue = boss.MaxHP;
         hpSlider.value = boss.HP;
     }
 
     void Update()
     {
-        // ¸Å ÇÁ·¹ÀÓ¸¶´Ù BossÀÇ HP¸¦ ½½¶óÀÌ´õ¿¡ ¹İ¿µ
+        // ë§¤ í”„ë ˆì„ë§ˆë‹¤ Bossì˜ HPë¥¼ ìŠ¬ë¼ì´ë”ì— ë°˜ì˜
 
         if(hpSlider.value > boss.HP)
         {
-            if(!boss.IsAlive) // º¸½º°¡ »ç¸ÁÇßÀ¸¸é Ã¼·Â¹Ù ¼û±â±â
+            if(!boss.IsAlive) // ë³´ìŠ¤ê°€ ì‚¬ë§í–ˆìœ¼ë©´ ì²´ë ¥ë°” ìˆ¨ê¸°ê¸°
             {
                 gameObject.SetActive(false);
             }
@@ -39,7 +39,7 @@ public class BossHPSlider : MonoBehaviour
     }
 
     /// <summary>
-    /// Ã¼·Â¹Ù ÆĞ³Î È°¼ºÈ­ ÇÔ¼ö
+    /// ì²´ë ¥ë°” íŒ¨ë„ í™œì„±í™” í•¨ìˆ˜
     /// </summary>
     public void ShowPanel()
     {

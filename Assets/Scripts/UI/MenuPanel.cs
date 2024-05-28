@@ -233,6 +233,5 @@ public class MenuPanel : MonoBehaviour
         GameManager.Instance.MapManager.CloseMapUI();
         saveHandler.CloseSavePanel(); // 세이브 패널 열기
         normalPanel.CloseUI();
-        GameManager.Instance.MapManager.CloseMiniMapUI();
     }
 }

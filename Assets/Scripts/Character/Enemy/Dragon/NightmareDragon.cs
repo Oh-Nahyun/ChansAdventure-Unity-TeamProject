@@ -635,12 +635,12 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
     {
         if (isClawAttack)
         {
-            Debug.Log($"{target}강력 공격 맞음");
+            //Debug.Log($"{target}강력 공격 맞음");
             target.Defence(AttackPower * 1.2f);
         }
         else
         {
-            Debug.Log($"{target}기본 공격 맞음");
+            //Debug.Log($"{target}기본 공격 맞음");
             target.Defence(AttackPower);
         }
     }
@@ -673,7 +673,7 @@ public class NightmareDragon : RecycleObject, IBattler, IHealth
         }
         else
         {
-            Debug.Log("콤보");
+            //Debug.Log("콤보");
             // Perform one of the combo attacks
             float comboRandomValue = UnityEngine.Random.value;
             if (comboRandomValue < ComboProbability)
