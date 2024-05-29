@@ -164,6 +164,10 @@ public class GameManager : Singleton<GameManager>
 
     public bool[] ActivatedSkill;
 
+    /// <summary>
+    /// 게임 프레임 값
+    /// </summary>
+    const int targetFrame = 60;
     protected override void OnPreInitialize()
     {
         base.OnPreInitialize();
@@ -181,6 +185,8 @@ public class GameManager : Singleton<GameManager>
         itemDataManager = GetComponent<ItemDataManager>();
         mapManager = GetComponent<MapManager>();
         questManager = GetComponentInChildren<QuestManager>();
+
+        Application.targetFrameRate = targetFrame;
     }
 
     protected override void OnInitialize()

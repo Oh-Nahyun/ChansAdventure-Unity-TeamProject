@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
     public Action onMoveRunMode;
     public Action onMoveWalkMode;
     public Action<Vector2, bool> onLook;
-    public Action onJump; // 0527
+    public Action onJump;
     public Action<bool> onSlide;
     public Action onSkillModeChange;
 
@@ -176,7 +176,7 @@ public class PlayerController : MonoBehaviour
         if (/*weapon.IsZoomIn || */isTalk)
             return;
             
-           onJump?.Invoke(); // 0527
+           onJump?.Invoke();
     }
 
     /// <summary>

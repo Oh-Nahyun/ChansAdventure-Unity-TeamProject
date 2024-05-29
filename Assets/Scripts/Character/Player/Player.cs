@@ -147,17 +147,12 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// <summary>
     /// 점프 정도
     /// </summary>
-    public float jumpPower = 5.0f;
+    public float jumpPower = 10.0f;
 
     /// <summary>
     /// 플레이어 점프 벡터
     /// </summary>
     Vector3 playerJump;
-
-    /// <summary>
-    /// 땅에 닿고 있는지 확인하는 변수 / 0527
-    /// </summary>
-    bool isGrounded = false;
 
     /// <summary>
     /// 점프 중인지 확인하는 변수
@@ -621,6 +616,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         characterController.Move(Time.deltaTime * currentSpeed * inputDirection);
 
         LookRotation();
+
         Jump();
         Slide();
 
@@ -653,8 +649,8 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     }
 
     private void FixedUpdate()
-    {        
-        if(weapon.isPressed)
+    {
+        if (weapon.isPressed)
         {
             // set target position
             Quaternion cameraRotation = Quaternion.Euler(0, Camera.main.transform.eulerAngles.y, Camera.main.transform.eulerAngles.z);
@@ -848,10 +844,10 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// <param name="isPress">점프 키 누름 여부 ( true : 누름 , false : 안누름 )</param>
     private void OnJump()
     {
-           if (SkillRelatedAction.IsPickUp || IsOpenedAnyUIPanel) // 물건을 들고 있을 때 입력 막기
+        if (SkillRelatedAction.IsPickUp || IsOpenedAnyUIPanel) // 물건을 들고 있을 때 입력 막기
             return;
 
-        if (isGrounded && !isJumping) // 점프가 가능한 경우
+        if (!isJumping) // 점프가 가능한 경우
         {
             animator.SetTrigger(IsJumpHash);        // 점프 애니메이션 재생
         }
@@ -866,8 +862,6 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// </summary>
     void Jump()
     {
-        isGrounded = characterController.isGrounded; // 플레이어가 땅에 닿았는지 확인 (characterController의 isGrounded와 같게 설정)
-
         if (isJumping) // 점프 중인 경우
         {
             playerJump.y = Time.deltaTime * jumpPower * gravity;    // 플레이어의 점프 y값
@@ -889,16 +883,6 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     public void ReleaseJump()
     {
         isJumping = true;
-        isGrounded = false;
-    }
-
-    /// <summary>
-    /// 착지했을 때 실행하는 함수 (animator 이벤트 함수) / isGrounded 판정 보강용
-    /// </summary>
-    public void Onlanding()
-    {
-        isJumping = false;
-        isGrounded = true;
     }
 
     /// <summary>

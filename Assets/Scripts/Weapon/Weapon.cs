@@ -111,13 +111,13 @@ public class Weapon : MonoBehaviour
     GameObject arrowPrefab;
 
     /// <summary>
-    /// 활 줌했을 때 실행하는 델리게이트 / 0524
+    /// 활 줌했을 때 실행하는 델리게이트 
     /// Delegate executed when on zoomIn
     /// </summary>
     public Action<bool> OnBowZoomIn;
 
     /// <summary>
-    /// 활 줌 아웃 했을 때 실행하는 델리게이트 / 0524
+    /// 활 줌 아웃 했을 때 실행하는 델리게이트 
     /// Delegate executed when on zoomOut
     /// </summary>
     public Action OnBowZoomOut;
@@ -193,7 +193,7 @@ public class Weapon : MonoBehaviour
 
     private void Update()
     {
-        if(isPressed)   // 공격키 누르는 중, pressed attack key / 0524
+        if(isPressed)   // 공격키 누르는 중, pressed attack key 
         {
             pressTime += Time.deltaTime;
             pressTime = Mathf.Clamp(pressTime, 0f, 3f);
@@ -249,8 +249,8 @@ public class Weapon : MonoBehaviour
                 // 갱신한 화살이 존재할 경우 ( 1개 이상 ) >> 화살 자동 장전 후 공격
                 if (ArrowCount > 0) //
                 {
-                    OnLoad();               // reload / 0524
-                    LoadArrowAfter();       // Shot   / 0524
+                    OnLoad();               // reload
+                    LoadArrowAfter();       // Shot  
                 }
 
                 // 인벤토리에 화살 개수가 0이고, 화살 장전이 안되어있는 경우 >> 활 자체 공격
@@ -317,7 +317,7 @@ public class Weapon : MonoBehaviour
     }
 
     /// <summary>
-    /// 줌 인 했을 때 실행하는 함수 / 0524
+    /// 줌 인 했을 때 실행하는 함수 
     /// Function executed when on zoomIn
     /// </summary>
     private void OnZoomIn(InputAction.CallbackContext context)
@@ -329,7 +329,7 @@ public class Weapon : MonoBehaviour
     }
 
     /// <summary>
-    /// 줌 아웃 했을 때 실행하는 함수 / 0524
+    /// 줌 아웃 했을 때 실행하는 함수 
     /// Function executed when on zoomOut
     /// </summary>
     private void OnZoomOut(InputAction.CallbackContext context)

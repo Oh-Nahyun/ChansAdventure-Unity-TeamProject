@@ -54,7 +54,7 @@ public class Sword : MonoBehaviour
             }
         }
 
-        if(other.CompareTag("ReactObject")) // 05.13
+        if(other.CompareTag("ReactObject"))
         {
             ReactionObject obj = other.GetComponent<ReactionObject>();
 
