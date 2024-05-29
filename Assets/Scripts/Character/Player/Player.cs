@@ -849,7 +849,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// <param name="isPress">점프 키 누름 여부 ( true : 누름 , false : 안누름 )</param>
     private void OnJump()
     {
-        if (SkillRelatedAction.IsPickUp || IsOpenedAnyUIPanel) // 물건을 들고 있을 때 입력 막기
+           if (SkillRelatedAction.IsPickUp || IsOpenedAnyUIPanel) // 물건을 들고 있을 때 입력 막기
             return;
 
         if (isGrounded && !isJumping) // 점프가 가능한 경우

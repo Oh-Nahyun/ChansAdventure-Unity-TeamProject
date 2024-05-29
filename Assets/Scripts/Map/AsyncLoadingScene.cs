@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -10,16 +11,17 @@ public class AsyncLoadingScene : MonoBehaviour
 {
     #region AsyncLoad Values
     /// <summary>
-    /// ·Îµù ¾ÀÀÌ ³¡³ª°í ºÒ·ÁÁø ´ÙÀ½ ¾À ÀÌ¸§
+    /// ë¡œë”© ì”¬ì´ ëë‚˜ê³  ë¶ˆë ¤ì§„ ë‹¤ìŒ ì”¬ ì´ë¦„
     /// </summary>
     public string nextSceneName = "LoadedSampleScene";
 
     /// <summary>
-    /// À¯´ÏÆ¼ ºñµ¿±â ¸í·É Ã³¸® Å¬·¡½º
+    /// ìœ ë‹ˆí‹° ë¹„ë™ê¸° ëª…ë ¹ ì²˜ë¦¬ í´ë˜ìŠ¤
     /// </summary>
     AsyncOperation async;
 
     Slider loadingSlider;
+    TextMeshProUGUI loadingDoneText;
     PlayerinputActions inputActions;
 
     IEnumerator loadingCoroutine;
@@ -28,7 +30,7 @@ public class AsyncLoadingScene : MonoBehaviour
     public float loadingBarSpeed = 1.0f;
 
     /// <summary>
-    /// ·Îµù ¿Ï·á ¿©ºÎ ( true : ¿Ï·á, false : ¹Ì¿Ï )
+    /// ë¡œë”© ì™„ë£Œ ì—¬ë¶€ ( true : ì™„ë£Œ, false : ë¯¸ì™„ )
     /// </summary>
     bool loadingDone = false;
     #endregion
@@ -44,6 +46,8 @@ public class AsyncLoadingScene : MonoBehaviour
         inputActions = new PlayerinputActions();
 
         loadingImageUI = FindAnyObjectByType<LoadingImageUI>();
+        loadingDoneText = FindAnyObjectByType<TextMeshProUGUI>();
+        loadingDoneText.gameObject.SetActive(false);
     }
 
     private void OnEnable()
@@ -71,7 +75,7 @@ public class AsyncLoadingScene : MonoBehaviour
 
     private void Update()
     {
-        // ½½¶óÀÌ´õÀÇ value°¡ loadRatio°¡ µÉ ¶§±îÁö °è¼Ó Áõ°¡
+        // ìŠ¬ë¼ì´ë”ì˜ valueê°€ loadRatioê°€ ë  ë•Œê¹Œì§€ ê³„ì† ì¦ê°€
         if (loadingSlider.value < loadRatio)
         {
             loadingSlider.value += Time.deltaTime * loadingBarSpeed;
@@ -82,7 +86,7 @@ public class AsyncLoadingScene : MonoBehaviour
 
     #region AsyncLoad Method
     /// <summary>
-    /// Å¬¸¯½Ã ½ÇÇàÇÏ´Â ÇÔ¼ö
+    /// í´ë¦­ì‹œ ì‹¤í–‰í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
     private void Press(InputAction.CallbackContext context)
     {
@@ -97,18 +101,19 @@ public class AsyncLoadingScene : MonoBehaviour
         loadRatio = 0.0f;
         loadingSlider.value = loadRatio;
 
-        async = SceneManager.LoadSceneAsync(nextSceneName); // ºñµ¿±â ·Îµù ½ÃÀÛ
-        async.allowSceneActivation = false;                 // ÀÚµ¿ ¾À º¯È¯ ºñÈ°¼ºÈ­
+        async = SceneManager.LoadSceneAsync(nextSceneName); // ë¹„ë™ê¸° ë¡œë”© ì‹œì‘
+        async.allowSceneActivation = false;                 // ìë™ ì”¬ ë³€í™˜ ë¹„í™œì„±í™”
 
         while (loadRatio < 1.0f)
         {
-            loadRatio = async.progress + 0.1f; // ÁøÇà·ü °»½Å
+            loadRatio = async.progress + 0.1f; // ì§„í–‰ë¥  ê°±ì‹ 
 
             yield return null;
         }
 
         yield return new WaitForSeconds((1 - loadingSlider.value / loadingBarSpeed));
 
+        loadingDoneText.gameObject.SetActive(true);
         loadingDone = true;
     }
 
