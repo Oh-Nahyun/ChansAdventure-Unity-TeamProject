@@ -127,12 +127,15 @@ MonoBehaviour:
     forceY: 5
     boomRange: 3
     damage: 3
+    particle: {fileID: 0}
   weight: 1
   objectMaxHp: 1
   takeDamageAfterThrow: 3
   defencePower: 0
   reactionType: 4
+  skillAvailableMaterial: {fileID: 0}
   mainRenderer: {fileID: 0}
+  hitMovementPower: 2
 --- !u!114 &2379243774046924196
 MonoBehaviour:
   m_ObjectHideFlags: 0
