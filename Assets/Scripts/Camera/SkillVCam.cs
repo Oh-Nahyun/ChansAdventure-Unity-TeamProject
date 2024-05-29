@@ -37,6 +37,7 @@ public class SkillVCam : MonoBehaviour
 
         cameraRoot = player.cameraRoot.transform;
         vCam.Follow = cameraRoot;
+        vCam.m_LookAt = player.transform;
     }
 
     public Vector3 GetWorldPositionCenter()
