@@ -132,7 +132,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// <summary>
     /// 중력값
     /// </summary>
-    float gravity = -9.81f;
+    float gravity = 9.8f;
 
     /// <summary>
     /// 점프 시간 제한
@@ -147,10 +147,12 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// <summary>
     /// 점프 정도
     /// </summary>
-    public float jumpPower = 10.0f;
+    public float jumpPower = 5.0f;
 
-    // 0527
-    Vector3 playerVelocity;
+    /// <summary>
+    /// 플레이어 점프 벡터
+    /// </summary>
+    Vector3 playerJump;
 
     /// <summary>
     /// 땅에 닿고 있는지 확인하는 변수 / 0527
@@ -229,7 +231,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     readonly int DieHash = Animator.StringToHash("IsDie");
     readonly int GetHitHash = Animator.StringToHash("IsGetHit");
     readonly int SpendAllStaminaHash = Animator.StringToHash("IsSpendAllStamina");
-    readonly int IsGroundedHash = Animator.StringToHash("IsGrounded"); // 0527
+    readonly int IsGroundedHash = Animator.StringToHash("IsGrounded");
 
     // 컴포넌트
     Weapon weapon;
@@ -615,6 +617,10 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
 
     private void Update()
     {
+        // Player Movement -----------------------------------------------------
+
+        characterController.Move(Time.deltaTime * currentSpeed * inputDirection);
+
         LookRotation();
         Jump();
         Slide();
@@ -644,19 +650,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
             if (Stamina >= MaxStamina)
                 staminaCheckUI.gameObject.SetActive(false);     // 스태미너 UI 비활성화
         }
-
         // Debug.Log($"Player's Stamina : {Stamina}");
-
-        // player movement
-        characterController.Move(Time.deltaTime * currentSpeed * inputDirection);
-
-        // player gravity velocity / 0527
-        if (playerVelocity.y > gravity)
-        {
-            playerVelocity.y += gravity * Time.deltaTime;
-        }
-
-        characterController.Move(Time.deltaTime * playerVelocity);
     }
 
     private void FixedUpdate()
@@ -850,24 +844,27 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     }
 
     /// <summary>
-    /// 점프 입력 함수 / 0527
+    /// 점프 입력 함수
     /// </summary>
     /// <param name="isPress">점프 키 누름 여부 ( true : 누름 , false : 안누름 )</param>
     private void OnJump()
     {
-        if (SkillRelatedAction.IsPickUp // 물건을 들고 있을 때 입력 막기
-            || IsOpenedAnyUIPanel)
+        if (SkillRelatedAction.IsPickUp || IsOpenedAnyUIPanel) // 물건을 들고 있을 때 입력 막기
             return;
 
-        if (isGrounded)
+        if (isGrounded && !isJumping) // 점프가 가능한 경우
         {
-            animator.SetTrigger(IsJumpHash); // 점프 애니메이션 재생
-            //isReadyToJump = true;
+            animator.SetBool(IsGroundedHash, true); // 착지 모션 실행 가능하도록 설정
+            animator.SetTrigger(IsJumpHash);        // 점프 애니메이션 재생
+        }
+        else // 점프가 불가능한 경우
+        {
+            playerJump.y = 0.0f; // 점프 정도 초기화
         }
     }
 
     /// <summary>
-    /// 점프를 준비중인지 확인하는 변수 / 0528
+    /// 점프를 준비 중인지 확인하는 변수
     /// </summary>
     bool isReadyToJump = true;
 
@@ -876,18 +873,15 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// </summary>
     void Jump()
     {
-        isGrounded = characterController.isGrounded;
-        if (isGrounded && !isJumping && playerVelocity.y > -5f)
-        {
-            animator.SetBool(IsGroundedHash, true); // 착지 모션 실행
-        }
+        isGrounded = characterController.isGrounded; // 플레이어가 땅에 닿았는지 확인 (characterController의 isGrounded와 같게 설정)
 
-        if (isReadyToJump) // 점프 준비중일 때 무시
+        if (isReadyToJump) // 점프 준비 중일 경우 => 무시
             return;
 
-        if(isJumping) // 점프 중이다
+        if (isJumping) // 점프 중인 경우
         {
-            playerVelocity.y = Mathf.Sqrt(jumpPower * Mathf.Abs(gravity));
+            playerJump.y = Time.deltaTime * jumpPower * gravity;    // 플레이어의 점프 y값
+            characterController.Move(Time.deltaTime * playerJump);  // 점프 실행
         }
     }
 
@@ -907,7 +901,6 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     {
         isJumping = true;
         isReadyToJump = false;
-
         isGrounded = false;
     }
 
@@ -970,7 +963,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         }
 
         isSliding = true;
-        characterController.Move(playerSlide * Time.fixedDeltaTime); // 슬라이드 실행
+        characterController.Move(playerSlide * Time.deltaTime); // 슬라이드 실행
     }
 
     /// <summary>
