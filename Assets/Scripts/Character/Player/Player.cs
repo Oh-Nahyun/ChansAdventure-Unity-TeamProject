@@ -857,7 +857,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         if (isGrounded)
         {
             animator.SetTrigger(IsJumpHash); // 점프 애니메이션 재생
-            isReadyToJump = true;
+            //isReadyToJump = true;
         }
     }
 
