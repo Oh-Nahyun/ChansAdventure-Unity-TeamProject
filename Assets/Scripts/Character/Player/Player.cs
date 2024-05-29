@@ -854,7 +854,6 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
 
         if (isGrounded && !isJumping) // 점프가 가능한 경우
         {
-            animator.SetBool(IsGroundedHash, true); // 착지 모션 실행 가능하도록 설정
             animator.SetTrigger(IsJumpHash);        // 점프 애니메이션 재생
         }
         else // 점프가 불가능한 경우
@@ -864,19 +863,11 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     }
 
     /// <summary>
-    /// 점프를 준비 중인지 확인하는 변수
-    /// </summary>
-    bool isReadyToJump = true;
-
-    /// <summary>
     /// 점프 처리 함수
     /// </summary>
     void Jump()
     {
         isGrounded = characterController.isGrounded; // 플레이어가 땅에 닿았는지 확인 (characterController의 isGrounded와 같게 설정)
-
-        if (isReadyToJump) // 점프 준비 중일 경우 => 무시
-            return;
 
         if (isJumping) // 점프 중인 경우
         {
@@ -891,7 +882,6 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     public void ResetJumpPressed()
     {
         isJumping = false;
-        isReadyToJump = true;
     }
 
     /// <summary>
@@ -900,16 +890,14 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     public void ReleaseJump()
     {
         isJumping = true;
-        isReadyToJump = false;
-        isGrounded = false;
     }
 
     /// <summary>
-    /// 애니메이션 파라미터 초기화 함수 (animator 이벤트 함수)
+    /// 착지했을 때 실행하는 함수 (animator 이벤트 함수) / isGrounded 판정 보강용
     /// </summary>
-    public void ResetIsGrounded()
+    public void Onlanding()
     {
-        animator.SetBool(IsGroundedHash, false); // 파라미터 초기화
+        isGrounded = true;
     }
 
     /// <summary>
@@ -1189,7 +1177,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     {
         animator.SetTrigger(SpendAllStaminaHash);   // 애니메이션 재생
         isJumping = false;                      // 점프 실행 취소
-        onSpendAllStamina?.Invoke();                // 스태미나 모두 사용했다고 알림
+         onSpendAllStamina?.Invoke();                // 스태미나 모두 사용했다고 알림
         //Debug.Log("플레이어 스테미너 모두 사용");
     }
 

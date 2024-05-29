@@ -7323,11 +7323,11 @@ MonoBehaviour:
   slowSpeed: 1.5
   currentSpeed: 0
   turnSpeed: 10
-  jumpPower: 4
+  jumpPower: 5
   slidePower: 5
   isLook: 0
   cameraRoot: {fileID: 0}
-  followCamRotatePower: 1.2
+  followCamRotatePower: 0.5
   partPosition:
   - {fileID: 4511879611240405110}
   - {fileID: 1295040374386282508}
@@ -7655,7 +7655,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 3
   m_Height: 1.399
-  m_Radius: 0.1
+  m_Radius: 0.2
   m_SlopeLimit: 90
   m_StepOffset: 0.3
   m_SkinWidth: 0.001
