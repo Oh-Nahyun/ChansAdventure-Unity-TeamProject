@@ -1616,22 +1616,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waitTime: 1
-  invincibleTime: 2
-  walkSpeed: 2
-  runSpeed: 4
+  invincibleTime: 0.5
+  walkSpeed: 3
+  runSpeed: 5
   waypoints: {fileID: -8054210421774038281, guid: 8f85199086d70e84e9c542b7138b0a44,
     type: 3}
-  farSightRange: 10
+  farSightRange: 8
   sightHalfAngle: 50
   nearSightRange: 1.5
-  attackPower: 35
-  defencePower: 10
-  weaknessDefence: 1.7
+  attackPower: 25
+  defencePower: 2
   attackInterval: 1
   maxHP: 100
   dropItems:
   - code: 7
-    dropRatio: 1
+    dropRatio: 0.7
+    dropCount: 1
+  - code: 6
+    dropRatio: 0.2
     dropCount: 1
 --- !u!1 &8606157925966157816
 GameObject:

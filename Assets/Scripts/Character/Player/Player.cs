@@ -515,6 +515,11 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// </summary>
     public float finalDamage;
 
+    /// <summary>
+    /// 적의 약점 공격 시 플레이어의 공격력 증가율
+    /// </summary>
+    public float weakPointAttack = 1.2f;
+
     #endregion
 
     #region PlayerInteraction Values
@@ -1205,11 +1210,6 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     }
 
     // IBatter 인터페이스 상속 --------------------------------------------------------------------------------------------------
-
-    /// <summary>
-    /// 적의 약점 공격 시 플레이어의 공격력 증가율
-    /// </summary>
-    public float weakPointAttack = 1.2f;
 
     /// <summary>
     /// IBatter 공격 함수
