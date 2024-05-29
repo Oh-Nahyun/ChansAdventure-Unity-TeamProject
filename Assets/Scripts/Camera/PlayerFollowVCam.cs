@@ -147,7 +147,7 @@ public class PlayerFollowVCam : MonoBehaviour
     }
 
     /// <summary>
-    /// 조준 할 때 실행하는 함수 / 0524
+    /// 조준 할 때 실행하는 함수 
     /// Function execute when ZoomIn
     /// </summary>
     void CameraZoomIn(bool isZoomIn)
@@ -168,7 +168,7 @@ public class PlayerFollowVCam : MonoBehaviour
     }
 
     /// <summary>
-    /// 조준 끝날 때 실행하는 함수 / 0524
+    /// 조준 끝날 때 실행하는 함수
     /// Function execute when ZoomOut
     /// </summary>
     void CameraZoomOut()

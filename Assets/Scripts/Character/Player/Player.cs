@@ -545,8 +545,6 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
         animator = GetComponent<Animator>();
         weapon = GetComponent<Weapon>();
 
-        //isJumping = true; / 0527
-
         skillRelatedAction = GetComponent<PlayerSkillRelatedAction>();
         cameraRoot = FindAnyObjectByType<PlayerLookVCam>().gameObject;
         staminaCheckUI = FindAnyObjectByType<StaminaCheckUI>();
