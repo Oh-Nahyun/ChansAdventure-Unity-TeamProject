@@ -231,7 +231,6 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     readonly int DieHash = Animator.StringToHash("IsDie");
     readonly int GetHitHash = Animator.StringToHash("IsGetHit");
     readonly int SpendAllStaminaHash = Animator.StringToHash("IsSpendAllStamina");
-    readonly int IsGroundedHash = Animator.StringToHash("IsGrounded");
 
     // 컴포넌트
     Weapon weapon;
@@ -890,6 +889,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     public void ReleaseJump()
     {
         isJumping = true;
+        isGrounded = false;
     }
 
     /// <summary>
@@ -897,6 +897,7 @@ public class Player : MonoBehaviour, IEquipTarget, IHealth, IStamina, IBattler
     /// </summary>
     public void Onlanding()
     {
+        isJumping = false;
         isGrounded = true;
     }
 
