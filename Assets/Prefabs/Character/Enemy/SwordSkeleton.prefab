@@ -1621,13 +1621,13 @@ MonoBehaviour:
   runSpeed: 0
   waypoints: {fileID: -8054210421774038281, guid: 8f85199086d70e84e9c542b7138b0a44,
     type: 3}
-  farSightRange: 1
-  sightHalfAngle: 1
-  nearSightRange: 1
-  attackPower: 1
+  farSightRange: 10
+  sightHalfAngle: 50
+  nearSightRange: 2
+  attackPower: 0
   defencePower: 0
-  attackInterval: 1
-  maxHP: 100
+  attackInterval: 100000
+  maxHP: 80
   dropItems:
   - code: 7
     dropRatio: 1
