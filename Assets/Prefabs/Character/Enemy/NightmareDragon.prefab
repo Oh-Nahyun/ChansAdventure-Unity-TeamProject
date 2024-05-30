@@ -2175,19 +2175,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bf12b46523b33249a7d7f90383aee76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waitTime: 1
+  waitTime: 10000
   invincibleTime: 0.5
-  walkSpeed: 2
-  runSpeed: 5
+  walkSpeed: 0
+  runSpeed: 0
   waypoints: {fileID: -8054210421774038281, guid: 8f85199086d70e84e9c542b7138b0a44,
     type: 3}
-  farSightRange: 10
-  sightHalfAngle: 50
-  nearSightRange: 6
+  farSightRange: 1
+  sightHalfAngle: 1
+  nearSightRange: 1
   attackPower: 35
-  defencePower: 5
+  defencePower: 0
   attackInterval: 3
-  maxHP: 170
+  maxHP: 100
   dropItems:
   - code: 7
     dropRatio: 0.65
