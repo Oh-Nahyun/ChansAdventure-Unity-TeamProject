@@ -42,9 +42,18 @@ public class StaminaCheckUI : MonoBehaviour
         child = transform.GetChild(2);
         outside = child.GetComponent<Image>();
         outside.gameObject.SetActive(false);
-
-        player = GameManager.Instance.Player;
     }
+
+    void Start()
+    {
+        player = GameManager.Instance.Player;
+
+        if(player.Stamina > 100f)   // 스태미너가 확장된 상태라면
+        {
+            PlusStamina();          // 스태미너 추가
+        }
+    }
+
     private void Update()
     {
         PrintStamina();

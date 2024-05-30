@@ -102,9 +102,13 @@ public class TextBoxManager : MonoBehaviour
 
         talkData.Add(4014, new string[] { "구매하기", "판매하기","나가기" });
 
-        // 도사
-        talkData.Add(5000, new string[] { "....." });
-        talkData.Add(5001, new string[] { "....." });
+        // 도사 - 체력
+        talkData.Add(5000, new string[] { "...." });
+        talkData.Add(5001, new string[] { "...." });
+
+        // 도사 - 스태미나
+        talkData.Add(6000, new string[] { "스태미너를 증가시켜주겠네" });
+        talkData.Add(6001, new string[] { "...." });
     }
 
     /// <summary>

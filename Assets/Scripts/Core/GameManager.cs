@@ -145,6 +145,7 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     public GameObject loadPlayerGameObject;
 
+    #region Player Save values
     /// <summary>
     /// 플레이어 저장용 인벤토리 클래스
     /// </summary>
@@ -155,12 +156,22 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     InventorySlot[] savedEquipParts;
 
-    float SavedMaxHp;
+    /// <summary>
+    /// 최대체력 저장 변수
+    /// </summary>
+    float savedMaxHp;
+
+    /// <summary>
+    /// 스태미나가 추가되었는 지 확인하는 변수
+    /// </summary>
+    float savedMaxStamina;
 
     /// <summary>
     /// 플레이어 프리팹
     /// </summary>
     public GameObject playerPrefab;
+
+    #endregion
 
     public bool[] ActivatedSkill;
 
@@ -227,10 +238,11 @@ public class GameManager : Singleton<GameManager>
     public void ChangeToTargetScene(string SceneName, GameObject playerObject)
     {
         Instantiate(playerObject, loadPlayerGameObject.transform); // 플레이어를 로딩 오브젝트에 복제
-        //obj.transform.position = Vector3.zero;                                      // 오브젝트 위치 초기화
+        //obj.transform.position = Vector3.zero;                                    // 오브젝트 위치 초기화
         savedInventory = playerObject.GetComponent<Player>().Inventory;             // 인벤토리 저장
         savedEquipParts = playerObject.GetComponent<Player>().EquipPart;            // 장착부위 정보 저장
-        SavedMaxHp = playerObject.GetComponent<Player>().MaxHP;                     // 최대 체력 저장
+        savedMaxHp = playerObject.GetComponent<Player>().MaxHP;                     // 최대 체력 저장
+        savedMaxStamina = playerObject.GetComponent<Player>().MaxStamina;           // 스태미너 저장
 
         loadPlayerGameObject.SetActive(false);
 
@@ -286,10 +298,13 @@ public class GameManager : Singleton<GameManager>
             Cam.initialize();
             questManager.AfterSceneLoad();                  // 퀘스트 로딩
 
-            if (SavedMaxHp != 0) player.MaxHP = SavedMaxHp;
+            if(savedMaxHp != 0) player.MaxHP = savedMaxHp;
             player.HP = player.MaxHP;
 
-            for(int i = 0; i < loadPlayerGameObject.transform.childCount; i++)
+            if (savedMaxStamina != 0) player.MaxStamina = savedMaxStamina;
+            player.Stamina = player.MaxStamina;
+
+            for (int i = 0; i < loadPlayerGameObject.transform.childCount; i++)
             {
                 Destroy(loadPlayerGameObject.transform.GetChild(i).gameObject);
             }

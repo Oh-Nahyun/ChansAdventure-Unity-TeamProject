@@ -27,6 +27,7 @@ public class NPCBase : MonoBehaviour
     protected TextBoxItem boxItem;
     private QuestInfoPanel questInfoPanel;
     private HeartCheckUI heartCheckUI;
+    private StaminaCheckUI staminaCheckUI;
 
 
     public int id = 0;
@@ -46,6 +47,7 @@ public class NPCBase : MonoBehaviour
         textbox = FindObjectOfType<TextBox>();
         boxItem = FindAnyObjectByType<TextBoxItem>();
         heartCheckUI = FindAnyObjectByType<HeartCheckUI>();
+        staminaCheckUI = FindAnyObjectByType<StaminaCheckUI>();
     }
 
     protected virtual void Start()
@@ -191,6 +193,15 @@ public class NPCBase : MonoBehaviour
                 QuestManager.Instance.checkClearQuests[3] = true;
                 heartCheckUI.PlusHeart();
                 id = 5001;
+            }
+        }
+
+        if(id == 6000)
+        {
+            if(isTalk)
+            {
+                staminaCheckUI.PlusStamina();
+                id = 6001;
             }
         }
     }
