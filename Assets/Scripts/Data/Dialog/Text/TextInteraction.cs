@@ -26,42 +26,42 @@ public class TextInteraction : MonoBehaviour
     }
 
     /// <summary>
-    /// °¡Àå °¡±î¿î ¿ÀºêÁ§Æ®ÀÇ »óÈ£ÀÛ¿ë ÅØ½ºÆ®¸¦ Ãâ·ÂÇÏ´Â ÇÔ¼ö
+    /// ê°€ì¥ ê°€ê¹Œìš´ ì˜¤ë¸Œì íŠ¸ì˜ ìƒí˜¸ì‘ìš© í…ìŠ¤íŠ¸ë¥¼ ì¶œë ¥í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <param name="obj">°¡Àå °¡±î¿î ¿ÀºêÁ§Æ®</param>
+    /// <param name="obj">ê°€ì¥ ê°€ê¹Œìš´ ì˜¤ë¸Œì íŠ¸</param>
     public void SetTagText(GameObject obj)
     {
         switch (obj.tag)
         {
             case "NPC":
-                TagText.SetText("¸»ÇÏ±â");
+                TagText.SetText("Talk");
                 break;
             case "DropItem":
-                TagText.SetText("Áİ±â");
+                TagText.SetText("Pick Up");
                 break;
             case "Chest":
-                TagText.SetText("¿­±â");
+                TagText.SetText("Open");
                 break;
             case "Warp":
-                TagText.SetText("ÀÌµ¿ÇÏ±â");
+                TagText.SetText("Move");
                 break;
             case "DoorOpen":
-                TagText.SetText("´İ±â");
+                TagText.SetText("Close");
                 break;
             case "DoorClose":
-                TagText.SetText("¿­±â");
+                TagText.SetText("Open");
                 break;
             case "Lever":
-                TagText.SetText("´ç±â±â");
+                TagText.SetText("Pull");
                 break;
             default:
-                TagText.SetText("È®ÀÎÇÏ±â");
+                TagText.SetText("Check");
                 break;
         }
     }
 
     /// <summary>
-    /// TextInteraction¿ÀºêÁ§Æ®¸¦ OnOff°ü¸®¸¦ ÇÏ±â À§ÇÑ
+    /// TextInteractionì˜¤ë¸Œì íŠ¸ë¥¼ OnOffê´€ë¦¬ë¥¼ í•˜ê¸° ìœ„í•œ
     /// </summary>
     /// <param name="OnOff">ture = On</param>
     public void TextActive(bool OnOff)

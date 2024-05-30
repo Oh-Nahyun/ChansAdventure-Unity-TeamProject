@@ -27,7 +27,7 @@ public class ShopItemPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public Color noStockColor = Color.red;
 
     /// <summary>
-    /// ¾ÆÀÌÅÛÀÇ ³²Àº Àç°í
+    /// ì•„ì´í…œì˜ ë‚¨ì€ ì¬ê³ 
     /// </summary>
     public int itemStock = 10;
 
@@ -70,20 +70,20 @@ public class ShopItemPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     }
 
     /// <summary>
-    /// ¸¶¿ì½º°¡ µé¾î¿ÔÀ» ¶§ ½ÇÇàÇÏ´Â ÇÔ¼ö
+    /// ë§ˆìš°ìŠ¤ê°€ ë“¤ì–´ì™”ì„ ë•Œ ì‹¤í–‰í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
     /// <param name="eventData"></param>
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (shopItemData != null)
         {
-            // ÇØ´ç ÆĞ³ÎÀÇ ItemData¸¦ °Ç³»ÁÜ
+            // í•´ë‹¹ íŒ¨ë„ì˜ ItemDataë¥¼ ê±´ë‚´ì¤Œ
             shopItemData.GetItemData(itemData);
         }
     }
 
     /// <summary>
-    /// ¸¶¿ì½º°¡ ³ª°¬À» ¶§ ½ÇÇàÇÏ´Â ÇÔ¼ö
+    /// ë§ˆìš°ìŠ¤ê°€ ë‚˜ê°”ì„ ë•Œ ì‹¤í–‰í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
     /// <param name="eventData"></param>
     public void OnPointerExit(PointerEventData eventData)
@@ -95,7 +95,7 @@ public class ShopItemPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     }
 
     /// <summary>
-    /// »óÁ¡ ÆĞ³ÎÀ» Å¬¸¯ÇßÀ» ¶§ ½ÇÇ×ÇÒ ÇÔ¼ö
+    /// ìƒì  íŒ¨ë„ì„ í´ë¦­í–ˆì„ ë•Œ ì‹¤í•­í•  í•¨ìˆ˜
     /// </summary>
     /// <param name="eventData"></param>
     public void OnPointerClick(PointerEventData eventData)
@@ -107,23 +107,23 @@ public class ShopItemPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
                 buyItem = true;
                 selectBox.gameObject.SetActive(true);
 
-                selectBox.selectText.text = $"Á¤¸»·Î {itemData.itemName}À»(¸¦) ±¸¸ÅÇÏ½Ã°Ú½À´Ï±î?";
-                selectBox.buttonCheckText.text = "±¸¸Å";
-                selectBox.buttonCancelText.text = "Ãë¼Ò";
+                selectBox.selectText.text = $"Are you sure want to buy {itemData.itemName}?";
+                selectBox.buttonCheckText.text = "êµ¬ë§¤";
+                selectBox.buttonCancelText.text = "ì·¨ì†Œ";
             }
             else
             {
-                Debug.Log($"{itemData.itemName} Àç°í ¾øÀ½");
+                Debug.Log($"{itemData.itemName} ì¬ê³  ì—†ìŒ");
             }
         }
         else
         {
-            Debug.Log("ÀÜ¾×ÀÌ ¸ğÀÚ¸§");
+            Debug.Log("ì”ì•¡ì´ ëª¨ìë¦„");
         }
     }
 
     /// <summary>
-    /// Àç°í¿Í ÀÜ¾×¿¡ µû¶ó »óÁ¡UI¸¦ º¯È­½ÃÅ°´Â ÇÔ¼ö
+    /// ì¬ê³ ì™€ ì”ì•¡ì— ë”°ë¼ ìƒì UIë¥¼ ë³€í™”ì‹œí‚¤ëŠ” í•¨ìˆ˜
     /// </summary>
     private void SetShopItemText()
     {
