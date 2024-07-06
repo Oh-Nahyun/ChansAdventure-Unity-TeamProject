@@ -25,3 +25,10 @@ Unity 게임 엔진을 이용한 3D Action Adventure 게임 개발
 박민우 - 라스트 보스   
 배태정 - 일반 몬스터 및 중형 몬스터   
 정윤서 - NPC 및 아이템 상호작용, 퀘스트, 상호작용 오브젝트
+
+--
+
+## 플레이 영상
+
+[![3DActionAdventureProject](https://img.youtube.com/vi/FVopMLPX0kg/0.jpg)](https://youtu.be/FVopMLPX0kg)
+
