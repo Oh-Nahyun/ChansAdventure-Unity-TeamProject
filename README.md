@@ -1,7 +1,10 @@
-# 3D Action Adventure Game
+# Chan's Adventure Project
+
+Developed with Unity Engine
 Unity 게임 엔진을 이용한 3D Action Adventure 게임 개발
 
 ## 프로젝트 소개
+
 해당 프로젝트는 유니티 게임 엔진을 이용한 3D 액션 어트벤쳐 개발
 
 ## 프로젝트 기간 및 구현 요소
